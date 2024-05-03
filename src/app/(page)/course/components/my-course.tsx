@@ -1,20 +1,12 @@
-import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
 
-export default function CourseCard() {
+export default function MyCourse() {
   return (
-    <div className="flex flex-col shadow-md border-t border-neutral-5 rounded-lg gap-3 p-6 w-full hover:shadow-xl hover:cursor-pointer">
+    <div className="flex flex-col shadow-md border-t border-neutral-5 rounded-lg gap-3 p-6 hover:shadow-xl w-[400px] hover:cursor-pointer">
       <h1 className="text-BB18">강형욱 선생님과 함께하는 강아지 배변 훈련!</h1>
-      <div className="flex gap-2">
-        <Badge variant={"default"} className="w-fit">
-          훈련
-        </Badge>
-        <Badge variant={"secondary"} className="w-fit">
-          강아지
-        </Badge>
-        <Badge variant={"destructive"} className="w-fit">
-          고양이
-        </Badge>
+      <div className="flex gap-2 items-center">
+        <span className="text-BB14">진도율</span>
+        <h1 className="text-BB18 text-[#008000]">68%</h1>
       </div>
       <div className="flex flex-col">
         <p className="text-BR14">강아지의 다양한 배변 현상</p>
