@@ -22,7 +22,9 @@ export default function RootLayout({
     <html lang="ko">
       <body className={cn("h-full", font.className)}>
         <TopBar />
-        <section className="">{children}</section>
+        <section className="px-6 sm:px-20 screen:container py-24">
+          {children}
+        </section>
         <BottomBar />
         <Toaster />
       </body>
