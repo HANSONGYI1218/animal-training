@@ -1,12 +1,15 @@
 import type { Metadata } from "next";
-import { Noto_Sans_KR } from "next/font/google";
-import { cn } from "@/utils/utils";
+import localFont from "next/font/local";
+import { cn } from "@/lib/utils";
 import "./globals.css";
 import TopBar from "@/components/common/top-bar";
 import BottomBar from "@/components/common/bottom-bar";
 import { Toaster } from "@/components/ui/toaster";
 
-const font = Noto_Sans_KR({ subsets: ["latin"], weight: ["400", "700"] });
+export const Pretendard = localFont({
+  src: "./fonts/PretendardVariable.woff2",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: "animal-training",
@@ -20,11 +23,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
-      <body className={cn("h-full", font.className)}>
+      <body className={Pretendard.className}>
         <TopBar />
-        <section className="px-6 sm:px-20 screen:container py-24">
-          {children}
-        </section>
+        <section className="min-h-screen">{children}</section>
         <BottomBar />
         <Toaster />
       </body>

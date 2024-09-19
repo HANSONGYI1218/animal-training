@@ -30,28 +30,13 @@ const config = {
     },
     extend: {
       colors: {
-        "primary-100": "#0059FF",
-        "primary-90": "#196AFF",
-        "primary-80": "#337AFF",
-        "primary-70": "#4C8BFF",
-        "primary-60": "#669BFF",
-        "primary-50": "#7FACFF",
-        "primary-40": "#99BDFF",
-        "primary-30": "#B2CDFF",
-        "primary-20": "#CCDEFF",
-        "primary-10": "#E5EEFF",
-        "primary-5": "#F5F8FF",
-        "neutral-100": "#030303",
-        "neutral-90": "#1A1A1A",
-        "neutral-80": "#333333",
-        "neutral-70": "#4D4D4D",
-        "neutral-60": "#666666",
-        "neutral-50": "#808080",
-        "neutral-40": "#999999",
-        "neutral-30": "#B3B3B3",
-        "neutral-20": "#CCCCCC",
-        "neutral-10": "#E6E6E6",
-        "neutral-5": "#F3F3F3",
+        "green-100": "#00592D",
+        "green-80": "#027B3F",
+        "green-60": "#02934B",
+        "green-40": "#03B05A",
+        "green-20": "#1AD176",
+        "green-10": "#41E594",
+        "green-5": "#93EBBF",
         "system-warning": "#FF0000",
         "system-success": "#07A320",
         border: "hsl(var(--border))",
@@ -89,164 +74,308 @@ const config = {
         },
       },
       fontSize: {
-        HB40: [
+        H154_EB: [
+          "54px",
+          {
+            fontWeight: 800,
+            letterSpacing: "-1%",
+            lineHeight: "75.6px",
+          },
+        ],
+        H154_B: [
+          "54px",
+          {
+            fontWeight: 700,
+            letterSpacing: "-1%",
+            lineHeight: "75.6px",
+          },
+        ],
+        H240_EB: [
+          "40px",
+          {
+            fontWeight: 800,
+            letterSpacing: "-1%",
+            lineHeight: "56px",
+          },
+        ],
+        H240_B: [
           "40px",
           {
             fontWeight: 700,
-            letterSpacing: "-3%",
-            lineHeight: "48px",
+            letterSpacing: "-1%",
+            lineHeight: "56px",
           },
         ],
-        HB32: [
-          "32px",
+        H240_M: [
+          "40px",
+          {
+            fontWeight: 500,
+            letterSpacing: "-1%",
+            lineHeight: "56px",
+          },
+        ],
+        H336_EB: [
+          "36px",
+          {
+            fontWeight: 800,
+            letterSpacing: "-1%",
+            lineHeight: "50.4px",
+          },
+        ],
+        H336_B: [
+          "36px",
           {
             fontWeight: 700,
-            letterSpacing: "-3%",
-            lineHeight: "38px",
+            letterSpacing: "-1%",
+            lineHeight: "50.4px",
           },
         ],
-        HB28: [
+        H336_M: [
+          "36px",
+          {
+            fontWeight: 500,
+            letterSpacing: "-1%",
+            lineHeight: "50.4px",
+          },
+        ],
+        H428_EB: [
+          "28px",
+          {
+            fontWeight: 800,
+            letterSpacing: "-0%",
+            lineHeight: "39.2px",
+          },
+        ],
+        H428_B: [
           "28px",
           {
             fontWeight: 700,
-            letterSpacing: "-3%",
-            lineHeight: "34px",
+            letterSpacing: "-0%",
+            lineHeight: "39.2px",
           },
         ],
-        HB24: [
+        H428_M: [
+          "28px",
+          {
+            fontWeight: 500,
+            letterSpacing: "-0%",
+            lineHeight: "39.2px",
+          },
+        ],
+        H524_EB: [
+          "24px",
+          {
+            fontWeight: 800,
+            letterSpacing: "-0%",
+            lineHeight: "33.6px",
+          },
+        ],
+        H524_B: [
           "24px",
           {
             fontWeight: 700,
-            letterSpacing: "-3%",
+            letterSpacing: "-0%",
+            lineHeight: "33.6px",
+          },
+        ],
+        H524_M: [
+          "24px",
+          {
+            fontWeight: 500,
+            letterSpacing: "-0%",
+            lineHeight: "33.6px",
+          },
+        ],
+        H524_R: [
+          "24px",
+          {
+            fontWeight: 400,
+            letterSpacing: "-0%",
+            lineHeight: "33.6px",
+          },
+        ],
+        H620_EB: [
+          "20px",
+          {
+            fontWeight: 800,
+            letterSpacing: "-0%",
             lineHeight: "28px",
           },
         ],
-        HB20: [
+        H620_B: [
           "20px",
           {
             fontWeight: 700,
-            letterSpacing: "-3%",
-            lineHeight: "24px",
+            letterSpacing: "-0%",
+            lineHeight: "28px",
           },
         ],
-        BB20: [
-          "20px",
-          {
-            fontWeight: 700,
-            letterSpacing: "-3%",
-            lineHeight: "24px",
-          },
-        ],
-        BM20: [
+        H620_M: [
           "20px",
           {
             fontWeight: 500,
-            letterSpacing: "-3%",
-            lineHeight: "24px",
+            letterSpacing: "-0%",
+            lineHeight: "28px",
           },
         ],
-        BR20: [
+        H620_R: [
           "20px",
           {
             fontWeight: 400,
-            letterSpacing: "-3%",
-            lineHeight: "24px",
+            letterSpacing: "-0%",
+            lineHeight: "28px",
           },
         ],
-        BB18: [
+        H718_EB: [
+          "18px",
+          {
+            fontWeight: 800,
+            letterSpacing: "-0%",
+            lineHeight: "25.2px",
+          },
+        ],
+        H718_B: [
           "18px",
           {
             fontWeight: 700,
-            letterSpacing: "-3%",
-            lineHeight: "22px",
+            letterSpacing: "-0%",
+            lineHeight: "25.2px",
           },
         ],
-        BM18: [
+        H718_SB: [
+          "18px",
+          {
+            fontWeight: 600,
+            letterSpacing: "-0%",
+            lineHeight: "25.2px",
+          },
+        ],
+        H816_EB: [
+          "16px",
+          {
+            fontWeight: 800,
+            letterSpacing: "-0%",
+            lineHeight: "22.4px",
+          },
+        ],
+        H816_B: [
+          "16px",
+          {
+            fontWeight: 700,
+            letterSpacing: "-0%",
+            lineHeight: "22.4px",
+          },
+        ],
+        H816_SB: [
+          "16px",
+          {
+            fontWeight: 600,
+            letterSpacing: "-0%",
+            lineHeight: "22.4px",
+          },
+        ],
+        B118_B: [
+          "18px",
+          {
+            fontWeight: 700,
+            letterSpacing: "-0%",
+            lineHeight: "28.8px",
+          },
+        ],
+        B118_M: [
           "18px",
           {
             fontWeight: 500,
-            letterSpacing: "-3%",
-            lineHeight: "22px",
+            letterSpacing: "-0%",
+            lineHeight: "28.8px",
           },
         ],
-        BR18: [
+        B118_R: [
           "18px",
           {
             fontWeight: 400,
-            letterSpacing: "-3%",
-            lineHeight: "22px%",
+            letterSpacing: "-0%",
+            lineHeight: "28.8px",
           },
         ],
-        BB16: [
+        B216_B: [
           "16px",
           {
             fontWeight: 700,
-            letterSpacing: "-3%",
-            lineHeight: "20px",
+            letterSpacing: "-0%",
+            lineHeight: "25.6px",
           },
         ],
-        BM16: [
+        B216_M: [
           "16px",
           {
             fontWeight: 500,
-            letterSpacing: "-3%",
-            lineHeight: "20px",
+            letterSpacing: "-0%",
+            lineHeight: "25.6px",
           },
         ],
-        BR16: [
+        B216_R: [
           "16px",
           {
             fontWeight: 400,
-            letterSpacing: "-3%",
-            lineHeight: "20px",
+            letterSpacing: "-0%",
+            lineHeight: "25.6px",
           },
         ],
-        BB14: [
+        B314_B: [
           "14px",
           {
             fontWeight: 700,
-            letterSpacing: "-3%",
-            lineHeight: "18px",
+            letterSpacing: "-0%",
+            lineHeight: "22.4px",
           },
         ],
-        BM14: [
+        B314_M: [
           "14px",
           {
             fontWeight: 500,
-            letterSpacing: "-3%",
-            lineHeight: "18px",
+            letterSpacing: "-0%",
+            lineHeight: "22.4px",
           },
         ],
-        BR14: [
+        B314_R: [
           "14px",
           {
             fontWeight: 400,
-            letterSpacing: "-3%",
-            lineHeight: "18px",
+            letterSpacing: "-0%",
+            lineHeight: "22.4px",
           },
         ],
-        BB12: [
+        B413_R: [
+          "13px",
+          {
+            fontWeight: 400,
+            letterSpacing: "-0%",
+            lineHeight: "20.8px",
+          },
+        ],
+        B512_B: [
           "12px",
           {
             fontWeight: 700,
-            letterSpacing: "-3%",
-            lineHeight: "16px",
+            letterSpacing: "-0%",
+            lineHeight: "19.2px",
           },
         ],
-        BM12: [
+        B512_M: [
           "12px",
           {
             fontWeight: 500,
-            letterSpacing: "-3%",
-            lineHeight: "16px",
+            letterSpacing: "-0%",
+            lineHeight: "19.2px",
           },
         ],
-        BR12: [
+        B512_R: [
           "12px",
           {
             fontWeight: 400,
-            letterSpacing: "-3%",
-            lineHeight: "16px",
+            letterSpacing: "-0%",
+            lineHeight: "19.2px",
           },
         ],
       },

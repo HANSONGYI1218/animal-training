@@ -14,11 +14,11 @@ export default function CourseCategory() {
   ];
   return (
     <div className="w-full flex flex-col gap-12">
-      <div className="flex justify-between">
+      <div className="flex justify-between flex-col gap-4 md:gap-0 md:flex-row">
         <h1 className="text-HB24">분야별 강의</h1>
         <Input
           placeholder="찾으려는 단어나 분야를 검색해 보세요!"
-          className="rounded-full text-BR14 w-96 text-[#008000] border-[#008000] border-2 placeholder:text-[#008000] placeholder:opacity-40"
+          className="rounded-full text-BR14 w-4/5 md:w-2/5 text-[#008000] border-[#008000] border-2 placeholder:text-[#008000] placeholder:opacity-40"
         />
       </div>
       <div className="grid grid-cols-4 gap-4 lg:flex justify-between">
