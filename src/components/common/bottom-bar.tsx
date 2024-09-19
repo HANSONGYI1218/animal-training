@@ -66,7 +66,7 @@ export default function BottomBar() {
         </section>
       </footer>
       {!(path.includes("entitle") || path.includes("apply")) && (
-        <footer className="h-50 border-t-2  md:hidden">
+        <footer className="h-50 border-t-2 md:hidden">
           <section className="mx-auto my-auto flex max-w-6xl justify-between px-4 py-10 text-xs">
             <div className="tracking-wide">
               <p className="pb-3 font-bold">인사이드아웃 사회적 협동조합</p>

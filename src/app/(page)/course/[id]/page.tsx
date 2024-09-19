@@ -1,3 +1,7 @@
+import Chanpter from "../components/chapter";
+import MyCourseBanner from "../components/mycourse-banner";
+import data from "@/utils/dummydata";
+
 export default function CourseDetailPage({
   params,
 }: {
@@ -5,9 +9,7 @@ export default function CourseDetailPage({
 }) {
   const { id } = params;
 
-  return (
-    <div className="flex flex-col">
-      <div className="border rounded-lg h-[500px] w-3/5">영상 자리</div>
-    </div>
-  );
+  const course = data.myCoursDummy.find((item) => item.id === id);
+
+  return <div className="flex flex-col">{course?.sumnailImg ?? ""}</div>;
 }

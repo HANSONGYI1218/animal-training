@@ -1,17 +1,17 @@
 import * as React from "react";
 import { cva, type VariantProps } from "class-variance-authority";
 
-import { cn } from "@/utils/utils";
+import { cn } from "@/lib/utils";
 
 const badgeVariants = cva(
-  "h-7 inline-flex items-center rounded-md border px-2.5 py-0.5 text-sm font-bold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
+  "h-7 inline-flex items-center rounded-full border px-4 py-0.5 text-sm font-bold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
   {
     variants: {
       variant: {
         default:
-          "bg-[#008000] text-white hover:bg-currentColor border-transparent",
+          "bg-[#9ECEA1] text-black hover:bg-currentColor border-transparent opacity-70",
         secondary:
-          "bg-[#ffe0e6] text-black hover:bg-currentColor border-transparent",
+          "bg-[#E28C9A] text-white hover:bg-currentColor border-transparent opacity-80",
         destructive:
           "bg-[#cedfd4] text-black hover:bg-currentColor border-transparent",
         outline: "text-foreground",
@@ -20,7 +20,7 @@ const badgeVariants = cva(
     defaultVariants: {
       variant: "default",
     },
-  }
+  },
 );
 
 export interface BadgeProps
