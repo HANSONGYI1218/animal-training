@@ -20,7 +20,7 @@ export enum Category {
 }
 
 export type Lecture = {
-  id: number;
+  id: string;
   title: string;
   content: string;
   animal_type: AnimalType;

@@ -20,7 +20,7 @@ export default function LectureCard({ lecture }: { lecture: Lecture }) {
       </div>
       <img
         src={lecture?.thumbnailPath}
-        alt="lecture-subnail"
+        alt="lecture-thumbnail"
         className="rounded-lg object-cover"
       />
       <div className="flex flex-col gap-3 px-3">
@@ -28,7 +28,7 @@ export default function LectureCard({ lecture }: { lecture: Lecture }) {
           <Badge>{lecture?.category}</Badge>
           <Badge variant={"secondary"}>{lecture?.price_type}</Badge>
         </div>
-        <span className="line-clamp-2 h-10 font-[540]">{lecture?.title}</span>
+        <span className="line-clamp-2 h-11 font-[540]">{lecture?.title}</span>
         <div className="flex items-center justify-between">
           <span className="text-[0.93rem] text-gray-600">
             {lecture?.trainer_name}

@@ -2,10 +2,11 @@ import { Lecture, AnimalType, Category, PriceType } from "@/types/tyeps.all";
 
 const lectureData: Lecture[] = [
   {
-    id: 1,
+    id: "1",
     title: "강형욱 선생님과 함께하는 강아지 배변 훈련!",
-    content:
-      "강아지의 다양한 배변 현상, 강형욱 훈련사님의 깊은 내공으로 궁금증 해결!!",
+    content: `강아지의 다양한 배변 현상, 강형욱 훈련사님의 깊은 내공으로 궁금증 해결!!
+      아무렴 강형욱 훈련사와 함께하는 훈련!
+      재밌게 즐겨보고 반려견을 더 사랑하세요!!`,
     animal_type: AnimalType.DOG,
     trainer_name: "강형욱",
     price_type: PriceType.FREE,
@@ -18,10 +19,11 @@ const lectureData: Lecture[] = [
     bookmark: true,
   },
   {
-    id: 2,
+    id: "2",
     title: "강형욱 선생님과 함께하는 강아지 배변 훈련!",
-    content:
-      "강아지의 다양한 배변 현상, 강형욱 훈련사님의 깊은 내공으로 궁금증 해결!!",
+    content: `강아지의 다양한 배변 현상, 강형욱 훈련사님의 깊은 내공으로 궁금증 해결!!
+      아무렴 강형욱 훈련사와 함께하는 훈련!
+      재밌게 즐겨보고 반려견을 더 사랑하세요!!`,
     animal_type: AnimalType.DOG,
     trainer_name: "강형욱",
     price_type: PriceType.FREE,
@@ -34,10 +36,11 @@ const lectureData: Lecture[] = [
     bookmark: true,
   },
   {
-    id: 3,
+    id: "3",
     title: "강형욱 선생님과 함께하는 강아지 배변 훈련!",
-    content:
-      "강아지의 다양한 배변 현상, 강형욱 훈련사님의 깊은 내공으로 궁금증 해결!!",
+    content: `강아지의 다양한 배변 현상, 강형욱 훈련사님의 깊은 내공으로 궁금증 해결!!
+      아무렴 강형욱 훈련사와 함께하는 훈련!
+      재밌게 즐겨보고 반려견을 더 사랑하세요!!`,
     animal_type: AnimalType.DOG,
     trainer_name: "강형욱",
     price_type: PriceType.PAID,
@@ -50,10 +53,11 @@ const lectureData: Lecture[] = [
     bookmark: false,
   },
   {
-    id: 4,
+    id: "4",
     title: "강형욱 선생님과 함께하는 강아지 배변 훈련!",
-    content:
-      "강아지의 다양한 배변 현상, 강형욱 훈련사님의 깊은 내공으로 궁금증 해결!!",
+    content: `강아지의 다양한 배변 현상, 강형욱 훈련사님의 깊은 내공으로 궁금증 해결!!
+    아무렴 강형욱 훈련사와 함께하는 훈련!
+    재밌게 즐겨보고 반려견을 더 사랑하세요!!`,
     animal_type: AnimalType.DOG,
     trainer_name: "강형욱",
     price_type: PriceType.PAID,
@@ -66,10 +70,11 @@ const lectureData: Lecture[] = [
     bookmark: true,
   },
   {
-    id: 5,
+    id: "5",
     title: "강형욱 선생님과 함께하는 강아지 배변 훈련!",
-    content:
-      "강아지의 다양한 배변 현상, 강형욱 훈련사님의 깊은 내공으로 궁금증 해결!!",
+    content: `강아지의 다양한 배변 현상, 강형욱 훈련사님의 깊은 내공으로 궁금증 해결!!
+      아무렴 강형욱 훈련사와 함께하는 훈련!
+      재밌게 즐겨보고 반려견을 더 사랑하세요!!`,
     animal_type: AnimalType.DOG,
     trainer_name: "설채현",
     price_type: PriceType.FREE,
@@ -82,7 +87,7 @@ const lectureData: Lecture[] = [
     bookmark: false,
   },
   {
-    id: 6,
+    id: "6",
     title: "강형욱 선생님과 함께하는 강아지 배변 훈련!",
     content:
       "강아지의 다양한 배변 현상, 강형욱 훈련사님의 깊은 내공으로 궁금증 해결!! 강아지의 다양한 배변 현상, 강형욱 훈련사님의 깊은 내공으로 궁금증 해결!!",
@@ -98,7 +103,7 @@ const lectureData: Lecture[] = [
     bookmark: true,
   },
   {
-    id: 7,
+    id: "7",
     title: "강형욱 선생님과 함께하는 강아지 배변 훈련!",
     content:
       "강아지의 다양한 배변 현상, 강형욱 훈련사님의 깊은 내공으로 궁금증 해결!! 강아지의 다양한 배변 현상, 강형욱 훈련사님의 깊은 내공으로 궁금증 해결!!",
@@ -114,10 +119,11 @@ const lectureData: Lecture[] = [
     bookmark: false,
   },
   {
-    id: 8,
+    id: "8",
     title: "강형욱 선생님과 함께하는 강아지 배변 훈련!",
-    content:
-      "강아지의 다양한 배변 현상, 강형욱 훈련사님의 깊은 내공으로 궁금증 해결!!",
+    content: `강아지의 다양한 배변 현상, 강형욱 훈련사님의 깊은 내공으로 궁금증 해결!!
+      아무렴 강형욱 훈련사와 함께하는 훈련!
+      재밌게 즐겨보고 반려견을 더 사랑하세요!!`,
     animal_type: AnimalType.CAT,
     trainer_name: "설채현",
     price_type: PriceType.FREE,
@@ -130,10 +136,11 @@ const lectureData: Lecture[] = [
     bookmark: true,
   },
   {
-    id: 9,
+    id: "9",
     title: "강형욱 선생님과 함께하는 강아지 배변 훈련!",
-    content:
-      "강아지의 다양한 배변 현상, 강형욱 훈련사님의 깊은 내공으로 궁금증 해결!!",
+    content: `강아지의 다양한 배변 현상, 강형욱 훈련사님의 깊은 내공으로 궁금증 해결!!
+      아무렴 강형욱 훈련사와 함께하는 훈련!
+      재밌게 즐겨보고 반려견을 더 사랑하세요!!`,
     animal_type: AnimalType.CAT,
     trainer_name: "설채현",
     price_type: PriceType.PAID,
@@ -146,7 +153,7 @@ const lectureData: Lecture[] = [
     bookmark: false,
   },
   {
-    id: 10,
+    id: "10",
     title: "강형욱 선생님과 함께하는 강아지 배변 훈련!",
     content:
       "강아지의 고양이 배변 현상, 강형욱 훈련사님의 깊은 내공으로 궁금증 해결!!",
@@ -162,7 +169,7 @@ const lectureData: Lecture[] = [
     bookmark: true,
   },
   {
-    id: 11,
+    id: "11",
     title: "강형욱 선생님과 함께하는 강아지 배변 훈련!",
     content:
       "강아지의 고양이 배변 현상, 강형욱 훈련사님의 깊은 내공으로 궁금증 해결!!",
@@ -190,7 +197,7 @@ const myCoursDummy = [
     courseVideoUrl: "",
   },
   {
-    id: 2,
+    id: "2",
     title: "shkseshk!",
     content:
       "강아지의 고양이 배변 현상, 강형욱 훈련사님의 깊은 내공으로 궁금증 해결!!",
@@ -199,7 +206,7 @@ const myCoursDummy = [
     courseVideoUrl: "",
   },
   {
-    id: 3,
+    id: "3",
     title: "강형욱 선생님과",
     content:
       "강아지의 고양이 배변 현상, 강형욱 훈련사님의 깊은 내공으로 궁금증 해결!!",
@@ -208,7 +215,7 @@ const myCoursDummy = [
     courseVideoUrl: "",
   },
   {
-    id: 4,
+    id: "4",
     title: "현상, 강형욱 훈련",
     content:
       "강아지의 고양이 배변 현상, 강형욱 훈련사님의 깊은 내공으로 궁금증 해결!!",
@@ -217,7 +224,7 @@ const myCoursDummy = [
     courseVideoUrl: "",
   },
   {
-    id: 5,
+    id: "5",
     title: "강형욱 선생님과 함께하는 강아지 배변 훈련!",
     content:
       "강아지의 고양이 배변 현상, 강형욱 훈련사님의 깊은 내공으로 궁금증 해결!!",
@@ -226,7 +233,7 @@ const myCoursDummy = [
     courseVideoUrl: "",
   },
   {
-    id: 6,
+    id: "6",
     title: "강형욱 선생님과 함께하는 강아지 배변 훈련!",
     content:
       "강아지의 고양이 배변 현상, 강형욱 훈련사님의 깊은 내공으로 궁금증 해결!!",
