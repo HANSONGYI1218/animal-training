@@ -67,18 +67,12 @@
 }
 
 .scroll {
-  scrollbar-gutter: stable;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
+
 .scroll::-webkit-scrollbar {
-  height: 10px;
-}
-.scroll::-webkit-scrollbar-thumb {
-  border-radius: 10px;
-  background-color: #008000;
-}
-.scroll::-webkit-scrollbar-track {
-  border-radius: 10px;
-  background-color: #f3f3f3;
+  display: none;
 }
 
 @layer base {

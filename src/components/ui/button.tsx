@@ -12,9 +12,9 @@ const buttonVariants = cva(
         default:
           "bg-transparent text-base font-semibold hover:bg-currentColor text-black hover:text-green-100",
         destructive:
-          "bg-destructive text-destructive-foreground hover:bg-destructive/90",
+          "bg-black text-base font-semibold hover:bg-black/90 text-white",
         outline:
-          "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
+          "border border-input text-base font-semibold bg-background hover:bg-accent hover:text-accent-foreground",
         secondary: "bg-white text-black font-semibold text-base rounded-full",
         login:
           "bg-white text-base font-semibold ease-in-out text-black border border-green-100 hover:scale-105 duration-300 transition",

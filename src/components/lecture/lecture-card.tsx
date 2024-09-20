@@ -7,7 +7,7 @@ import Link from "next/link";
 
 export default function LectureCard({ lecture }: { lecture: Lecture }) {
   return (
-    <div className="group relative mb-7 flex cursor-pointer flex-col gap-4 rounded-lg">
+    <div className="group relative mb-7 flex h-full w-full cursor-pointer flex-col gap-4 rounded-lg">
       <div className="absolute left-0 top-0 z-10 flex h-full w-full items-center justify-center rounded-lg transition-all duration-300 group-hover:bg-black group-hover:bg-opacity-75">
         <Link href={`/lecture/${lecture?.id}`}>
           <Button
@@ -20,15 +20,15 @@ export default function LectureCard({ lecture }: { lecture: Lecture }) {
       </div>
       <img
         src={lecture?.thumbnailPath}
-        alt="lecture-subnail"
-        className="rounded-lg object-cover"
+        alt="lecture-thumbnail"
+        className="h-1/2 rounded-lg object-cover"
       />
       <div className="flex flex-col gap-3 px-3">
         <div className="flex gap-2">
           <Badge>{lecture?.category}</Badge>
           <Badge variant={"secondary"}>{lecture?.price_type}</Badge>
         </div>
-        <span className="line-clamp-2 h-10 font-[540]">{lecture?.title}</span>
+        <span className="line-clamp-2 h-11 font-[540]">{lecture?.title}</span>
         <div className="flex items-center justify-between">
           <span className="text-[0.93rem] text-gray-600">
             {lecture?.trainer_name}
