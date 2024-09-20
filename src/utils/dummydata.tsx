@@ -16,6 +16,7 @@ const lectureData: Lecture[] = [
     createdAt: new Date(),
     updatedAt: new Date(),
     like: 8,
+    tag: ["배변", "훈련"],
     bookmark: true,
   },
   {
@@ -33,6 +34,7 @@ const lectureData: Lecture[] = [
     createdAt: new Date("2024-8-20"),
     updatedAt: new Date(),
     like: 12,
+    tag: ["배변", "훈련", "코카스파니엘"],
     bookmark: true,
   },
   {
@@ -50,6 +52,7 @@ const lectureData: Lecture[] = [
     createdAt: new Date("2024-8-23"),
     updatedAt: new Date(),
     like: 2,
+    tag: ["코카스파니엘"],
     bookmark: false,
   },
   {
@@ -67,6 +70,7 @@ const lectureData: Lecture[] = [
     createdAt: new Date("2024-7-23"),
     updatedAt: new Date(),
     like: 1,
+    tag: ["코카스파니엘", "사료", "강형욱"],
     bookmark: true,
   },
   {
@@ -84,6 +88,7 @@ const lectureData: Lecture[] = [
     createdAt: new Date(),
     updatedAt: new Date(),
     like: 0,
+    tag: ["리트리버", "강형욱"],
     bookmark: false,
   },
   {
@@ -100,6 +105,7 @@ const lectureData: Lecture[] = [
     createdAt: new Date("2024-3-23"),
     updatedAt: new Date(),
     like: 0,
+    tag: ["시츄", "강형욱"],
     bookmark: true,
   },
   {
@@ -116,6 +122,7 @@ const lectureData: Lecture[] = [
     createdAt: new Date(),
     updatedAt: new Date(),
     like: 0,
+    tag: ["시츄", "강형욱"],
     bookmark: false,
   },
   {
@@ -133,6 +140,7 @@ const lectureData: Lecture[] = [
     createdAt: new Date("2024-8-28"),
     updatedAt: new Date(),
     like: 0,
+    tag: ["배변", "훈련", "코카스파니엘", "강형욱"],
     bookmark: true,
   },
   {
@@ -150,6 +158,7 @@ const lectureData: Lecture[] = [
     createdAt: new Date(),
     updatedAt: new Date(),
     like: 0,
+    tag: ["시츄"],
     bookmark: false,
   },
   {
@@ -166,6 +175,7 @@ const lectureData: Lecture[] = [
     createdAt: new Date(),
     updatedAt: new Date(),
     like: 8,
+    tag: ["배변", "훈련", "코카스파니엘"],
     bookmark: true,
   },
   {
@@ -182,6 +192,7 @@ const lectureData: Lecture[] = [
     createdAt: new Date(),
     updatedAt: new Date(),
     like: 0,
+    tag: ["시츄"],
     bookmark: false,
   },
 ];

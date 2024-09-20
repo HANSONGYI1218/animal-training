@@ -32,20 +32,6 @@ export type Lecture = {
   createdAt: Date;
   updatedAt: Date;
   like: number;
+  tag: string[];
   bookmark: boolean;
 };
-
-/*
-{
-    id: 11,
-    title: "강형욱 선생님과 함께하는 강아지 배변 훈련!",
-    content:
-      "강아지의 고양이 배변 현상, 강형욱 훈련사님의 깊은 내공으로 궁금증 해결!!",
-    animal_type: "고양이",
-    price_type: "유료",
-    category: "훈련",
-    thumbnailPath: "/Test-courseImg.png",
-    videoUrl: "",
-  },
-];
-*/

@@ -1,10 +1,9 @@
 "use client";
-import { motion, useAnimate, useInView } from "framer-motion";
 
+import { motion } from "framer-motion";
 import { Lecture } from "@/types/tyeps.all";
 import { Badge } from "../ui/badge";
 import { SquareUser, ThumbsUp } from "lucide-react";
-import { useRef } from "react";
 
 interface LectureBannerProps {
   lecture: Lecture;
@@ -19,8 +18,10 @@ export default function LectureBanner({ lecture }: LectureBannerProps) {
             {lecture?.title}
           </span>
           <div className="flex gap-2">
-            <Badge>{lecture?.category}</Badge>
-            <Badge variant={"secondary"}>{lecture?.price_type}</Badge>
+            <Badge className="opacity-100">{lecture?.category}</Badge>
+            <Badge className="opacity-100" variant={"secondary"}>
+              {lecture?.price_type}
+            </Badge>
           </div>
           <span className="mt-5 h-20 whitespace-pre-line text-sm leading-6 text-white">
             {lecture?.content}
@@ -36,6 +37,15 @@ export default function LectureBanner({ lecture }: LectureBannerProps) {
               <ThumbsUp width={16} height={16} stroke="#ffffff" />
               <span className="text-[0.93rem] text-white">{lecture?.like}</span>
             </div>
+          </div>
+          <div className="flex gap-3">
+            {lecture?.tag.map((t, index: number) => {
+              return (
+                <span className="text-sm text-slate-400" key={index}>
+                  #{t}
+                </span>
+              );
+            })}
           </div>
         </div>
         <div className="flex w-full items-center justify-end">
