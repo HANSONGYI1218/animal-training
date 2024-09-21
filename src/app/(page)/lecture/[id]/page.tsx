@@ -1,11 +1,11 @@
-import LectureBanner from "@/components/lecture/lecture-d-banner";
-import type { Lecture } from "@/types/tyeps.all";
-import dummyDate from "@/utils/dummydata";
-import LectureContent from "@/components/lecture/lecture-d-content";
-import LectureCard from "@/components/lecture/lecture-card";
-import { ChevronRight, CircleChevronRight } from "lucide-react";
-import LectureTagSelect from "@/components/lecture/lecture-d-tag-select";
-import Link from "next/link";
+import LectureBanner from '@/components/lecture/lecture-d-banner';
+import type { Lecture } from '@/types/tyeps.all';
+import dummyDate from '@/utils/dummydata';
+import LectureContent from '@/components/lecture/lecture-d-content';
+import LectureCard from '@/components/lecture/lecture-card';
+import { ChevronRight, CircleChevronRight } from 'lucide-react';
+import LectureTagSelect from '@/components/lecture/lecture-d-tag-select';
+import Link from 'next/link';
 
 type SearchParams = {
   types?: string;

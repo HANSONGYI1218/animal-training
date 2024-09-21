@@ -1,7 +1,7 @@
-import TutorBanner from "@/components/tutor/tutor-banner";
-import TutorCategory from "@/components/tutor/tutor-category";
-import type { Lecture, Tutor } from "@/types/tyeps.all";
-import dummyDate from "@/utils/dummydata";
+import TutorBanner from '@/components/tutor/tutor-banner';
+import TutorCategory from '@/components/tutor/tutor-category';
+import type { Lecture, Tutor } from '@/types/tyeps.all';
+import dummyDate from '@/utils/dummydata';
 
 export default function TutorDetailPage({
   params,

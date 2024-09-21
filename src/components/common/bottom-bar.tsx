@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import Image from "next/image";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import Image from 'next/image';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 export default function BottomBar() {
   const path = usePathname();
@@ -65,7 +65,7 @@ export default function BottomBar() {
           </div>
         </section>
       </footer>
-      {!(path.includes("entitle") || path.includes("apply")) && (
+      {!(path.includes('entitle') || path.includes('apply')) && (
         <footer className="h-50 border-t-2 md:hidden">
           <section className="mx-auto my-auto flex max-w-6xl justify-between px-4 py-10 text-xs">
             <div className="tracking-wide">

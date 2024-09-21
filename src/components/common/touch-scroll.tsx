@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { Dot } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { Dot } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
 
 export default function TouchScroll({
   isStepbar,
@@ -50,11 +50,11 @@ export default function TouchScroll({
   };
 
   const addGlobalMouseUpListener = () => {
-    window.addEventListener("mouseup", handleMouseUp);
+    window.addEventListener('mouseup', handleMouseUp);
   };
 
   const removeGlobalMouseUpListener = () => {
-    window.removeEventListener("mouseup", handleMouseUp);
+    window.removeEventListener('mouseup', handleMouseUp);
   };
 
   const smoothScrollTo = (targetPosition: number) => {
@@ -160,31 +160,31 @@ export default function TouchScroll({
           handleMouseUp();
           removeGlobalMouseUpListener();
         }}
-        style={{ userSelect: "none" }}
+        style={{ userSelect: 'none' }}
         className="scroll flex w-full overflow-x-auto"
       >
         <div
           className="flex w-full gap-6"
-          style={{ pointerEvents: isDragging ? "none" : "auto" }}
+          style={{ pointerEvents: isDragging ? 'none' : 'auto' }}
         >
           {children}
         </div>
       </div>
-      <div className={`justify-center gap-4 ${isStepbar ? "flex" : "hidden"}`}>
+      <div className={`justify-center gap-4 ${isStepbar ? 'flex' : 'hidden'}`}>
         <Dot
           onClick={() => handleSpanClick(0)}
-          className={`h-4 w-4 cursor-pointer rounded-full bg-black ${currentStep === 0 ? "bg-black" : "bg-gray-300"}`}
-          stroke={`${currentStep === 0 ? "black" : "gray-300"}`}
+          className={`h-4 w-4 cursor-pointer rounded-full bg-black ${currentStep === 0 ? 'bg-black' : 'bg-gray-300'}`}
+          stroke={`${currentStep === 0 ? 'black' : 'gray-300'}`}
         />
         <Dot
           onClick={() => handleSpanClick(1)}
-          className={`h-4 w-4 cursor-pointer rounded-full bg-black ${currentStep === 1 ? "bg-black" : "bg-gray-300"}`}
-          stroke={`${currentStep === 1 ? "black" : "gray-300"}`}
+          className={`h-4 w-4 cursor-pointer rounded-full bg-black ${currentStep === 1 ? 'bg-black' : 'bg-gray-300'}`}
+          stroke={`${currentStep === 1 ? 'black' : 'gray-300'}`}
         />
         <Dot
           onClick={() => handleSpanClick(2)}
-          className={`h-4 w-4 cursor-pointer rounded-full bg-black ${currentStep === 2 ? "bg-black" : "bg-gray-300"}`}
-          stroke={`${currentStep === 2 ? "black" : "gray-300"}`}
+          className={`h-4 w-4 cursor-pointer rounded-full bg-black ${currentStep === 2 ? 'bg-black' : 'bg-gray-300'}`}
+          stroke={`${currentStep === 2 ? 'black' : 'gray-300'}`}
         />
       </div>
     </section>

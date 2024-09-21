@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { motion } from "framer-motion";
-import { Lecture } from "@/types/tyeps.all";
-import { Badge } from "../ui/badge";
-import { SquareUser, ThumbsUp } from "lucide-react";
+import { motion } from 'framer-motion';
+import { Lecture } from '@/types/tyeps.all';
+import { Badge } from '../ui/badge';
+import { SquareUser, ThumbsUp } from 'lucide-react';
 
 interface LectureBannerProps {
   lecture: Lecture;
@@ -19,7 +19,7 @@ export default function LectureBanner({ lecture }: LectureBannerProps) {
           </span>
           <div className="flex gap-2">
             <Badge className="opacity-100">{lecture?.category}</Badge>
-            <Badge className="opacity-100" variant={"secondary"}>
+            <Badge className="opacity-100" variant={'secondary'}>
               {lecture?.price_type}
             </Badge>
           </div>
@@ -60,14 +60,14 @@ export default function LectureBanner({ lecture }: LectureBannerProps) {
         src="/icons/lecture-circle2.svg"
         alt="lecture-circle"
         className="absolute -left-24 -top-24 z-0"
-        transition={{ duration: 6, repeat: Infinity, repeatType: "mirror" }}
+        transition={{ duration: 6, repeat: Infinity, repeatType: 'mirror' }}
         animate={{ x: -50, y: -30 }}
       />
       <motion.img
         src="/icons/lecture-circle.svg"
         alt="lecture-circle"
         className="absolute right-0 top-12 z-0"
-        transition={{ duration: 8, repeat: Infinity, repeatType: "mirror" }}
+        transition={{ duration: 8, repeat: Infinity, repeatType: 'mirror' }}
         animate={{ x: 50, y: -30 }}
       />
     </section>

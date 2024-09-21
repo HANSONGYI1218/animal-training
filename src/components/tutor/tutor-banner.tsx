@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { motion } from "framer-motion";
-import { Tutor } from "@/types/tyeps.all";
-import { Badge } from "../ui/badge";
-import { Building2, Grip, ThumbsUp } from "lucide-react";
+import { motion } from 'framer-motion';
+import { Tutor } from '@/types/tyeps.all';
+import { Badge } from '../ui/badge';
+import { Building2, Grip, ThumbsUp } from 'lucide-react';
 
 interface TutorBannerProps {
   tutor: Tutor;
@@ -17,7 +17,7 @@ export default function TutorBanner({ tutor }: TutorBannerProps) {
           <span className="text-3xl font-bold">{tutor?.name}</span>
           <div className="flex gap-2">
             <Badge className="opacity-100">{tutor?.occupation}</Badge>
-            <Badge className="opacity-100" variant={"secondary"}>
+            <Badge className="opacity-100" variant={'secondary'}>
               {tutor?.career}
             </Badge>
           </div>
@@ -39,7 +39,7 @@ export default function TutorBanner({ tutor }: TutorBannerProps) {
         </div>
         <div className="flex w-full items-end justify-end">
           <img
-            src={"/Test-tutor.png"}
+            src={'/Test-tutor.png'}
             alt="lecture-thumbnail"
             className="h-64 rounded-lg object-cover"
           />
@@ -49,14 +49,14 @@ export default function TutorBanner({ tutor }: TutorBannerProps) {
         src="/icons/tutor-circle2.svg"
         alt="tutor-circle"
         className="absolute -left-24 -top-24 z-0"
-        transition={{ duration: 6, repeat: Infinity, repeatType: "mirror" }}
+        transition={{ duration: 6, repeat: Infinity, repeatType: 'mirror' }}
         animate={{ x: -50, y: -30 }}
       />
       <motion.img
         src="/icons/tutor-circle.svg"
         alt="tutor-circle"
         className="absolute -right-12 top-24 z-0"
-        transition={{ duration: 8, repeat: Infinity, repeatType: "mirror" }}
+        transition={{ duration: 8, repeat: Infinity, repeatType: 'mirror' }}
         animate={{ x: 50, y: -30 }}
       />
     </section>

@@ -1,0 +1,111 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider     = "postgresql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+model User {
+  id                Int             @id      //@id => primary key
+  name              String          @db.VarChar(255)
+  email             String          @unique @db.VarChar(255)   
+  address           String          @db.VarChar(255)
+  phoneNumber       String          @unique @db.VarChar(255)
+  nickname          String          @unique @db.VarChar(255)
+  birthday          DateTime        @default(now())
+  sex               SexType         @default(MALE)
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+  lectureId         String
+  lecture           Lecture?        @relation(fields: [lectureId], references: [id])
+
+  @@index([lectureId])
+}
+
+model Corporation {
+  id                String          @id      //@id => primary key
+  owner_name        String          @db.VarChar(255)        
+  corporation_name  String          @db.VarChar(255)      
+  address           String          @db.VarChar(255)
+  phoneNumber       String          @unique @db.VarChar(255)  
+  email             String          @unique @db.VarChar(255)
+  business_number   String          @unique @db.VarChar(255)
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+  tutors            Tutor[]
+}
+
+model Tutor {
+  id                String          @id      //@id => primary key
+  name              String          @db.VarChar(255)
+  introduction      String          @db.Text
+  career            String          @db.VarChar(255)
+  traning_location  String          @db.VarChar(255)
+  traning_name      String          @db.VarChar(255)
+  occupation        OccupationType  @default(TRAINER)
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+  corporationId     String    
+  corporation       Corporation?    @relation(fields: [corporationId], references: [id])
+  lectures          Lecture[]
+
+  @@index([corporationId])
+}
+
+model Lecture {
+  id                String          @id      //@id => primary key
+  title             String          @db.VarChar(255)
+  content           String          @db.Text
+  animal_type       AnimalType      @default(CAT)
+  price_type        PriceType       @default(FREE)
+  category          Category        @default(TRANING)
+  thumbnailPath     String          @db.VarChar(255)
+  videoUrl          String          @db.VarChar(255)
+  like              Int             @default(0)
+  tags              String[]    
+  bookmark          Boolean         @default(false)
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+  tutorId           String
+  tutor             Tutor?          @relation(fields: [tutorId], references: [id])
+  users             User[]
+
+  @@index([tutorId])
+}
+
+
+enum AnimalType {
+  DOG 
+  CAT
+}
+
+enum PriceType {
+  FREE
+  PAID
+}
+
+enum SexType {
+  MALE 
+  FEMALE 
+}
+
+enum OccupationType {
+  TRAINER 
+  VETERINARIAN 
+  GROOMER 
+  PROFESSOR 
+}
+
+enum Category {
+  FOOD 
+  BEAUTY
+  HEALTH
+  WALK
+  TRANING 
+  ADOPT
+  PLAY
+  COMMUNICATION 
+}

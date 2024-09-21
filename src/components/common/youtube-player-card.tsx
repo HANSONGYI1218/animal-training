@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { useEffect, useRef, useState } from "react";
-import ReactPlayer from "react-player";
-import { Button } from "../ui/button";
+import { useEffect, useRef, useState } from 'react';
+import ReactPlayer from 'react-player';
+import { Button } from '../ui/button';
 
 export default function YoutubePlayableCard({
   videoId,
@@ -44,7 +44,7 @@ export default function YoutubePlayableCard({
             setInited(true);
           }}
           playing={playing}
-          width={"100%"}
+          width={'100%'}
           controls={false}
           style={{ zIndex: 0 }}
           playIcon={<Button>1</Button>}
