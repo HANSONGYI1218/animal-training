@@ -1,12 +1,13 @@
 "use client";
 
-import { Lecture } from "@/types/tyeps.all";
+import { AnimalType, Lecture } from "@/types/tyeps.all";
 import LectureCard from "./lecture-card";
 import { useEffect, useState } from "react";
 import SearchBox from "../common/search-box";
 import SelectBox from "../common/select-box";
 import { PriceType } from "@/types/tyeps.all";
 import { SortType } from "@/constants/constants.all";
+import LecturePromotion from "./lecture-promotion";
 
 interface LectureContainerProps {
   lectures: Lecture[];
@@ -14,24 +15,29 @@ interface LectureContainerProps {
 
 export default function LectureContainer({ lectures }: LectureContainerProps) {
   const [lecturesData, setLecturesData] = useState(lectures);
+  const [animalType, setAnimalType] = useState("전체");
   const [priceState, setPriceState] = useState("전체");
   const [sort, setSort] = useState("최신순");
   const [search, setSearch] = useState("");
 
   useEffect(() => {
     const filteredLectures = lectures.filter((lecture: Lecture) => {
-      if (priceState && priceState !== "전체" && search) {
-        return (
-          lecture.price_type === priceState && lecture.title.includes(search)
-        );
-      }
-      if (priceState && priceState !== "전체") {
-        return lecture.price_type === priceState;
-      }
-      if (search) {
-        return lecture.title.includes(search);
-      }
-      return true;
+      const matchesPrice =
+        !priceState ||
+        priceState === "전체" ||
+        lecture.price_type === priceState;
+
+      const matchesType =
+        !animalType ||
+        animalType === "전체" ||
+        lecture.animal_type === animalType;
+
+      const matchesSearch =
+        search.length === 0 ||
+        lecture.content.includes(search) ||
+        lecture.title.includes(search);
+
+      return matchesPrice && matchesSearch && matchesType;
     });
 
     const sortedLectures = filteredLectures.sort((a, b) => {
@@ -48,12 +54,18 @@ export default function LectureContainer({ lectures }: LectureContainerProps) {
     });
 
     setLecturesData(sortedLectures);
-  }, [priceState, sort, search, lectures]);
+  }, [priceState, animalType, sort, search, lectures]);
 
   return (
-    <section className="flex w-full flex-col px-5">
-      <div className="my-12 flex h-10 items-center justify-between gap-2">
+    <section className="flex w-full flex-col">
+      <div className="container mx-auto my-12 flex h-10 items-center justify-between gap-2 px-5">
         <div className="flex gap-2">
+          <SelectBox
+            lists={["전체", AnimalType.DOG, AnimalType.CAT]}
+            useStateF={setAnimalType}
+            placeholder="분류"
+            className="w-24"
+          />
           <SelectBox
             lists={["전체", PriceType.FREE, PriceType.PAID]}
             useStateF={setPriceState}
@@ -73,9 +85,14 @@ export default function LectureContainer({ lectures }: LectureContainerProps) {
           className="w-96"
         />
       </div>
-
-      <div className="grid w-full grid-cols-4 gap-6">
-        {lecturesData.map((lecture: Lecture, index: number) => {
+      <div className="container mx-auto grid w-full grid-cols-4 gap-6 px-5">
+        {lecturesData.slice(0, 20).map((lecture: Lecture, index: number) => {
+          return <LectureCard key={index} lecture={lecture} />;
+        })}
+      </div>
+      <LecturePromotion />
+      <div className="container mx-auto grid w-full grid-cols-4 gap-6 px-5">
+        {lecturesData.slice(20).map((lecture: Lecture, index: number) => {
           return <LectureCard key={index} lecture={lecture} />;
         })}
       </div>

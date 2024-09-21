@@ -28,9 +28,9 @@ export default function LectureBanner({ lecture }: LectureBannerProps) {
           </span>
           <div className="flex items-center gap-6">
             <div className="flex items-center gap-2">
-              <SquareUser width={16} height={16} stroke="#ffffff" />
+              <SquareUser width={17} height={17} stroke="#ffffff" />
               <span className="text-[0.93rem] text-white">
-                {lecture?.trainer_name}
+                {lecture?.tutor?.name}
               </span>
             </div>
             <div className="flex items-center gap-2">

@@ -53,10 +53,10 @@ export default function LectureTagSelect({
           );
         })}
       </div>
-      <TouchScroll>
+      <TouchScroll isStepbar>
         {filterLectures.map((tagLecture: Lecture, index: number) => (
           <div
-            className={`flex h-[311px] w-full min-w-[269px] max-w-[269px]`}
+            className={`flex h-[371px] min-w-[269px] max-w-[269px]`}
             key={index}
           >
             <LectureCard lecture={tagLecture} />

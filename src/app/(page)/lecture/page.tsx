@@ -4,7 +4,6 @@ import type { Lecture } from "@/types/tyeps.all";
 import dummyDate from "@/utils/dummydata";
 
 type SearchParams = {
-  types?: string;
   categorys?: string;
 };
 
@@ -13,21 +12,18 @@ export default function Lecture({
 }: {
   searchParams: SearchParams;
 }) {
-  const { types, categorys } = searchParams;
+  const { categorys } = searchParams;
 
   const filteredLectures = dummyDate.lectureData.filter((lecture: Lecture) => {
     if (categorys === "all") {
-      return SwapAnimalType[lecture.animal_type] === types;
+      return true;
     } else {
-      return (
-        SwapAnimalType[lecture.animal_type] === types &&
-        SwapCategory[lecture.category] === categorys
-      );
+      return SwapCategory[lecture.category] === categorys;
     }
   });
 
   return (
-    <main className="container mx-auto flex w-full flex-col gap-12 py-6">
+    <main className="flex w-full flex-col gap-12 py-6">
       <LectureContainer lectures={filteredLectures} />
     </main>
   );

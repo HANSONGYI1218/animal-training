@@ -2,60 +2,27 @@
 
 import { Button } from "../ui/button";
 import Image from "next/image";
-import DivisionIcon from "@/public/icons/division-d.svg?component";
-import DivisionWhiteIcon from "@/public/icons/division-d-white.svg?component";
 import { useEffect, useState } from "react";
 import { AnimalType, Category } from "@/types/tyeps.all";
 import { useRouter, usePathname } from "next/navigation";
 
 export default function LectureCategory() {
   const [category, setCategory] = useState<string>("all");
-  const [animalType, setAnimalType] = useState<string>("dog");
   const router = useRouter();
-  const path = usePathname();
 
   const handlePushRouter = () => {
     router.push(
-      process.env.NEXT_PUBLIC_WEB_URL +
-        `/lecture?types=${animalType}&categorys=${category}`,
+      process.env.NEXT_PUBLIC_WEB_URL + `/lecture?categorys=${category}`,
     );
   };
 
   useEffect(() => {
     handlePushRouter();
-  }, [animalType, category]);
+  }, [category]);
 
   return (
-    <section className="container relative mx-auto flex w-full flex-col bg-white pt-4 shadow-[0_12px_10px_-15px_rgba(0,0,0,0.9)]">
-      <div className="relative flex h-8 w-fit items-end justify-center overflow-hidden shadow-[0_16px_10px_-15px_rgba(0,0,0,0.9)]">
-        <div
-          onClick={() => {
-            setAnimalType("dog");
-          }}
-          className="relative flex h-full w-fit translate-y-1 cursor-pointer items-end hover:border-b"
-        >
-          {animalType === "dog" ? <DivisionIcon /> : <DivisionWhiteIcon />}
-          <span
-            className={`absolute left-1/2 top-1.5 -translate-x-1/2 transform text-sm font-semibold ${animalType === "dog" ? "text-white" : "text-black"}`}
-          >
-            {AnimalType.DOG}
-          </span>
-        </div>
-        <div
-          onClick={() => {
-            setAnimalType("cat");
-          }}
-          className="relative flex h-full w-fit translate-y-1 cursor-pointer items-end hover:border-b"
-        >
-          {animalType === "cat" ? <DivisionIcon /> : <DivisionWhiteIcon />}
-          <span
-            className={`absolute left-1/2 top-1.5 -translate-x-1/2 transform text-sm font-semibold ${animalType === "cat" ? "text-white" : "text-black"}`}
-          >
-            {AnimalType.CAT}
-          </span>
-        </div>
-      </div>
-      <div className="flex w-full justify-between pt-2">
+    <section className="border-b pt-2">
+      <div className="container mx-auto flex w-full justify-between">
         <Button
           onClick={() => setCategory("all")}
           variant={"lectureCategory"}

@@ -2,7 +2,7 @@ import { Lecture } from "@/types/tyeps.all";
 import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
 import PlayIcon from "@/public/icons/play.svg?component";
-import { ThumbsUp } from "lucide-react";
+import { SquareUser, ThumbsUp } from "lucide-react";
 import Link from "next/link";
 
 export default function LectureCard({ lecture }: { lecture: Lecture }) {
@@ -28,12 +28,15 @@ export default function LectureCard({ lecture }: { lecture: Lecture }) {
           <Badge>{lecture?.category}</Badge>
           <Badge variant={"secondary"}>{lecture?.price_type}</Badge>
         </div>
-        <span className="line-clamp-2 h-11 font-[540]">{lecture?.title}</span>
-        <div className="flex items-center justify-between">
-          <span className="text-[0.93rem] text-gray-600">
-            {lecture?.trainer_name}
-          </span>
-          <div className="flex items-center gap-2">
+        <span className="my-2 line-clamp-2 h-12 font-[540]">
+          {lecture?.title}
+        </span>
+        <div className="flex items-center gap-6">
+          <div className="flex items-center gap-1">
+            <SquareUser width={17} height={17} stroke="#000000" />
+            <span className="text-[0.93rem]">{lecture?.tutor?.name}</span>
+          </div>
+          <div className="flex items-center gap-1">
             <ThumbsUp width={16} height={16} />
             <span className="text-[0.93rem]">{lecture?.like}</span>
           </div>

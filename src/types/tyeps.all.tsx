@@ -8,6 +8,18 @@ export enum PriceType {
   PAID = "유료",
 }
 
+export enum SexType {
+  MALE = "남성",
+  FEMALE = "여성",
+}
+
+export enum OccupationType {
+  TRAINER = "훈련사",
+  VETERINARIAN = "수의사",
+  GROOMER = "미용사",
+  PROFESSOR = "교수",
+}
+
 export enum Category {
   FOOD = "식품",
   BEAUTY = "미용",
@@ -24,14 +36,50 @@ export type Lecture = {
   title: string;
   content: string;
   animal_type: AnimalType;
-  trainer_name: string;
   price_type: PriceType;
   category: Category;
   thumbnailPath: string;
   videoUrl: string;
-  createdAt: Date;
-  updatedAt: Date;
   like: number;
   tag: string[];
   bookmark: boolean;
+  tutor: Tutor;
+  createdAt: Date;
+  updatedAt: Date;
+};
+
+export type Tutor = {
+  id: string;
+  name: string;
+  introduction: string;
+  career: string; // 최종(현재) 커리어
+  occupation: OccupationType;
+  corporation: Corporation;
+  createdAt: Date;
+  updatedAt: Date;
+};
+
+export type User = {
+  id: string;
+  name: string;
+  address: string;
+  phoneNumber: string;
+  email?: string;
+  nickname: string;
+  birthday?: Date;
+  sex?: SexType;
+  createdAt: Date;
+  updatedAt: Date;
+};
+
+export type Corporation = {
+  id: string;
+  owner_name: string; // 대표자 이름
+  corporation_name?: string; // 기업 이름
+  address: string;
+  phoneNumber: string;
+  email?: string;
+  business_number?: string; // 사업자번호
+  createdAt: Date;
+  updatedAt: Date;
 };

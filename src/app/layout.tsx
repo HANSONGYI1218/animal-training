@@ -25,7 +25,7 @@ export default function RootLayout({
     <html lang="ko">
       <body className={Pretendard.className}>
         <TopBar />
-        <section className="min-h-screen">{children}</section>
+        <section className="flex min-h-screen">{children}</section>
         <BottomBar />
         <Toaster />
       </body>

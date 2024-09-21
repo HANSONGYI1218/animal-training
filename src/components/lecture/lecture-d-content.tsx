@@ -37,7 +37,7 @@ export default function LectureContent({ lecture }: LectureContentProps) {
             <div className="">공유하기 자리</div>
           </div>
           <div className="flex cursor-pointer items-center gap-2 rounded-b-xl bg-gray-100 px-6 py-3 text-sm underline decoration-gray-400 underline-offset-4">
-            {lecture?.trainer_name} 훈련사님 더 알아보기
+            {lecture?.tutor?.name} {lecture?.tutor?.occupation}님 더 알아보기
             <ChevronRight width={16} height={16} className="opacity-80" />
           </div>
         </div>
@@ -66,7 +66,7 @@ export default function LectureContent({ lecture }: LectureContentProps) {
             <div className="">공유하기 자리</div>
           </div>
           <div className="flex cursor-pointer items-center gap-2 rounded-b-xl bg-gray-100 px-6 py-3 text-sm underline decoration-gray-400 underline-offset-4">
-            강형욱 훈련사님 더 알아보기
+            {lecture?.tutor?.name} 훈련사님 더 알아보기
             <ChevronRight width={16} height={16} className="opacity-80" />
           </div>
         </div>
