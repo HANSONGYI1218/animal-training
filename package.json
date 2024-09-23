@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "eslint --cache --max-warnings=0 .",
     "studio:prod": "npx dotenv -e \".env.production\" -- pnpm prisma studio",
     "studio": "pnpm prisma studio",
     "prisma:generate": "prisma generate",
@@ -19,7 +19,7 @@
     "test": "jest --passWithNoTests",
     "test:dev": "jest --watch",
     "test:ci": "jest --ci --passWithNoTests",
-    "prepare": "husky install"
+    "postinstall": "husky install"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.4",
