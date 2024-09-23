@@ -46,7 +46,7 @@ export default function TopBar() {
         <div className="container mx-auto flex items-center justify-between">
           <Image src="/next.svg" width={70} height={100} alt="main-logo" />
           <div className="flex items-center gap-4">
-            <Link href="/lecture">
+            <Link href="/lecture?category=all">
               <Button variant="default" className="w-20">
                 강의
               </Button>

@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint --cache --max-warnings=0 .",
+    "lint": "next lint",
     "studio:prod": "npx dotenv -e \".env.production\" -- pnpm prisma studio",
     "studio": "pnpm prisma studio",
     "prisma:generate": "prisma generate",

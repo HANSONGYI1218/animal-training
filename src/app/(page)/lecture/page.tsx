@@ -17,7 +17,7 @@ export default function Lecture({
     if (category === 'all') {
       return true;
     } else {
-      return lecture.category.toUpperCase() === category.toUpperCase();
+      return lecture.category.toUpperCase() === category?.toUpperCase();
     }
   });
 

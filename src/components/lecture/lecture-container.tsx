@@ -1,7 +1,7 @@
 'use client';
 
 import { AnimalType } from '@/types/tyeps.all';
-import { Lecture } from '@prisma/client';
+import type { Lecture } from '@/types/tyeps.all';
 import LectureCard from './lecture-card';
 import { useEffect, useState } from 'react';
 import SearchBox from '../common/search-box';
