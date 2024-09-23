@@ -1,34 +1,34 @@
 export enum AnimalType {
-  DOG = '강아지',
-  CAT = '고양이',
+  DOG = 'DOG',
+  CAT = 'CAT',
 }
 
 export enum PriceType {
-  FREE = '무료',
-  PAID = '유료',
+  FREE = 'FREE',
+  PAID = 'PAID',
 }
 
 export enum SexType {
-  MALE = '남성',
-  FEMALE = '여성',
+  MALE = 'MALE',
+  FEMALE = 'FEMALE',
 }
 
 export enum OccupationType {
-  TRAINER = '훈련사',
-  VETERINARIAN = '수의사',
-  GROOMER = '미용사',
-  PROFESSOR = '교수',
+  TRAINER = 'TRAINER',
+  VETERINARIAN = 'VETERINARIAN',
+  GROOMER = 'GROOMER',
+  PROFESSOR = 'PROFESSOR',
 }
 
 export enum Category {
-  FOOD = '식품',
-  BEAUTY = '미용',
-  HEALTH = '건강',
-  WALK = '산책',
-  TRANING = '훈련',
-  ADOPT = '입양',
-  PLAY = '놀이',
-  COMMUNICATION = '의사소통',
+  FOOD = 'FOOD',
+  BEAUTY = 'BEAUTY',
+  HEALTH = 'HEALTH',
+  WALK = 'WALK',
+  TRAINING = 'TRAINING',
+  ADOPT = 'ADOPT',
+  PLAY = 'PLAY',
+  COMMUNICATION = 'COMMUNICATION',
 }
 
 export type Lecture = {

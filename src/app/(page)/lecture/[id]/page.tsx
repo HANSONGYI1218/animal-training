@@ -2,46 +2,38 @@ import LectureBanner from '@/components/lecture/lecture-d-banner';
 import dummyDate from '@/utils/dummydata';
 import LectureContent from '@/components/lecture/lecture-d-content';
 import LectureCard from '@/components/lecture/lecture-card';
-import { ChevronRight, CircleChevronRight } from 'lucide-react';
+import { ChevronRight } from 'lucide-react';
 import LectureTagSelect from '@/components/lecture/lecture-d-tag-select';
 import Link from 'next/link';
-import { Lecture, Tutor } from '@prisma/client';
+import type { Lecture, Tutor } from '@/types/tyeps.all';
 import prisma from '@/utils/db';
-
-type SearchParams = {
-  types?: string;
-  categorys?: string;
-};
 
 export default function LectureDetailPage({
   params,
-  searchParams,
 }: {
   params: { id: string };
-  searchParams: SearchParams;
 }) {
   const { id } = params;
-  const { types, categorys } = searchParams;
 
   const lecture: Lecture = dummyDate.lectureData.find(
     (item) => item.id === id,
   ) as Lecture;
 
-  const tutor: Tutor = dummyDate.TutorData.find(
-    (item) => item.id === lecture.tutorId,
-  );
-
-  const trainerLectures: Lecture[] = dummyDate.lectureData
-    .filter((item) => item.tutor_name === lecture.tutor_name)
-    .slice(0, 4);
-
-  const tagLectures: Lecture[] = dummyDate.lectureData.filter((item) =>
-    item.tag.some((tag) => lecture.tag.includes(tag)),
-  );
-
   if (!lecture) {
     return <span>!에러에러</span>;
   }
+
+  const tutor: Tutor = dummyDate.TutorData.find(
+    (item) => item.id === lecture?.tutorId,
+  ) as Tutor;
+
+  const trainerLectures: Lecture[] = dummyDate.lectureData
+    .filter((item) => item.tutor_name === lecture?.tutor_name)
+    .slice(0, 4);
+
+  const tagLectures: Lecture[] = dummyDate.lectureData.filter((item) =>
+    item.tag.some((tag) => lecture?.tag.includes(tag)),
+  );
 
   return (
     <main className="mb-24 flex w-full flex-col">

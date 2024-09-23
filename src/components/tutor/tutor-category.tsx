@@ -1,19 +1,20 @@
 'use client';
 
-import { Lecture } from '@prisma/client';
+import type { Lecture } from '@/types/tyeps.all';
 import { Category } from '@/types/tyeps.all';
+import { CategorySwap } from '@/constants/constants.all';
 import { Badge } from '../ui/badge';
 import { useEffect, useState } from 'react';
 import LectureContainer from '../lecture/lecture-container';
 
 export default function TutorCategory({ lectures }: { lectures: Lecture[] }) {
   const [filterLectures, setFilterLectures] = useState<Lecture[]>(lectures);
-  const [selectCategory, setSelectCategory] = useState<string>('전체');
+  const [selectCategory, setSelectCategory] = useState<string>('ALL');
 
   useEffect(() => {
     const getLectures = lectures.filter((lecture) => {
       const matchesCategory =
-        selectCategory === '전체' || lecture.category === selectCategory;
+        selectCategory === 'ALL' || lecture.category === selectCategory;
 
       return matchesCategory;
     });
@@ -26,14 +27,15 @@ export default function TutorCategory({ lectures }: { lectures: Lecture[] }) {
       <div className="flex w-full justify-center gap-6">
         <Badge
           onClick={() => {
-            setSelectCategory('전체');
+            setSelectCategory('ALL');
           }}
           variant={'tag'}
-          className={`cursor-pointer ${selectCategory === '전체' && 'bg-black text-white'}`}
+          className={`cursor-pointer ${selectCategory === 'ALL' && 'bg-black text-white'}`}
         >
           전체
         </Badge>
         {Object.values(Category).map((value, index: number) => {
+          console.log('value, ', value);
           return (
             <Badge
               onClick={() => {
@@ -43,7 +45,7 @@ export default function TutorCategory({ lectures }: { lectures: Lecture[] }) {
               variant={'tag'}
               className={`cursor-pointer ${selectCategory === value && 'bg-black text-white'}`}
             >
-              {value}
+              {CategorySwap[value]}
             </Badge>
           );
         })}

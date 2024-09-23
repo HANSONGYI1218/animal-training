@@ -1,7 +1,8 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Tutor } from '@prisma/client';
+import type { Tutor } from '@/types/tyeps.all';
+import { OccupationTypeSwap } from '@/constants/constants.all';
 import { Badge } from '../ui/badge';
 import { Building2, Grip, ThumbsUp } from 'lucide-react';
 
@@ -16,7 +17,9 @@ export default function TutorBanner({ tutor }: TutorBannerProps) {
         <div className="flex w-full flex-col gap-4 py-12">
           <span className="text-3xl font-bold">{tutor?.name}</span>
           <div className="flex gap-2">
-            <Badge className="opacity-100">{tutor?.occupation}</Badge>
+            <Badge className="opacity-100">
+              {OccupationTypeSwap[tutor?.occupation]}
+            </Badge>
             <Badge className="opacity-100" variant={'secondary'}>
               {tutor?.career}
             </Badge>

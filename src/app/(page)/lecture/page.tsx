@@ -1,10 +1,9 @@
 import LectureContainer from '@/components/lecture/lecture-container';
-import { SwapAnimalType, SwapCategory } from '@/constants/constants.all';
-import { Lecture } from '@prisma/client';
+import type { Lecture } from '@/types/tyeps.all';
 import dummyDate from '@/utils/dummydata';
 
 type SearchParams = {
-  categorys?: string;
+  category: string;
 };
 
 export default function Lecture({
@@ -12,13 +11,13 @@ export default function Lecture({
 }: {
   searchParams: SearchParams;
 }) {
-  const { categorys } = searchParams;
+  const { category } = searchParams;
 
   const filteredLectures = dummyDate.lectureData.filter((lecture: Lecture) => {
-    if (categorys === 'all') {
+    if (category === 'all') {
       return true;
     } else {
-      return SwapCategory[lecture.category] === categorys;
+      return lecture.category.toUpperCase() === category.toUpperCase();
     }
   });
 

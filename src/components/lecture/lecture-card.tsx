@@ -1,9 +1,10 @@
-import { Lecture } from '@prisma/client';
+import type { Lecture } from '@/types/tyeps.all';
 import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
 import PlayIcon from '@/public/icons/play.svg?component';
 import { SquareUser, ThumbsUp } from 'lucide-react';
 import Link from 'next/link';
+import { CategorySwap, PriceTypeSwap } from '@/constants/constants.all';
 
 export default function LectureCard({ lecture }: { lecture: Lecture }) {
   return (
@@ -25,8 +26,10 @@ export default function LectureCard({ lecture }: { lecture: Lecture }) {
       />
       <div className="flex flex-col gap-3 px-3">
         <div className="flex gap-2">
-          <Badge>{lecture?.category}</Badge>
-          <Badge variant={'secondary'}>{lecture?.price_type}</Badge>
+          <Badge>{CategorySwap[lecture?.category]}</Badge>
+          <Badge variant={'secondary'}>
+            {PriceTypeSwap[lecture?.price_type]}
+          </Badge>
         </div>
         <span className="my-2 line-clamp-2 h-12 font-[540]">
           {lecture?.title}

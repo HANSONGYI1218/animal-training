@@ -1,6 +1,6 @@
 'use client';
 
-import { Lecture, Tutor } from '@prisma/client';
+import type { Lecture, Tutor } from '@/types/tyeps.all';
 import YoutubePlayableCard from '../common/youtube-player-card';
 import { Button } from '../ui/button';
 import { ChevronRight, ZoomIn } from 'lucide-react';
@@ -14,7 +14,7 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import Image from 'next/image';
-import dummydata from '@/utils/dummydata';
+import { OccupationTypeSwap, PriceTypeSwap } from '@/constants/constants.all';
 import { useState } from 'react';
 
 interface LectureContentProps {
@@ -34,7 +34,7 @@ export default function LectureContent({
         <YoutubePlayableCard videoId={'Ave10taSLpc'} start={0} duration={5} />
       </div>
       <div className="sticky top-0 h-fit w-72 rounded-xl border">
-        {lecture?.price_type === '유료' ? (
+        {PriceTypeSwap[lecture?.price_type] === '유료' ? (
           <>
             <div className="rounded-t-xl bg-green-100 px-6 py-2 font-semibold text-white">
               특가 할인중!
@@ -85,7 +85,8 @@ export default function LectureContent({
         <div className="flex rounded-b-xl bg-slate-100 px-6 py-3">
           <Dialog>
             <DialogTrigger className="flex cursor-pointer items-center gap-2 text-sm underline decoration-gray-400 underline-offset-4">
-              {lecture?.tutor_name} {lecture?.tutor_occupation}님 더 알아보기
+              {lecture?.tutor_name}{' '}
+              {OccupationTypeSwap[lecture?.tutor_occupation]}님 더 알아보기
               <ChevronRight width={16} height={16} className="opacity-80" />
             </DialogTrigger>
             <DialogContent className="p-8 flex flex-col gap-8">
@@ -134,7 +135,7 @@ export default function LectureContent({
                   </div>
                   <div className="flex flex-col gap-2">
                     <span className="text-green-100 font-bold text-sm">
-                      훈련소정보
+                      훈련소 정보
                     </span>
                     <hr className="w-full" />
                     <div className="flex flex-col gap-1">

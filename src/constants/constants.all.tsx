@@ -1,32 +1,73 @@
-export const Category = {
-  FOOD: '식품',
-  BEAUTY: '미용',
-  HEALTH: '건강',
-  WALK: '산책',
-  TRANING: '훈련',
-  ADOPT: '입양',
-  PLAY: '놀이',
-  COMMUNICATION: '의사소통',
+import {
+  Category,
+  AnimalType,
+  PriceType,
+  SexType,
+  OccupationType,
+} from '@/types/tyeps.all';
+
+export const CategorySwap: { [key in Category | string]: string } = {
+  [Category.FOOD]: '식품',
+  [Category.BEAUTY]: '미용',
+  [Category.HEALTH]: '건강',
+  [Category.WALK]: '산책',
+  [Category.TRAINING]: '훈련',
+  [Category.ADOPT]: '입양',
+  [Category.PLAY]: '놀이',
+  [Category.COMMUNICATION]: '의사소통',
 };
 
-export const SwapCategory = {
-  식품: 'dog',
-  미용: 'beauty',
-  건강: 'health',
-  산책: 'walk',
-  훈련: 'traning',
-  입양: 'adopt',
-  놀이: 'play',
-  의사소통: 'communication',
+export const AnimalTypeSwap: { [key in AnimalType | string]: string } = {
+  [AnimalType.DOG]: '강아지',
+  [AnimalType.CAT]: '고양이',
 };
 
-export const SwapAnimalType = {
-  강아지: 'dog',
-  고양이: 'cat',
+export const PriceTypeSwap: { [key in PriceType | string]: string } = {
+  [PriceType.FREE]: '무료',
+  [PriceType.PAID]: '유료',
 };
+
+export const SexTypeSwap: { [key in SexType | string]: string } = {
+  [SexType.MALE]: '남성',
+  [SexType.FEMALE]: '여성',
+};
+
+export const OccupationTypeSwap: { [key in OccupationType | string]: string } =
+  {
+    [OccupationType.TRAINER]: '훈련사',
+    [OccupationType.VETERINARIAN]: '수의사',
+    [OccupationType.GROOMER]: '미용사',
+    [OccupationType.PROFESSOR]: '교수',
+  };
 
 export enum SortType {
   ASC = '최신순',
   DESC = '오래된순',
   POPULARITY = '인기순',
+}
+
+export function getCategoryByValue(value: string): Category | undefined {
+  return Object.entries(CategorySwap).find(
+    ([key, val]) => val === value,
+  )?.[0] as Category | undefined;
+}
+
+export function getPriceTypeByValue(value: string): PriceType | undefined {
+  return Object.entries(PriceTypeSwap).find(
+    ([key, val]) => val === value,
+  )?.[0] as PriceType | undefined;
+}
+
+export function getAnimalTypeByValue(value: string): AnimalType | undefined {
+  return Object.entries(AnimalTypeSwap).find(
+    ([key, val]) => val === value,
+  )?.[0] as AnimalType | undefined;
+}
+
+export function getOccupationTypeByValue(
+  value: string,
+): OccupationType | undefined {
+  return Object.entries(OccupationTypeSwap).find(
+    ([key, val]) => val === value,
+  )?.[0] as OccupationType | undefined;
 }

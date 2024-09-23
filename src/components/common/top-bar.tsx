@@ -10,7 +10,6 @@ import { usePathname } from 'next/navigation';
 export default function TopBar() {
   const [scrollY, setScrollY] = useState(0);
   const path = usePathname();
-  console.log('path:', path);
   const [scrollDirection, setScrollDirection] = useState<'up' | 'down'>('up');
 
   const handleScroll = () => {

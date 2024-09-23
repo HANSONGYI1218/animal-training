@@ -4,7 +4,8 @@ import { motion } from 'framer-motion';
 
 import { Badge } from '../ui/badge';
 import { SquareUser, ThumbsUp } from 'lucide-react';
-import { Lecture } from '@prisma/client';
+import type { Lecture } from '@/types/tyeps.all';
+import { CategorySwap, PriceTypeSwap } from '@/constants/constants.all';
 
 interface LectureBannerProps {
   lecture: Lecture;
@@ -19,9 +20,11 @@ export default function LectureBanner({ lecture }: LectureBannerProps) {
             {lecture?.title}
           </span>
           <div className="flex gap-2">
-            <Badge className="opacity-100">{lecture?.category}</Badge>
+            <Badge className="opacity-100">
+              {CategorySwap[lecture?.category]}
+            </Badge>
             <Badge className="opacity-100" variant={'secondary'}>
-              {lecture?.price_type}
+              {PriceTypeSwap[lecture?.price_type]}
             </Badge>
           </div>
           <span className="mt-5 h-20 whitespace-pre-line text-sm leading-6 text-white">

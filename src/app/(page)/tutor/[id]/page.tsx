@@ -1,6 +1,6 @@
 import TutorBanner from '@/components/tutor/tutor-banner';
 import TutorCategory from '@/components/tutor/tutor-category';
-import { Lecture, Tutor } from '@prisma/client';
+import type { Lecture, Tutor } from '@/types/tyeps.all';
 import dummyDate from '@/utils/dummydata';
 
 export default function TutorDetailPage({

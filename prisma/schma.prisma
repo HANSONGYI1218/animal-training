@@ -62,7 +62,7 @@ model Lecture {
   content           String          @db.Text
   animal_type       AnimalType      @default(CAT)
   price_type        PriceType       @default(FREE)
-  category          Category        @default(TRANING)
+  category          Category        @default(TRAINING)
   thumbnailPath     String          @db.VarChar(255)
   videoUrl          String          @db.VarChar(255)
   like              Int             @default(0)
@@ -107,7 +107,7 @@ enum Category {
   BEAUTY
   HEALTH
   WALK
-  TRANING 
+  TRAINING 
   ADOPT
   PLAY
   COMMUNICATION 

@@ -42,6 +42,7 @@ export default function LectureTagSelect({
         {tags.map((tag, index: number) => {
           return (
             <Badge
+              key={index}
               onClick={() => {
                 setSelectTag(index);
               }}
@@ -56,8 +57,8 @@ export default function LectureTagSelect({
       <TouchScroll isStepbar>
         {filterLectures.map((tagLecture: Lecture, index: number) => (
           <div
-            className={`flex h-[371px] min-w-[269px] max-w-[269px]`}
             key={index}
+            className={`flex h-[371px] min-w-[269px] max-w-[269px]`}
           >
             <LectureCard lecture={tagLecture} />
           </div>

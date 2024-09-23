@@ -7,7 +7,13 @@ import { useEffect, useState } from 'react';
 import SearchBox from '../common/search-box';
 import SelectBox from '../common/select-box';
 import { PriceType } from '@/types/tyeps.all';
-import { SortType } from '@/constants/constants.all';
+import {
+  AnimalTypeSwap,
+  getAnimalTypeByValue,
+  getPriceTypeByValue,
+  PriceTypeSwap,
+  SortType,
+} from '@/constants/constants.all';
 import LecturePromotion from './lecture-promotion';
 
 interface LectureContainerProps {
@@ -30,12 +36,12 @@ export default function LectureContainer({
       const matchesPrice =
         !priceState ||
         priceState === '전체' ||
-        lecture.price_type === priceState;
+        lecture.price_type === getPriceTypeByValue(priceState);
 
       const matchesType =
         !animalType ||
         animalType === '전체' ||
-        lecture.animal_type === animalType;
+        lecture.animal_type === getAnimalTypeByValue(animalType);
 
       const matchesSearch =
         search.length === 0 ||
@@ -66,13 +72,21 @@ export default function LectureContainer({
       <div className="container mx-auto my-12 flex h-10 items-center justify-between gap-2 px-5">
         <div className="flex gap-2">
           <SelectBox
-            lists={['전체', AnimalType.DOG, AnimalType.CAT]}
+            lists={[
+              '전체',
+              AnimalTypeSwap[AnimalType.DOG],
+              AnimalTypeSwap[AnimalType.CAT],
+            ]}
             useStateF={setAnimalType}
             placeholder="분류"
             className="w-24"
           />
           <SelectBox
-            lists={['전체', PriceType.FREE, PriceType.PAID]}
+            lists={[
+              '전체',
+              PriceTypeSwap[PriceType.FREE],
+              PriceTypeSwap[PriceType.PAID],
+            ]}
             useStateF={setPriceState}
             placeholder="가격"
             className="w-24"

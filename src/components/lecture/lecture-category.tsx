@@ -3,17 +3,17 @@
 import { Button } from '../ui/button';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
-import { AnimalType, Category } from '@/types/tyeps.all';
+import { Category } from '@/types/tyeps.all';
+import { CategorySwap } from '@/constants/constants.all';
 import { useRouter, usePathname } from 'next/navigation';
 
 export default function LectureCategory() {
   const [category, setCategory] = useState<string>('all');
   const router = useRouter();
+  const path = usePathname();
 
   const handlePushRouter = () => {
-    router.push(
-      process.env.NEXT_PUBLIC_WEB_URL + `/lecture?categorys=${category}`,
-    );
+    router.push(path + `?category=${category}`);
   };
 
   useEffect(() => {
@@ -47,7 +47,7 @@ export default function LectureCategory() {
             height={40}
             alt="food"
           />
-          {Category.FOOD}
+          {CategorySwap[Category.FOOD]}
         </Button>
         <Button
           onClick={() => setCategory('beauty')}
@@ -60,7 +60,7 @@ export default function LectureCategory() {
             height={40}
             alt="beauty"
           />
-          {Category.BEAUTY}
+          {CategorySwap[Category.BEAUTY]}
         </Button>
         <Button
           onClick={() => setCategory('health')}
@@ -73,7 +73,7 @@ export default function LectureCategory() {
             height={40}
             alt="health"
           />
-          {Category.HEALTH}
+          {CategorySwap[Category.HEALTH]}
         </Button>
         <Button
           onClick={() => setCategory('walk')}
@@ -86,7 +86,7 @@ export default function LectureCategory() {
             height={40}
             alt="walk"
           />
-          {Category.WALK}
+          {CategorySwap[Category.WALK]}{' '}
         </Button>
         <Button
           onClick={() => setCategory('traning')}
@@ -99,7 +99,7 @@ export default function LectureCategory() {
             height={40}
             alt="traning"
           />{' '}
-          {Category.TRANING}
+          {CategorySwap[Category.TRAINING]}
         </Button>
         <Button
           onClick={() => setCategory('adopt')}
@@ -112,7 +112,7 @@ export default function LectureCategory() {
             height={40}
             alt="adopt"
           />
-          {Category.ADOPT}
+          {CategorySwap[Category.ADOPT]}
         </Button>
         <Button
           onClick={() => setCategory('play')}
@@ -125,7 +125,7 @@ export default function LectureCategory() {
             height={40}
             alt="play"
           />
-          {Category.PLAY}
+          {CategorySwap[Category.PLAY]}
         </Button>
         <Button
           onClick={() => setCategory('communication')}
@@ -138,7 +138,7 @@ export default function LectureCategory() {
             height={40}
             alt="communication"
           />
-          {Category.COMMUNICATION}
+          {CategorySwap[Category.COMMUNICATION]}
         </Button>
       </div>
     </section>
