@@ -1,20 +1,30 @@
-"use client";
+'use client';
 
-import { useEffect, useRef, useState } from "react";
+import { Dot } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
 
 export default function TouchScroll({
+  isStepbar,
+  className,
   children,
 }: {
+  isStepbar?: boolean;
+  className?: string;
   children: React.ReactNode;
 }) {
   const ref = useRef<HTMLDivElement>(null);
-  const [currentStep, setCurrentStep] = useState<number>(0);
   const [isDragging, setIsDragging] = useState(false);
+  const [isAutoSliding, setIsAutoSliding] = useState(true);
+  const slideTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const [previousX, setPreviousX] = useState(0);
+  const [currentStep, setCurrentStep] = useState(0);
 
   const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
     setIsDragging(true);
     setPreviousX(e.clientX);
+
+    setIsAutoSliding(false);
+    resetSlideTimeout();
   };
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -29,18 +39,22 @@ export default function TouchScroll({
 
   const handleMouseUp = () => {
     setIsDragging(false);
+    setIsAutoSliding(true);
+    resetSlideTimeout();
   };
 
   const handleMouseLeave = () => {
     setIsDragging(false);
+    setIsAutoSliding(true);
+    resetSlideTimeout();
   };
 
   const addGlobalMouseUpListener = () => {
-    window.addEventListener("mouseup", handleMouseUp);
+    window.addEventListener('mouseup', handleMouseUp);
   };
 
   const removeGlobalMouseUpListener = () => {
-    window.removeEventListener("mouseup", handleMouseUp);
+    window.removeEventListener('mouseup', handleMouseUp);
   };
 
   const smoothScrollTo = (targetPosition: number) => {
@@ -71,6 +85,8 @@ export default function TouchScroll({
   };
 
   const handleSpanClick = (index: number) => {
+    setCurrentStep(index);
+
     if (ref.current) {
       const totalWidth = ref.current.scrollWidth;
       const visibleWidth = ref.current.clientWidth;
@@ -88,8 +104,50 @@ export default function TouchScroll({
     }
   };
 
+  const startAutoSlide = () => {
+    if (ref.current) {
+      slideTimeoutRef.current = setTimeout(() => {
+        const totalWidth = ref.current!.scrollWidth;
+        const visibleWidth = ref.current!.clientWidth;
+        const newScrollPosition = ref.current!.scrollLeft + visibleWidth / 2; // 화면의 절반 정도만 이동
+
+        if (newScrollPosition >= totalWidth - visibleWidth) {
+          smoothScrollTo(0); // 끝에 도달하면 처음으로 돌아가기
+          setCurrentStep(0);
+        } else {
+          smoothScrollTo(newScrollPosition);
+          setCurrentStep((prevStep) => (prevStep + 1) % 3); // 단계 증가
+        }
+        startAutoSlide(); // 다음 슬라이드를 위해 재귀 호출
+      }, 5000); // 5초 후에 슬라이드
+    }
+  };
+
+  const resetSlideTimeout = () => {
+    if (slideTimeoutRef.current) {
+      clearTimeout(slideTimeoutRef.current); // 기존 타이머 제거
+    }
+    if (isAutoSliding) {
+      startAutoSlide(); // 새로운 타이머 시작
+    }
+  };
+
+  // 컴포넌트가 마운트되면 자동 슬라이드 시작
+  useEffect(() => {
+    if (isAutoSliding) {
+      startAutoSlide();
+    }
+
+    // 컴포넌트 언마운트 시 타이머 제거
+    return () => {
+      if (slideTimeoutRef.current) {
+        clearTimeout(slideTimeoutRef.current);
+      }
+    };
+  }, [isAutoSliding]);
+
   return (
-    <section className="flex flex-col">
+    <section className={`flex w-full flex-col gap-6 ${className}`}>
       <div
         ref={ref}
         onMouseDown={(e: React.MouseEvent<HTMLDivElement>) => {
@@ -102,35 +160,32 @@ export default function TouchScroll({
           handleMouseUp();
           removeGlobalMouseUpListener();
         }}
-        style={{ userSelect: "none" }}
+        style={{ userSelect: 'none' }}
         className="scroll flex w-full overflow-x-auto"
       >
         <div
           className="flex w-full gap-6"
-          style={{ pointerEvents: isDragging ? "none" : "auto" }}
+          style={{ pointerEvents: isDragging ? 'none' : 'auto' }}
         >
           {children}
         </div>
       </div>
-      <div className="flex justify-center gap-4">
-        <span
+      <div className={`justify-center gap-4 ${isStepbar ? 'flex' : 'hidden'}`}>
+        <Dot
           onClick={() => handleSpanClick(0)}
-          className="cursor-pointer text-xl font-extrabold"
-        >
-          _____
-        </span>
-        <span
+          className={`h-4 w-4 cursor-pointer rounded-full bg-black ${currentStep === 0 ? 'bg-black' : 'bg-slate-100'}`}
+          stroke={`${currentStep === 0 ? 'black' : 'slate-100'}`}
+        />
+        <Dot
           onClick={() => handleSpanClick(1)}
-          className="cursor-pointer text-xl font-extrabold"
-        >
-          _____
-        </span>
-        <span
+          className={`h-4 w-4 cursor-pointer rounded-full bg-black ${currentStep === 1 ? 'bg-black' : 'bg-slate-100'}`}
+          stroke={`${currentStep === 1 ? 'black' : 'slate-100'}`}
+        />
+        <Dot
           onClick={() => handleSpanClick(2)}
-          className="cursor-pointer text-xl font-extrabold"
-        >
-          _____
-        </span>
+          className={`h-4 w-4 cursor-pointer rounded-full bg-black ${currentStep === 2 ? 'bg-black' : 'bg-slate-100'}`}
+          stroke={`${currentStep === 2 ? 'black' : 'slate-100'}`}
+        />
       </div>
     </section>
   );
