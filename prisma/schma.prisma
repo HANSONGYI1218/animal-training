@@ -45,6 +45,7 @@ model Tutor {
   career            String          @db.VarChar(255)
   traning_location  String          @db.VarChar(255)
   traning_name      String          @db.VarChar(255)
+  corporation_name  String          @db.VarChar(255)
   occupation        OccupationType  @default(TRAINER)
   createdAt         DateTime        @default(now())
   updatedAt         DateTime        @updatedAt
@@ -67,6 +68,8 @@ model Lecture {
   like              Int             @default(0)
   tags              String[]    
   bookmark          Boolean         @default(false)
+  tutor_name        String          @db.VarChar(255)
+  tutor_occupation  OccupationType  @default(TRAINER)
   createdAt         DateTime        @default(now())
   updatedAt         DateTime        @updatedAt
   tutorId           String

@@ -1,14 +1,14 @@
 import {
   Lecture,
   AnimalType,
-  Category,
   PriceType,
+  Category,
   OccupationType,
   Tutor,
   Corporation,
 } from '@/types/tyeps.all';
 
-const lectureData = [
+const lectureData: Lecture[] = [
   {
     id: '1',
     title: '강형욱 선생님과 함께하는 강아지 배변 훈련!',
@@ -20,33 +20,14 @@ const lectureData = [
     category: Category.TRANING,
     thumbnailPath: '/Test-courseImg.png',
     videoUrl: '',
+    tutor_name: '강형욱',
+    tutor_occupation: OccupationType.TRAINER,
     createdAt: new Date(),
     updatedAt: new Date(),
     like: 8,
     tag: ['배변', '훈련'],
     bookmark: true,
-    tutor: {
-      id: '4',
-      name: '강형욱',
-      introduction: '안녕하세요. 강형욱입니다.',
-      career: '보듬컴퍼니 훈련사', // 최종(현재) 커리어
-      occupation: OccupationType.TRAINER,
-      traning_name: '보듬 훈련소',
-      traning_location: '중랑구 상봉동 104-37',
-      corporation: {
-        id: '1',
-        owner_name: '강형욱', // 대표자 이름
-        corporation_name: '보듬컴퍼니', // 기업 이름
-        address: '중랑구 상봉동 씨티7 202호',
-        phoneNumber: '02-3333-33333',
-        email: 'admin@mubg.ddd',
-        business_number: '02-3333-33333', // 사업자번호
-        createdAt: new Date('2024-7-23'),
-        updatedAt: new Date(),
-      },
-      createdAt: new Date('2024-7-23'),
-      updatedAt: new Date(),
-    },
+    tutorId: '4',
   },
   {
     id: '2',
@@ -59,33 +40,14 @@ const lectureData = [
     category: Category.BEAUTY,
     thumbnailPath: '/Test-courseImg.png',
     videoUrl: '',
+    tutor_name: '강형욱',
+    tutor_occupation: OccupationType.TRAINER,
     createdAt: new Date('2024-8-20'),
     updatedAt: new Date(),
     like: 12,
     tag: ['배변', '훈련', '코카스파니엘'],
     bookmark: true,
-    tutor: {
-      id: '4',
-      name: '강형욱',
-      introduction: '안녕하세요. 강형욱입니다.',
-      career: '보듬컴퍼니 훈련사', // 최종(현재) 커리어
-      occupation: OccupationType.TRAINER,
-      traning_name: '보듬 훈련소',
-      traning_location: '중랑구 상봉동 104-37',
-      corporation: {
-        id: '1',
-        owner_name: '강형욱', // 대표자 이름
-        corporation_name: '보듬컴퍼니', // 기업 이름
-        address: '중랑구 상봉동 씨티7 202호',
-        phoneNumber: '02-3333-33333',
-        email: 'admin@mubg.ddd',
-        business_number: '02-3333-33333', // 사업자번호
-        createdAt: new Date('2024-7-23'),
-        updatedAt: new Date(),
-      },
-      createdAt: new Date('2024-7-23'),
-      updatedAt: new Date(),
-    },
+    tutorId: '4',
   },
   {
     id: '3',
@@ -98,33 +60,14 @@ const lectureData = [
     category: Category.TRANING,
     thumbnailPath: '/Test-courseImg.png',
     videoUrl: '',
+    tutor_name: '강형욱',
+    tutor_occupation: OccupationType.TRAINER,
     createdAt: new Date('2024-8-23'),
     updatedAt: new Date(),
     like: 2,
     tag: ['코카스파니엘'],
     bookmark: false,
-    tutor: {
-      id: '4',
-      name: '강형욱',
-      introduction: '안녕하세요. 강형욱입니다.',
-      career: '보듬컴퍼니 훈련사', // 최종(현재) 커리어
-      occupation: OccupationType.TRAINER,
-      traning_name: '보듬 훈련소',
-      traning_location: '중랑구 상봉동 104-37',
-      corporation: {
-        id: '1',
-        owner_name: '강형욱', // 대표자 이름
-        corporation_name: '보듬컴퍼니', // 기업 이름
-        address: '중랑구 상봉동 씨티7 202호',
-        phoneNumber: '02-3333-33333',
-        email: 'admin@mubg.ddd',
-        business_number: '02-3333-33333', // 사업자번호
-        createdAt: new Date('2024-7-23'),
-        updatedAt: new Date(),
-      },
-      createdAt: new Date('2024-7-23'),
-      updatedAt: new Date(),
-    },
+    tutorId: '4',
   },
   {
     id: '4',
@@ -137,33 +80,14 @@ const lectureData = [
     category: Category.COMMUNICATION,
     thumbnailPath: '/Test-courseImg.png',
     videoUrl: '',
+    tutor_name: '강형욱',
+    tutor_occupation: OccupationType.TRAINER,
     createdAt: new Date('2024-7-23'),
     updatedAt: new Date(),
     like: 1,
     tag: ['코카스파니엘', '사료', '강형욱'],
     bookmark: true,
-    tutor: {
-      id: '4',
-      name: '강형욱',
-      introduction: '안녕하세요. 강형욱입니다.',
-      career: '보듬컴퍼니 훈련사', // 최종(현재) 커리어
-      occupation: OccupationType.TRAINER,
-      traning_name: '보듬 훈련소',
-      traning_location: '중랑구 상봉동 104-37',
-      corporation: {
-        id: '1',
-        owner_name: '강형욱', // 대표자 이름
-        corporation_name: '보듬컴퍼니', // 기업 이름
-        address: '중랑구 상봉동 씨티7 202호',
-        phoneNumber: '02-3333-33333',
-        email: 'admin@mubg.ddd',
-        business_number: '02-3333-33333', // 사업자번호
-        createdAt: new Date('2024-7-23'),
-        updatedAt: new Date(),
-      },
-      createdAt: new Date('2024-7-23'),
-      updatedAt: new Date(),
-    },
+    tutorId: '4',
   },
   {
     id: '5',
@@ -176,33 +100,14 @@ const lectureData = [
     category: Category.COMMUNICATION,
     thumbnailPath: '/Test-courseImg.png',
     videoUrl: '',
+    tutor_name: '강형욱',
+    tutor_occupation: OccupationType.TRAINER,
     createdAt: new Date(),
     updatedAt: new Date(),
     like: 0,
     tag: ['리트리버', '강형욱'],
     bookmark: false,
-    tutor: {
-      id: '5',
-      name: '강형욱',
-      introduction: '안녕하세요. 강형욱입니다.',
-      career: '보듬컴퍼니 훈련사', // 최종(현재) 커리어
-      occupation: OccupationType.TRAINER,
-      traning_name: '보듬 훈련소',
-      traning_location: '중랑구 상봉동 104-37',
-      corporation: {
-        id: '1',
-        owner_name: '강형욱', // 대표자 이름
-        corporation_name: '보듬컴퍼니', // 기업 이름
-        address: '중랑구 상봉동 씨티7 202호',
-        phoneNumber: '02-3333-33333',
-        email: 'admin@mubg.ddd',
-        business_number: '02-3333-33333', // 사업자번호
-        createdAt: new Date('2024-7-23'),
-        updatedAt: new Date(),
-      },
-      createdAt: new Date('2024-7-23'),
-      updatedAt: new Date(),
-    },
+    tutorId: '5',
   },
   {
     id: '6',
@@ -214,36 +119,14 @@ const lectureData = [
     category: Category.FOOD,
     thumbnailPath: '/Test-courseImg-cat.png',
     videoUrl: '',
+    tutor_name: '강형욱',
+    tutor_occupation: OccupationType.TRAINER,
     createdAt: new Date('2024-3-23'),
     updatedAt: new Date(),
     like: 0,
     tag: ['시츄', '강형욱'],
     bookmark: true,
-    tutor: {
-      id: '6',
-      name: '강형욱',
-      introduction: `안녕하세요. 강형욱입니다.
-      안녕하세요, 저는 동물들을 사랑하고 그들의 건강을 책임지는 수의사입니다.
-      다양한 동물들의 질병을 진단하고 치료하며, 반려동물과 그 가족들에게 최상의 케어를 제공하기 위해 항상 노력하고 있습니다.
-      동물들이 건강하고 행복하게 지낼 수 있도록 돕는 것이 저의 가장 큰 보람입니다.`,
-      career: '보듬컴퍼니 훈련사', // 최종(현재) 커리어
-      occupation: OccupationType.TRAINER,
-      traning_name: '보듬 훈련소',
-      traning_location: '중랑구 상봉동 104-37',
-      corporation: {
-        id: '1',
-        owner_name: '강형욱', // 대표자 이름
-        corporation_name: '보듬컴퍼니', // 기업 이름
-        address: '중랑구 상봉동 씨티7 202호',
-        phoneNumber: '02-3333-33333',
-        email: 'admin@mubg.ddd',
-        business_number: '02-3333-33333', // 사업자번호
-        createdAt: new Date('2024-7-23'),
-        updatedAt: new Date(),
-      },
-      createdAt: new Date('2024-7-23'),
-      updatedAt: new Date(),
-    },
+    tutorId: '6',
   },
   {
     id: '7',
@@ -255,33 +138,14 @@ const lectureData = [
     category: Category.FOOD,
     thumbnailPath: '/Test-courseImg.png',
     videoUrl: '',
+    tutor_name: '강형욱',
+    tutor_occupation: OccupationType.TRAINER,
     createdAt: new Date(),
     updatedAt: new Date(),
     like: 0,
     tag: ['시츄', '강형욱'],
     bookmark: false,
-    tutor: {
-      id: '1',
-      name: '강형욱',
-      introduction: '안녕하세요. 강형욱입니다.',
-      career: '보듬컴퍼니 훈련사', // 최종(현재) 커리어
-      occupation: OccupationType.TRAINER,
-      traning_name: '보듬 훈련소',
-      traning_location: '중랑구 상봉동 104-37',
-      corporation: {
-        id: '1',
-        owner_name: '강형욱', // 대표자 이름
-        corporation_name: '보듬컴퍼니', // 기업 이름
-        address: '중랑구 상봉동 씨티7 202호',
-        phoneNumber: '02-3333-33333',
-        email: 'admin@mubg.ddd',
-        business_number: '02-3333-33333', // 사업자번호
-        createdAt: new Date('2024-7-23'),
-        updatedAt: new Date(),
-      },
-      createdAt: new Date('2024-7-23'),
-      updatedAt: new Date(),
-    },
+    tutorId: '1',
   },
   {
     id: '8',
@@ -294,33 +158,14 @@ const lectureData = [
     category: Category.HEALTH,
     thumbnailPath: '/Test-courseImg-cat.png',
     videoUrl: '',
+    tutor_name: '강형욱',
+    tutor_occupation: OccupationType.TRAINER,
     createdAt: new Date('2024-8-28'),
     updatedAt: new Date(),
     like: 0,
     tag: ['배변', '훈련', '코카스파니엘', '강형욱'],
     bookmark: true,
-    tutor: {
-      id: '1',
-      name: '강형욱',
-      introduction: '안녕하세요. 강형욱입니다.',
-      career: '보듬컴퍼니 훈련사', // 최종(현재) 커리어
-      occupation: OccupationType.TRAINER,
-      traning_name: '보듬 훈련소',
-      traning_location: '중랑구 상봉동 104-37',
-      corporation: {
-        id: '1',
-        owner_name: '강형욱', // 대표자 이름
-        corporation_name: '보듬컴퍼니', // 기업 이름
-        address: '중랑구 상봉동 씨티7 202호',
-        phoneNumber: '02-3333-33333',
-        email: 'admin@mubg.ddd',
-        business_number: '02-3333-33333', // 사업자번호
-        createdAt: new Date('2024-7-23'),
-        updatedAt: new Date(),
-      },
-      createdAt: new Date('2024-7-23'),
-      updatedAt: new Date(),
-    },
+    tutorId: '1',
   },
   {
     id: '9',
@@ -333,33 +178,14 @@ const lectureData = [
     category: Category.HEALTH,
     thumbnailPath: '/Test-courseImg-cat.png',
     videoUrl: '',
+    tutor_name: '강형욱',
+    tutor_occupation: OccupationType.TRAINER,
     createdAt: new Date(),
     updatedAt: new Date(),
     like: 0,
     tag: ['시츄'],
     bookmark: false,
-    tutor: {
-      id: '8',
-      name: '설채현',
-      introduction: '안녕하세요. 설채현입니다.',
-      career: '보듬컴퍼니 수의사', // 최종(현재) 커리어
-      occupation: OccupationType.VETERINARIAN,
-      traning_name: '보듬 훈련소',
-      traning_location: '중랑구 상봉동 104-37',
-      corporation: {
-        id: '1',
-        owner_name: '강형욱', // 대표자 이름
-        corporation_name: '보듬컴퍼니', // 기업 이름
-        address: '중랑구 상봉동 씨티7 202호',
-        phoneNumber: '02-3333-33333',
-        email: 'admin@mubg.ddd',
-        business_number: '02-3333-33333', // 사업자번호
-        createdAt: new Date('2024-7-23'),
-        updatedAt: new Date(),
-      },
-      createdAt: new Date('2024-7-23'),
-      updatedAt: new Date(),
-    },
+    tutorId: '8',
   },
   {
     id: '10',
@@ -371,33 +197,14 @@ const lectureData = [
     thumbnailPath: '/Test-courseImg-cat.png',
     category: Category.HEALTH,
     videoUrl: '',
+    tutor_name: '강형욱',
+    tutor_occupation: OccupationType.TRAINER,
     createdAt: new Date(),
     updatedAt: new Date(),
     like: 8,
     tag: ['배변', '훈련', '코카스파니엘'],
     bookmark: true,
-    tutor: {
-      id: '7',
-      name: '설채현',
-      introduction: '안녕하세요. 설채현입니다.',
-      career: '보듬컴퍼니 수의사', // 최종(현재) 커리어
-      occupation: OccupationType.VETERINARIAN,
-      traning_name: '보듬 훈련소',
-      traning_location: '중랑구 상봉동 104-37',
-      corporation: {
-        id: '1',
-        owner_name: '강형욱', // 대표자 이름
-        corporation_name: '보듬컴퍼니', // 기업 이름
-        address: '중랑구 상봉동 씨티7 202호',
-        phoneNumber: '02-3333-33333',
-        email: 'admin@mubg.ddd',
-        business_number: '02-3333-33333', // 사업자번호
-        createdAt: new Date('2024-7-23'),
-        updatedAt: new Date(),
-      },
-      createdAt: new Date('2024-7-23'),
-      updatedAt: new Date(),
-    },
+    tutorId: '7',
   },
   {
     id: '11',
@@ -409,33 +216,14 @@ const lectureData = [
     category: Category.PLAY,
     thumbnailPath: '/Test-courseImg-cat.png',
     videoUrl: '',
+    tutor_name: '강형욱',
+    tutor_occupation: OccupationType.TRAINER,
     createdAt: new Date(),
     updatedAt: new Date(),
     like: 0,
     tag: ['시츄'],
     bookmark: false,
-    tutor: {
-      id: '7',
-      name: '설채현',
-      introduction: '안녕하세요. 설채현입니다.',
-      career: '보듬컴퍼니 수의사', // 최종(현재) 커리어
-      occupation: OccupationType.VETERINARIAN,
-      traning_name: '보듬 훈련소',
-      traning_location: '중랑구 상봉동 104-37',
-      corporation: {
-        id: '1',
-        owner_name: '강형욱', // 대표자 이름
-        corporation_name: '보듬컴퍼니', // 기업 이름
-        address: '중랑구 상봉동 씨티7 202호',
-        phoneNumber: '02-3333-33333',
-        email: 'admin@mubg.ddd',
-        business_number: '02-3333-33333', // 사업자번호
-        createdAt: new Date('2024-7-23'),
-        updatedAt: new Date(),
-      },
-      createdAt: new Date('2024-7-23'),
-      updatedAt: new Date(),
-    },
+    tutorId: '7',
   },
   {
     id: '12',
@@ -447,33 +235,14 @@ const lectureData = [
     category: Category.PLAY,
     thumbnailPath: '/Test-courseImg-cat.png',
     videoUrl: '',
+    tutor_name: '강형욱',
+    tutor_occupation: OccupationType.TRAINER,
     createdAt: new Date(),
     updatedAt: new Date(),
     like: 0,
     tag: ['시츄'],
     bookmark: false,
-    tutor: {
-      id: '7',
-      name: '설채현',
-      introduction: '안녕하세요. 설채현입니다.',
-      career: '보듬컴퍼니 수의사', // 최종(현재) 커리어
-      occupation: OccupationType.VETERINARIAN,
-      traning_name: '보듬 훈련소',
-      traning_location: '중랑구 상봉동 104-37',
-      corporation: {
-        id: '1',
-        owner_name: '강형욱', // 대표자 이름
-        corporation_name: '보듬컴퍼니', // 기업 이름
-        address: '중랑구 상봉동 씨티7 202호',
-        phoneNumber: '02-3333-33333',
-        email: 'admin@mubg.ddd',
-        business_number: '02-3333-33333', // 사업자번호
-        createdAt: new Date('2024-7-23'),
-        updatedAt: new Date(),
-      },
-      createdAt: new Date('2024-7-23'),
-      updatedAt: new Date(),
-    },
+    tutorId: '7',
   },
   {
     id: '13',
@@ -485,33 +254,14 @@ const lectureData = [
     category: Category.PLAY,
     thumbnailPath: '/Test-courseImg-cat.png',
     videoUrl: '',
+    tutor_name: '강형욱',
+    tutor_occupation: OccupationType.TRAINER,
     createdAt: new Date(),
     updatedAt: new Date(),
     like: 0,
     tag: ['시츄'],
     bookmark: false,
-    tutor: {
-      id: '7',
-      name: '설채현',
-      introduction: '안녕하세요. 설채현입니다.',
-      career: '보듬컴퍼니 수의사', // 최종(현재) 커리어
-      occupation: OccupationType.VETERINARIAN,
-      traning_name: '보듬 훈련소',
-      traning_location: '중랑구 상봉동 104-37',
-      corporation: {
-        id: '1',
-        owner_name: '강형욱', // 대표자 이름
-        corporation_name: '보듬컴퍼니', // 기업 이름
-        address: '중랑구 상봉동 씨티7 202호',
-        phoneNumber: '02-3333-33333',
-        email: 'admin@mubg.ddd',
-        business_number: '02-3333-33333', // 사업자번호
-        createdAt: new Date('2024-7-23'),
-        updatedAt: new Date(),
-      },
-      createdAt: new Date('2024-7-23'),
-      updatedAt: new Date(),
-    },
+    tutorId: '7',
   },
   {
     id: '14',
@@ -523,33 +273,14 @@ const lectureData = [
     category: Category.PLAY,
     thumbnailPath: '/Test-courseImg-cat.png',
     videoUrl: '',
+    tutor_name: '강형욱',
+    tutor_occupation: OccupationType.TRAINER,
     createdAt: new Date(),
     updatedAt: new Date(),
     like: 0,
     tag: ['시츄'],
     bookmark: false,
-    tutor: {
-      id: '7',
-      name: '설채현',
-      introduction: '안녕하세요. 설채현입니다.',
-      career: '보듬컴퍼니 수의사', // 최종(현재) 커리어
-      occupation: OccupationType.VETERINARIAN,
-      traning_name: '보듬 훈련소',
-      traning_location: '중랑구 상봉동 104-37',
-      corporation: {
-        id: '1',
-        owner_name: '강형욱', // 대표자 이름
-        corporation_name: '보듬컴퍼니', // 기업 이름
-        address: '중랑구 상봉동 씨티7 202호',
-        phoneNumber: '02-3333-33333',
-        email: 'admin@mubg.ddd',
-        business_number: '02-3333-33333', // 사업자번호
-        createdAt: new Date('2024-7-23'),
-        updatedAt: new Date(),
-      },
-      createdAt: new Date('2024-7-23'),
-      updatedAt: new Date(),
-    },
+    tutorId: '7',
   },
   {
     id: '15',
@@ -561,33 +292,14 @@ const lectureData = [
     category: Category.PLAY,
     thumbnailPath: '/Test-courseImg-cat.png',
     videoUrl: '',
+    tutor_name: '강형욱',
+    tutor_occupation: OccupationType.TRAINER,
     createdAt: new Date(),
     updatedAt: new Date(),
     like: 0,
     tag: ['시츄'],
     bookmark: false,
-    tutor: {
-      id: '7',
-      name: '설채현',
-      introduction: '안녕하세요. 설채현입니다.',
-      career: '보듬컴퍼니 수의사', // 최종(현재) 커리어
-      occupation: OccupationType.VETERINARIAN,
-      traning_name: '보듬 훈련소',
-      traning_location: '중랑구 상봉동 104-37',
-      corporation: {
-        id: '1',
-        owner_name: '강형욱', // 대표자 이름
-        corporation_name: '보듬컴퍼니', // 기업 이름
-        address: '중랑구 상봉동 씨티7 202호',
-        phoneNumber: '02-3333-33333',
-        email: 'admin@mubg.ddd',
-        business_number: '02-3333-33333', // 사업자번호
-        createdAt: new Date('2024-7-23'),
-        updatedAt: new Date(),
-      },
-      createdAt: new Date('2024-7-23'),
-      updatedAt: new Date(),
-    },
+    tutorId: '7',
   },
   {
     id: '16',
@@ -599,33 +311,14 @@ const lectureData = [
     category: Category.PLAY,
     thumbnailPath: '/Test-courseImg-cat.png',
     videoUrl: '',
+    tutor_name: '강형욱',
+    tutor_occupation: OccupationType.TRAINER,
     createdAt: new Date(),
     updatedAt: new Date(),
     like: 0,
     tag: ['시츄'],
     bookmark: false,
-    tutor: {
-      id: '7',
-      name: '설채현',
-      introduction: '안녕하세요. 설채현입니다.',
-      career: '보듬컴퍼니 수의사', // 최종(현재) 커리어
-      occupation: OccupationType.VETERINARIAN,
-      traning_name: '보듬 훈련소',
-      traning_location: '중랑구 상봉동 104-37',
-      corporation: {
-        id: '1',
-        owner_name: '강형욱', // 대표자 이름
-        corporation_name: '보듬컴퍼니', // 기업 이름
-        address: '중랑구 상봉동 씨티7 202호',
-        phoneNumber: '02-3333-33333',
-        email: 'admin@mubg.ddd',
-        business_number: '02-3333-33333', // 사업자번호
-        createdAt: new Date('2024-7-23'),
-        updatedAt: new Date(),
-      },
-      createdAt: new Date('2024-7-23'),
-      updatedAt: new Date(),
-    },
+    tutorId: '7',
   },
   {
     id: '17',
@@ -637,33 +330,14 @@ const lectureData = [
     category: Category.PLAY,
     thumbnailPath: '/Test-courseImg-cat.png',
     videoUrl: '',
+    tutor_name: '강형욱',
+    tutor_occupation: OccupationType.TRAINER,
     createdAt: new Date(),
     updatedAt: new Date(),
     like: 0,
     tag: ['시츄'],
     bookmark: false,
-    tutor: {
-      id: '7',
-      name: '설채현',
-      introduction: '안녕하세요. 설채현입니다.',
-      career: '보듬컴퍼니 수의사', // 최종(현재) 커리어
-      occupation: OccupationType.VETERINARIAN,
-      traning_name: '보듬 훈련소',
-      traning_location: '중랑구 상봉동 104-37',
-      corporation: {
-        id: '1',
-        owner_name: '강형욱', // 대표자 이름
-        corporation_name: '보듬컴퍼니', // 기업 이름
-        address: '중랑구 상봉동 씨티7 202호',
-        phoneNumber: '02-3333-33333',
-        email: 'admin@mubg.ddd',
-        business_number: '02-3333-33333', // 사업자번호
-        createdAt: new Date('2024-7-23'),
-        updatedAt: new Date(),
-      },
-      createdAt: new Date('2024-7-23'),
-      updatedAt: new Date(),
-    },
+    tutorId: '7',
   },
   {
     id: '18',
@@ -675,33 +349,14 @@ const lectureData = [
     category: Category.PLAY,
     thumbnailPath: '/Test-courseImg-cat.png',
     videoUrl: '',
+    tutor_name: '강형욱',
+    tutor_occupation: OccupationType.TRAINER,
     createdAt: new Date(),
     updatedAt: new Date(),
     like: 0,
     tag: ['시츄'],
     bookmark: false,
-    tutor: {
-      id: '7',
-      name: '설채현',
-      introduction: '안녕하세요. 설채현입니다.',
-      career: '보듬컴퍼니 수의사', // 최종(현재) 커리어
-      occupation: OccupationType.VETERINARIAN,
-      traning_name: '보듬 훈련소',
-      traning_location: '중랑구 상봉동 104-37',
-      corporation: {
-        id: '1',
-        owner_name: '강형욱', // 대표자 이름
-        corporation_name: '보듬컴퍼니', // 기업 이름
-        address: '중랑구 상봉동 씨티7 202호',
-        phoneNumber: '02-3333-33333',
-        email: 'admin@mubg.ddd',
-        business_number: '02-3333-33333', // 사업자번호
-        createdAt: new Date('2024-7-23'),
-        updatedAt: new Date(),
-      },
-      createdAt: new Date('2024-7-23'),
-      updatedAt: new Date(),
-    },
+    tutorId: '7',
   },
   {
     id: '19',
@@ -713,33 +368,14 @@ const lectureData = [
     category: Category.PLAY,
     thumbnailPath: '/Test-courseImg-cat.png',
     videoUrl: '',
+    tutor_name: '강형욱',
+    tutor_occupation: OccupationType.TRAINER,
     createdAt: new Date(),
     updatedAt: new Date(),
     like: 0,
     tag: ['시츄'],
     bookmark: false,
-    tutor: {
-      id: '7',
-      name: '설채현',
-      introduction: '안녕하세요. 설채현입니다.',
-      career: '보듬컴퍼니 수의사', // 최종(현재) 커리어
-      occupation: OccupationType.VETERINARIAN,
-      traning_name: '보듬 훈련소',
-      traning_location: '중랑구 상봉동 104-37',
-      corporation: {
-        id: '1',
-        owner_name: '강형욱', // 대표자 이름
-        corporation_name: '보듬컴퍼니', // 기업 이름
-        address: '중랑구 상봉동 씨티7 202호',
-        phoneNumber: '02-3333-33333',
-        email: 'admin@mubg.ddd',
-        business_number: '02-3333-33333', // 사업자번호
-        createdAt: new Date('2024-7-23'),
-        updatedAt: new Date(),
-      },
-      createdAt: new Date('2024-7-23'),
-      updatedAt: new Date(),
-    },
+    tutorId: '7',
   },
   {
     id: '20',
@@ -751,33 +387,14 @@ const lectureData = [
     category: Category.PLAY,
     thumbnailPath: '/Test-courseImg.png',
     videoUrl: '',
+    tutor_name: '강형욱',
+    tutor_occupation: OccupationType.TRAINER,
     createdAt: new Date(),
     updatedAt: new Date(),
     like: 0,
     tag: ['시츄'],
     bookmark: false,
-    tutor: {
-      id: '7',
-      name: '설채현',
-      introduction: '안녕하세요. 설채현입니다.',
-      career: '보듬컴퍼니 수의사', // 최종(현재) 커리어
-      occupation: OccupationType.VETERINARIAN,
-      traning_name: '보듬 훈련소',
-      traning_location: '중랑구 상봉동 104-37',
-      corporation: {
-        id: '1',
-        owner_name: '강형욱', // 대표자 이름
-        corporation_name: '보듬컴퍼니', // 기업 이름
-        address: '중랑구 상봉동 씨티7 202호',
-        phoneNumber: '02-3333-33333',
-        email: 'admin@mubg.ddd',
-        business_number: '02-3333-33333', // 사업자번호
-        createdAt: new Date('2024-7-23'),
-        updatedAt: new Date(),
-      },
-      createdAt: new Date('2024-7-23'),
-      updatedAt: new Date(),
-    },
+    tutorId: '7',
   },
   {
     id: '21',
@@ -789,33 +406,14 @@ const lectureData = [
     category: Category.PLAY,
     thumbnailPath: '/Test-courseImg.png',
     videoUrl: '',
+    tutor_name: '강형욱',
+    tutor_occupation: OccupationType.TRAINER,
     createdAt: new Date(),
     updatedAt: new Date(),
     like: 0,
     tag: ['시츄'],
     bookmark: false,
-    tutor: {
-      id: '7',
-      name: '설채현',
-      introduction: '안녕하세요. 설채현입니다.',
-      career: '보듬컴퍼니 수의사', // 최종(현재) 커리어
-      occupation: OccupationType.VETERINARIAN,
-      traning_name: '보듬 훈련소',
-      traning_location: '중랑구 상봉동 104-37',
-      corporation: {
-        id: '1',
-        owner_name: '강형욱', // 대표자 이름
-        corporation_name: '보듬컴퍼니', // 기업 이름
-        address: '중랑구 상봉동 씨티7 202호',
-        phoneNumber: '02-3333-33333',
-        email: 'admin@mubg.ddd',
-        business_number: '02-3333-33333', // 사업자번호
-        createdAt: new Date('2024-7-23'),
-        updatedAt: new Date(),
-      },
-      createdAt: new Date('2024-7-23'),
-      updatedAt: new Date(),
-    },
+    tutorId: '7',
   },
   {
     id: '22',
@@ -827,33 +425,14 @@ const lectureData = [
     category: Category.PLAY,
     thumbnailPath: '/Test-courseImg-cat.png',
     videoUrl: '',
+    tutor_name: '강형욱',
+    tutor_occupation: OccupationType.TRAINER,
     createdAt: new Date(),
     updatedAt: new Date(),
     like: 0,
     tag: ['시츄'],
     bookmark: false,
-    tutor: {
-      id: '7',
-      name: '설채현',
-      introduction: '안녕하세요. 설채현입니다.',
-      career: '보듬컴퍼니 수의사', // 최종(현재) 커리어
-      occupation: OccupationType.VETERINARIAN,
-      traning_name: '보듬 훈련소',
-      traning_location: '중랑구 상봉동 104-37',
-      corporation: {
-        id: '1',
-        owner_name: '강형욱', // 대표자 이름
-        corporation_name: '보듬컴퍼니', // 기업 이름
-        address: '중랑구 상봉동 씨티7 202호',
-        phoneNumber: '02-3333-33333',
-        email: 'admin@mubg.ddd',
-        business_number: '02-3333-33333', // 사업자번호
-        createdAt: new Date('2024-7-23'),
-        updatedAt: new Date(),
-      },
-      createdAt: new Date('2024-7-23'),
-      updatedAt: new Date(),
-    },
+    tutorId: '7',
   },
   {
     id: '23',
@@ -865,33 +444,14 @@ const lectureData = [
     category: Category.PLAY,
     thumbnailPath: '/Test-courseImg-cat.png',
     videoUrl: '',
+    tutor_name: '강형욱',
+    tutor_occupation: OccupationType.TRAINER,
     createdAt: new Date(),
     updatedAt: new Date(),
     like: 0,
     tag: ['시츄'],
     bookmark: false,
-    tutor: {
-      id: '7',
-      name: '설채현',
-      introduction: '안녕하세요. 설채현입니다.',
-      career: '보듬컴퍼니 수의사', // 최종(현재) 커리어
-      occupation: OccupationType.VETERINARIAN,
-      traning_name: '보듬 훈련소',
-      traning_location: '중랑구 상봉동 104-37',
-      corporation: {
-        id: '1',
-        owner_name: '강형욱', // 대표자 이름
-        corporation_name: '보듬컴퍼니', // 기업 이름
-        address: '중랑구 상봉동 씨티7 202호',
-        phoneNumber: '02-3333-33333',
-        email: 'admin@mubg.ddd',
-        business_number: '02-3333-33333', // 사업자번호
-        createdAt: new Date('2024-7-23'),
-        updatedAt: new Date(),
-      },
-      createdAt: new Date('2024-7-23'),
-      updatedAt: new Date(),
-    },
+    tutorId: '7',
   },
   {
     id: '24',
@@ -903,33 +463,14 @@ const lectureData = [
     category: Category.PLAY,
     thumbnailPath: '/Test-courseImg-cat.png',
     videoUrl: '',
+    tutor_name: '강형욱',
+    tutor_occupation: OccupationType.TRAINER,
     createdAt: new Date(),
     updatedAt: new Date(),
     like: 0,
     tag: ['시츄'],
     bookmark: false,
-    tutor: {
-      id: '7',
-      name: '설채현',
-      introduction: '안녕하세요. 설채현입니다.',
-      career: '보듬컴퍼니 수의사', // 최종(현재) 커리어
-      occupation: OccupationType.VETERINARIAN,
-      traning_name: '보듬 훈련소',
-      traning_location: '중랑구 상봉동 104-37',
-      corporation: {
-        id: '1',
-        owner_name: '강형욱', // 대표자 이름
-        corporation_name: '보듬컴퍼니', // 기업 이름
-        address: '중랑구 상봉동 씨티7 202호',
-        phoneNumber: '02-3333-33333',
-        email: 'admin@mubg.ddd',
-        business_number: '02-3333-33333', // 사업자번호
-        createdAt: new Date('2024-7-23'),
-        updatedAt: new Date(),
-      },
-      createdAt: new Date('2024-7-23'),
-      updatedAt: new Date(),
-    },
+    tutorId: '7',
   },
   {
     id: '25',
@@ -941,33 +482,14 @@ const lectureData = [
     category: Category.PLAY,
     thumbnailPath: '/Test-courseImg-cat.png',
     videoUrl: '',
+    tutor_name: '강형욱',
+    tutor_occupation: OccupationType.TRAINER,
     createdAt: new Date(),
     updatedAt: new Date(),
     like: 0,
     tag: ['시츄'],
     bookmark: false,
-    tutor: {
-      id: '7',
-      name: '설채현',
-      introduction: '안녕하세요. 설채현입니다.',
-      career: '보듬컴퍼니 수의사', // 최종(현재) 커리어
-      occupation: OccupationType.VETERINARIAN,
-      traning_name: '보듬 훈련소',
-      traning_location: '중랑구 상봉동 104-37',
-      corporation: {
-        id: '1',
-        owner_name: '강형욱', // 대표자 이름
-        corporation_name: '보듬컴퍼니', // 기업 이름
-        address: '중랑구 상봉동 씨티7 202호',
-        phoneNumber: '02-3333-33333',
-        email: 'admin@mubg.ddd',
-        business_number: '02-3333-33333', // 사업자번호
-        createdAt: new Date('2024-7-23'),
-        updatedAt: new Date(),
-      },
-      createdAt: new Date('2024-7-23'),
-      updatedAt: new Date(),
-    },
+    tutorId: '7',
   },
   {
     id: '26',
@@ -979,33 +501,14 @@ const lectureData = [
     category: Category.PLAY,
     thumbnailPath: '/Test-courseImg-cat.png',
     videoUrl: '',
+    tutor_name: '강형욱',
+    tutor_occupation: OccupationType.TRAINER,
     createdAt: new Date(),
     updatedAt: new Date(),
     like: 0,
     tag: ['시츄'],
     bookmark: false,
-    tutor: {
-      id: '7',
-      name: '설채현',
-      introduction: '안녕하세요. 설채현입니다.',
-      career: '보듬컴퍼니 수의사', // 최종(현재) 커리어
-      occupation: OccupationType.VETERINARIAN,
-      traning_name: '보듬 훈련소',
-      traning_location: '중랑구 상봉동 104-37',
-      corporation: {
-        id: '1',
-        owner_name: '강형욱', // 대표자 이름
-        corporation_name: '보듬컴퍼니', // 기업 이름
-        address: '중랑구 상봉동 씨티7 202호',
-        phoneNumber: '02-3333-33333',
-        email: 'admin@mubg.ddd',
-        business_number: '02-3333-33333', // 사업자번호
-        createdAt: new Date('2024-7-23'),
-        updatedAt: new Date(),
-      },
-      createdAt: new Date('2024-7-23'),
-      updatedAt: new Date(),
-    },
+    tutorId: '7',
   },
   {
     id: '27',
@@ -1017,33 +520,14 @@ const lectureData = [
     category: Category.PLAY,
     thumbnailPath: '/Test-courseImg-cat.png',
     videoUrl: '',
+    tutor_name: '강형욱',
+    tutor_occupation: OccupationType.TRAINER,
     createdAt: new Date(),
     updatedAt: new Date(),
     like: 0,
     tag: ['시츄'],
     bookmark: false,
-    tutor: {
-      id: '7',
-      name: '설채현',
-      introduction: '안녕하세요. 설채현입니다.',
-      career: '보듬컴퍼니 수의사', // 최종(현재) 커리어
-      occupation: OccupationType.VETERINARIAN,
-      traning_name: '보듬 훈련소',
-      traning_location: '중랑구 상봉동 104-37',
-      corporation: {
-        id: '1',
-        owner_name: '강형욱', // 대표자 이름
-        corporation_name: '보듬컴퍼니', // 기업 이름
-        address: '중랑구 상봉동 씨티7 202호',
-        phoneNumber: '02-3333-33333',
-        email: 'admin@mubg.ddd',
-        business_number: '02-3333-33333', // 사업자번호
-        createdAt: new Date('2024-7-23'),
-        updatedAt: new Date(),
-      },
-      createdAt: new Date('2024-7-23'),
-      updatedAt: new Date(),
-    },
+    tutorId: '7',
   },
   {
     id: '28',
@@ -1055,33 +539,14 @@ const lectureData = [
     category: Category.PLAY,
     thumbnailPath: '/Test-courseImg-cat.png',
     videoUrl: '',
+    tutor_name: '강형욱',
+    tutor_occupation: OccupationType.TRAINER,
     createdAt: new Date(),
     updatedAt: new Date(),
     like: 0,
     tag: ['시츄'],
     bookmark: false,
-    tutor: {
-      id: '7',
-      name: '설채현',
-      introduction: '안녕하세요. 설채현입니다.',
-      career: '보듬컴퍼니 수의사', // 최종(현재) 커리어
-      occupation: OccupationType.VETERINARIAN,
-      traning_name: '보듬 훈련소',
-      traning_location: '중랑구 상봉동 104-37',
-      corporation: {
-        id: '1',
-        owner_name: '강형욱', // 대표자 이름
-        corporation_name: '보듬컴퍼니', // 기업 이름
-        address: '중랑구 상봉동 씨티7 202호',
-        phoneNumber: '02-3333-33333',
-        email: 'admin@mubg.ddd',
-        business_number: '02-3333-33333', // 사업자번호
-        createdAt: new Date('2024-7-23'),
-        updatedAt: new Date(),
-      },
-      createdAt: new Date('2024-7-23'),
-      updatedAt: new Date(),
-    },
+    tutorId: '7',
   },
   {
     id: '29',
@@ -1093,33 +558,14 @@ const lectureData = [
     category: Category.PLAY,
     thumbnailPath: '/Test-courseImg-cat.png',
     videoUrl: '',
+    tutor_name: '강형욱',
+    tutor_occupation: OccupationType.TRAINER,
     createdAt: new Date(),
     updatedAt: new Date(),
     like: 0,
     tag: ['시츄'],
     bookmark: false,
-    tutor: {
-      id: '7',
-      name: '설채현',
-      introduction: '안녕하세요. 설채현입니다.',
-      career: '보듬컴퍼니 수의사', // 최종(현재) 커리어
-      occupation: OccupationType.VETERINARIAN,
-      traning_name: '보듬 훈련소',
-      traning_location: '중랑구 상봉동 104-37',
-      corporation: {
-        id: '1',
-        owner_name: '강형욱', // 대표자 이름
-        corporation_name: '보듬컴퍼니', // 기업 이름
-        address: '중랑구 상봉동 씨티7 202호',
-        phoneNumber: '02-3333-33333',
-        email: 'admin@mubg.ddd',
-        business_number: '02-3333-33333', // 사업자번호
-        createdAt: new Date('2024-7-23'),
-        updatedAt: new Date(),
-      },
-      createdAt: new Date('2024-7-23'),
-      updatedAt: new Date(),
-    },
+    tutorId: '7',
   },
   {
     id: '30',
@@ -1131,33 +577,14 @@ const lectureData = [
     category: Category.PLAY,
     thumbnailPath: '/Test-courseImg-cat.png',
     videoUrl: '',
+    tutor_name: '강형욱',
+    tutor_occupation: OccupationType.TRAINER,
     createdAt: new Date(),
     updatedAt: new Date(),
     like: 0,
     tag: ['시츄'],
     bookmark: false,
-    tutor: {
-      id: '7',
-      name: '설채현',
-      introduction: '안녕하세요. 설채현입니다.',
-      career: '보듬컴퍼니 수의사', // 최종(현재) 커리어
-      occupation: OccupationType.VETERINARIAN,
-      traning_name: '보듬 훈련소',
-      traning_location: '중랑구 상봉동 104-37',
-      corporation: {
-        id: '1',
-        owner_name: '강형욱', // 대표자 이름
-        corporation_name: '보듬컴퍼니', // 기업 이름
-        address: '중랑구 상봉동 씨티7 202호',
-        phoneNumber: '02-3333-33333',
-        email: 'admin@mubg.ddd',
-        business_number: '02-3333-33333', // 사업자번호
-        createdAt: new Date('2024-7-23'),
-        updatedAt: new Date(),
-      },
-      createdAt: new Date('2024-7-23'),
-      updatedAt: new Date(),
-    },
+    tutorId: '7',
   },
   {
     id: '31',
@@ -1169,33 +596,14 @@ const lectureData = [
     category: Category.PLAY,
     thumbnailPath: '/Test-courseImg-cat.png',
     videoUrl: '',
+    tutor_name: '강형욱',
+    tutor_occupation: OccupationType.TRAINER,
     createdAt: new Date(),
     updatedAt: new Date(),
     like: 0,
     tag: ['시츄'],
     bookmark: false,
-    tutor: {
-      id: '7',
-      name: '설채현',
-      introduction: '안녕하세요. 설채현입니다.',
-      career: '보듬컴퍼니 수의사', // 최종(현재) 커리어
-      occupation: OccupationType.VETERINARIAN,
-      traning_name: '보듬 훈련소',
-      traning_location: '중랑구 상봉동 104-37',
-      corporation: {
-        id: '1',
-        owner_name: '강형욱', // 대표자 이름
-        corporation_name: '보듬컴퍼니', // 기업 이름
-        address: '중랑구 상봉동 씨티7 202호',
-        phoneNumber: '02-3333-33333',
-        email: 'admin@mubg.ddd',
-        business_number: '02-3333-33333', // 사업자번호
-        createdAt: new Date('2024-7-23'),
-        updatedAt: new Date(),
-      },
-      createdAt: new Date('2024-7-23'),
-      updatedAt: new Date(),
-    },
+    tutorId: '7',
   },
   {
     id: '32',
@@ -1207,33 +615,14 @@ const lectureData = [
     category: Category.PLAY,
     thumbnailPath: '/Test-courseImg-cat.png',
     videoUrl: '',
+    tutor_name: '강형욱',
+    tutor_occupation: OccupationType.TRAINER,
     createdAt: new Date(),
     updatedAt: new Date(),
     like: 0,
     tag: ['시츄'],
     bookmark: false,
-    tutor: {
-      id: '7',
-      name: '설채현',
-      introduction: '안녕하세요. 설채현입니다.',
-      career: '보듬컴퍼니 수의사', // 최종(현재) 커리어
-      occupation: OccupationType.VETERINARIAN,
-      traning_name: '보듬 훈련소',
-      traning_location: '중랑구 상봉동 104-37',
-      corporation: {
-        id: '1',
-        owner_name: '강형욱', // 대표자 이름
-        corporation_name: '보듬컴퍼니', // 기업 이름
-        address: '중랑구 상봉동 씨티7 202호',
-        phoneNumber: '02-3333-33333',
-        email: 'admin@mubg.ddd',
-        business_number: '02-3333-33333', // 사업자번호
-        createdAt: new Date('2024-7-23'),
-        updatedAt: new Date(),
-      },
-      createdAt: new Date('2024-7-23'),
-      updatedAt: new Date(),
-    },
+    tutorId: '7',
   },
 ];
 
@@ -1245,18 +634,9 @@ const TutorData: Tutor[] = [
     career: '보듬컴퍼니 훈련사', // 최종(현재) 커리어
     occupation: OccupationType.TRAINER,
     traning_name: '보듬 훈련소',
+    corporation_name: '보듬컴퍼니',
     traning_location: '중랑구 상봉동 104-37',
-    corporation: {
-      id: '1',
-      owner_name: '강형욱', // 대표자 이름
-      corporation_name: '보듬컴퍼니', // 기업 이름
-      address: '중랑구 상봉동 씨티7 202호',
-      phoneNumber: '02-3333-33333',
-      email: 'admin@mubg.ddd',
-      business_number: '02-3333-33333', // 사업자번호
-      createdAt: new Date('2024-7-23'),
-      updatedAt: new Date(),
-    },
+    corporationId: '1',
     createdAt: new Date('2024-7-23'),
     updatedAt: new Date(),
   },
@@ -1267,18 +647,9 @@ const TutorData: Tutor[] = [
     career: '보듬컴퍼니 훈련사', // 최종(현재) 커리어
     occupation: OccupationType.TRAINER,
     traning_name: '보듬 훈련소',
+    corporation_name: '보듬컴퍼니',
     traning_location: '중랑구 상봉동 104-37',
-    corporation: {
-      id: '1',
-      owner_name: '강형욱', // 대표자 이름
-      corporation_name: '보듬컴퍼니', // 기업 이름
-      address: '중랑구 상봉동 씨티7 202호',
-      phoneNumber: '02-3333-33333',
-      email: 'admin@mubg.ddd',
-      business_number: '02-3333-33333', // 사업자번호
-      createdAt: new Date('2024-7-23'),
-      updatedAt: new Date(),
-    },
+    corporationId: '1',
     createdAt: new Date('2024-7-23'),
     updatedAt: new Date(),
   },
@@ -1289,18 +660,9 @@ const TutorData: Tutor[] = [
     career: '보듬컴퍼니 훈련사', // 최종(현재) 커리어
     occupation: OccupationType.TRAINER,
     traning_name: '보듬 훈련소',
+    corporation_name: '보듬컴퍼니',
     traning_location: '중랑구 상봉동 104-37',
-    corporation: {
-      id: '1',
-      owner_name: '강형욱', // 대표자 이름
-      corporation_name: '보듬컴퍼니', // 기업 이름
-      address: '중랑구 상봉동 씨티7 202호',
-      phoneNumber: '02-3333-33333',
-      email: 'admin@mubg.ddd',
-      business_number: '02-3333-33333', // 사업자번호
-      createdAt: new Date('2024-7-23'),
-      updatedAt: new Date(),
-    },
+    corporationId: '1',
     createdAt: new Date('2024-7-23'),
     updatedAt: new Date(),
   },
@@ -1314,18 +676,9 @@ const TutorData: Tutor[] = [
     career: '보듬컴퍼니 훈련사', // 최종(현재) 커리어
     occupation: OccupationType.TRAINER,
     traning_name: '보듬 훈련소',
+    corporation_name: '보듬컴퍼니',
     traning_location: '중랑구 상봉동 104-37',
-    corporation: {
-      id: '1',
-      owner_name: '강형욱', // 대표자 이름
-      corporation_name: '보듬컴퍼니', // 기업 이름
-      address: '중랑구 상봉동 씨티7 202호',
-      phoneNumber: '02-3333-33333',
-      email: 'admin@mubg.ddd',
-      business_number: '02-3333-33333', // 사업자번호
-      createdAt: new Date('2024-7-23'),
-      updatedAt: new Date(),
-    },
+    corporationId: '1',
     createdAt: new Date('2024-7-23'),
     updatedAt: new Date(),
   },
@@ -1336,18 +689,9 @@ const TutorData: Tutor[] = [
     career: '보듬컴퍼니 훈련사', // 최종(현재) 커리어
     occupation: OccupationType.TRAINER,
     traning_name: '보듬 훈련소',
+    corporation_name: '보듬컴퍼니',
     traning_location: '중랑구 상봉동 104-37',
-    corporation: {
-      id: '1',
-      owner_name: '강형욱', // 대표자 이름
-      corporation_name: '보듬컴퍼니', // 기업 이름
-      address: '중랑구 상봉동 씨티7 202호',
-      phoneNumber: '02-3333-33333',
-      email: 'admin@mubg.ddd',
-      business_number: '02-3333-33333', // 사업자번호
-      createdAt: new Date('2024-7-23'),
-      updatedAt: new Date(),
-    },
+    corporationId: '1',
     createdAt: new Date('2024-7-23'),
     updatedAt: new Date(),
   },
@@ -1361,18 +705,9 @@ const TutorData: Tutor[] = [
     career: '보듬컴퍼니 훈련사', // 최종(현재) 커리어
     occupation: OccupationType.TRAINER,
     traning_name: '보듬 훈련소',
+    corporation_name: '보듬컴퍼니',
     traning_location: '중랑구 상봉동 104-37',
-    corporation: {
-      id: '1',
-      owner_name: '강형욱', // 대표자 이름
-      corporation_name: '보듬컴퍼니', // 기업 이름
-      address: '중랑구 상봉동 씨티7 202호',
-      phoneNumber: '02-3333-33333',
-      email: 'admin@mubg.ddd',
-      business_number: '02-3333-33333', // 사업자번호
-      createdAt: new Date('2024-7-23'),
-      updatedAt: new Date(),
-    },
+    corporationId: '4',
     createdAt: new Date('2024-7-23'),
     updatedAt: new Date(),
   },
@@ -1384,18 +719,9 @@ const TutorData: Tutor[] = [
     career: '보듬컴퍼니 수의사', // 최종(현재) 커리어
     occupation: OccupationType.VETERINARIAN,
     traning_name: '보듬 훈련소',
+    corporation_name: '보듬컴퍼니',
     traning_location: '중랑구 상봉동 104-37',
-    corporation: {
-      id: '1',
-      owner_name: '강형욱', // 대표자 이름
-      corporation_name: '보듬컴퍼니', // 기업 이름
-      address: '중랑구 상봉동 씨티7 202호',
-      phoneNumber: '02-3333-33333',
-      email: 'admin@mubg.ddd',
-      business_number: '02-3333-33333', // 사업자번호
-      createdAt: new Date('2024-7-23'),
-      updatedAt: new Date(),
-    },
+    corporationId: '5',
     createdAt: new Date('2024-7-23'),
     updatedAt: new Date(),
   },
@@ -1406,18 +732,9 @@ const TutorData: Tutor[] = [
     career: '보듬컴퍼니 수의사', // 최종(현재) 커리어
     occupation: OccupationType.VETERINARIAN,
     traning_name: '보듬 훈련소',
+    corporation_name: '보듬컴퍼니',
     traning_location: '중랑구 상봉동 104-37',
-    corporation: {
-      id: '1',
-      owner_name: '강형욱', // 대표자 이름
-      corporation_name: '보듬컴퍼니', // 기업 이름
-      address: '중랑구 상봉동 씨티7 202호',
-      phoneNumber: '02-3333-33333',
-      email: 'admin@mubg.ddd',
-      business_number: '02-3333-33333', // 사업자번호
-      createdAt: new Date('2024-7-23'),
-      updatedAt: new Date(),
-    },
+    corporationId: '6',
     createdAt: new Date('2024-7-23'),
     updatedAt: new Date(),
   },

@@ -1,9 +1,9 @@
 'use client';
 
-import { Lecture } from '@/types/tyeps.all';
+import { Lecture, Tutor } from '@prisma/client';
 import YoutubePlayableCard from '../common/youtube-player-card';
 import { Button } from '../ui/button';
-import { ChevronRight } from 'lucide-react';
+import { ChevronRight, ZoomIn } from 'lucide-react';
 import {
   Dialog,
   DialogContent,
@@ -14,12 +14,20 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import Image from 'next/image';
+import dummydata from '@/utils/dummydata';
+import { useState } from 'react';
 
 interface LectureContentProps {
   lecture: Lecture;
+  tutor: Tutor;
 }
 
-export default function LectureContent({ lecture }: LectureContentProps) {
+export default function LectureContent({
+  lecture,
+  tutor,
+}: LectureContentProps) {
+  const [isClicked, setIsClicked] = useState(false);
+
   return (
     <section className="container relative mx-auto mt-12 flex w-full max-w-[1150px] justify-between">
       <div className="flex w-2/3">
@@ -74,49 +82,88 @@ export default function LectureContent({ lecture }: LectureContentProps) {
             </div>
           </>
         )}
-        <div className="flex rounded-b-xl bg-gray-100 px-6 py-3">
+        <div className="flex rounded-b-xl bg-slate-100 px-6 py-3">
           <Dialog>
             <DialogTrigger className="flex cursor-pointer items-center gap-2 text-sm underline decoration-gray-400 underline-offset-4">
-              {lecture?.tutor?.name} {lecture?.tutor?.occupation}님 더 알아보기
+              {lecture?.tutor_name} {lecture?.tutor_occupation}님 더 알아보기
               <ChevronRight width={16} height={16} className="opacity-80" />
             </DialogTrigger>
-            <DialogContent className="p-8">
-              <DialogHeader className="flex flex-col gap-3">
+            <DialogContent className="p-8 flex flex-col gap-8">
+              <DialogHeader className="relative flex flex-col gap-3">
                 <DialogTitle className="flex items-center gap-6">
                   <Image
                     src="/Test-face.png"
                     width={64}
                     height={64}
-                    className="rounded-full"
+                    className={`rounded-full cursor-pointer transition-transform duration-500 ease-in-out 
+                      ${isClicked ? 'w-full h-full rounded-full object-cover absolute top-0 left-0 z-20' : ''}`}
                     alt="face"
+                    onClick={() => setIsClicked(!isClicked)}
                   />
                   <div className="flex flex-col gap-2">
-                    {lecture?.tutor?.name}님
-                    <span className="text-sm text-muted-foreground">
-                      {lecture?.tutor?.occupation}
+                    {tutor.name}님
+                    <span className="text-sm text-gray-700">
+                      {tutor.occupation}
                     </span>
                   </div>
                 </DialogTitle>
-                <hr className="w-full border-black" />
-                <DialogDescription className="flex items-center gap-10 whitespace-pre-line py-2">
-                  {lecture?.tutor?.introduction}
+                <hr className="w-full" />
+                <DialogDescription className="whitespace-pre-line py-3 leading-5">
+                  {tutor?.introduction}
                 </DialogDescription>
-                <div className="flex flex-col gap-2">
-                  <span className="text-sm">
-                    {`경력 | ${lecture?.tutor?.career}`}
-                  </span>
-                  <span className="text-sm">
-                    {`소속 | ${lecture?.tutor?.corporation?.corporation_name}`}
-                  </span>
-                  <span className="text-sm">
-                    {`훈련소 이름 | ${lecture?.tutor?.traning_name}`}
-                  </span>
-                  <span className="text-sm">
-                    {`훈련소 위치 | ${lecture?.tutor?.traning_location}`}
-                  </span>
+                <div className="grid grid-cols-2 gap-6">
+                  <div className="flex flex-col gap-2">
+                    <span className="text-green-100 font-bold text-sm">
+                      경력사항
+                    </span>
+                    <hr className="w-full" />
+                    <span className="flex gap-3 text-gray-700 font-semibold text-sm">
+                      경력
+                      <span className="font-medium">{`${tutor?.career}`}</span>
+                    </span>
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <span className="text-green-100 font-bold text-sm">
+                      소속정보
+                    </span>
+                    <hr className="w-full" />
+                    <span className="flex gap-3 text-gray-700 font-semibold text-sm">
+                      소속
+                      <span className="font-medium">{`${tutor?.corporation_name}`}</span>
+                    </span>
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <span className="text-green-100 font-bold text-sm">
+                      훈련소정보
+                    </span>
+                    <hr className="w-full" />
+                    <div className="flex flex-col gap-1">
+                      <span className="flex gap-3 text-gray-700 font-semibold text-sm">
+                        이름
+                        <span className="font-medium">{`${tutor?.traning_name}`}</span>
+                      </span>
+                      <span className="flex gap-3 text-gray-700 font-semibold text-sm">
+                        위치
+                        <span className="font-medium">{`${tutor?.traning_location}`}</span>
+                      </span>
+                    </div>
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <span className="text-green-100 font-bold text-sm">
+                      강사인증
+                    </span>
+                    <hr className="w-full" />
+                    <div className="flex flex-col gap-1">
+                      <span className="flex gap-3 text-gray-700 font-semibold text-sm">
+                        인증서
+                        <span className="cursor-pointer flex gap-2 items-center font-medium underline underline-offset-4 decoration-gray-500">
+                          확인하기 <ZoomIn width={14} height={14} />
+                        </span>
+                      </span>
+                    </div>
+                  </div>
                 </div>
               </DialogHeader>
-
               <DialogFooter>
                 <Button
                   type="button"

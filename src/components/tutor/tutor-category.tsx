@@ -1,6 +1,7 @@
 'use client';
 
-import { Category, Lecture } from '@/types/tyeps.all';
+import { Lecture } from '@prisma/client';
+import { Category } from '@/types/tyeps.all';
 import { Badge } from '../ui/badge';
 import { useEffect, useState } from 'react';
 import LectureContainer from '../lecture/lecture-container';

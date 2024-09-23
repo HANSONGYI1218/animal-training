@@ -1,6 +1,7 @@
 'use client';
 
-import { AnimalType, Lecture } from '@/types/tyeps.all';
+import { AnimalType } from '@/types/tyeps.all';
+import { Lecture } from '@prisma/client';
 import LectureCard from './lecture-card';
 import { useEffect, useState } from 'react';
 import SearchBox from '../common/search-box';
@@ -11,9 +12,13 @@ import LecturePromotion from './lecture-promotion';
 
 interface LectureContainerProps {
   lectures: Lecture[];
+  isPromotion?: boolean;
 }
 
-export default function LectureContainer({ lectures }: LectureContainerProps) {
+export default function LectureContainer({
+  lectures,
+  isPromotion,
+}: LectureContainerProps) {
   const [lecturesData, setLecturesData] = useState(lectures);
   const [animalType, setAnimalType] = useState('전체');
   const [priceState, setPriceState] = useState('전체');
@@ -90,7 +95,7 @@ export default function LectureContainer({ lectures }: LectureContainerProps) {
           return <LectureCard key={index} lecture={lecture} />;
         })}
       </div>
-      <LecturePromotion />
+      {isPromotion && <LecturePromotion />}
       <div className="container mx-auto grid w-full grid-cols-4 gap-6 px-5">
         {lecturesData.slice(20).map((lecture: Lecture, index: number) => {
           return <LectureCard key={index} lecture={lecture} />;

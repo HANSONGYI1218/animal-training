@@ -39,11 +39,13 @@ export type Lecture = {
   price_type: PriceType;
   category: Category;
   thumbnailPath: string;
+  tutor_name: string;
+  tutor_occupation: OccupationType;
   videoUrl: string;
   like: number;
   tag: string[];
   bookmark: boolean;
-  tutor: Tutor;
+  tutorId: string;
   createdAt: Date;
   updatedAt: Date;
 };
@@ -56,7 +58,8 @@ export type Tutor = {
   traning_location: string; //훈련소 위치
   traning_name: string; //훈련소 이름
   occupation: OccupationType;
-  corporation: Corporation;
+  corporation_name: string;
+  corporationId: string;
   createdAt: Date;
   updatedAt: Date;
 };

@@ -1,11 +1,12 @@
 import LectureBanner from '@/components/lecture/lecture-d-banner';
-import type { Lecture } from '@/types/tyeps.all';
 import dummyDate from '@/utils/dummydata';
 import LectureContent from '@/components/lecture/lecture-d-content';
 import LectureCard from '@/components/lecture/lecture-card';
 import { ChevronRight, CircleChevronRight } from 'lucide-react';
 import LectureTagSelect from '@/components/lecture/lecture-d-tag-select';
 import Link from 'next/link';
+import { Lecture, Tutor } from '@prisma/client';
+import prisma from '@/utils/db';
 
 type SearchParams = {
   types?: string;
@@ -26,8 +27,12 @@ export default function LectureDetailPage({
     (item) => item.id === id,
   ) as Lecture;
 
+  const tutor: Tutor = dummyDate.TutorData.find(
+    (item) => item.id === lecture.tutorId,
+  );
+
   const trainerLectures: Lecture[] = dummyDate.lectureData
-    .filter((item) => item.tutor.name === lecture.tutor.name)
+    .filter((item) => item.tutor_name === lecture.tutor_name)
     .slice(0, 4);
 
   const tagLectures: Lecture[] = dummyDate.lectureData.filter((item) =>
@@ -41,12 +46,12 @@ export default function LectureDetailPage({
   return (
     <main className="mb-24 flex w-full flex-col">
       <LectureBanner lecture={lecture} />
-      <LectureContent lecture={lecture} />
+      <LectureContent lecture={lecture} tutor={tutor} />
       <section className="container mx-auto mt-32 flex max-w-[1150px] flex-col gap-6">
         <span className="flex h-8 items-center justify-between gap-2 text-xl font-semibold text-gray-700">
-          {lecture?.tutor?.name} {lecture?.tutor?.occupation}님의 강의 더보기
+          {lecture?.tutor_name} {lecture?.tutor_occupation}님의 강의 더보기
           <Link
-            href={`/tutor/${lecture?.tutor?.id}`}
+            href={`/tutor/${lecture?.tutorId}`}
             className="group relative flex h-8 w-20"
           >
             <div className="relative z-10 flex w-full items-center justify-center gap-1">
@@ -62,7 +67,7 @@ export default function LectureDetailPage({
                 fill="#000000"
               />
             </div>
-            <div className="absolute right-0 top-1 z-0 h-6 w-6 rounded-full bg-black transition-all duration-500 group-hover:top-0 group-hover:h-full group-hover:w-full" />
+            <div className="absolute right-0 top-1 z-0 h-6 w-6 rounded-full bg-black transition-all duration-300 group-hover:top-0 group-hover:h-full group-hover:w-full" />
           </Link>
         </span>
         <div className="grid w-full grid-cols-4 gap-6">

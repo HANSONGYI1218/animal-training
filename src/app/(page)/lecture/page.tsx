@@ -1,6 +1,6 @@
 import LectureContainer from '@/components/lecture/lecture-container';
 import { SwapAnimalType, SwapCategory } from '@/constants/constants.all';
-import type { Lecture } from '@/types/tyeps.all';
+import { Lecture } from '@prisma/client';
 import dummyDate from '@/utils/dummydata';
 
 type SearchParams = {
@@ -24,7 +24,7 @@ export default function Lecture({
 
   return (
     <main className="flex w-full flex-col gap-12 py-6">
-      <LectureContainer lectures={filteredLectures} />
+      <LectureContainer lectures={filteredLectures} isPromotion />
     </main>
   );
 }

@@ -173,18 +173,18 @@ export default function TouchScroll({
       <div className={`justify-center gap-4 ${isStepbar ? 'flex' : 'hidden'}`}>
         <Dot
           onClick={() => handleSpanClick(0)}
-          className={`h-4 w-4 cursor-pointer rounded-full bg-black ${currentStep === 0 ? 'bg-black' : 'bg-gray-300'}`}
-          stroke={`${currentStep === 0 ? 'black' : 'gray-300'}`}
+          className={`h-4 w-4 cursor-pointer rounded-full bg-black ${currentStep === 0 ? 'bg-black' : 'bg-slate-100'}`}
+          stroke={`${currentStep === 0 ? 'black' : 'slate-100'}`}
         />
         <Dot
           onClick={() => handleSpanClick(1)}
-          className={`h-4 w-4 cursor-pointer rounded-full bg-black ${currentStep === 1 ? 'bg-black' : 'bg-gray-300'}`}
-          stroke={`${currentStep === 1 ? 'black' : 'gray-300'}`}
+          className={`h-4 w-4 cursor-pointer rounded-full bg-black ${currentStep === 1 ? 'bg-black' : 'bg-slate-100'}`}
+          stroke={`${currentStep === 1 ? 'black' : 'slate-100'}`}
         />
         <Dot
           onClick={() => handleSpanClick(2)}
-          className={`h-4 w-4 cursor-pointer rounded-full bg-black ${currentStep === 2 ? 'bg-black' : 'bg-gray-300'}`}
-          stroke={`${currentStep === 2 ? 'black' : 'gray-300'}`}
+          className={`h-4 w-4 cursor-pointer rounded-full bg-black ${currentStep === 2 ? 'bg-black' : 'bg-slate-100'}`}
+          stroke={`${currentStep === 2 ? 'black' : 'slate-100'}`}
         />
       </div>
     </section>

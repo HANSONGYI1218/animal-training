@@ -1,4 +1,4 @@
-import { Lecture } from '@/types/tyeps.all';
+import { Lecture } from '@prisma/client';
 import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
 import PlayIcon from '@/public/icons/play.svg?component';
@@ -34,7 +34,7 @@ export default function LectureCard({ lecture }: { lecture: Lecture }) {
         <div className="flex items-center gap-6">
           <div className="flex items-center gap-1">
             <SquareUser width={17} height={17} stroke="#000000" />
-            <span className="text-[0.93rem]">{lecture?.tutor?.name}</span>
+            <span className="text-[0.93rem]">{lecture?.tutor_name}</span>
           </div>
           <div className="flex items-center gap-1">
             <ThumbsUp width={16} height={16} />

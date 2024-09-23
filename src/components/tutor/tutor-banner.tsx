@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Tutor } from '@/types/tyeps.all';
+import { Tutor } from '@prisma/client';
 import { Badge } from '../ui/badge';
 import { Building2, Grip, ThumbsUp } from 'lucide-react';
 
@@ -31,9 +31,7 @@ export default function TutorBanner({ tutor }: TutorBannerProps) {
             </div>
             <div className="flex items-center gap-2">
               <Building2 width={16} height={16} stroke="#000000" />
-              <span className="text-[0.93rem]">
-                {tutor?.corporation?.corporation_name}
-              </span>
+              <span className="text-[0.93rem]">{tutor?.corporation_name}</span>
             </div>
           </div>
         </div>

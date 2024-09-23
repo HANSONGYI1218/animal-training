@@ -1,9 +1,10 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Lecture } from '@/types/tyeps.all';
+
 import { Badge } from '../ui/badge';
 import { SquareUser, ThumbsUp } from 'lucide-react';
+import { Lecture } from '@prisma/client';
 
 interface LectureBannerProps {
   lecture: Lecture;
@@ -30,7 +31,7 @@ export default function LectureBanner({ lecture }: LectureBannerProps) {
             <div className="flex items-center gap-2">
               <SquareUser width={17} height={17} stroke="#ffffff" />
               <span className="text-[0.93rem] text-white">
-                {lecture?.tutor?.name}
+                {lecture?.tutor_name}
               </span>
             </div>
             <div className="flex items-center gap-2">
@@ -39,7 +40,7 @@ export default function LectureBanner({ lecture }: LectureBannerProps) {
             </div>
           </div>
           <div className="flex gap-3">
-            {lecture?.tag.map((t, index: number) => {
+            {lecture?.tag.map((t: string, index: number) => {
               return (
                 <span className="text-sm text-slate-400" key={index}>
                   #{t}
