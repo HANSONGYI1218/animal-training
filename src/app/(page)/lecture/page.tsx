@@ -1,6 +1,6 @@
-import LectureContainer from '@/components/lecture/lecture-container';
-import type { Lecture } from '@/types/tyeps.all';
-import dummyDate from '@/utils/dummydata';
+import LectureContainer from "@/components/lecture/lecture-container";
+import type { Lecture } from "@/types/tyeps.all";
+import dummyDate from "@/utils/dummydata";
 
 type SearchParams = {
   category: string;
@@ -14,7 +14,7 @@ export default function Lecture({
   const { category } = searchParams;
 
   const filteredLectures = dummyDate.lectureData.filter((lecture: Lecture) => {
-    if (category === 'all') {
+    if (category === "all") {
       return true;
     } else {
       return lecture.category.toUpperCase() === category?.toUpperCase();

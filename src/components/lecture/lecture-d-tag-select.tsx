@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import TouchScroll from '@/components/common/touch-scroll';
-import { Lecture } from '@/types/tyeps.all';
-import LectureCard from './lecture-card';
-import { Badge } from '../ui/badge';
-import { useEffect, useState } from 'react';
+import TouchScroll from "@/components/common/touch-scroll";
+import { Lecture } from "@/types/tyeps.all";
+import LectureCard from "./lecture-card";
+import { Badge } from "../ui/badge";
+import { useEffect, useState } from "react";
 
 export default function LectureTagSelect({
   tags,
@@ -34,8 +34,8 @@ export default function LectureTagSelect({
           onClick={() => {
             setSelectTag(tags.length);
           }}
-          variant={'tag'}
-          className={`cursor-pointer ${selectTag === tags.length && 'bg-black text-white'}`}
+          variant={"tag"}
+          className={`cursor-pointer ${selectTag === tags.length && "bg-black text-white"}`}
         >
           #전체
         </Badge>
@@ -46,8 +46,8 @@ export default function LectureTagSelect({
               onClick={() => {
                 setSelectTag(index);
               }}
-              variant={'tag'}
-              className={`cursor-pointer ${selectTag === index && 'bg-black text-white'}`}
+              variant={"tag"}
+              className={`cursor-pointer ${selectTag === index && "bg-black text-white"}`}
             >
               #{tag}
             </Badge>

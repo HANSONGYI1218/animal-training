@@ -1,12 +1,12 @@
-import LectureBanner from '@/components/lecture/lecture-d-banner';
-import dummyDate from '@/utils/dummydata';
-import LectureContent from '@/components/lecture/lecture-d-content';
-import LectureCard from '@/components/lecture/lecture-card';
-import { ChevronRight } from 'lucide-react';
-import LectureTagSelect from '@/components/lecture/lecture-d-tag-select';
-import Link from 'next/link';
-import type { Lecture, Tutor } from '@/types/tyeps.all';
-import prisma from '@/utils/db';
+import LectureBanner from "@/components/lecture/lecture-d-banner";
+import dummyDate from "@/utils/dummydata";
+import LectureContent from "@/components/lecture/lecture-d-content";
+import LectureCard from "@/components/lecture/lecture-card";
+import { ChevronRight } from "lucide-react";
+import LectureTagSelect from "@/components/lecture/lecture-d-tag-select";
+import Link from "next/link";
+import type { Lecture, Tutor } from "@/types/tyeps.all";
+import prisma from "@/utils/db";
 
 export default function LectureDetailPage({
   params,

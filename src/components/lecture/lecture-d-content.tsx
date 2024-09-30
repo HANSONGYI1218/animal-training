@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import type { Lecture, Tutor } from '@/types/tyeps.all';
-import YoutubePlayableCard from '../common/youtube-player-card';
-import { Button } from '../ui/button';
-import { ChevronRight, ZoomIn } from 'lucide-react';
+import type { Lecture, Tutor } from "@/types/tyeps.all";
+import YoutubePlayableCard from "../common/youtube-player-card";
+import { Button } from "../ui/button";
+import { ChevronRight, ZoomIn } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -12,10 +12,10 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/ui/dialog';
-import Image from 'next/image';
-import { OccupationTypeSwap, PriceTypeSwap } from '@/constants/constants.all';
-import { useState } from 'react';
+} from "@/components/ui/dialog";
+import Image from "next/image";
+import { OccupationTypeSwap, PriceTypeSwap } from "@/constants/constants.all";
+import { useState } from "react";
 
 interface LectureContentProps {
   lecture: Lecture;
@@ -31,10 +31,10 @@ export default function LectureContent({
   return (
     <section className="container relative mx-auto mt-12 flex w-full max-w-[1150px] justify-between">
       <div className="flex w-2/3">
-        <YoutubePlayableCard videoId={'Ave10taSLpc'} start={0} duration={5} />
+        <YoutubePlayableCard videoId={"Ave10taSLpc"} start={0} duration={5} />
       </div>
       <div className="sticky top-0 h-fit w-72 rounded-xl border">
-        {PriceTypeSwap[lecture?.price_type] === '유료' ? (
+        {PriceTypeSwap[lecture?.price_type] === "유료" ? (
           <>
             <div className="rounded-t-xl bg-green-100 px-6 py-2 font-semibold text-white">
               특가 할인중!
@@ -50,8 +50,8 @@ export default function LectureContent({
                 </div>
               </div>
               <div className="flex flex-col gap-2">
-                <Button variant={'destructive'}>수강신청 하기</Button>
-                <Button variant={'outline'}>찜하기</Button>
+                <Button variant={"destructive"}>수강신청 하기</Button>
+                <Button variant={"outline"}>찜하기</Button>
               </div>
               <div className="">공유하기 자리</div>
             </div>
@@ -75,8 +75,8 @@ export default function LectureContent({
                 </div>
               </div>
               <div className="flex flex-col gap-2">
-                <Button variant={'destructive'}>수강신청 하기</Button>
-                <Button variant={'outline'}>회원제 바로가기</Button>
+                <Button variant={"destructive"}>수강신청 하기</Button>
+                <Button variant={"outline"}>회원제 바로가기</Button>
               </div>
               <div className="">공유하기 자리</div>
             </div>
@@ -85,19 +85,18 @@ export default function LectureContent({
         <div className="flex rounded-b-xl bg-slate-100 px-6 py-3">
           <Dialog>
             <DialogTrigger className="flex cursor-pointer items-center gap-2 text-sm underline decoration-gray-400 underline-offset-4">
-              {lecture?.tutor_name}{' '}
+              {lecture?.tutor_name}{" "}
               {OccupationTypeSwap[lecture?.tutor_occupation]}님 더 알아보기
               <ChevronRight width={16} height={16} className="opacity-80" />
             </DialogTrigger>
-            <DialogContent className="p-8 flex flex-col gap-8">
+            <DialogContent className="flex flex-col gap-8 p-8">
               <DialogHeader className="relative flex flex-col gap-3">
                 <DialogTitle className="flex items-center gap-6">
                   <Image
                     src="/Test-face.png"
                     width={64}
                     height={64}
-                    className={`rounded-full cursor-pointer transition-transform duration-500 ease-in-out 
-                      ${isClicked ? 'w-full h-full rounded-full object-cover absolute top-0 left-0 z-20' : ''}`}
+                    className={`cursor-pointer rounded-full transition-transform duration-500 ease-in-out ${isClicked ? "absolute left-0 top-0 z-20 h-full w-full rounded-full object-cover" : ""}`}
                     alt="face"
                     onClick={() => setIsClicked(!isClicked)}
                   />
@@ -114,50 +113,50 @@ export default function LectureContent({
                 </DialogDescription>
                 <div className="grid grid-cols-2 gap-6">
                   <div className="flex flex-col gap-2">
-                    <span className="text-green-100 font-bold text-sm">
+                    <span className="text-sm font-bold text-green-100">
                       경력사항
                     </span>
                     <hr className="w-full" />
-                    <span className="flex gap-3 text-gray-700 font-semibold text-sm">
+                    <span className="flex gap-3 text-sm font-semibold text-gray-700">
                       경력
                       <span className="font-medium">{`${tutor?.career}`}</span>
                     </span>
                   </div>
                   <div className="flex flex-col gap-2">
-                    <span className="text-green-100 font-bold text-sm">
+                    <span className="text-sm font-bold text-green-100">
                       소속정보
                     </span>
                     <hr className="w-full" />
-                    <span className="flex gap-3 text-gray-700 font-semibold text-sm">
+                    <span className="flex gap-3 text-sm font-semibold text-gray-700">
                       소속
                       <span className="font-medium">{`${tutor?.corporation_name}`}</span>
                     </span>
                   </div>
                   <div className="flex flex-col gap-2">
-                    <span className="text-green-100 font-bold text-sm">
+                    <span className="text-sm font-bold text-green-100">
                       훈련소 정보
                     </span>
                     <hr className="w-full" />
                     <div className="flex flex-col gap-1">
-                      <span className="flex gap-3 text-gray-700 font-semibold text-sm">
+                      <span className="flex gap-3 text-sm font-semibold text-gray-700">
                         이름
                         <span className="font-medium">{`${tutor?.traning_name}`}</span>
                       </span>
-                      <span className="flex gap-3 text-gray-700 font-semibold text-sm">
+                      <span className="flex gap-3 text-sm font-semibold text-gray-700">
                         위치
                         <span className="font-medium">{`${tutor?.traning_location}`}</span>
                       </span>
                     </div>
                   </div>
                   <div className="flex flex-col gap-2">
-                    <span className="text-green-100 font-bold text-sm">
+                    <span className="text-sm font-bold text-green-100">
                       강사인증
                     </span>
                     <hr className="w-full" />
                     <div className="flex flex-col gap-1">
-                      <span className="flex gap-3 text-gray-700 font-semibold text-sm">
+                      <span className="flex gap-3 text-sm font-semibold text-gray-700">
                         인증서
-                        <span className="cursor-pointer flex gap-2 items-center font-medium underline underline-offset-4 decoration-gray-500">
+                        <span className="flex cursor-pointer items-center gap-2 font-medium underline decoration-gray-500 underline-offset-4">
                           확인하기 <ZoomIn width={14} height={14} />
                         </span>
                       </span>
@@ -169,7 +168,7 @@ export default function LectureContent({
                 <Button
                   type="button"
                   className="flex items-center gap-2 text-sm"
-                  variant={'destructive'}
+                  variant={"destructive"}
                 >
                   강의 보러가기
                   <ChevronRight width={17} height={17} strokeWidth={2.5} />

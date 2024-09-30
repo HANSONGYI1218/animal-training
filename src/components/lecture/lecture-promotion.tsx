@@ -1,4 +1,4 @@
-import TouchScroll from '../common/touch-scroll';
+import TouchScroll from "../common/touch-scroll";
 
 export default function LecturePromotion() {
   return (
