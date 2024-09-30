@@ -1,45 +1,46 @@
-'use client';
+"use client";
 
-import Image from 'next/image';
-import { Button } from '../ui/button';
-import Link from 'next/link';
-import { useEffect, useState } from 'react';
-import LectureCategory from '../lecture/lecture-category';
-import { usePathname } from 'next/navigation';
+import Image from "next/image";
+import { Button } from "../ui/button";
+import Link from "next/link";
+import { useEffect, useState } from "react";
+import LectureCategory from "../lecture/lecture-category";
+import { usePathname } from "next/navigation";
 
 export default function TopBar() {
   const [scrollY, setScrollY] = useState(0);
   const path = usePathname();
-  const [scrollDirection, setScrollDirection] = useState<'up' | 'down'>('up');
+  const [page, setPage] = useState<string>("lecture");
+  const [scrollDirection, setScrollDirection] = useState<"up" | "down">("up");
 
   const handleScroll = () => {
     const currentScrollY = window.scrollY;
 
     if (currentScrollY > scrollY) {
-      setScrollDirection('down');
+      setScrollDirection("down");
     } else if (currentScrollY < scrollY) {
-      setScrollDirection('up');
+      setScrollDirection("up");
     }
 
     setScrollY(currentScrollY);
   };
 
   useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
 
     return () => {
-      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener("scroll", handleScroll);
     };
   }, [scrollY]);
 
   return (
     <header
       className={`sticky top-0 z-30 flex w-full flex-col bg-white transition duration-700 ${
-        path === '/lecture'
-          ? scrollDirection === 'up'
-            ? 'translate-y-0'
-            : '-translate-y-20'
-          : 'translate-y-0'
+        path === "/lecture"
+          ? scrollDirection === "up"
+            ? "translate-y-0"
+            : "-translate-y-20"
+          : "translate-y-0"
       }`}
     >
       <div className="flex border-b py-4">
@@ -47,27 +48,57 @@ export default function TopBar() {
           <Image src="/next.svg" width={70} height={100} alt="main-logo" />
           <div className="flex items-center gap-4">
             <Link href="/lecture?category=all">
-              <Button variant="default" className="w-20">
+              <Button
+                onClick={() => {
+                  setPage("lecture");
+                }}
+                variant="default"
+                className={`w-20 ${page === "lecture" && "text-green-100"}`}
+              >
                 강의
               </Button>
             </Link>
             <Link href="/course">
-              <Button variant="default" className="w-20">
+              <Button
+                onClick={() => {
+                  setPage("curriculum");
+                }}
+                variant="default"
+                className={`w-20 ${page === "curriculum" && "text-green-100"}`}
+              >
                 커리큘럼
               </Button>
             </Link>
             <Link href="/record">
-              <Button variant="default" className="w-20">
+              <Button
+                onClick={() => {
+                  setPage("record");
+                }}
+                variant="default"
+                className={`w-20 ${page === "record" && "text-green-100"}`}
+              >
                 입양기록
               </Button>
             </Link>
             <Link href="/mypage">
-              <Button variant="default" className="w-20">
+              <Button
+                onClick={() => {
+                  setPage("info");
+                }}
+                variant="default"
+                className={`w-20 ${page === "info" && "text-green-100"}`}
+              >
                 내 정보
               </Button>
             </Link>
             <Link href="/store">
-              <Button variant="default" className="w-20">
+              <Button
+                onClick={() => {
+                  setPage("store");
+                }}
+                variant="default"
+                className={`w-20 ${page === "store" && "text-green-100"}`}
+              >
                 스토어
               </Button>
             </Link>
@@ -79,7 +110,7 @@ export default function TopBar() {
           </div>
         </div>
       </div>
-      {path === '/lecture' && <LectureCategory />}
+      {path === "/lecture" && <LectureCategory />}
     </header>
   );
 }

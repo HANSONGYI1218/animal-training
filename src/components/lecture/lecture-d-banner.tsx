@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import { motion } from 'framer-motion';
+import { motion } from "framer-motion";
 
-import { Badge } from '../ui/badge';
-import { SquareUser, ThumbsUp } from 'lucide-react';
-import type { Lecture } from '@/types/tyeps.all';
-import { CategorySwap, PriceTypeSwap } from '@/constants/constants.all';
+import { Badge } from "../ui/badge";
+import { SquareUser, ThumbsUp } from "lucide-react";
+import type { Lecture } from "@/types/tyeps.all";
+import { categorySwap, priceTypeSwap } from "@/constants/constants.all";
 
 interface LectureBannerProps {
   lecture: Lecture;
@@ -21,10 +21,10 @@ export default function LectureBanner({ lecture }: LectureBannerProps) {
           </span>
           <div className="flex gap-2">
             <Badge className="opacity-100">
-              {CategorySwap[lecture?.category]}
+              {categorySwap[lecture?.category]}
             </Badge>
-            <Badge className="opacity-100" variant={'secondary'}>
-              {PriceTypeSwap[lecture?.price_type]}
+            <Badge className="opacity-100" variant={"secondary"}>
+              {priceTypeSwap[lecture?.price_type]}
             </Badge>
           </div>
           <span className="mt-5 h-20 whitespace-pre-line text-sm leading-6 text-white">
@@ -64,14 +64,14 @@ export default function LectureBanner({ lecture }: LectureBannerProps) {
         src="/icons/lecture-circle2.svg"
         alt="lecture-circle"
         className="absolute -left-24 -top-24 z-0"
-        transition={{ duration: 6, repeat: Infinity, repeatType: 'mirror' }}
+        transition={{ duration: 6, repeat: Infinity, repeatType: "mirror" }}
         animate={{ x: -50, y: -30 }}
       />
       <motion.img
         src="/icons/lecture-circle.svg"
         alt="lecture-circle"
         className="absolute right-0 top-12 z-0"
-        transition={{ duration: 8, repeat: Infinity, repeatType: 'mirror' }}
+        transition={{ duration: 8, repeat: Infinity, repeatType: "mirror" }}
         animate={{ x: 50, y: -30 }}
       />
     </section>

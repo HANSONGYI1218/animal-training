@@ -9,18 +9,22 @@ datasource db {
 }
 
 model User {
-  id                Int             @id      //@id => primary key
-  name              String          @db.VarChar(255)
-  email             String          @unique @db.VarChar(255)   
-  address           String          @db.VarChar(255)
-  phoneNumber       String          @unique @db.VarChar(255)
-  nickname          String          @unique @db.VarChar(255)
-  birthday          DateTime        @default(now())
-  sex               SexType         @default(MALE)
-  createdAt         DateTime        @default(now())
-  updatedAt         DateTime        @updatedAt
-  lectureId         String
-  lecture           Lecture?        @relation(fields: [lectureId], references: [id])
+  id                 String          @id      //@id => primary key
+  name               String          @db.VarChar(255)
+  email              String          @unique @db.VarChar(255)   
+  address            String          @db.VarChar(255)
+  phoneNumber        String          @unique @db.VarChar(255)
+  registrationNumber String          @unique @db.VarChar(255)
+  nickname           String          @unique @db.VarChar(255)
+  birthday           DateTime        @default(now())
+  gender             GenderType      @default(MALE)
+  createdAt          DateTime        @default(now())
+  updatedAt          DateTime        @updatedAt
+  lectureId          String
+  lecture            Lecture?        @relation(fields: [lectureId], references: [id])
+  adoptions          Adoption[]
+  Abandons           Abandon[]
+  animals            Animal[]
 
   @@index([lectureId])
 }
@@ -36,6 +40,9 @@ model Corporation {
   createdAt         DateTime        @default(now())
   updatedAt         DateTime        @updatedAt
   tutors            Tutor[]
+  adoptions         Adoption[]
+  Abandons          Abandon[]
+  animals           Animal[]
 }
 
 model Tutor {
@@ -79,6 +86,64 @@ model Lecture {
   @@index([tutorId])
 }
 
+model Adoption {
+  id                String          @id      //@id => primary key
+  adoption_date     DateTime        @default(now())
+  abandon_date      DateTime?
+  status            AdoptionStatus  @default(ADOPTION)
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+  userId            String
+  corporationId     String
+  animalId          String
+  user              User?           @relation(fields: [userId], references: [id])
+  corporation       Corporation?    @relation(fields: [corporationId], references: [id])
+  animal            Animal?         @relation(fields: [animalId], references: [id])
+
+  @@index([userId])
+  @@index([corporationId])
+  @@index([animalId])
+}
+
+model Abandon {
+  id                String          @id      //@id => primary key
+  abandon_date      DateTime        @default(now())
+  adoption_date     DateTime?     
+  abandon_reason    String          @db.Text
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+  userId            String
+  corporationId     String
+  animalId          String
+  user              User?           @relation(fields: [userId], references: [id])
+  corporation       Corporation?    @relation(fields: [corporationId], references: [id])
+  animal            Animal?         @relation(fields: [animalId], references: [id])
+  
+  @@index([userId])
+  @@index([corporationId])
+  @@index([animalId])
+}
+
+model Animal {
+  id                String          @id      //@id => primary key
+  name              String?         @db.VarChar(255)
+  age               Int?            @default(0)
+  gender            GenderType      @default(MALE)
+  breed             String          @db.VarChar(255)
+  profile           String          @db.VarChar(255)
+  additionalImg     String[]          
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+  userId            String
+  corporationId     String
+  user              User?                                                                                                                                                                                                             @relation(fields: [userId], references: [id])
+  corporation       Corporation?    @relation(fields: [corporationId], references: [id])
+  adoptions         Adoption[]
+  Abandons          Abandon[]
+
+  @@index([userId])
+  @@index([corporationId])
+}
 
 enum AnimalType {
   DOG 
@@ -90,7 +155,7 @@ enum PriceType {
   PAID
 }
 
-enum SexType {
+enum GenderType {
   MALE 
   FEMALE 
 }
@@ -111,4 +176,9 @@ enum Category {
   ADOPT
   PLAY
   COMMUNICATION 
+}
+
+enum AdoptionStatus {
+  ADOPTION 
+  Abandon
 }

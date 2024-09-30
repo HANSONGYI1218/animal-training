@@ -1,25 +1,25 @@
-import * as React from 'react';
-import { cva, type VariantProps } from 'class-variance-authority';
+import * as React from "react";
+import { cva, type VariantProps } from "class-variance-authority";
 
-import { cn } from '@/lib/utils';
+import { cn } from "@/lib/utils";
 
 const badgeVariants = cva(
-  'h-7 inline-flex items-center rounded-full border px-4 py-0.5 text-sm font-bold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2',
+  "h-7 inline-flex items-center rounded-full border px-4 py-0.5 text-sm font-bold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
   {
     variants: {
       variant: {
         default:
-          'bg-[#9ECEA1] text-black hover:bg-currentColor border-transparent opacity-70',
+          "bg-[#9ECEA1] text-black hover:bg-currentColor border-transparent opacity-70",
         secondary:
-          'bg-[#E28C9A] text-white hover:bg-currentColor border-transparent opacity-80',
+          "bg-[#E28C9A] text-white hover:bg-currentColor border-transparent opacity-80",
         destructive:
-          'bg-[#cedfd4] text-black hover:bg-currentColor border-transparent',
-        outline: 'text-foreground',
-        tag: 'bg-slate-100 text-foreground hover:scale-105 border-transparent',
+          "bg-[#e4605e] text-white hover:bg-currentColor border-transparent",
+        outline: "text-foreground",
+        tag: "bg-slate-100 text-foreground hover:scale-105 border-transparent",
       },
     },
     defaultVariants: {
-      variant: 'default',
+      variant: "default",
     },
   },
 );
