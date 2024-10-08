@@ -21,7 +21,7 @@ export default function SearchBox({
         placeholder={placeholder}
         className="h-full border-none p-0"
       />
-      <Search width={20} height={20} />
+      <Search width={20} height={20} cursor={"pointer"} />
     </div>
   );
 }

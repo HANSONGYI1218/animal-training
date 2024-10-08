@@ -12,7 +12,7 @@ const buttonVariants = cva(
         default:
           "bg-transparent text-base font-semibold hover:bg-currentColor text-black hover:text-green-100",
         destructive:
-          "bg-black text-base font-semibold hover:bg-black/90 text-white",
+          "bg-black text-base font-semibold hover:bg-black/80 text-white",
         outline:
           "border border-input text-base font-semibold bg-background hover:bg-accent hover:text-accent-foreground",
         secondary: "bg-white text-black font-semibold text-base rounded-full",
@@ -21,7 +21,7 @@ const buttonVariants = cva(
         lectureCategory:
           "bg-white text-sm font-medium border-b-2 border-white hover:bg-currentColor text-black hover:border-gray-300 rounded-none py-4",
         ghost: "hover:bg-accent hover:text-accent-foreground",
-        link: "text-primary underline-offset-4 hover:underline",
+        link: "w-fit rounded-full text-primary hover:scale-105",
       },
       size: {
         default: "h-10 px-4 py-2",

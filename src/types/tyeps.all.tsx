@@ -36,6 +36,19 @@ export enum AdoptionStatus {
   ABANDON = "ABANDON",
 }
 
+export enum CurriculumStep {
+  LECTURE = "LECTURE",
+  TRANING = "TRANING",
+  END = "END",
+}
+
+export enum RatingStatus {
+  VERY_GOOD = "VERY_GOOD",
+  GOOD = "GOOD",
+  GENERAL = "GENERAL",
+  BAD = "BAD",
+}
+
 export type Lecture = {
   id: string;
   title: string;
@@ -59,6 +72,7 @@ export type Tutor = {
   id: string;
   name: string;
   introduction: string;
+  profile_img: string;
   career: string; // 최종(현재) 커리어
   traning_location: string; //훈련소 위치
   traning_name: string; //훈련소 이름
@@ -126,9 +140,62 @@ export type Animal = {
   gender: GenderType;
   profile: string;
   breed: string;
-  additionalImg: string[];
+  additionalImgs: string[];
   createdAt: Date;
   updatedAt: Date;
   userId: string | null;
   corporationId: string | null;
+};
+
+export type CurriculumLecture = {
+  id: string;
+  index: number;
+  title: string;
+  content: string;
+  animal_type: AnimalType;
+  category: Category;
+  thumbnailPath: string;
+  tutor_name: string;
+  tutor_occupation: OccupationType;
+  videoUrl: string;
+  tutorId: string;
+  curriculumCollectionId: string;
+  createdAt: Date;
+  updatedAt: Date;
+};
+
+export type UserCurriculum = {
+  id: string;
+  curriculumType: AnimalType;
+  curriculumStep: CurriculumStep;
+  currentCategory: Category;
+  currentIndex: number;
+  userId: string;
+};
+
+export type TraningCenter = {
+  id: string;
+  name: string;
+  introduction: string;
+  profile: string;
+  additionalImgs: string[];
+  address: string;
+  holidays: string[];
+  price: number;
+  like: number;
+  createdAt: Date;
+  updatedAt: Date;
+  tutorId: string;
+  corporationId: string;
+};
+
+export type Review = {
+  id: string;
+  parentId: string | null;
+  rating: RatingStatus;
+  content: string;
+  createdAt: Date;
+  updatedAt: Date;
+  userId: string;
+  traningCenterId: string;
 };
