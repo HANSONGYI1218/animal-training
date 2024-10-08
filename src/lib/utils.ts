@@ -15,3 +15,8 @@ export function calculateAge(birthDate: Date) {
   // 1970년을 기준으로 나이를 계산 (Unix Epoch 기준)
   return Math.abs(ageDate.getUTCFullYear() - 1970);
 }
+
+export function formatPrice(price: number | undefined) {
+  if (price === undefined) return "";
+  return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}

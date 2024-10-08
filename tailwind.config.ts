@@ -29,6 +29,9 @@ const config = {
       max: "1921px",
     },
     extend: {
+      backgroundImage: {
+        "grass-pattern": "url('/images/curriculum/grass.jpg')",
+      },
       colors: {
         "green-100": "#00592D",
         "green-80": "#027B3F",

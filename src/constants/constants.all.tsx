@@ -84,3 +84,53 @@ export function getOccupationTypeByValue(
     ([key, val]) => val === value,
   )?.[0] as OccupationType | undefined;
 }
+
+export const trainigCurriculums = [
+  {
+    title: "강형욱과 커뮤니케이션 수업",
+    content: "강아지와 워킹 클래스",
+    hour: "2시간",
+  },
+  {
+    title: "강형욱과 커뮤니케이션 수업",
+    content: "강아지와 워킹 클래스",
+    hour: "2시간",
+  },
+  {
+    title: "강형욱과 커뮤니케이션 수업",
+    content: "강아지와 워킹 클래스",
+    hour: "2시간",
+  },
+  {
+    title: "강형욱과 커뮤니케이션 수업",
+    content: "강아지와 워킹 클래스",
+    hour: "2시간",
+  },
+  {
+    title: "강형욱과 커뮤니케이션 수업",
+    content: "강아지와 워킹 클래스",
+    hour: "2시간",
+  },
+  {
+    title: "강형욱과 커뮤니케이션 수업",
+    content: "강아지와 워킹 클래스",
+    hour: "2시간",
+  },
+  {
+    title: "강형욱과 커뮤니케이션 수업",
+    content: "강아지와 워킹 클래스",
+    hour: "2시간",
+  },
+  {
+    title: "강형욱과 커뮤니케이션 수업",
+    content: "강아지와 워킹 클래스",
+    hour: "2시간",
+  },
+];
+
+export const traningCaution = [
+  "모든 훈련소의 커리큘럼은 동일합니다.",
+  "반려동물의 상황에 따라 자세한 커리큘럼이 달라질 수 있습니다.",
+  "환불 정책은 훈련소마다 다르니 가격 부분을 정확히 확인해주세요.",
+  "훈련을 하는 시점부터 집(본가)에서 강아지와 함께 생활해야 합니다.",
+];

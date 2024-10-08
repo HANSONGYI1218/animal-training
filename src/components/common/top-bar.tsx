@@ -41,6 +41,10 @@ export default function TopBar() {
             ? "translate-y-0"
             : "-translate-y-20"
           : "translate-y-0"
+      } ${
+        path.startsWith("/curriculum/lecture") &&
+        path.split("/").length === 5 &&
+        "hidden"
       }`}
     >
       <div className="flex border-b py-4">
@@ -58,7 +62,7 @@ export default function TopBar() {
                 강의
               </Button>
             </Link>
-            <Link href="/course">
+            <Link href="/curriculum">
               <Button
                 onClick={() => {
                   setPage("curriculum");

@@ -131,3 +131,18 @@
 	40% {transform: translateY(-30px);}
 	60% {transform: translateY(-15px);}
 }
+
+.scroll_color {
+  scrollbar-gutter: stable;
+}
+.scroll_color::-webkit-scrollbar {
+  width: 5px;
+}
+.scroll_color::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: rgb(148 163 184);
+}
+.scroll_color::-webkit-scrollbar-track {
+  border-radius: 10px;
+  background-color: #f5f5f5;
+}

@@ -1,7 +1,7 @@
 "use client";
 
 import type { Lecture, Tutor } from "@/types/tyeps.all";
-import YoutubePlayableCard from "../common/youtube-player-card";
+import YoutubePlayableCard from "../common/player-card";
 import { Button } from "../ui/button";
 import { ChevronRight, ZoomIn } from "lucide-react";
 import {
@@ -14,7 +14,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import Image from "next/image";
-import { OccupationTypeSwap, PriceTypeSwap } from "@/constants/constants.all";
+import { occupationTypeSwap, priceTypeSwap } from "@/constants/constants.all";
 import { useState } from "react";
 
 interface LectureContentProps {
@@ -34,7 +34,7 @@ export default function LectureContent({
         <YoutubePlayableCard videoId={"Ave10taSLpc"} start={0} duration={5} />
       </div>
       <div className="sticky top-0 h-fit w-72 rounded-xl border">
-        {PriceTypeSwap[lecture?.price_type] === "유료" ? (
+        {priceTypeSwap[lecture?.price_type] === "유료" ? (
           <>
             <div className="rounded-t-xl bg-green-100 px-6 py-2 font-semibold text-white">
               특가 할인중!
@@ -86,14 +86,14 @@ export default function LectureContent({
           <Dialog>
             <DialogTrigger className="flex cursor-pointer items-center gap-2 text-sm underline decoration-gray-400 underline-offset-4">
               {lecture?.tutor_name}{" "}
-              {OccupationTypeSwap[lecture?.tutor_occupation]}님 더 알아보기
+              {occupationTypeSwap[lecture?.tutor_occupation]}님 더 알아보기
               <ChevronRight width={16} height={16} className="opacity-80" />
             </DialogTrigger>
             <DialogContent className="flex flex-col gap-8 p-8">
               <DialogHeader className="relative flex flex-col gap-3">
                 <DialogTitle className="flex items-center gap-6">
                   <Image
-                    src="/Test-face.png"
+                    src={tutor?.profile_img}
                     width={64}
                     height={64}
                     className={`cursor-pointer rounded-full transition-transform duration-500 ease-in-out ${isClicked ? "absolute left-0 top-0 z-20 h-full w-full rounded-full object-cover" : ""}`}

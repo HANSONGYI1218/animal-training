@@ -16,6 +16,7 @@ const badgeVariants = cva(
           "bg-[#e4605e] text-white hover:bg-currentColor border-transparent",
         outline: "text-foreground",
         tag: "bg-slate-100 text-foreground hover:scale-105 border-transparent",
+        done: "bg-neutral-400 text-foreground border-transparent opacity-60",
       },
     },
     defaultVariants: {
