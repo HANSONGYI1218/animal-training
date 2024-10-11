@@ -1,15 +1,20 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider     = "postgresql"
-  url          = env("DATABASE_URL")
-  relationMode = "prisma"
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model User {
-  id                 String          @id      //@id => primary key
+  id                 String          @id  @default(uuid())
   name               String          @db.VarChar(255)
   email              String          @unique @db.VarChar(255)   
   address            String          @db.VarChar(255)
@@ -32,7 +37,7 @@ model User {
 }
 
 model UserCurriculum {
-  id                  String          @id      //@id => primary key
+  id                  String          @id  @default(uuid())
   curriculumType      AnimalType      @default(DOG)
   curriculumStep      CurriculumStep   @default(LECTURE)
   currentCategory     Category        @default(TRAINING)
@@ -44,7 +49,7 @@ model UserCurriculum {
 }
 
 model Corporation {
-  id                String          @id      //@id => primary key
+  id                String          @id  @default(uuid())
   owner_name        String          @db.VarChar(255)        
   corporation_name  String          @db.VarChar(255)      
   address           String          @db.VarChar(255)
@@ -61,7 +66,7 @@ model Corporation {
 }
 
 model Tutor {
-  id                 String          @id      //@id => primary key
+  id                 String          @id @default(uuid())
   name               String          @db.VarChar(255)
   introduction       String          @db.Text
   career             String          @db.VarChar(255)
@@ -82,7 +87,7 @@ model Tutor {
 }
 
 model Lecture {
-  id                String          @id      //@id => primary key
+  id                String          @id  @default(uuid())
   title             String          @db.VarChar(255)
   content           String          @db.Text
   animal_type       AnimalType      @default(CAT)
@@ -105,7 +110,7 @@ model Lecture {
 }
 
 model CurriculumLecture {
-  id                      String          @id      //@id => primary key
+  id                      String          @id  @default(uuid())
   index                   Int             @default(0)
   title                   String          @db.VarChar(255)
   content                 String          @db.Text
@@ -125,7 +130,7 @@ model CurriculumLecture {
 }
 
 model Adoption {
-  id                String          @id      //@id => primary key
+  id                String          @id  @default(uuid())
   adoption_date     DateTime        @default(now())
   abandon_date      DateTime?
   status            AdoptionStatus  @default(ADOPTION)
@@ -144,7 +149,7 @@ model Adoption {
 }
 
 model Abandon {
-  id                String          @id      //@id => primary key
+  id                String          @id  @default(uuid())
   abandon_date      DateTime        @default(now())
   adoption_date     DateTime?     
   abandon_reason    String          @db.Text
@@ -163,7 +168,7 @@ model Abandon {
 }
 
 model Animal {
-  id                String          @id      //@id => primary key
+  id                String          @id  @default(uuid())
   name              String?         @db.VarChar(255)
   age               Int?            @default(0)
   gender            GenderType      @default(MALE)
@@ -184,7 +189,7 @@ model Animal {
 }
 
 model TraningCenter {
-  id                 String          @id      //@id => primary key
+  id                 String          @id  @default(uuid())
   name               String          @db.VarChar(255)
   introduction       String          @db.Text
   profile            String          @db.VarChar(255)
@@ -206,7 +211,7 @@ model TraningCenter {
 }
 
 model Review {
-  id                 String          @id      //@id => primary key
+  id                 String          @id  @default(uuid())
   parentId           String?
   rating             RatingStatus
   content            String          @db.VarChar(255)
