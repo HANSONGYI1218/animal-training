@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.4",
+    "@nestjs/common": "^10.4.4",
     "@prisma/client": "^5.19.1",
     "@radix-ui/react-accordion": "^1.1.2",
     "@radix-ui/react-avatar": "^1.0.4",
@@ -35,6 +36,7 @@
     "@radix-ui/react-slot": "^1.0.2",
     "@radix-ui/react-toast": "^1.1.5",
     "@svgr/webpack": "^8.1.0",
+    "class-validator": "^0.14.1",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
     "date-fns": "^3.6.0",
@@ -50,6 +52,8 @@
     "react-dom": "^18",
     "react-hook-form": "^7.51.2",
     "react-player": "^2.16.0",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1",
     "tailwind-merge": "0.1.1",
     "tailwindcss-animate": "^1.0.7",
     "zod": "^3.22.4"

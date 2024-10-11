@@ -20,3 +20,8 @@ export function formatPrice(price: number | undefined) {
   if (price === undefined) return "";
   return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
+
+// ID 생성 함수 (예시로 간단한 UUID 생성)
+export function generateId(): string {
+  return Math.random().toString(36).slice(2, 9);
+}
