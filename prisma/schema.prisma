@@ -233,6 +233,17 @@ model Review {
   @@index([traningCenterId])
 }
 
+model Notice{
+  id                 String          @id  @default(uuid())
+  title              String          @db.VarChar(255)
+  content            String          @db.Text
+  image              String          @db.VarChar(255)
+  isFixed            Boolean         @default(false)
+  index              Int             @default(0)
+  createdAt          DateTime        @default(now())
+  updatedAt          DateTime        @updatedAt
+}
+
 enum AnimalType {
   DOG 
   CAT

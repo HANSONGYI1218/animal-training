@@ -2,7 +2,37 @@ import * as React from "react";
 import { ChevronLeft, ChevronRight, MoreHorizontal } from "lucide-react";
 
 import { cn } from "@/lib/utils";
-import { ButtonProps, buttonVariants } from "@/components/ui/button";
+import { Button, ButtonProps, buttonVariants } from "@/components/ui/button";
+
+export interface ButtonNewProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  aschild?: boolean;
+  isActive?: boolean;
+}
+
+export function PaginationButton({
+  isActive,
+  onClick,
+  children,
+  className,
+}: ButtonNewProps) {
+  return (
+    <Button
+      role="button"
+      onClick={onClick}
+      className={cn(
+        "space-nowrap inline-flex h-8 w-8 items-center justify-center rounded-xl bg-white text-sm font-extrabold text-neutral-700 transition-colors hover:bg-green-40 disabled:pointer-events-none disabled:opacity-50",
+        isActive
+          ? "bg-green-100 text-white hover:bg-green-100/90 hover:text-white"
+          : "",
+        className,
+      )}
+    >
+      {children}
+    </Button>
+  );
+}
+PaginationButton.displayName = "PaginationButton";
 
 const Pagination = ({ className, ...props }: React.ComponentProps<"nav">) => (
   <nav
