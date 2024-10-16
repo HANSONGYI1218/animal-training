@@ -20,7 +20,7 @@ const buttonVariants = cva(
           "bg-white text-base font-semibold ease-in-out text-black border-2 border-green-100 hover:scale-105 duration-300 transition",
         lectureCategory:
           "bg-white text-sm font-medium border-b-2 border-white hover:bg-currentColor text-black hover:border-gray-300 rounded-none py-4",
-        ghost: "hover:bg-green-20 hover:text-accent-foreground",
+        ghost: "hover:bg-slate-100 hover:text-accent-foreground",
         link: "w-fit rounded-full text-primary hover:scale-105",
         profile: "bg-white text-base font-semibold  hover:bg-green-40",
       },
