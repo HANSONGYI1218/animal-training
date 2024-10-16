@@ -36,6 +36,20 @@ export class CreateUserDto {
   lectureId!: string;
 }
 
+export class UpdateUserDto {
+  @IsNotEmptyString()
+  email!: string;
+
+  @IsNotEmptyString()
+  address!: string;
+
+  @IsNotEmptyString()
+  phoneNumber!: string;
+
+  @IsNotEmptyString()
+  nickname!: string;
+}
+
 export class GetUserDto {
   id!: string;
   name!: string;

@@ -1,6 +1,6 @@
 "use client";
 
-import type { Lecture } from "@/types/tyeps.all";
+import { Lecture } from "@prisma/client";
 import { Category } from "@/types/tyeps.all";
 import { categorySwap } from "@/constants/constants.all";
 import { Badge } from "../ui/badge";

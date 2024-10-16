@@ -1,7 +1,6 @@
 import VideoHeader from "@/components/curriculum/video/video-header";
 import { CurriculumLecture } from "@/types/tyeps.all";
 import dummydata from "@/utils/dummydata";
-import { Provider } from "@radix-ui/react-toast";
 
 export default function LectureVideoPage({
   params,

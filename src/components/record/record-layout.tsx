@@ -1,6 +1,6 @@
 "use client";
 
-import { User } from "@/types/tyeps.all";
+import { User } from "@prisma/client";
 import { Button } from "../ui/button";
 import Image from "next/image";
 import { calculateAge } from "@/lib/utils";

@@ -84,13 +84,13 @@ export default function TopBar() {
                 입양기록
               </Button>
             </Link>
-            <Link href="/mypage">
+            <Link href="/mypage/profile">
               <Button
                 onClick={() => {
-                  setPage("info");
+                  setPage("mypage");
                 }}
                 variant="default"
-                className={`w-20 ${page === "info" && "text-green-100"}`}
+                className={`w-20 ${page === "mypage" && "text-green-100"}`}
               >
                 내 정보
               </Button>
@@ -104,6 +104,17 @@ export default function TopBar() {
                 className={`w-20 ${page === "store" && "text-green-100"}`}
               >
                 스토어
+              </Button>
+            </Link>
+            <Link href="/notice">
+              <Button
+                onClick={() => {
+                  setPage("notice");
+                }}
+                variant="default"
+                className={`w-20 ${page === "notice" && "text-green-100"}`}
+              >
+                공지사항
               </Button>
             </Link>
             <Link href="/login">

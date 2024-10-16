@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import RecordSearchForm from "./record-search-form";
-import { Abandon, Adoption, GenderType, User } from "@/types/tyeps.all";
+import { Abandon, Adoption, User } from "@prisma/client";
 import RecordLayout from "./record-layout";
 import { ChevronDown } from "lucide-react";
 import RecordStep from "./record-step";

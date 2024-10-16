@@ -38,6 +38,7 @@ export enum AdoptionStatus {
 
 export enum CurriculumStep {
   LECTURE = "LECTURE",
+  LECTURE_END = "LECTURE_END",
   TRANING = "TRANING",
   END = "END",
 }
@@ -47,6 +48,13 @@ export enum RatingStatus {
   GOOD = "GOOD",
   GENERAL = "GENERAL",
   BAD = "BAD",
+}
+
+export enum AttendanceStatus {
+  ATTENDANCE = "ATTENDANCE",
+  TARDY = "TARDY",
+  ABSENT = "ABSENT",
+  SCHEDULED = "SCHEDULED",
 }
 
 export type Lecture = {
@@ -61,7 +69,7 @@ export type Lecture = {
   tutor_occupation: OccupationType;
   videoUrl: string;
   like: number;
-  tag: string[];
+  tags: string[];
   bookmark: boolean;
   tutorId: string;
   createdAt: Date;
@@ -169,9 +177,24 @@ export type UserCurriculum = {
   curriculumType: AnimalType;
   curriculumStep: CurriculumStep;
   currentCategory: Category;
+  attendances: Array<{
+    training_date: Date;
+    start_time: string | null;
+    end_time: string | null;
+    absent_reason: string | null;
+    attendance_status: AttendanceStatus;
+  }> | null;
   currentIndex: number;
   userId: string;
 };
+
+export interface AttendanceRecord {
+  training_date: Date;
+  attendance_status: AttendanceStatus;
+  start_time: string;
+  end_time: string;
+  absent_reason: string | null;
+}
 
 export type TraningCenter = {
   id: string;

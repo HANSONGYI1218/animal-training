@@ -1,7 +1,7 @@
 "use client";
 
 import TouchScroll from "@/components/common/touch-scroll";
-import { Lecture } from "@/types/tyeps.all";
+import { Lecture } from "@prisma/client";
 import LectureCard from "./lecture-card";
 import { Badge } from "../ui/badge";
 import { useEffect, useState } from "react";
@@ -21,7 +21,7 @@ export default function LectureTagSelect({
       setFilterLectures(tagLectures);
     } else {
       const getLectures = tagLectures.filter((lecture) =>
-        lecture.tag.includes(tags[selectTag]),
+        lecture.tags.includes(tags[selectTag]),
       );
       setFilterLectures(getLectures);
     }

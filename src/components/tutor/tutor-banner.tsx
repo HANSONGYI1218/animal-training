@@ -1,10 +1,10 @@
 "use client";
 
 import { motion } from "framer-motion";
-import type { Tutor } from "@/types/tyeps.all";
+import { Tutor } from "@prisma/client";
 import { occupationTypeSwap } from "@/constants/constants.all";
 import { Badge } from "../ui/badge";
-import { Building2, Grip, ThumbsUp } from "lucide-react";
+import { Building2, Grip } from "lucide-react";
 
 interface TutorBannerProps {
   tutor: Tutor;

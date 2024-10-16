@@ -1,24 +1,20 @@
-import { Lecture } from "@prisma/client";
-import { Badge } from "../ui/badge";
-import { Button } from "../ui/button";
+import { Badge } from "../../ui/badge";
+import { Button } from "../../ui/button";
 import PlayIcon from "@/public/icons/play.svg?component";
-import { SquareUser, ThumbsUp } from "lucide-react";
+import { Bookmark, SquareUser, ThumbsUp, Triangle } from "lucide-react";
 import Link from "next/link";
 import { categorySwap, priceTypeSwap } from "@/constants/constants.all";
+import { Lecture } from "@prisma/client";
 
 export default function LectureCard({ lecture }: { lecture: Lecture }) {
   return (
-    <div className="group relative mb-7 flex h-full w-full cursor-pointer flex-col gap-4 rounded-lg">
-      <div className="absolute left-0 top-0 z-10 flex h-full w-full items-center justify-center rounded-lg transition-all duration-300 group-hover:bg-black group-hover:bg-opacity-75">
-        <Link href={`/lecture/${lecture?.id}`}>
-          <Button
-            className="flex gap-2 bg-white opacity-0 transition-all duration-300 group-hover:opacity-100"
-            variant={"secondary"}
-          >
-            <PlayIcon /> 보러가기
-          </Button>
-        </Link>
-      </div>
+    <div className="relative mb-7 flex h-full w-full cursor-pointer flex-col gap-4 rounded-lg">
+      <Bookmark
+        className="absolute -top-2 right-2"
+        stroke="rgb(253 224 71)"
+        fill="rgb(253 224 71)"
+      />
+
       <img
         src={lecture?.thumbnailPath}
         alt="lecture-thumbnail"
@@ -44,7 +40,26 @@ export default function LectureCard({ lecture }: { lecture: Lecture }) {
             <span className="text-[0.93rem]">{lecture?.like}</span>
           </div>
         </div>
-        <span></span>
+        <Link
+          href={`/lecture/${lecture?.id}`}
+          className="group relative flex w-32 self-end"
+        >
+          <div className="absolute bottom-0 left-0 h-full w-4 rounded-full bg-black opacity-0 transition-all duration-300 group-hover:w-32 group-hover:opacity-100" />
+          <Button
+            className="relative z-10 flex gap-2 bg-transparent transition-all duration-300 hover:text-white"
+            variant={"secondary"}
+          >
+            <PlayIcon className="group-hover:hidden" />
+            <Triangle
+              className="ml-2.5 hidden rotate-90 group-hover:flex"
+              fill="#ffffff"
+              stroke="#ffffff"
+              width={14}
+              height={14}
+            />
+            보러가기
+          </Button>
+        </Link>
       </div>
     </div>
   );

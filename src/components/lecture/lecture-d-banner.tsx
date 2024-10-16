@@ -4,8 +4,8 @@ import { motion } from "framer-motion";
 
 import { Badge } from "../ui/badge";
 import { SquareUser, ThumbsUp } from "lucide-react";
-import type { Lecture } from "@/types/tyeps.all";
 import { categorySwap, priceTypeSwap } from "@/constants/constants.all";
+import { Lecture } from "@prisma/client";
 
 interface LectureBannerProps {
   lecture: Lecture;
@@ -43,7 +43,7 @@ export default function LectureBanner({ lecture }: LectureBannerProps) {
             </div>
           </div>
           <div className="flex gap-3">
-            {lecture?.tag.map((t: string, index: number) => {
+            {lecture?.tags.map((t: string, index: number) => {
               return (
                 <span className="text-sm text-slate-400" key={index}>
                   #{t}

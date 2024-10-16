@@ -39,9 +39,10 @@ model User {
 model UserCurriculum {
   id                  String          @id  @default(uuid())
   curriculumType      AnimalType      @default(DOG)
-  curriculumStep      CurriculumStep   @default(LECTURE)
+  curriculumStep      CurriculumStep  @default(LECTURE)
   currentCategory     Category        @default(TRAINING)
   currentIndex        Int             @default(1)
+  attendances         Json?
   userId              String
   user                User?           @relation(fields: [userId], references: [id])
 
@@ -233,6 +234,7 @@ enum AnimalType {
 
 enum CurriculumStep {
   LECTURE 
+  LECTURE_END
   TRANING
   END
 }
@@ -276,4 +278,11 @@ enum RatingStatus {
   GOOD
   GENERAL
   BAD
+}
+
+enum AttendanceStatus {
+  ATTENDANCE 
+  TARDY
+  ABSENT
+  SCHEDULED
 }

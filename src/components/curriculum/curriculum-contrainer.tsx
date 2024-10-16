@@ -7,6 +7,7 @@ import CurriculumCard from "./curriculum-card";
 import dummydata from "@/utils/dummydata";
 import TraningFiltering from "./traning-center-filtering";
 import TraningCenterPromotion from "./traning-center-promotion";
+import { lectureCategorySwap } from "@/constants/constants.all";
 
 export default function CurriculumContainer({
   curriculums,
@@ -16,12 +17,12 @@ export default function CurriculumContainer({
   currentCurriculum: UserCurriculum;
 }) {
   const [tab, setTab] = useState("lecture");
-  const categorys = ["COMMUNICATION", "TRAINING", "BEAUTY"];
 
-  const categorizedCurriculums = categorys.map((category) =>
-    curriculums
-      .filter((item) => item.category === category)
-      .map((item) => item.title),
+  const categorizedCurriculums = Object.values(lectureCategorySwap).map(
+    (category) =>
+      curriculums
+        .filter((item) => item.category === category)
+        .map((item) => item.title),
   );
 
   const traningCenters = dummydata.traningCenterData;
@@ -37,7 +38,7 @@ export default function CurriculumContainer({
                 key={index}
                 curriculumTitles={item}
                 currentCurriculum={currentCurriculum}
-                category={categorys[index]}
+                category={Object.values(lectureCategorySwap)[index]}
                 index={index}
               />
             );

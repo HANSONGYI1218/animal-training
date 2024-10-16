@@ -1,5 +1,5 @@
 import LectureContainer from "@/components/lecture/lecture-container";
-import type { Lecture } from "@/types/tyeps.all";
+import type { Lecture } from "@prisma/client";
 import dummyDate from "@/utils/dummydata";
 
 type SearchParams = {
