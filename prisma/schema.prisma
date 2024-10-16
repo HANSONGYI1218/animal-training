@@ -23,6 +23,12 @@ model User {
   nickname           String          @unique @db.VarChar(255)
   birthday           DateTime        @default(now())
   gender             GenderType      @default(MALE)
+  isNewNews_SMS      Boolean         @default(true)
+  isNotice_SMS       Boolean         @default(true)
+  isPromotion_SMS    Boolean         @default(true)
+  isNewNews_Email    Boolean         @default(true)
+  isNotice_Email     Boolean         @default(true)
+  isPromotion_Email  Boolean         @default(true)
   createdAt          DateTime        @default(now())
   updatedAt          DateTime        @updatedAt
   lectureId          String
