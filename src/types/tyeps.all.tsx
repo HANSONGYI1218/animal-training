@@ -222,3 +222,14 @@ export type Review = {
   userId: string;
   traningCenterId: string;
 };
+
+export type Notice = {
+  id: string;
+  title: string;
+  content: string;
+  image: string;
+  isFixed: boolean;
+  index: number;
+  createdAt: Date;
+  updatedAt: Date;
+};

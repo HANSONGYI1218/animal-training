@@ -19,6 +19,7 @@ import {
   Review,
   RatingStatus,
   AttendanceStatus,
+  Notice,
 } from "@/types/tyeps.all";
 
 const lectureData: Lecture[] = [
@@ -1800,6 +1801,196 @@ const reviewData: Review[] = [
   },
 ];
 
+const noticeData: Notice[] = [
+  {
+    id: "1",
+    title: "사용자 동의사항 양식",
+    image: "/license.png",
+    isFixed: true,
+    index: 0,
+    content:
+      "8년 동안 현업과 병행하며 6만 명을 강의한 경험을 녹였습니다. 일반적인 IT 강의보다는 최대한 수강자 입장을 고민해서 만든 특별한 강의입니다. 파이썬(Python)과 크롤링 기술을 익히며 프로그래밍의 기본기를 쌓고, 데이터를 다루는 개발자 및 데이터 사이언스의 코어를 익힐 수 있도록 꾸몄습니다.",
+    createdAt: new Date("2024-10-9"),
+    updatedAt: new Date(),
+  },
+  {
+    id: "2",
+    title: "쓰스 오픈 이벤트. 특가 할인 마감 입박!",
+    image: "/license.png",
+    isFixed: true,
+    index: 1,
+    content:
+      "8년 동안 현업과 병행하며 6만 명을 강의한 경험을 녹였습니다. 일반적인 IT 강의보다는 최대한 수강자 입장을 고민해서 만든 특별한 강의입니다. 파이썬(Python)과 크롤링 기술을 익히며 프로그래밍의 기본기를 쌓고, 데이터를 다루는 개발자 및 데이터 사이언스의 코어를 익힐 수 있도록 꾸몄습니다.",
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  {
+    id: "3",
+    title: "파이썬이 처음이어도 고민없이 학습할 수 있습니다.",
+    image: "/license.png",
+    isFixed: true,
+    index: 2,
+    content:
+      "8년 동안 현업과 병행하며 6만 명을 강의한 경험을 녹였습니다. 일반적인 IT 강의보다는 최대한 수강자 입장을 고민해서 만든 특별한 강의입니다. 파이썬(Python)과 크롤링 기술을 익히며 프로그래밍의 기본기를 쌓고, 데이터를 다루는 개발자 및 데이터 사이언스의 코어를 익힐 수 있도록 꾸몄습니다.",
+    createdAt: new Date("2024-10-1"),
+    updatedAt: new Date(),
+  },
+  {
+    id: "4",
+    title: "파이썬이 처음이어도 고민없이 학습할 수 있습니다.",
+    image: "/license.png",
+    isFixed: true,
+    index: 3,
+    content:
+      "8년 동안 현업과 병행하며 6만 명을 강의한 경험을 녹였습니다. 일반적인 IT 강의보다는 최대한 수강자 입장을 고민해서 만든 특별한 강의입니다. 파이썬(Python)과 크롤링 기술을 익히며 프로그래밍의 기본기를 쌓고, 데이터를 다루는 개발자 및 데이터 사이언스의 코어를 익힐 수 있도록 꾸몄습니다.",
+    createdAt: new Date("2024-10-1"),
+    updatedAt: new Date(),
+  },
+  {
+    id: "18",
+    title: "파이썬이 처음이어도 고민없이 학습할 수 있습니다.",
+    image: "/license.png",
+    isFixed: false,
+    index: 0,
+    content:
+      "8년 동안 현업과 병행하며 6만 명을 강의한 경험을 녹였습니다. 일반적인 IT 강의보다는 최대한 수강자 입장을 고민해서 만든 특별한 강의입니다. 파이썬(Python)과 크롤링 기술을 익히며 프로그래밍의 기본기를 쌓고, 데이터를 다루는 개발자 및 데이터 사이언스의 코어를 익힐 수 있도록 꾸몄습니다.",
+    createdAt: new Date("2024-10-1"),
+    updatedAt: new Date(),
+  },
+  {
+    id: "17",
+    title: "파이썬이 처음이어도 고민없이 학습할 수 있습니다.",
+    image: "/license.png",
+    isFixed: false,
+    index: 1,
+    content:
+      "8년 동안 현업과 병행하며 6만 명을 강의한 경험을 녹였습니다. 일반적인 IT 강의보다는 최대한 수강자 입장을 고민해서 만든 특별한 강의입니다. 파이썬(Python)과 크롤링 기술을 익히며 프로그래밍의 기본기를 쌓고, 데이터를 다루는 개발자 및 데이터 사이언스의 코어를 익힐 수 있도록 꾸몄습니다.",
+    createdAt: new Date("2024-10-1"),
+    updatedAt: new Date(),
+  },
+  {
+    id: "16",
+    title: "파이썬이 처음이어도 고민없이 학습할 수 있습니다.",
+    image: "/license.png",
+    isFixed: false,
+    index: 2,
+    content:
+      "8년 동안 현업과 병행하며 6만 명을 강의한 경험을 녹였습니다. 일반적인 IT 강의보다는 최대한 수강자 입장을 고민해서 만든 특별한 강의입니다. 파이썬(Python)과 크롤링 기술을 익히며 프로그래밍의 기본기를 쌓고, 데이터를 다루는 개발자 및 데이터 사이언스의 코어를 익힐 수 있도록 꾸몄습니다.",
+    createdAt: new Date("2024-10-1"),
+    updatedAt: new Date(),
+  },
+  {
+    id: "15",
+    title: "파이썬이 처음이어도 고민없이 학습할 수 있습니다.",
+    image: "/license.png",
+    isFixed: false,
+    index: 3,
+    content:
+      "8년 동안 현업과 병행하며 6만 명을 강의한 경험을 녹였습니다. 일반적인 IT 강의보다는 최대한 수강자 입장을 고민해서 만든 특별한 강의입니다. 파이썬(Python)과 크롤링 기술을 익히며 프로그래밍의 기본기를 쌓고, 데이터를 다루는 개발자 및 데이터 사이언스의 코어를 익힐 수 있도록 꾸몄습니다.",
+    createdAt: new Date("2024-10-1"),
+    updatedAt: new Date(),
+  },
+  {
+    id: "5",
+    title: "파이썬이 처음이어도 고민없이 학습할 수 있습니다.",
+    image: "/license.png",
+    isFixed: false,
+    index: 4,
+    content:
+      "8년 동안 현업과 병행하며 6만 명을 강의한 경험을 녹였습니다. 일반적인 IT 강의보다는 최대한 수강자 입장을 고민해서 만든 특별한 강의입니다. 파이썬(Python)과 크롤링 기술을 익히며 프로그래밍의 기본기를 쌓고, 데이터를 다루는 개발자 및 데이터 사이언스의 코어를 익힐 수 있도록 꾸몄습니다.",
+    createdAt: new Date("2024-10-1"),
+    updatedAt: new Date(),
+  },
+  {
+    id: "6",
+    title: "파이썬이 처음이어도 고민없이 학습할 수 있습니다.",
+    image: "/license.png",
+    isFixed: false,
+    index: 5,
+    content:
+      "8년 동안 현업과 병행하며 6만 명을 강의한 경험을 녹였습니다. 일반적인 IT 강의보다는 최대한 수강자 입장을 고민해서 만든 특별한 강의입니다. 파이썬(Python)과 크롤링 기술을 익히며 프로그래밍의 기본기를 쌓고, 데이터를 다루는 개발자 및 데이터 사이언스의 코어를 익힐 수 있도록 꾸몄습니다.",
+    createdAt: new Date("2024-10-1"),
+    updatedAt: new Date(),
+  },
+  {
+    id: "7",
+    title: "파이썬이 처음이어도 고민없이 학습할 수 있습니다.",
+    image: "/license.png",
+    isFixed: false,
+    index: 6,
+    content:
+      "8년 동안 현업과 병행하며 6만 명을 강의한 경험을 녹였습니다. 일반적인 IT 강의보다는 최대한 수강자 입장을 고민해서 만든 특별한 강의입니다. 파이썬(Python)과 크롤링 기술을 익히며 프로그래밍의 기본기를 쌓고, 데이터를 다루는 개발자 및 데이터 사이언스의 코어를 익힐 수 있도록 꾸몄습니다.",
+    createdAt: new Date("2024-10-1"),
+    updatedAt: new Date(),
+  },
+  {
+    id: "9",
+    title: "파이썬이 처음이어도 고민없이 학습할 수 있습니다.",
+    image: "/license.png",
+    isFixed: false,
+    index: 7,
+    content:
+      "8년 동안 현업과 병행하며 6만 명을 강의한 경험을 녹였습니다. 일반적인 IT 강의보다는 최대한 수강자 입장을 고민해서 만든 특별한 강의입니다. 파이썬(Python)과 크롤링 기술을 익히며 프로그래밍의 기본기를 쌓고, 데이터를 다루는 개발자 및 데이터 사이언스의 코어를 익힐 수 있도록 꾸몄습니다.",
+    createdAt: new Date("2024-10-1"),
+    updatedAt: new Date(),
+  },
+  {
+    id: "10",
+    title: "파이썬이 처음이어도 고민없이 학습할 수 있습니다.",
+    image: "/license.png",
+    isFixed: false,
+    index: 8,
+    content:
+      "8년 동안 현업과 병행하며 6만 명을 강의한 경험을 녹였습니다. 일반적인 IT 강의보다는 최대한 수강자 입장을 고민해서 만든 특별한 강의입니다. 파이썬(Python)과 크롤링 기술을 익히며 프로그래밍의 기본기를 쌓고, 데이터를 다루는 개발자 및 데이터 사이언스의 코어를 익힐 수 있도록 꾸몄습니다.",
+    createdAt: new Date("2024-10-1"),
+    updatedAt: new Date(),
+  },
+  {
+    id: "11",
+    title: "파이썬이 처음이어도 고민없이 학습할 수 있습니다.",
+    image: "/license.png",
+    isFixed: false,
+    index: 9,
+    content:
+      "8년 동안 현업과 병행하며 6만 명을 강의한 경험을 녹였습니다. 일반적인 IT 강의보다는 최대한 수강자 입장을 고민해서 만든 특별한 강의입니다. 파이썬(Python)과 크롤링 기술을 익히며 프로그래밍의 기본기를 쌓고, 데이터를 다루는 개발자 및 데이터 사이언스의 코어를 익힐 수 있도록 꾸몄습니다.",
+    createdAt: new Date("2024-10-1"),
+    updatedAt: new Date(),
+  },
+  {
+    id: "12",
+    title: "파이썬이 처음이어도 고민없이 학습할 수 있습니다.",
+    image: "/license.png",
+    isFixed: false,
+    index: 10,
+    content:
+      "8년 동안 현업과 병행하며 6만 명을 강의한 경험을 녹였습니다. 일반적인 IT 강의보다는 최대한 수강자 입장을 고민해서 만든 특별한 강의입니다. 파이썬(Python)과 크롤링 기술을 익히며 프로그래밍의 기본기를 쌓고, 데이터를 다루는 개발자 및 데이터 사이언스의 코어를 익힐 수 있도록 꾸몄습니다.",
+    createdAt: new Date("2024-10-1"),
+    updatedAt: new Date(),
+  },
+  {
+    id: "13",
+    title: "파이썬이 처음이어도 고민없이 학습할 수 있습니다.",
+    image: "/license.png",
+    isFixed: false,
+    index: 11,
+    content:
+      "8년 동안 현업과 병행하며 6만 명을 강의한 경험을 녹였습니다. 일반적인 IT 강의보다는 최대한 수강자 입장을 고민해서 만든 특별한 강의입니다. 파이썬(Python)과 크롤링 기술을 익히며 프로그래밍의 기본기를 쌓고, 데이터를 다루는 개발자 및 데이터 사이언스의 코어를 익힐 수 있도록 꾸몄습니다.",
+    createdAt: new Date("2024-10-1"),
+    updatedAt: new Date(),
+  },
+  {
+    id: "14",
+    title: "파이썬이 처음이어도 고민없이 학습할 수 있습니다.",
+    image: "/license.png",
+    isFixed: false,
+    index: 12,
+    content:
+      "8년 동안 현업과 병행하며 6만 명을 강의한 경험을 녹였습니다. 일반적인 IT 강의보다는 최대한 수강자 입장을 고민해서 만든 특별한 강의입니다. 파이썬(Python)과 크롤링 기술을 익히며 프로그래밍의 기본기를 쌓고, 데이터를 다루는 개발자 및 데이터 사이언스의 코어를 익힐 수 있도록 꾸몄습니다.",
+    createdAt: new Date("2024-10-1"),
+    updatedAt: new Date(),
+  },
+];
+
 export default {
   lectureData,
   curriculumLectureData,
@@ -1812,4 +2003,5 @@ export default {
   userCurriculumData,
   traningCenterData,
   reviewData,
+  noticeData,
 };
