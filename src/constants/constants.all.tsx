@@ -5,6 +5,7 @@ import {
   GenderType,
   OccupationType,
   AdoptionStatus,
+  AttendanceStatus,
 } from "@/types/tyeps.all";
 
 export const categorySwap: { [key in Category | string]: string } = {
@@ -53,11 +54,35 @@ export const adoptionStatusTypeSwap: {
   [AdoptionStatus.ABANDON]: "파양",
 };
 
+export enum LectureCategory {
+  COMMUNICATION = "COMMUNICATION",
+  TRAINING = "TRAINING",
+  BEAUTY = "BEAUTY",
+  map = "map",
+}
+
+export const lectureCategorySwap: {
+  [key in LectureCategory | string]: string;
+} = {
+  [LectureCategory.COMMUNICATION]: "의사소통",
+  [LectureCategory.TRAINING]: "훈련",
+  [LectureCategory.BEAUTY]: "미용",
+};
+
 export enum SortType {
   ASC = "최신순",
   DESC = "오래된순",
   POPULARITY = "인기순",
 }
+
+export const attandanceStatusSwap: {
+  [key in AttendanceStatus | string]: string;
+} = {
+  [AttendanceStatus.ATTENDANCE]: "출석",
+  [AttendanceStatus.TARDY]: "지각",
+  [AttendanceStatus.ABSENT]: "결석",
+  [AttendanceStatus.SCHEDULED]: "예정",
+};
 
 export function getCategoryByValue(value: string): Category | undefined {
   return Object.entries(categorySwap).find(

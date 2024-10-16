@@ -1,6 +1,6 @@
 "use client";
 
-import type { Lecture, Tutor } from "@/types/tyeps.all";
+import { Lecture, Tutor } from "@prisma/client";
 import YoutubePlayableCard from "../common/player-card";
 import { Button } from "../ui/button";
 import { ChevronRight, ZoomIn } from "lucide-react";

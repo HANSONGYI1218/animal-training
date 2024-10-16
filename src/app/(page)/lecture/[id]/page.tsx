@@ -5,8 +5,8 @@ import LectureCard from "@/components/lecture/lecture-card";
 import { ChevronRight } from "lucide-react";
 import LectureTagSelect from "@/components/lecture/lecture-d-tag-select";
 import Link from "next/link";
-import type { Lecture, Tutor } from "@/types/tyeps.all";
 import prisma from "@/utils/db";
+import { Lecture, Tutor } from "@prisma/client";
 
 export default function LectureDetailPage({
   params,
@@ -32,7 +32,7 @@ export default function LectureDetailPage({
     .slice(0, 4);
 
   const tagLectures: Lecture[] = dummyDate.lectureData.filter((item) =>
-    item.tag.some((tag) => lecture?.tag.includes(tag)),
+    item.tags.some((tag) => lecture?.tags.includes(tag)),
   );
 
   return (
@@ -72,7 +72,10 @@ export default function LectureDetailPage({
         <span className="text-xl font-semibold text-gray-700">
           비슷한 강의 더보기
         </span>
-        <LectureTagSelect tagLectures={tagLectures} tags={lecture?.tag ?? []} />
+        <LectureTagSelect
+          tagLectures={tagLectures}
+          tags={lecture?.tags ?? []}
+        />
       </section>
     </main>
   );

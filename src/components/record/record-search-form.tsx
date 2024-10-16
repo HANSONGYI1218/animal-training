@@ -20,7 +20,6 @@ import {
   InputOTPSlot,
 } from "@/components/ui/input-otp";
 import dummydata from "@/utils/dummydata";
-import { User } from "@/types/tyeps.all";
 import { Button } from "../ui/button";
 
 const RecordSearchSchema = z.object({
@@ -35,7 +34,7 @@ const RecordSearchSchema = z.object({
 export default function RecordSearchForm({
   setSearchUser,
 }: {
-  setSearchUser: (value: User) => void;
+  setSearchUser: (value: any) => void;
 }) {
   const form = useForm<z.infer<typeof RecordSearchSchema>>({
     resolver: zodResolver(RecordSearchSchema),

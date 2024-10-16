@@ -1,12 +1,6 @@
 "use client";
 
-import {
-  Abandon,
-  Adoption,
-  Animal,
-  Corporation,
-  User,
-} from "@/types/tyeps.all";
+import { Abandon, Adoption } from "@prisma/client";
 import dummydata from "@/utils/dummydata";
 import { format } from "date-fns";
 import Image from "next/image";
@@ -22,8 +16,8 @@ export default function RecordContent({
 }: {
   content: Adoption | Abandon;
 }) {
-  const [animal, setAnimal] = useState<Animal | null>(null);
-  const [adopter, setAdopter] = useState<User | Corporation | null>(null);
+  const [animal, setAnimal] = useState<any>(null);
+  const [adopter, setAdopter] = useState<any>(null);
 
   useEffect(() => {
     const fetchAnimal = async () => {
@@ -31,7 +25,7 @@ export default function RecordContent({
         (item) => item.id === content.animalId,
       );
 
-      let getAdopter;
+      let getAdopter = null;
 
       if (content?.userId) {
         getAdopter = dummydata.UserData.find(
@@ -43,8 +37,8 @@ export default function RecordContent({
         );
       }
 
-      setAnimal(getAnimal!);
-      setAdopter(getAdopter!);
+      setAnimal(getAnimal);
+      setAdopter(getAdopter);
     };
 
     fetchAnimal();
