@@ -73,8 +73,8 @@ export default function ProfileSettingForm({ item }: { item?: any }) {
         onSubmit={form.handleSubmit(onSubmit)}
         className="flex flex-col gap-10"
       >
-        <section className="flex flex-col gap-6">
-          <span className="font-semibold">내 프로필</span>
+        <section className="flex flex-col">
+          <span className="text-lg font-semibold">내 프로필</span>
           <div className="flex flex-col gap-6 p-6">
             <div className="flex items-center gap-6">
               <span className="w-20 font-semibold text-neutral-600">
@@ -131,9 +131,8 @@ export default function ProfileSettingForm({ item }: { item?: any }) {
             </div>
           </div>
         </section>
-        <hr className="w-full" />
-        <section className="flex flex-col gap-6">
-          <span className="font-semibold">기본 정보</span>
+        <section className="flex flex-col">
+          <span className="text-lg font-semibold">기본 정보</span>
           <div className="flex flex-col gap-6 p-6">
             <div className="flex items-center gap-6">
               <span className="w-20 font-semibold text-neutral-600">

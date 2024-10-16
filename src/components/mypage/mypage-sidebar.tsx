@@ -70,15 +70,17 @@ export default function MypageSidebar() {
         >
           비밀번호 변경
         </Button>
-        <Button
-          variant={"ghost"}
-          onClick={() => {
-            setCurrentBar("alarm");
-          }}
-          className={`w-full text-base ${currentSide === "alarm" && "bg-green-20 font-semibold"}`}
-        >
-          알림 설정
-        </Button>
+        <Link href="/mypage/alarm">
+          <Button
+            variant={"ghost"}
+            onClick={() => {
+              setCurrentBar("alarm");
+            }}
+            className={`w-full text-base ${currentSide === "alarm" && "bg-green-20 font-semibold"}`}
+          >
+            알림 설정
+          </Button>
+        </Link>
       </div>
     </aside>
   );
