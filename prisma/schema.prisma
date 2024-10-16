@@ -237,7 +237,8 @@ model Notice{
   id                 String          @id  @default(uuid())
   title              String          @db.VarChar(255)
   content            String          @db.Text
-  image              String          @db.VarChar(255)
+  image              String?         @db.VarChar(255)
+  attachments        String[]
   isFixed            Boolean         @default(false)
   index              Int             @default(0)
   createdAt          DateTime        @default(now())

@@ -1807,9 +1807,13 @@ const noticeData: Notice[] = [
     title: "사용자 동의사항 양식",
     image: "/license.png",
     isFixed: true,
+    attachments: ["/license.png", "/license.pngddd"],
     index: 0,
-    content:
-      "8년 동안 현업과 병행하며 6만 명을 강의한 경험을 녹였습니다. 일반적인 IT 강의보다는 최대한 수강자 입장을 고민해서 만든 특별한 강의입니다. 파이썬(Python)과 크롤링 기술을 익히며 프로그래밍의 기본기를 쌓고, 데이터를 다루는 개발자 및 데이터 사이언스의 코어를 익힐 수 있도록 꾸몄습니다.",
+    content: `8년 동안 현업과 병행하며 6만 명을 강의한 경험을 녹였습니다.
+
+      일반적인 IT 강의보다는 최대한 수강자 입장을 고민해서 만든 특별한 강의입니다.
+
+      파이썬(Python)과 크롤링 기술을 익히며 프로그래밍의 기본기를 쌓고, 데이터를 다루는 개발자 및 데이터 사이언스의 코어를 익힐 수 있도록 꾸몄습니다.`,
     createdAt: new Date("2024-10-9"),
     updatedAt: new Date(),
   },
@@ -1818,6 +1822,7 @@ const noticeData: Notice[] = [
     title: "쓰스 오픈 이벤트. 특가 할인 마감 입박!",
     image: "/license.png",
     isFixed: true,
+    attachments: [],
     index: 1,
     content:
       "8년 동안 현업과 병행하며 6만 명을 강의한 경험을 녹였습니다. 일반적인 IT 강의보다는 최대한 수강자 입장을 고민해서 만든 특별한 강의입니다. 파이썬(Python)과 크롤링 기술을 익히며 프로그래밍의 기본기를 쌓고, 데이터를 다루는 개발자 및 데이터 사이언스의 코어를 익힐 수 있도록 꾸몄습니다.",
@@ -1829,6 +1834,7 @@ const noticeData: Notice[] = [
     title: "파이썬이 처음이어도 고민없이 학습할 수 있습니다.",
     image: "/license.png",
     isFixed: true,
+    attachments: [],
     index: 2,
     content:
       "8년 동안 현업과 병행하며 6만 명을 강의한 경험을 녹였습니다. 일반적인 IT 강의보다는 최대한 수강자 입장을 고민해서 만든 특별한 강의입니다. 파이썬(Python)과 크롤링 기술을 익히며 프로그래밍의 기본기를 쌓고, 데이터를 다루는 개발자 및 데이터 사이언스의 코어를 익힐 수 있도록 꾸몄습니다.",
@@ -1840,6 +1846,7 @@ const noticeData: Notice[] = [
     title: "파이썬이 처음이어도 고민없이 학습할 수 있습니다.",
     image: "/license.png",
     isFixed: true,
+    attachments: [],
     index: 3,
     content:
       "8년 동안 현업과 병행하며 6만 명을 강의한 경험을 녹였습니다. 일반적인 IT 강의보다는 최대한 수강자 입장을 고민해서 만든 특별한 강의입니다. 파이썬(Python)과 크롤링 기술을 익히며 프로그래밍의 기본기를 쌓고, 데이터를 다루는 개발자 및 데이터 사이언스의 코어를 익힐 수 있도록 꾸몄습니다.",
@@ -1851,6 +1858,7 @@ const noticeData: Notice[] = [
     title: "파이썬이 처음이어도 고민없이 학습할 수 있습니다.",
     image: "/license.png",
     isFixed: false,
+    attachments: ["/license.png"],
     index: 0,
     content:
       "8년 동안 현업과 병행하며 6만 명을 강의한 경험을 녹였습니다. 일반적인 IT 강의보다는 최대한 수강자 입장을 고민해서 만든 특별한 강의입니다. 파이썬(Python)과 크롤링 기술을 익히며 프로그래밍의 기본기를 쌓고, 데이터를 다루는 개발자 및 데이터 사이언스의 코어를 익힐 수 있도록 꾸몄습니다.",
@@ -1862,6 +1870,7 @@ const noticeData: Notice[] = [
     title: "파이썬이 처음이어도 고민없이 학습할 수 있습니다.",
     image: "/license.png",
     isFixed: false,
+    attachments: ["/license.png"],
     index: 1,
     content:
       "8년 동안 현업과 병행하며 6만 명을 강의한 경험을 녹였습니다. 일반적인 IT 강의보다는 최대한 수강자 입장을 고민해서 만든 특별한 강의입니다. 파이썬(Python)과 크롤링 기술을 익히며 프로그래밍의 기본기를 쌓고, 데이터를 다루는 개발자 및 데이터 사이언스의 코어를 익힐 수 있도록 꾸몄습니다.",
@@ -1873,6 +1882,7 @@ const noticeData: Notice[] = [
     title: "파이썬이 처음이어도 고민없이 학습할 수 있습니다.",
     image: "/license.png",
     isFixed: false,
+    attachments: ["/license.png"],
     index: 2,
     content:
       "8년 동안 현업과 병행하며 6만 명을 강의한 경험을 녹였습니다. 일반적인 IT 강의보다는 최대한 수강자 입장을 고민해서 만든 특별한 강의입니다. 파이썬(Python)과 크롤링 기술을 익히며 프로그래밍의 기본기를 쌓고, 데이터를 다루는 개발자 및 데이터 사이언스의 코어를 익힐 수 있도록 꾸몄습니다.",
@@ -1884,6 +1894,7 @@ const noticeData: Notice[] = [
     title: "파이썬이 처음이어도 고민없이 학습할 수 있습니다.",
     image: "/license.png",
     isFixed: false,
+    attachments: ["/license.png"],
     index: 3,
     content:
       "8년 동안 현업과 병행하며 6만 명을 강의한 경험을 녹였습니다. 일반적인 IT 강의보다는 최대한 수강자 입장을 고민해서 만든 특별한 강의입니다. 파이썬(Python)과 크롤링 기술을 익히며 프로그래밍의 기본기를 쌓고, 데이터를 다루는 개발자 및 데이터 사이언스의 코어를 익힐 수 있도록 꾸몄습니다.",
@@ -1895,6 +1906,7 @@ const noticeData: Notice[] = [
     title: "파이썬이 처음이어도 고민없이 학습할 수 있습니다.",
     image: "/license.png",
     isFixed: false,
+    attachments: ["/license.png"],
     index: 4,
     content:
       "8년 동안 현업과 병행하며 6만 명을 강의한 경험을 녹였습니다. 일반적인 IT 강의보다는 최대한 수강자 입장을 고민해서 만든 특별한 강의입니다. 파이썬(Python)과 크롤링 기술을 익히며 프로그래밍의 기본기를 쌓고, 데이터를 다루는 개발자 및 데이터 사이언스의 코어를 익힐 수 있도록 꾸몄습니다.",
@@ -1906,6 +1918,7 @@ const noticeData: Notice[] = [
     title: "파이썬이 처음이어도 고민없이 학습할 수 있습니다.",
     image: "/license.png",
     isFixed: false,
+    attachments: ["/license.png"],
     index: 5,
     content:
       "8년 동안 현업과 병행하며 6만 명을 강의한 경험을 녹였습니다. 일반적인 IT 강의보다는 최대한 수강자 입장을 고민해서 만든 특별한 강의입니다. 파이썬(Python)과 크롤링 기술을 익히며 프로그래밍의 기본기를 쌓고, 데이터를 다루는 개발자 및 데이터 사이언스의 코어를 익힐 수 있도록 꾸몄습니다.",
@@ -1917,6 +1930,7 @@ const noticeData: Notice[] = [
     title: "파이썬이 처음이어도 고민없이 학습할 수 있습니다.",
     image: "/license.png",
     isFixed: false,
+    attachments: ["/license.png"],
     index: 6,
     content:
       "8년 동안 현업과 병행하며 6만 명을 강의한 경험을 녹였습니다. 일반적인 IT 강의보다는 최대한 수강자 입장을 고민해서 만든 특별한 강의입니다. 파이썬(Python)과 크롤링 기술을 익히며 프로그래밍의 기본기를 쌓고, 데이터를 다루는 개발자 및 데이터 사이언스의 코어를 익힐 수 있도록 꾸몄습니다.",
@@ -1928,6 +1942,7 @@ const noticeData: Notice[] = [
     title: "파이썬이 처음이어도 고민없이 학습할 수 있습니다.",
     image: "/license.png",
     isFixed: false,
+    attachments: ["/license.png"],
     index: 7,
     content:
       "8년 동안 현업과 병행하며 6만 명을 강의한 경험을 녹였습니다. 일반적인 IT 강의보다는 최대한 수강자 입장을 고민해서 만든 특별한 강의입니다. 파이썬(Python)과 크롤링 기술을 익히며 프로그래밍의 기본기를 쌓고, 데이터를 다루는 개발자 및 데이터 사이언스의 코어를 익힐 수 있도록 꾸몄습니다.",
@@ -1939,6 +1954,7 @@ const noticeData: Notice[] = [
     title: "파이썬이 처음이어도 고민없이 학습할 수 있습니다.",
     image: "/license.png",
     isFixed: false,
+    attachments: ["/license.png"],
     index: 8,
     content:
       "8년 동안 현업과 병행하며 6만 명을 강의한 경험을 녹였습니다. 일반적인 IT 강의보다는 최대한 수강자 입장을 고민해서 만든 특별한 강의입니다. 파이썬(Python)과 크롤링 기술을 익히며 프로그래밍의 기본기를 쌓고, 데이터를 다루는 개발자 및 데이터 사이언스의 코어를 익힐 수 있도록 꾸몄습니다.",
@@ -1950,6 +1966,7 @@ const noticeData: Notice[] = [
     title: "파이썬이 처음이어도 고민없이 학습할 수 있습니다.",
     image: "/license.png",
     isFixed: false,
+    attachments: ["/license.png"],
     index: 9,
     content:
       "8년 동안 현업과 병행하며 6만 명을 강의한 경험을 녹였습니다. 일반적인 IT 강의보다는 최대한 수강자 입장을 고민해서 만든 특별한 강의입니다. 파이썬(Python)과 크롤링 기술을 익히며 프로그래밍의 기본기를 쌓고, 데이터를 다루는 개발자 및 데이터 사이언스의 코어를 익힐 수 있도록 꾸몄습니다.",
@@ -1961,6 +1978,7 @@ const noticeData: Notice[] = [
     title: "파이썬이 처음이어도 고민없이 학습할 수 있습니다.",
     image: "/license.png",
     isFixed: false,
+    attachments: ["/license.png"],
     index: 10,
     content:
       "8년 동안 현업과 병행하며 6만 명을 강의한 경험을 녹였습니다. 일반적인 IT 강의보다는 최대한 수강자 입장을 고민해서 만든 특별한 강의입니다. 파이썬(Python)과 크롤링 기술을 익히며 프로그래밍의 기본기를 쌓고, 데이터를 다루는 개발자 및 데이터 사이언스의 코어를 익힐 수 있도록 꾸몄습니다.",
@@ -1972,6 +1990,7 @@ const noticeData: Notice[] = [
     title: "파이썬이 처음이어도 고민없이 학습할 수 있습니다.",
     image: "/license.png",
     isFixed: false,
+    attachments: ["/license.png"],
     index: 11,
     content:
       "8년 동안 현업과 병행하며 6만 명을 강의한 경험을 녹였습니다. 일반적인 IT 강의보다는 최대한 수강자 입장을 고민해서 만든 특별한 강의입니다. 파이썬(Python)과 크롤링 기술을 익히며 프로그래밍의 기본기를 쌓고, 데이터를 다루는 개발자 및 데이터 사이언스의 코어를 익힐 수 있도록 꾸몄습니다.",
@@ -1983,6 +2002,7 @@ const noticeData: Notice[] = [
     title: "파이썬이 처음이어도 고민없이 학습할 수 있습니다.",
     image: "/license.png",
     isFixed: false,
+    attachments: ["/license.png"],
     index: 12,
     content:
       "8년 동안 현업과 병행하며 6만 명을 강의한 경험을 녹였습니다. 일반적인 IT 강의보다는 최대한 수강자 입장을 고민해서 만든 특별한 강의입니다. 파이썬(Python)과 크롤링 기술을 익히며 프로그래밍의 기본기를 쌓고, 데이터를 다루는 개발자 및 데이터 사이언스의 코어를 익힐 수 있도록 꾸몄습니다.",

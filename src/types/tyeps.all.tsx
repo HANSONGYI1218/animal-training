@@ -227,7 +227,8 @@ export type Notice = {
   id: string;
   title: string;
   content: string;
-  image: string;
+  image: string | null;
+  attachments: string[];
   isFixed: boolean;
   index: number;
   createdAt: Date;
