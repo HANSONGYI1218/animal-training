@@ -4,6 +4,7 @@ import "./globals.css";
 import TopBar from "@/components/common/top-bar";
 import BottomBar from "@/components/common/bottom-bar";
 import { Toaster } from "@/components/ui/toaster";
+import Script from "next/script";
 
 export const metadata: Metadata = {
   title: "animal-training",
@@ -17,6 +18,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
+      <Script src="https://cdn.iamport.kr/v1/iamport.js" />
       <body className={`${Pretendard.className}`}>
         <TopBar />
         <section className="flex min-h-screen">{children}</section>

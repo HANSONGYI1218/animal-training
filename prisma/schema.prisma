@@ -38,8 +38,22 @@ model User {
   animals            Animal[]
   userCurriculum     UserCurriculum[]
   reviews            Review[]
+  userPayment        UserPayment[]
 
   @@index([lectureId])
+}
+
+model UserPayment {
+  id                  String          @id  @default(uuid())
+  user_email          String          @db.VarChar(255)
+  membershipType      MembershipType
+  membershiPrice      Int             @default(9900)
+  createdAt           DateTime        @default(now())
+  updatedAt           DateTime        @updatedAt
+  userId              String
+  user                User?           @relation(fields: [userId], references: [id])
+
+  @@index([userId])
 }
 
 model UserCurriculum {
@@ -49,6 +63,8 @@ model UserCurriculum {
   currentCategory     Category        @default(TRAINING)
   currentIndex        Int             @default(1)
   attendances         Json?
+  createdAt           DateTime        @default(now())
+  updatedAt           DateTime        @updatedAt
   userId              String
   user                User?           @relation(fields: [userId], references: [id])
 
@@ -303,4 +319,9 @@ enum AttendanceStatus {
   TARDY
   ABSENT
   SCHEDULED
+}
+
+enum MembershipType {
+  STANDARD 
+  PREMIUM
 }

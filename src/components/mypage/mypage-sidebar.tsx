@@ -52,15 +52,17 @@ export default function MypageSidebar() {
             커리큘럼
           </Button>
         </Link>
-        <Button
-          variant={"ghost"}
-          onClick={() => {
-            setCurrentBar("payment");
-          }}
-          className={`w-full text-base ${currentBar === "payment" && "bg-slate-100 font-semibold"}`}
-        >
-          결제 관리
-        </Button>
+        <Link href={"/mypage/payment"}>
+          <Button
+            variant={"ghost"}
+            onClick={() => {
+              setCurrentBar("payment");
+            }}
+            className={`w-full text-base ${currentBar === "payment" && "bg-slate-100 font-semibold"}`}
+          >
+            결제 관리
+          </Button>
+        </Link>
         <Button
           variant={"ghost"}
           onClick={() => {
@@ -79,7 +81,7 @@ export default function MypageSidebar() {
         >
           비밀번호 변경
         </Button>
-        <Link href={"/mypage//alarm"}>
+        <Link href={"/mypage/alarm"}>
           <Button
             variant={"ghost"}
             onClick={() => {

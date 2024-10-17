@@ -45,16 +45,12 @@ export default function ProfileSettingForm({ item }: { item?: any }) {
 
   async function onSubmit(data: z.infer<typeof ProfileSettingSchema>) {
     try {
-      await fetch(`${process.env.NEXT_PUBLIC_WEB_URL}/api/mypage/${item.id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          data,
-        }),
-        cache: "no-cache",
-      });
+      // await fetch(`/api/mypage?id=${item.id}`, {
+      //   method: "PUT",
+      //   body: JSON.stringify({
+      //     data,
+      //   }),
+      // });
     } catch {
       toast({
         title: "You submitted the following values:",
