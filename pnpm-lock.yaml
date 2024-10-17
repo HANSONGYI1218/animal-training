@@ -11,6 +11,9 @@ dependencies:
   '@nestjs/common':
     specifier: ^10.4.4
     version: 10.4.4(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1)
+  '@portone/browser-sdk':
+    specifier: ^0.0.10
+    version: 0.0.10
   '@prisma/client':
     specifier: ^5.19.1
     version: 5.19.1(prisma@5.19.1)
@@ -1885,6 +1888,10 @@ packages:
     resolution: {integrity: sha512-cq8o4cWH0ibXh9VGi5P20Tu9XF/0fFXl9EUinr9QfTM7a7p0oTA4iJRCQWppXR1Pg8dSM0UCItCkPwsk9qWWYA==}
     engines: {node: ^12.20.0 || ^14.18.0 || >=16.0.0}
     dev: true
+
+  /@portone/browser-sdk@0.0.10:
+    resolution: {integrity: sha512-AylNhel3iWZuq632Axfgg5CLTVgv5xhjxJb0Umfy4chi/PV0K2R5ry/9ywOrKTPdSWqo3KwKVZGgv4X46Gvz+g==}
+    dev: false
 
   /@prisma/client@5.19.1(prisma@5.19.1):
     resolution: {integrity: sha512-x30GFguInsgt+4z5I4WbkZP2CGpotJMUXy+Gl/aaUjHn2o1DnLYNTA+q9XdYmAQZM8fIIkvUiA2NpgosM3fneg==}

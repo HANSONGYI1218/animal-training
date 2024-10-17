@@ -24,6 +24,7 @@
   "dependencies": {
     "@hookform/resolvers": "^3.3.4",
     "@nestjs/common": "^10.4.4",
+    "@portone/browser-sdk": "^0.0.10",
     "@prisma/client": "^5.19.1",
     "@radix-ui/react-accordion": "^1.1.2",
     "@radix-ui/react-avatar": "^1.0.4",

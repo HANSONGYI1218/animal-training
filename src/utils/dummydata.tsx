@@ -1083,6 +1083,8 @@ const userCurriculumData: UserCurriculum[] = [
     attendances: null,
     currentIndex: 2,
     userId: "1",
+    createdAt: new Date(),
+    updatedAt: new Date(),
   },
   {
     id: "2",
@@ -1142,6 +1144,8 @@ const userCurriculumData: UserCurriculum[] = [
     ],
     currentIndex: 2,
     userId: "2",
+    createdAt: new Date(),
+    updatedAt: new Date(),
   },
   {
     id: "3",
@@ -1201,6 +1205,8 @@ const userCurriculumData: UserCurriculum[] = [
     ],
     currentIndex: 2,
     userId: "3",
+    createdAt: new Date(),
+    updatedAt: new Date(),
   },
 ];
 

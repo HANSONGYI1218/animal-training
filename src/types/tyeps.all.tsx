@@ -186,6 +186,8 @@ export type UserCurriculum = {
   }> | null;
   currentIndex: number;
   userId: string;
+  createdAt: Date;
+  updatedAt: Date;
 };
 
 export interface AttendanceRecord {
