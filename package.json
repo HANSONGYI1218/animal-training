@@ -38,6 +38,7 @@
     "@radix-ui/react-switch": "^1.1.1",
     "@radix-ui/react-toast": "^1.1.5",
     "@svgr/webpack": "^8.1.0",
+    "@vercel/postgres": "^0.10.0",
     "class-validator": "^0.14.1",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
