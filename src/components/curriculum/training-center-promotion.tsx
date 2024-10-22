@@ -1,7 +1,6 @@
-import TouchScroll from "../common/touch-scroll";
 import { Button } from "../ui/button";
 
-export default function TraningCenterPromotion() {
+export default function TrainingCenterPromotion() {
   return (
     <div className="sticky top-24 h-fit w-80 rounded-xl border">
       <div className="rounded-t-xl bg-green-100 px-6 py-2 font-semibold text-white">

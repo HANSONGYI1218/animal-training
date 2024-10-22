@@ -1,25 +1,21 @@
-import { Injectable } from "@nestjs/common";
-import prisma from "@/utils/db";
 import { CreateUserDto, GetUserDto, UpdateUserDto } from "@/dtos/user.dtos";
+import {
+  createUserRepository,
+  deleteUserRepository,
+  getAllUsersRepository,
+  getUserByIdRepository,
+  updateUserRepository,
+} from "@/repositorys/user.repository";
 
 // 유저 생성
 const createUserService = async (
   dto: CreateUserDto,
 ): Promise<CreateUserDto | null> => {
   try {
-    const user = await prisma.user.create({
-      data: {
-        name: dto.name,
-        email: dto.email,
-        address: dto.address,
-        phoneNumber: dto.phoneNumber,
-        registrationNumber: dto.registrationNumber,
-        nickname: dto.nickname,
-        birthday: dto.birthday,
-        gender: dto.gender,
-        lectureId: dto.lectureId,
-      },
-    });
+    // const isExisted = await getUserByIdRepository(dto.id);
+    // if(isExisted) return null;
+
+    const user = await createUserRepository(dto);
 
     if (!user) {
       return null;
@@ -33,7 +29,7 @@ const createUserService = async (
 // 모든 유저 조회
 const getAllUsersService = async (): Promise<GetUserDto[]> => {
   try {
-    const users = await prisma.user.findMany();
+    const users = await getAllUsersRepository();
 
     return users as GetUserDto[];
   } catch {
@@ -44,11 +40,11 @@ const getAllUsersService = async (): Promise<GetUserDto[]> => {
 // 특정 ID의 유저 조회
 const getUserByIdService = async (id: string): Promise<GetUserDto | null> => {
   try {
-    const user = await prisma.user.findUnique({
-      where: {
-        id: id,
-      },
-    });
+    const user = await getUserByIdRepository(id);
+
+    if (!user) {
+      return null;
+    }
     return user as GetUserDto;
   } catch {
     return null;
@@ -61,21 +57,14 @@ const updateUserService = async (
   dto: Partial<UpdateUserDto>,
 ): Promise<UpdateUserDto | null> => {
   try {
-    const user = getUserByIdService(id);
+    const user = getUserByIdRepository(id);
 
     if (!user) {
       return null;
     }
 
-    const updatedUser = await prisma.user.update({
-      where: {
-        id: id,
-      },
-      data: {
-        ...dto,
-        updatedAt: new Date(),
-      },
-    });
+    const updatedUser = await updateUserRepository(id, dto);
+
     return updatedUser as CreateUserDto;
   } catch {
     return null;
@@ -85,17 +74,14 @@ const updateUserService = async (
 // 강의 삭제
 const deleteUserService = async (id: string): Promise<GetUserDto | null> => {
   try {
-    const user = getUserByIdService(id);
+    const user = getUserByIdRepository(id);
 
     if (!user) {
       return null;
     }
 
-    const deletedUser = await prisma.user.delete({
-      where: {
-        id: id,
-      },
-    });
+    const deletedUser = await deleteUserRepository(id);
+
     return deletedUser as GetUserDto;
   } catch {
     return null;

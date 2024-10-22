@@ -5,8 +5,8 @@ import { useState } from "react";
 import CurriculumNav from "./curriculum-nav";
 import CurriculumCard from "./curriculum-card";
 import dummydata from "@/utils/dummydata";
-import TraningFiltering from "./traning-center-filtering";
-import TraningCenterPromotion from "./traning-center-promotion";
+import TraningFiltering from "./training-center-filtering";
+import TraningCenterPromotion from "./training-center-promotion";
 import { lectureCategorySwap } from "@/constants/constants.all";
 
 export default function CurriculumContainer({
@@ -25,7 +25,7 @@ export default function CurriculumContainer({
         .map((item) => item.title),
   );
 
-  const traningCenters = dummydata.traningCenterData;
+  const trainingCenters = dummydata.traningCenterData;
 
   return (
     <div className="container mx-auto flex max-w-[1150px] flex-col gap-12">
@@ -46,7 +46,7 @@ export default function CurriculumContainer({
         </div>
       ) : (
         <div className="relative flex w-full gap-6">
-          <TraningFiltering traningCenters={traningCenters} />
+          <TraningFiltering trainingCenters={trainingCenters} />
           <TraningCenterPromotion />
         </div>
       )}

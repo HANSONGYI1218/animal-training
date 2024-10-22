@@ -89,15 +89,15 @@ export default function LectureCategory() {
           {categorySwap[Category.WALK]}{" "}
         </Button>
         <Button
-          onClick={() => setCategory("traning")}
+          onClick={() => setCategory("training")}
           variant={"lectureCategory"}
-          className={`flex h-fit flex-col gap-2 ${category === "traning" ? "border-green-100" : "border-white"}`}
+          className={`flex h-fit flex-col gap-2 ${category === "training" ? "border-green-100" : "border-white"}`}
         >
           <Image
-            src="/images/lecture-category/traning.png"
+            src="/images/lecture-category/training.png"
             width={40}
             height={40}
-            alt="traning"
+            alt="training"
           />{" "}
           {categorySwap[Category.TRAINING]}
         </Button>

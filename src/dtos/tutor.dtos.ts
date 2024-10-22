@@ -15,15 +15,6 @@ export class CreateTutorDto {
   @IsNotEmptyString()
   profile_img!: string;
 
-  @IsNotEmptyString()
-  traning_location!: string;
-
-  @IsNotEmptyString()
-  traning_name!: string;
-
-  @IsNotEmptyString()
-  corporation_name!: string;
-
   @IsEnum(OccupationType, {
     message: "occupation must be a valid OccupationType value",
   })
@@ -39,11 +30,16 @@ export class GetTutorDto {
   introduction!: string;
   career!: string;
   profile_img!: string;
-  traning_name!: string;
-  traning_location!: string;
-  corporation_name!: string;
   occupation!: OccupationType;
-  corporationId!: string;
+  corporation!: {
+    id: string;
+    corporation_name: string;
+  };
+  trainingCenter!: {
+    id: string;
+    name: string;
+    address: string;
+  };
   createdAt!: Date;
   updatedAt!: Date;
 }

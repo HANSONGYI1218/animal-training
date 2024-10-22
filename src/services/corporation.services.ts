@@ -3,22 +3,23 @@ import {
   CreateCorporationDto,
   GetCorporationDto,
 } from "@/dtos/corporation.dtos";
+import {
+  createCorporationRepository,
+  deleteCorporationRepository,
+  getAllCorporationsRepository,
+  getCorporationByIdRepository,
+  updateCorporationRepository,
+} from "@/repositorys/corporation.repositorys";
 
 // 기업 생성
 export const createCorporationService = async (
   dto: CreateCorporationDto,
 ): Promise<CreateCorporationDto | null> => {
   try {
-    const corporation = await prisma.corporation.create({
-      data: {
-        owner_name: dto.owner_name,
-        corporation_name: dto.corporation_name,
-        address: dto.address,
-        phoneNumber: dto.phoneNumber,
-        email: dto.email,
-        business_number: dto.business_number,
-      },
-    });
+    // const isExisted = await getCorporationByIdService(dto.id);
+    // if(isExisted) return null;
+
+    const corporation = await createCorporationRepository(dto);
 
     if (!corporation) {
       return null;
@@ -34,7 +35,7 @@ export const getAllCorporationsService = async (): Promise<
   GetCorporationDto[]
 > => {
   try {
-    const corporations = await prisma.corporation.findMany();
+    const corporations = await getAllCorporationsRepository();
 
     return corporations as GetCorporationDto[];
   } catch {
@@ -47,11 +48,11 @@ export const getCorporationByIdService = async (
   id: string,
 ): Promise<GetCorporationDto | null> => {
   try {
-    const corporation = await prisma.corporation.findUnique({
-      where: {
-        id: id,
-      },
-    });
+    const corporation = await getCorporationByIdRepository(id);
+
+    if (!corporation) {
+      return null;
+    }
     return corporation as GetCorporationDto;
   } catch {
     return null;
@@ -64,21 +65,14 @@ export const updateCorporationService = async (
   dto: Partial<CreateCorporationDto>,
 ): Promise<CreateCorporationDto | null> => {
   try {
-    const corporation = getCorporationByIdService(id);
+    const corporation = getCorporationByIdRepository(id);
 
     if (!corporation) {
       return null;
     }
 
-    const updatedCorporation = await prisma.corporation.update({
-      where: {
-        id: id,
-      },
-      data: {
-        ...dto,
-        updatedAt: new Date(),
-      },
-    });
+    const updatedCorporation = await updateCorporationRepository(id, dto);
+
     return updatedCorporation as CreateCorporationDto;
   } catch {
     return null;
@@ -90,17 +84,14 @@ export const deleteCorporationService = async (
   id: string,
 ): Promise<GetCorporationDto | null> => {
   try {
-    const corporation = getCorporationByIdService(id);
+    const corporation = getCorporationByIdRepository(id);
 
     if (!corporation) {
       return null;
     }
 
-    const deletedCorporation = await prisma.corporation.delete({
-      where: {
-        id: id,
-      },
-    });
+    const deletedCorporation = await deleteCorporationRepository(id);
+
     return deletedCorporation as GetCorporationDto;
   } catch {
     return null;

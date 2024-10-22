@@ -1,19 +1,20 @@
 "use client";
 
-import { Review, TraningCenter, Tutor } from "@/types/tyeps.all";
+import { Review, Tutor } from "@/types/tyeps.all";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import CenterNav from "./center-nav";
-import { formatPrice } from "@/lib/utils";
+import { formatPrice } from "@/utils/utils";
 import { trainigCurriculums, traningCaution } from "@/constants/constants.all";
 import SelectBox from "@/components/common/select-box";
 import { MessageCircleMore, ThumbsUp } from "lucide-react";
 import { format } from "date-fns";
 import { Badge } from "@/components/ui/badge";
 import CenterPromotion from "./center-promotion";
+import { TrainingCenter } from "@prisma/client";
 
 interface CenterDetailProp {
-  center: TraningCenter | undefined;
+  center: TrainingCenter | undefined;
   tutor: Tutor | undefined;
   reviews: Review[];
 }

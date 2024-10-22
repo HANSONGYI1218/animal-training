@@ -1,5 +1,4 @@
-import { formatPrice } from "@/lib/utils";
-import { TraningCenter } from "@/types/tyeps.all";
+import { formatPrice } from "@/utils/utils";
 import {
   BadgeCheck,
   ChevronRight,
@@ -9,17 +8,18 @@ import {
 import Image from "next/image";
 import { Button } from "../ui/button";
 import Link from "next/link";
+import { TrainingCenter } from "@prisma/client";
 
-export default function TraningCenterCard({
-  traningCenter,
+export default function TrainingCenterCard({
+  trainingCenter,
 }: {
-  traningCenter: TraningCenter;
+  trainingCenter: TrainingCenter;
 }) {
   return (
     <div className="flex gap-3 border-b px-6 py-12">
       <div className="flex flex-1 flex-col">
         <span className="flex items-center gap-3 text-xl font-semibold">
-          {traningCenter?.name}
+          {trainingCenter?.name}
           <BadgeCheck
             className="h-6 w-6"
             fill="rgb(21 128 61)"
@@ -34,16 +34,16 @@ export default function TraningCenterCard({
           <div className="flex gap-3">
             <span className="w-20 text-neutral-500">훈련사 소개</span>
             <span className="whitespace-pre-line">
-              {traningCenter?.introduction}
+              {trainingCenter?.introduction}
             </span>
           </div>
           <div className="flex gap-3">
             <span className="w-20 text-neutral-500">위치</span>
-            <span>{traningCenter?.address}</span>
+            <span>{trainingCenter?.address}</span>
           </div>
           <div className="flex gap-3">
             <span className="w-20 text-neutral-500">가격</span>
-            <span>{formatPrice(traningCenter?.price)}원</span>
+            <span>{formatPrice(trainingCenter?.price)}원</span>
           </div>
           <div className="mt-6 flex items-center gap-6">
             <div className="flex items-center gap-1">
@@ -52,7 +52,7 @@ export default function TraningCenterCard({
             </div>
             <div className="flex items-center gap-1">
               <ThumbsUp className="h-4 w-4" />
-              <span>{traningCenter?.like}개</span>
+              <span>{trainingCenter?.like}개</span>
             </div>
           </div>
         </div>
@@ -65,7 +65,7 @@ export default function TraningCenterCard({
           alt="profile"
           className="rounded-full"
         />
-        <Link href={`/curriculum/traning/${traningCenter?.id}`}>
+        <Link href={`/curriculum/traning/${trainingCenter?.id}`}>
           <Button variant={"destructive"} className="flex gap-1">
             자세히 보기
             <ChevronRight className="h-4 w-4" strokeWidth={2.5} />

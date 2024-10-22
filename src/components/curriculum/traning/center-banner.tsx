@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { SquareUser, ThumbsUp } from "lucide-react";
-import type { TraningCenter, Tutor } from "@/types/tyeps.all";
+import type { Tutor } from "@/types/tyeps.all";
 import Autoplay from "embla-carousel-autoplay";
 import Image from "next/image";
 import {
@@ -14,9 +14,10 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import React from "react";
+import { TrainingCenter } from "@prisma/client";
 
 interface CenterDetailProps {
-  center: TraningCenter | undefined;
+  center: TrainingCenter | undefined;
   tutor: Tutor | undefined;
 }
 

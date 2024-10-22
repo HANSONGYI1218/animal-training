@@ -3,21 +3,21 @@
 import { useEffect, useState } from "react";
 import SelectBox from "../common/select-box";
 import SearchBox from "../common/search-box";
-import TraningCenterCard from "./traning-center-card";
-import { TraningCenter } from "@/types/tyeps.all";
+import TrainingCenterCard from "./training-center-card";
+import { TrainingCenter } from "@prisma/client";
 
-export default function TraningFiltering({
-  traningCenters,
+export default function TrainingFiltering({
+  trainingCenters,
 }: {
-  traningCenters: TraningCenter[];
+  trainingCenters: TrainingCenter[];
 }) {
-  const [centers, setCenters] = useState(traningCenters);
+  const [centers, setCenters] = useState(trainingCenters);
   const [sort, setSort] = useState("별점좋은순");
   const [search, setSearch] = useState("");
   const [location, setLocation] = useState("");
 
   useEffect(() => {
-    const filteredCenters = traningCenters.filter((center: TraningCenter) => {
+    const filteredCenters = trainingCenters.filter((center: TrainingCenter) => {
       const matchesLocation =
         location.length === 0 || center.address.includes(location);
 
@@ -49,7 +49,7 @@ export default function TraningFiltering({
     });
 
     setCenters(sortedCenters);
-  }, [sort, search, location, traningCenters]);
+  }, [sort, search, location, trainingCenters]);
 
   return (
     <div className="flex w-full flex-col gap-12">
@@ -81,11 +81,11 @@ export default function TraningFiltering({
         />
       </div>
       <div className="flex flex-col">
-        {centers.map((traningCenter) => {
+        {centers.map((trainingCenter) => {
           return (
-            <TraningCenterCard
-              key={traningCenter.id}
-              traningCenter={traningCenter}
+            <TrainingCenterCard
+              key={trainingCenter.id}
+              trainingCenter={trainingCenter}
             />
           );
         })}

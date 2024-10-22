@@ -1,4 +1,9 @@
-import { CreateLectureDto, GetLectureDto } from "@/dtos/lecture.dtos";
+import {
+  CreateLectureDto,
+  GetLectureDetailDto,
+  GetLectureDetailViewDto,
+  GetLectureDto,
+} from "@/dtos/lecture.dtos";
 import { NextResponse } from "next/server";
 import { Category } from "@prisma/client";
 import {
@@ -8,6 +13,8 @@ import {
   getLectureByCategoryService,
   updateLectureService,
   deleteLectureService,
+  getLectureByTutorIdService,
+  getLectureByTagService,
 } from "@/services/lecture.services";
 
 // 강의 생성
@@ -34,15 +41,29 @@ export const getAllLectures = async (): Promise<GetLectureDto[]> => {
 // 특정 ID의 강의 조회
 export const getLectureById = async (
   id: string,
-): Promise<GetLectureDto | null> => {
+): Promise<GetLectureDetailDto | null> => {
   return (await getLectureByIdService(id)) ?? null;
+};
+
+// 특정 강사의 강의 조회
+export const getLectureByTutorId = async (
+  tutorId: string,
+): Promise<GetLectureDto[]> => {
+  return await getLectureByTutorIdService(tutorId);
 };
 
 // 특정 CATEGORY 강의 조회
 export const getLectureByCategory = async (
   category: Category,
-): Promise<GetLectureDto[] | null> => {
-  return (await getLectureByCategoryService(category)) ?? null;
+): Promise<GetLectureDto[]> => {
+  return await getLectureByCategoryService(category);
+};
+
+// 특정 Tag 강의 조회
+export const getLectureByTag = async (
+  tag: string,
+): Promise<GetLectureDto[]> => {
+  return await getLectureByTagService(tag);
 };
 
 // 강의 업데이트

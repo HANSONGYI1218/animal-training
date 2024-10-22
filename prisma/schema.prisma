@@ -31,7 +31,7 @@ model User {
   isPromotion_Email  Boolean         @default(true)
   createdAt          DateTime        @default(now())
   updatedAt          DateTime        @updatedAt
-  lectureId          String
+  lectureId          String?
   lecture            Lecture?        @relation(fields: [lectureId], references: [id])
   adoptions          Adoption[]
   Abandons           Abandon[]
@@ -85,7 +85,7 @@ model Corporation {
   adoptions         Adoption[]
   Abandons          Abandon[]
   animals           Animal[]
-  traningCenter     TraningCenter[]
+  trainingCenter    TrainingCenter[]
 }
 
 model Tutor {
@@ -94,19 +94,18 @@ model Tutor {
   introduction       String          @db.Text
   career             String          @db.VarChar(255)
   profile_img        String          @db.VarChar(255)
-  traning_location   String          @db.VarChar(255)
-  traning_name       String          @db.VarChar(255)
-  corporation_name   String          @db.VarChar(255)
   occupation         OccupationType  @default(TRAINER)
   createdAt          DateTime        @default(now())
   updatedAt          DateTime        @updatedAt
-  corporationId      String    
+  corporationId      String
+  trainingCenterId   String?
+  trainingCenter     TrainingCenter? @relation(fields: [trainingCenterId], references: [id])    
   corporation        Corporation?    @relation(fields: [corporationId], references: [id])
   lectures           Lecture[]
   curriculumLectures CurriculumLecture[]
-  traningCenter      TraningCenter[]
 
   @@index([corporationId])
+  @@index([trainingCenterId])
 }
 
 model Lecture {
@@ -121,8 +120,6 @@ model Lecture {
   like              Int             @default(0)
   tags              String[]    
   bookmark          Boolean         @default(false)
-  tutor_name        String          @db.VarChar(255)
-  tutor_occupation  OccupationType  @default(TRAINER)
   createdAt         DateTime        @default(now())
   updatedAt         DateTime        @updatedAt
   tutorId           String
@@ -141,8 +138,6 @@ model CurriculumLecture {
   category                Category        @default(TRAINING)
   thumbnailPath           String          @db.VarChar(255)
   videoUrl                String          @db.VarChar(255)  
-  tutor_name              String          @db.VarChar(255)
-  tutor_occupation        OccupationType  @default(TRAINER)
   createdAt               DateTime        @default(now())
   updatedAt               DateTime        @updatedAt
   tutorId                 String
@@ -211,7 +206,7 @@ model Animal {
   @@index([corporationId])
 }
 
-model TraningCenter {
+model TrainingCenter {
   id                 String          @id  @default(uuid())
   name               String          @db.VarChar(255)
   introduction       String          @db.Text
@@ -223,13 +218,11 @@ model TraningCenter {
   like               Int             @default(0)
   createdAt          DateTime        @default(now())
   updatedAt          DateTime        @updatedAt
-  tutorId            String  
-  corporationId      String
-  tutor              Tutor?          @relation(fields: [tutorId], references: [id])
+  corporationId      String          
   corporation        Corporation?    @relation(fields: [corporationId], references: [id])
+  tutors             Tutor[]
   reviews            Review[]
 
-  @@index([tutorId])
   @@index([corporationId])
 }
 
@@ -241,12 +234,12 @@ model Review {
   createdAt          DateTime        @default(now())
   updatedAt          DateTime        @updatedAt
   userId             String  
-  traningCenterId    String
+  trainingCenterId   String?
   user               User?          @relation(fields: [userId], references: [id])
-  traningCenter      TraningCenter? @relation(fields: [traningCenterId], references: [id])
+  trainingCenter     TrainingCenter? @relation(fields: [trainingCenterId], references: [id])
 
   @@index([userId])
-  @@index([traningCenterId])
+  @@index([trainingCenterId])
 }
 
 model Notice{

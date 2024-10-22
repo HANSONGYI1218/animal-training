@@ -3,7 +3,7 @@
 import { User } from "@prisma/client";
 import { Button } from "../ui/button";
 import Image from "next/image";
-import { calculateAge } from "@/lib/utils";
+import { calculateAge } from "@/utils/utils";
 import { genderTypeSwap } from "@/constants/constants.all";
 import { Mail, MapPin, PersonStanding, Phone } from "lucide-react";
 
