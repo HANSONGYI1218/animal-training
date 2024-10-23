@@ -57,16 +57,16 @@ model UserPayment {
 }
 
 model UserCurriculum {
-  id                  String          @id  @default(uuid())
-  curriculumType      AnimalType      @default(DOG)
-  curriculumStep      CurriculumStep  @default(LECTURE)
-  currentCategory     Category        @default(TRAINING)
-  currentIndex        Int             @default(1)
+  id                  String              @id  @default(uuid())
+  animal_type         AnimalType          @default(DOG)
+  curriculumStep      CurriculumStep      @default(LECTURE)
+  curriculumCategory  CurriculumCategory  @default(TRAINING)
+  curriculumIndex     Int                 @default(1)
   attendances         Json?
-  createdAt           DateTime        @default(now())
-  updatedAt           DateTime        @updatedAt
+  createdAt           DateTime            @default(now())
+  updatedAt           DateTime            @updatedAt
   userId              String
-  user                User?           @relation(fields: [userId], references: [id])
+  user                User?               @relation(fields: [userId], references: [id])
 
   @@index([userId])
 }
@@ -130,19 +130,19 @@ model Lecture {
 }
 
 model CurriculumLecture {
-  id                      String          @id  @default(uuid())
-  index                   Int             @default(0)
-  title                   String          @db.VarChar(255)
-  content                 String          @db.Text
-  animal_type             AnimalType      @default(CAT)
-  category                Category        @default(TRAINING)
-  thumbnailPath           String          @db.VarChar(255)
-  videoUrl                String          @db.VarChar(255)  
-  createdAt               DateTime        @default(now())
-  updatedAt               DateTime        @updatedAt
+  id                      String               @id  @default(uuid())
+  index                   Int                  @default(0)
+  title                   String               @db.VarChar(255)
+  content                 String               @db.Text
+  animal_type             AnimalType           @default(CAT)
+  category                CurriculumCategory   @default(TRAINING)
+  thumbnailPath           String               @db.VarChar(255)
+  videoUrl                String               @db.VarChar(255)
+  videoTime               String?              @db.VarChar(255)
+  createdAt               DateTime             @default(now())
+  updatedAt               DateTime             @updatedAt
   tutorId                 String
-  curriculumCollectionId  String
-  tutor                   Tutor?          @relation(fields: [tutorId], references: [id])
+  tutor                   Tutor?               @relation(fields: [tutorId], references: [id])
 
   @@index([tutorId])
 }
@@ -262,9 +262,16 @@ enum AnimalType {
 enum CurriculumStep {
   LECTURE 
   LECTURE_END
-  TRANING
+  TRAINING
   END
 }
+
+enum CurriculumCategory {
+  COMMUNICATION
+  TRAINING 
+  BEAUTY
+}
+
 
 
 enum PriceType {

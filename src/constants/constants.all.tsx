@@ -58,7 +58,6 @@ export enum LectureCategory {
   COMMUNICATION = "COMMUNICATION",
   TRAINING = "TRAINING",
   BEAUTY = "BEAUTY",
-  map = "map",
 }
 
 export const lectureCategorySwap: {

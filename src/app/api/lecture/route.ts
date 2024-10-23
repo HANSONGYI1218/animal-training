@@ -1,9 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import {
-  CreateLectureDto,
-  GetLectureDetailDto,
-  GetLectureDetailViewDto,
-} from "@/dtos/lecture.dtos";
+import { CreateLectureDto, GetLectureDetailDto } from "@/dtos/lecture.dtos";
 import {
   createLecture,
   deleteLecture,

@@ -1,7 +1,6 @@
 import {
   CreateLectureDto,
   GetLectureDetailDto,
-  GetLectureDetailViewDto,
   GetLectureDto,
 } from "@/dtos/lecture.dtos";
 import { NextResponse } from "next/server";

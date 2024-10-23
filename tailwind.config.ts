@@ -31,6 +31,9 @@ const config = {
     extend: {
       backgroundImage: {
         "grass-pattern": "url('/images/curriculum/grass.jpg')",
+        "communication-pattern": "url('/images/curriculum/communication.jpg')",
+        "training-pattern": "url('/images/curriculum/training.jpg')",
+        "beauty-pattern": "url('/images/curriculum/beauty.jpg')",
       },
       colors: {
         "green-100": "#00592D",

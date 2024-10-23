@@ -27,17 +27,17 @@ export default function LectureBanner({
               {priceTypeSwap[lecture?.price_type]}
             </Badge>
           </div>
-          <span className="mt-5 h-20 whitespace-pre-line text-sm leading-6 text-white">
+          <span className="mt-5 h-20 whitespace-pre-line font-[440] leading-6 text-white">
             {lecture?.content}
           </span>
           <div className="flex items-center gap-6">
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1">
               <SquareUser width={17} height={17} stroke="#ffffff" />
               <span className="text-[0.93rem] text-white">
                 {lecture?.tutor?.name}
               </span>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1">
               <ThumbsUp width={16} height={16} stroke="#ffffff" />
               <span className="text-[0.93rem] text-white">{lecture?.like}</span>
             </div>

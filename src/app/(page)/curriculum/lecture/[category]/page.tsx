@@ -1,4 +1,3 @@
-import dummydate from "@/utils/dummydata";
 import {
   Accordion,
   AccordionContent,
@@ -12,22 +11,46 @@ import { Button } from "@/components/ui/button";
 import { GanttChart } from "lucide-react";
 import CurriculumLecturePromotion from "@/components/curriculum/learning/lecture-promotion";
 import LectureSection from "@/components/curriculum/learning/lecture-section";
+import { GetCurriculumLectureDto } from "@/dtos/curriculum-lecture.dtos";
+import { GetUserCurriculumDto } from "@/dtos/user-curriculum.dtos";
 
-export default function CurriculumDetailPage({
+export default async function CurriculumDetailPage({
   params,
 }: {
   params: { category: string };
 }) {
   const { category } = params;
 
-  const lectures = dummydate.curriculumLectureData.filter(
-    (lecture) => lecture.category === category.toUpperCase(),
+  const responseCurriculums = await fetch(
+    `${process.env.NEXT_PUBLIC_WEB_URL}/api/curriculum-lecture?category=${category.toUpperCase()}`,
+    {
+      method: "GET",
+      cache: "no-store",
+    },
   );
-  const currentCurriculum = dummydate.userCurriculumData[0];
+  if (!responseCurriculums.ok) {
+    return null;
+  }
+  const curriculumLectures: GetCurriculumLectureDto[] =
+    await responseCurriculums.json();
+
+  const responseUserCurriculum = await fetch(
+    `${process.env.NEXT_PUBLIC_WEB_URL}/api/user-curriculum?userId=${"1"}`,
+    {
+      method: "GET",
+      cache: "no-store",
+    },
+  );
+  if (!responseUserCurriculum.ok) {
+    return null;
+  }
+
+  const userCurriculum: GetUserCurriculumDto =
+    await responseUserCurriculum.json();
 
   return (
     <main className="mb-24 flex w-full flex-col">
-      <CurriculumBanner currentCurriculum={currentCurriculum} />
+      <CurriculumBanner userCurriculum={userCurriculum} />
       <section className="container mx-auto mt-12 flex max-w-[1150px] flex-col gap-6">
         <Link href={"/curriculum"}>
           <Button variant={"link"} className="flex gap-1 p-0 text-sm">
@@ -51,11 +74,13 @@ export default function CurriculumDetailPage({
               <AccordionContent className="flex gap-2 py-4">
                 <div className="flex w-2 bg-green-60"></div>
                 <div className="mx-4 flex flex-1 flex-col">
-                  {lectures.slice(0, 3).map((lecture) => {
-                    return (
-                      <LectureSection key={lecture?.id} lecture={lecture} />
-                    );
-                  })}
+                  {curriculumLectures
+                    .slice(0, 1)
+                    .map((lecture: GetCurriculumLectureDto) => {
+                      return (
+                        <LectureSection key={lecture?.id} lecture={lecture} />
+                      );
+                    })}
                 </div>
               </AccordionContent>
             </AccordionItem>
@@ -66,11 +91,13 @@ export default function CurriculumDetailPage({
               <AccordionContent className="flex gap-2 py-4">
                 <div className="flex w-2 bg-green-60"></div>
                 <div className="mx-4 flex flex-1 flex-col">
-                  {lectures.slice(3, 6).map((lecture) => {
-                    return (
-                      <LectureSection key={lecture?.id} lecture={lecture} />
-                    );
-                  })}
+                  {curriculumLectures
+                    .slice(1, 3)
+                    .map((lecture: GetCurriculumLectureDto) => {
+                      return (
+                        <LectureSection key={lecture?.id} lecture={lecture} />
+                      );
+                    })}
                 </div>
               </AccordionContent>
             </AccordionItem>
@@ -81,11 +108,13 @@ export default function CurriculumDetailPage({
               <AccordionContent className="flex gap-2 py-4">
                 <div className="flex w-2 bg-green-60"></div>
                 <div className="mx-4 flex flex-1 flex-col">
-                  {lectures.slice(6, 9).map((lecture) => {
-                    return (
-                      <LectureSection key={lecture?.id} lecture={lecture} />
-                    );
-                  })}
+                  {curriculumLectures
+                    .slice(3)
+                    .map((lecture: GetCurriculumLectureDto) => {
+                      return (
+                        <LectureSection key={lecture?.id} lecture={lecture} />
+                      );
+                    })}
                 </div>
               </AccordionContent>
             </AccordionItem>
@@ -137,7 +166,7 @@ export default function CurriculumDetailPage({
               );
             })}
           </Accordion> */}
-          <CurriculumLecturePromotion currentCurriculum={currentCurriculum} />
+          <CurriculumLecturePromotion userCurriculum={userCurriculum} />
         </div>
       </section>
     </main>
