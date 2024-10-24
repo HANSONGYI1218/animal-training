@@ -57,7 +57,8 @@ export const updateAdoption = async (
 
 // 입양 삭제
 export const deleteAdoption = async (id: string): Promise<NextResponse> => {
-  const deletedAdoption = await deleteAdoptionService(id);
+  const deletedAdoption: CreateAdoptionDto | null =
+    await deleteAdoptionService(id);
 
   if (!deletedAdoption) {
     throw NextResponse.json(

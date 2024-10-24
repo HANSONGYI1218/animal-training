@@ -78,7 +78,7 @@ export const updateAdoptionService = async (
 // 입양 삭제
 export const deleteAdoptionService = async (
   id: string,
-): Promise<GetAdoptionDto | null> => {
+): Promise<CreateAdoptionDto | null> => {
   try {
     const adoption = getAdoptionByIdRepository(id);
 
@@ -88,7 +88,7 @@ export const deleteAdoptionService = async (
 
     const deletedAdoption = await deleteAdoptionRepository(id);
 
-    return deletedAdoption as GetAdoptionDto;
+    return deletedAdoption as CreateAdoptionDto;
   } catch {
     return null;
   }
