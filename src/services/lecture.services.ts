@@ -1,5 +1,18 @@
-import { CreateLectureDto, GetLectureDto } from "@/dtos/lecture.dtos";
-import prisma from "@/utils/db";
+import {
+  CreateLectureDto,
+  GetLectureDetailDto,
+  GetLectureDto,
+} from "@/dtos/lecture.dtos";
+import {
+  createLectureRepository,
+  deleteLectureRepository,
+  getAllLecturesRepository,
+  getLectureByCategoryRepository,
+  getLectureByIdRepository,
+  getLectureByTagRepository,
+  getLectureByTutorIdRepository,
+  updateLectureRepository,
+} from "@/repositorys/lecture.repositorys";
 import { Category } from "@prisma/client";
 
 // 강의 생성
@@ -7,27 +20,11 @@ export const createLectureService = async (
   dto: CreateLectureDto,
 ): Promise<CreateLectureDto | null> => {
   try {
-    const lecture = await prisma.lecture.create({
-      data: {
-        title: dto.title,
-        content: dto.content,
-        animal_type: dto.animal_type,
-        price_type: dto.price_type,
-        category: dto.category,
-        thumbnailPath: dto.thumbnailPath,
-        tutor_name: dto.tutor_name,
-        tutor_occupation: dto.tutor_occupation,
-        videoUrl: dto.videoUrl,
-        like: dto.like,
-        tags: dto.tags,
-        bookmark: dto.bookmark,
-        tutorId: dto.tutorId,
-      },
-    });
+    // const isExisted = await getLectureByIdRepository(dto.id);
+    // if(isExisted) return null;
 
-    if (!lecture) {
-      return null;
-    }
+    const lecture = await createLectureRepository(dto);
+
     return lecture as CreateLectureDto;
   } catch {
     return null;
@@ -37,7 +34,7 @@ export const createLectureService = async (
 // 모든 강의 조회
 export const getAllLecturesService = async (): Promise<GetLectureDto[]> => {
   try {
-    const lectures = await prisma.lecture.findMany();
+    const lectures = await getAllLecturesRepository();
 
     return lectures as GetLectureDto[];
   } catch {
@@ -48,32 +45,56 @@ export const getAllLecturesService = async (): Promise<GetLectureDto[]> => {
 // 특정 ID의 강의 조회
 export const getLectureByIdService = async (
   id: string,
-): Promise<GetLectureDto | null> => {
+): Promise<GetLectureDetailDto | null> => {
   try {
-    const lecture = await prisma.lecture.findUnique({
-      where: {
-        id: id,
-      },
-    });
-    return lecture as GetLectureDto;
+    const lecture = await getLectureByIdRepository(id);
+
+    if (!lecture) {
+      return null;
+    }
+
+    return lecture as GetLectureDetailDto;
   } catch {
     return null;
+  }
+};
+
+// 특정 강사의 강의 조회
+export const getLectureByTutorIdService = async (
+  tutorId: string,
+): Promise<GetLectureDto[]> => {
+  try {
+    const lecture = await getLectureByTutorIdRepository(tutorId);
+
+    return lecture as GetLectureDto[];
+  } catch {
+    return [];
   }
 };
 
 // 특정 CATEGORY 강의 조회
 export const getLectureByCategoryService = async (
   category: Category,
-): Promise<GetLectureDto[] | null> => {
+): Promise<GetLectureDto[]> => {
   try {
-    const lecture = await prisma.lecture.findMany({
-      where: {
-        category: category,
-      },
-    });
+    const lecture = await getLectureByCategoryRepository(category);
+
     return lecture as GetLectureDto[];
   } catch {
-    return null;
+    return [];
+  }
+};
+
+// 특정 Tag 강의 조회
+export const getLectureByTagService = async (
+  tag: string,
+): Promise<GetLectureDto[]> => {
+  try {
+    const lecture = await getLectureByTagRepository(tag);
+
+    return lecture as GetLectureDto[];
+  } catch {
+    return [];
   }
 };
 
@@ -81,7 +102,7 @@ export const getLectureByCategoryService = async (
 export const updateLectureService = async (
   id: string,
   dto: Partial<CreateLectureDto>,
-): Promise<GetLectureDto | null> => {
+): Promise<CreateLectureDto | null> => {
   try {
     const lecture = getLectureByIdService(id);
 
@@ -89,16 +110,9 @@ export const updateLectureService = async (
       return null;
     }
 
-    const updatedLecture = await prisma.lecture.update({
-      where: {
-        id: id,
-      },
-      data: {
-        ...dto,
-        updatedAt: new Date(),
-      },
-    });
-    return updatedLecture as GetLectureDto;
+    const updatedLecture = await updateLectureRepository(id, dto);
+
+    return updatedLecture as CreateLectureDto;
   } catch {
     return null;
   }
@@ -107,7 +121,7 @@ export const updateLectureService = async (
 // 강의 삭제
 export const deleteLectureService = async (
   id: string,
-): Promise<GetLectureDto | null> => {
+): Promise<CreateLectureDto | null> => {
   try {
     const lecture = getLectureByIdService(id);
 
@@ -115,12 +129,9 @@ export const deleteLectureService = async (
       return null;
     }
 
-    const deletedLecture = await prisma.lecture.delete({
-      where: {
-        id: id,
-      },
-    });
-    return deletedLecture as GetLectureDto;
+    const deletedLecture = await deleteLectureRepository(id);
+
+    return deletedLecture as CreateLectureDto;
   } catch {
     return null;
   }

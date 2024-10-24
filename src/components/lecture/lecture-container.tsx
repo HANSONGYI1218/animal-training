@@ -1,7 +1,6 @@
 "use client";
 
 import { AnimalType } from "@/types/tyeps.all";
-import { Lecture } from "@prisma/client";
 import LectureCard from "./lecture-card";
 import { useEffect, useState } from "react";
 import SearchBox from "../common/search-box";
@@ -15,15 +14,19 @@ import {
   SortType,
 } from "@/constants/constants.all";
 import LecturePromotion from "./lecture-promotion";
+import { GetLectureDto } from "@/dtos/lecture.dtos";
+import { GetTutorDto } from "@/dtos/tutor.dtos";
 
 interface LectureContainerProps {
-  lectures: Lecture[];
+  lectures: GetLectureDto[];
   isPromotion?: boolean;
+  tutors?: GetTutorDto[];
 }
 
 export default function LectureContainer({
   lectures,
   isPromotion,
+  tutors,
 }: LectureContainerProps) {
   const [lecturesData, setLecturesData] = useState(lectures);
   const [animalType, setAnimalType] = useState("전체");
@@ -32,7 +35,7 @@ export default function LectureContainer({
   const [search, setSearch] = useState("");
 
   useEffect(() => {
-    const filteredLectures = lectures.filter((lecture: Lecture) => {
+    const filteredLectures = lectures.filter((lecture: GetLectureDto) => {
       const matchesPrice =
         !priceState ||
         priceState === "전체" ||
@@ -53,10 +56,14 @@ export default function LectureContainer({
 
     const sortedLectures = filteredLectures.sort((a, b) => {
       if (sort === "오래된순") {
-        return b.createdAt.getTime() - a.createdAt.getTime();
+        return (
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        );
       }
       if (sort === "최신순") {
-        return a.createdAt.getTime() - b.createdAt.getTime();
+        return (
+          new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+        );
       }
       if (sort === "인기순") {
         return b.like - a.like;
@@ -105,13 +112,15 @@ export default function LectureContainer({
         />
       </div>
       <div className="container mx-auto grid w-full grid-cols-4 gap-6 px-5">
-        {lecturesData.slice(0, 20).map((lecture: Lecture, index: number) => {
-          return <LectureCard key={index} lecture={lecture} />;
-        })}
+        {lecturesData
+          .slice(0, 20)
+          .map((lecture: GetLectureDto, index: number) => {
+            return <LectureCard key={index} lecture={lecture} />;
+          })}
       </div>
-      {isPromotion && <LecturePromotion />}
+      {isPromotion && tutors && <LecturePromotion tutors={tutors} />}
       <div className="container mx-auto grid w-full grid-cols-4 gap-6 px-5">
-        {lecturesData.slice(20).map((lecture: Lecture, index: number) => {
+        {lecturesData.slice(20).map((lecture: GetLectureDto, index: number) => {
           return <LectureCard key={index} lecture={lecture} />;
         })}
       </div>

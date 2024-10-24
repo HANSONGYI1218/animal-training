@@ -1,8 +1,8 @@
 import { Badge } from "../../ui/badge";
 import { Button } from "../../ui/button";
-import PlayIcon from "@/public/icons/play.svg?component";
 import { Bookmark, SquareUser, ThumbsUp, Triangle } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import { categorySwap, priceTypeSwap } from "@/constants/constants.all";
 import { Lecture } from "@prisma/client";
 
@@ -33,7 +33,7 @@ export default function LectureCard({ lecture }: { lecture: Lecture }) {
         <div className="flex items-center gap-6">
           <div className="flex items-center gap-1">
             <SquareUser width={17} height={17} stroke="#000000" />
-            <span className="text-[0.93rem]">{lecture?.tutor_name}</span>
+            <span className="text-[0.93rem]">{"강형욱"}</span>
           </div>
           <div className="flex items-center gap-1">
             <ThumbsUp width={16} height={16} />
@@ -49,7 +49,13 @@ export default function LectureCard({ lecture }: { lecture: Lecture }) {
             className="relative z-10 flex gap-2 bg-transparent transition-all duration-300 hover:text-white"
             variant={"secondary"}
           >
-            <PlayIcon className="group-hover:hidden" />
+            <Image
+              src="/icons/play.svg"
+              width={24}
+              height={24}
+              alt="play"
+              className="group-hover:hidden"
+            />
             <Triangle
               className="ml-2.5 hidden rotate-90 group-hover:flex"
               fill="#ffffff"

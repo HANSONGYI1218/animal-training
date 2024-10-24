@@ -16,16 +16,16 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Menu } from "lucide-react";
-import { CurriculumLecture, UserCurriculum } from "@/types/tyeps.all";
-import LectureSection from "../learning/lecture-section";
 import VideoList from "./video-list";
+import { GetUserCurriculumDto } from "@/dtos/user-curriculum.dtos";
+import { GetCurriculumLectureDto } from "@/dtos/curriculum-lecture.dtos";
 
 export default function VideoSheet({
   lectures,
-  currentCurriculum,
+  userCurriculum,
 }: {
-  lectures: CurriculumLecture[];
-  currentCurriculum: UserCurriculum;
+  lectures: GetCurriculumLectureDto[];
+  userCurriculum: GetUserCurriculumDto;
 }) {
   return (
     <Sheet>

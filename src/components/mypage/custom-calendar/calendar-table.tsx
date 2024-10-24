@@ -28,20 +28,12 @@ const DayoftheWeek = () => {
   );
 };
 
-const CalendarTable = ({
-  currentMonth,
-  selectedDate,
-  attendances,
-}: CalendarProps) => {
+const CalendarTable = ({ currentMonth, selectedDate }: CalendarProps) => {
   return (
     <table className="flex flex-col gap-10 text-[16px]">
       <DayoftheWeek />
       <Tbody>
-        <Tr
-          currentMonth={currentMonth}
-          selectedDate={selectedDate}
-          attendances={attendances}
-        />
+        <Tr currentMonth={currentMonth} selectedDate={selectedDate} />
       </Tbody>
     </table>
   );

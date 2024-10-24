@@ -1,52 +1,50 @@
 "use client";
 
-import { CurriculumLecture, UserCurriculum } from "@/types/tyeps.all";
 import { useState } from "react";
 import CurriculumNav from "./curriculum-nav";
-import CurriculumCard from "./curriculum-card";
-import dummydata from "@/utils/dummydata";
-import TraningFiltering from "./traning-center-filtering";
-import TraningCenterPromotion from "./traning-center-promotion";
-import { lectureCategorySwap } from "@/constants/constants.all";
+import { CurriculumCategory } from "@prisma/client";
+import TraningFiltering from "./training-center-filtering";
+import TraningCenterPromotion from "./training-center-promotion";
+import { GetCurriculumLectureDto } from "@/dtos/curriculum-lecture.dtos";
+import CurriculumLectureCard from "./curriculum-lecture-card";
+import { GetUserCurriculumDto } from "@/dtos/user-curriculum.dtos";
 
 export default function CurriculumContainer({
-  curriculums,
-  currentCurriculum,
+  curriculumLectures,
+  userCurriculum,
 }: {
-  curriculums: CurriculumLecture[];
-  currentCurriculum: UserCurriculum;
+  curriculumLectures: GetCurriculumLectureDto[];
+  userCurriculum: GetUserCurriculumDto;
 }) {
   const [tab, setTab] = useState("lecture");
 
-  const categorizedCurriculums = Object.values(lectureCategorySwap).map(
-    (category) =>
-      curriculums
-        .filter((item) => item.category === category)
-        .map((item) => item.title),
+  const categorizedCurriculumLectures = Object.values(CurriculumCategory).map(
+    (category) => {
+      return curriculumLectures.filter((item) => item.category === category);
+    },
   );
-
-  const traningCenters = dummydata.traningCenterData;
 
   return (
     <div className="container mx-auto flex max-w-[1150px] flex-col gap-12">
       <CurriculumNav tab={tab} setTab={setTab} />
       {tab === "lecture" ? (
         <div className="flex flex-col gap-6">
-          {categorizedCurriculums.map((item: string[], index: number) => {
-            return (
-              <CurriculumCard
-                key={index}
-                curriculumTitles={item}
-                currentCurriculum={currentCurriculum}
-                category={Object.values(lectureCategorySwap)[index]}
-                index={index}
-              />
-            );
-          })}
+          {categorizedCurriculumLectures.map(
+            (lectures: GetCurriculumLectureDto[], index: number) => {
+              return (
+                <CurriculumLectureCard
+                  key={index}
+                  curriculumLectures={lectures}
+                  userCurriculum={userCurriculum}
+                  index={index}
+                />
+              );
+            },
+          )}
         </div>
       ) : (
         <div className="relative flex w-full gap-6">
-          <TraningFiltering traningCenters={traningCenters} />
+          <TraningFiltering />
           <TraningCenterPromotion />
         </div>
       )}

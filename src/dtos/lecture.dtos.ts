@@ -33,14 +33,6 @@ export class CreateLectureDto {
   thumbnailPath!: string;
 
   @IsNotEmptyString()
-  tutor_name!: string;
-
-  @IsEnum(OccupationType, {
-    message: "tutor_occupation must be a valid OccupationType value",
-  })
-  tutor_occupation!: OccupationType;
-
-  @IsNotEmptyString()
   videoUrl!: string;
 
   @IsNotEmptyNumber()
@@ -63,13 +55,39 @@ export class GetLectureDto {
   price_type!: PriceType;
   category!: Category;
   thumbnailPath!: string;
-  tutor_name!: string;
-  tutor_occupation!: OccupationType;
   videoUrl!: string;
   like!: number;
   tags!: string[];
   bookmark!: boolean;
-  tutorId!: string;
+  tutor!: {
+    id: string;
+    name: string;
+    occupation: string;
+  };
+  createdAt!: Date;
+  updatedAt!: Date;
+}
+
+export class GetLectureDetailDto {
+  id!: string;
+  title!: string;
+  content!: string;
+  animal_type!: AnimalType;
+  price_type!: PriceType;
+  category!: Category;
+  thumbnailPath!: string;
+  videoUrl!: string;
+  like!: number;
+  tags!: string[];
+  bookmark!: boolean;
+  tutor!: {
+    id: string;
+    name: string;
+    introduction: string;
+    career: string;
+    profile_img: string;
+    occupation: string;
+  };
   createdAt!: Date;
   updatedAt!: Date;
 }

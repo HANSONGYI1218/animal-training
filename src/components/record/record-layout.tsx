@@ -1,11 +1,11 @@
 "use client";
 
-import { User } from "@prisma/client";
 import { Button } from "../ui/button";
 import Image from "next/image";
-import { calculateAge } from "@/lib/utils";
+import { calculateAge } from "@/utils/utils";
 import { genderTypeSwap } from "@/constants/constants.all";
 import { Mail, MapPin, PersonStanding, Phone } from "lucide-react";
+import { GetUserAdoptionRecordDto } from "@/dtos/user.dtos";
 
 export default function RecordLayout({
   user,
@@ -13,7 +13,7 @@ export default function RecordLayout({
   setTab,
   children,
 }: Readonly<{
-  user: User | null;
+  user: GetUserAdoptionRecordDto | null;
   tab: string;
   setTab: (v: string) => void;
   children: React.ReactNode;
@@ -28,7 +28,9 @@ export default function RecordLayout({
           alt="profile"
           className="mb-3 self-center"
         />
-        <span className="text-lg text-gray-600">{user?.name}</span>
+        <span className="text-lg font-semibold text-gray-800">
+          {user?.name}
+        </span>
         <div className="flex flex-col">
           <span className="flex items-center gap-1 text-sm text-gray-500">
             <Mail className="h-3 w-3" strokeWidth={2.5} />
@@ -49,7 +51,7 @@ export default function RecordLayout({
             나이
           </span>
           <span className="text-gray-800">
-            {user?.birthday && calculateAge(user?.birthday)}
+            {user?.birthday && calculateAge(new Date(user?.birthday))}
           </span>
         </div>
         <div className="flex flex-col">

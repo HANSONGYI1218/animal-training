@@ -5,13 +5,13 @@ import { motion } from "framer-motion";
 import { Badge } from "../ui/badge";
 import { SquareUser, ThumbsUp } from "lucide-react";
 import { categorySwap, priceTypeSwap } from "@/constants/constants.all";
-import { Lecture } from "@prisma/client";
+import { GetLectureDetailDto } from "@/dtos/lecture.dtos";
 
-interface LectureBannerProps {
-  lecture: Lecture;
-}
-
-export default function LectureBanner({ lecture }: LectureBannerProps) {
+export default function LectureBanner({
+  lecture,
+}: {
+  lecture: GetLectureDetailDto;
+}) {
   return (
     <section className="relative flex w-full flex-col overflow-hidden bg-black/95 py-12">
       <div className="container relative z-10 mx-auto flex w-full max-w-[1150px]">
@@ -27,23 +27,23 @@ export default function LectureBanner({ lecture }: LectureBannerProps) {
               {priceTypeSwap[lecture?.price_type]}
             </Badge>
           </div>
-          <span className="mt-5 h-20 whitespace-pre-line text-sm leading-6 text-white">
+          <span className="mt-5 h-20 whitespace-pre-line font-[440] leading-6 text-white">
             {lecture?.content}
           </span>
           <div className="flex items-center gap-6">
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1">
               <SquareUser width={17} height={17} stroke="#ffffff" />
               <span className="text-[0.93rem] text-white">
-                {lecture?.tutor_name}
+                {lecture?.tutor?.name}
               </span>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1">
               <ThumbsUp width={16} height={16} stroke="#ffffff" />
               <span className="text-[0.93rem] text-white">{lecture?.like}</span>
             </div>
           </div>
           <div className="flex gap-3">
-            {lecture?.tags.map((t: string, index: number) => {
+            {lecture?.tags?.map((t: string, index: number) => {
               return (
                 <span className="text-sm text-slate-400" key={index}>
                   #{t}

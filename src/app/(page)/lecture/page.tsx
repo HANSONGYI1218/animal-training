@@ -1,19 +1,42 @@
 import LectureContainer from "@/components/lecture/lecture-container";
-import type { Lecture } from "@prisma/client";
-import dummyDate from "@/utils/dummydata";
+import { GetLectureDto } from "@/dtos/lecture.dtos";
 
 type SearchParams = {
   category: string;
 };
 
-export default function Lecture({
+export default async function LecturePage({
   searchParams,
 }: {
   searchParams: SearchParams;
 }) {
   const { category } = searchParams;
 
-  const filteredLectures = dummyDate.lectureData.filter((lecture: Lecture) => {
+  const responseLectures = await fetch(
+    `${process.env.NEXT_PUBLIC_WEB_URL}/api/lecture?category=${category}`,
+    {
+      method: "GET",
+      cache: "no-store",
+    },
+  );
+  if (!responseLectures.ok) {
+    return null;
+  }
+
+  const responseTutors = await fetch(
+    `${process.env.NEXT_PUBLIC_WEB_URL}/api/tutor`,
+    {
+      method: "GET",
+      cache: "no-store",
+    },
+  );
+  if (!responseTutors.ok) {
+    return null;
+  }
+
+  const getLectures = await responseLectures.json();
+
+  const filteredLectures = getLectures.filter((lecture: GetLectureDto) => {
     if (category === "all") {
       return true;
     } else {
@@ -21,9 +44,15 @@ export default function Lecture({
     }
   });
 
+  const getTutors = await responseTutors.json();
+
   return (
     <main className="flex w-full flex-col gap-12 py-6">
-      <LectureContainer lectures={filteredLectures} isPromotion />
+      <LectureContainer
+        lectures={filteredLectures}
+        isPromotion
+        tutors={getTutors}
+      />
     </main>
   );
 }

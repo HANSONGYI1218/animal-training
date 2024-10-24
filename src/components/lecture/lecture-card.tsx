@@ -1,12 +1,16 @@
-import { Lecture } from "@prisma/client";
 import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
-import PlayIcon from "@/public/icons/play.svg?component";
 import { SquareUser, ThumbsUp } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { categorySwap, priceTypeSwap } from "@/constants/constants.all";
+import { GetLectureDetailDto, GetLectureDto } from "@/dtos/lecture.dtos";
 
-export default function LectureCard({ lecture }: { lecture: Lecture }) {
+export default function LectureCard({
+  lecture,
+}: {
+  lecture: GetLectureDto | GetLectureDetailDto;
+}) {
   return (
     <div className="group relative mb-7 flex h-full w-full cursor-pointer flex-col gap-4 rounded-lg">
       <div className="absolute left-0 top-0 z-10 flex h-full w-full items-center justify-center rounded-lg transition-all duration-300 group-hover:bg-black group-hover:bg-opacity-75">
@@ -15,7 +19,8 @@ export default function LectureCard({ lecture }: { lecture: Lecture }) {
             className="flex gap-2 bg-white opacity-0 transition-all duration-300 group-hover:opacity-100"
             variant={"secondary"}
           >
-            <PlayIcon /> 보러가기
+            <Image src="/icons/play.svg" width={24} height={24} alt="play" />{" "}
+            보러가기
           </Button>
         </Link>
       </div>
@@ -37,7 +42,7 @@ export default function LectureCard({ lecture }: { lecture: Lecture }) {
         <div className="flex items-center gap-6">
           <div className="flex items-center gap-1">
             <SquareUser width={17} height={17} stroke="#000000" />
-            <span className="text-[0.93rem]">{lecture?.tutor_name}</span>
+            <span className="text-[0.93rem]">{lecture?.tutor?.name}</span>
           </div>
           <div className="flex items-center gap-1">
             <ThumbsUp width={16} height={16} />

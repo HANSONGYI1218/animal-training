@@ -1,14 +1,20 @@
 "use client";
 
-import { Lecture } from "@prisma/client";
 import { Category } from "@/types/tyeps.all";
 import { categorySwap } from "@/constants/constants.all";
 import { Badge } from "../ui/badge";
 import { useEffect, useState } from "react";
 import LectureContainer from "../lecture/lecture-container";
+import { GetLectureDto } from "@/dtos/lecture.dtos";
+import { GetTutorDto } from "@/dtos/tutor.dtos";
 
-export default function TutorCategory({ lectures }: { lectures: Lecture[] }) {
-  const [filterLectures, setFilterLectures] = useState<Lecture[]>(lectures);
+export default function TutorCategory({
+  lectures,
+}: {
+  lectures: GetLectureDto[];
+}) {
+  const [filterLectures, setFilterLectures] =
+    useState<GetLectureDto[]>(lectures);
   const [selectCategory, setSelectCategory] = useState<string>("ALL");
 
   useEffect(() => {

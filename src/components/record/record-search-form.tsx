@@ -19,8 +19,8 @@ import {
   InputOTPSeparator,
   InputOTPSlot,
 } from "@/components/ui/input-otp";
-import dummydata from "@/utils/dummydata";
 import { Button } from "../ui/button";
+import { GetUserAdoptionRecordDto } from "@/dtos/user.dtos";
 
 const RecordSearchSchema = z.object({
   name: z.string({
@@ -34,7 +34,7 @@ const RecordSearchSchema = z.object({
 export default function RecordSearchForm({
   setSearchUser,
 }: {
-  setSearchUser: (value: any) => void;
+  setSearchUser: (value: GetUserAdoptionRecordDto) => void;
 }) {
   const form = useForm<z.infer<typeof RecordSearchSchema>>({
     resolver: zodResolver(RecordSearchSchema),
@@ -44,13 +44,20 @@ export default function RecordSearchForm({
     },
   });
 
-  function onSubmit(data: z.infer<typeof RecordSearchSchema>) {
+  async function onSubmit(data: z.infer<typeof RecordSearchSchema>) {
     try {
-      const user = dummydata.UserData.find(
-        (item) =>
-          item.name === data.name &&
-          item.registrationNumber === data.registrationNumber,
+      const responseUser = await fetch(
+        `/api/user?name=${data.name}&registrationNumber=${data.registrationNumber}`,
+        {
+          method: "GET",
+          cache: "no-store",
+        },
       );
+      if (!responseUser.ok) {
+        return null;
+      }
+
+      const user: GetUserAdoptionRecordDto = await responseUser.json();
 
       if (user) {
         setSearchUser(user);

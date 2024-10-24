@@ -1,53 +1,47 @@
 "use client";
 
 import TouchScroll from "@/components/common/touch-scroll";
-import { Lecture } from "@prisma/client";
 import LectureCard from "./lecture-card";
 import { Badge } from "../ui/badge";
 import { useEffect, useState } from "react";
+import { GetLectureDto } from "@/dtos/lecture.dtos";
 
-export default function LectureTagSelect({
-  tags,
-  tagLectures,
-}: {
-  tags: string[];
-  tagLectures: Lecture[];
-}) {
-  const [filterLectures, setFilterLectures] = useState<Lecture[]>(tagLectures);
-  const [selectTag, setSelectTag] = useState<number>(0);
+export default function LectureTagSelect({ tags }: { tags: string[] }) {
+  const [filterLectures, setFilterLectures] = useState<GetLectureDto[]>([]);
+  const [selectTag, setSelectTag] = useState<string>(tags[0]);
 
   useEffect(() => {
-    if (selectTag === tags.length) {
-      setFilterLectures(tagLectures);
-    } else {
-      const getLectures = tagLectures.filter((lecture) =>
-        lecture.tags.includes(tags[selectTag]),
+    const getData = async () => {
+      const responseLectures = await fetch(
+        `${process.env.NEXT_PUBLIC_WEB_URL}/api/lecture?tag=${selectTag}`,
+        {
+          method: "GET",
+          cache: "no-store",
+        },
       );
-      setFilterLectures(getLectures);
-    }
+      if (!responseLectures.ok) {
+        return null;
+      }
+      const lectures: GetLectureDto[] = await responseLectures.json();
+
+      setFilterLectures(lectures);
+    };
+
+    getData();
   }, [selectTag]);
 
   return (
     <div className="flex flex-col gap-6">
       <div className="flex gap-3">
-        <Badge
-          onClick={() => {
-            setSelectTag(tags.length);
-          }}
-          variant={"tag"}
-          className={`cursor-pointer ${selectTag === tags.length && "bg-black text-white"}`}
-        >
-          #전체
-        </Badge>
         {tags.map((tag, index: number) => {
           return (
             <Badge
               key={index}
               onClick={() => {
-                setSelectTag(index);
+                setSelectTag(tag);
               }}
               variant={"tag"}
-              className={`cursor-pointer ${selectTag === index && "bg-black text-white"}`}
+              className={`cursor-pointer ${selectTag === tag && "bg-black text-white"}`}
             >
               #{tag}
             </Badge>
@@ -55,7 +49,7 @@ export default function LectureTagSelect({
         })}
       </div>
       <TouchScroll isStepbar>
-        {filterLectures.map((tagLecture: Lecture, index: number) => (
+        {filterLectures.map((tagLecture: GetLectureDto, index: number) => (
           <div
             key={index}
             className={`flex h-[371px] min-w-[269px] max-w-[269px]`}

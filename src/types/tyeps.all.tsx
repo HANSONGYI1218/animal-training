@@ -65,8 +65,6 @@ export type Lecture = {
   price_type: PriceType;
   category: Category;
   thumbnailPath: string;
-  tutor_name: string;
-  tutor_occupation: OccupationType;
   videoUrl: string;
   like: number;
   tags: string[];
@@ -82,10 +80,7 @@ export type Tutor = {
   introduction: string;
   profile_img: string;
   career: string; // 최종(현재) 커리어
-  traning_location: string; //훈련소 위치
-  traning_name: string; //훈련소 이름
   occupation: OccupationType;
-  corporation_name: string;
   corporationId: string;
   createdAt: Date;
   updatedAt: Date;
@@ -163,8 +158,6 @@ export type CurriculumLecture = {
   animal_type: AnimalType;
   category: Category;
   thumbnailPath: string;
-  tutor_name: string;
-  tutor_occupation: OccupationType;
   videoUrl: string;
   tutorId: string;
   curriculumCollectionId: string;

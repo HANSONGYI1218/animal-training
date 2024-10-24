@@ -1,38 +1,32 @@
-import prisma from "@/utils/db";
 import { CreateTutorDto, GetTutorDto } from "@/dtos/tutor.dtos";
+import {
+  createTutorRepository,
+  deleteTutorRepository,
+  getAllTutorsRepository,
+  getTutorByIdRepository,
+  updateTutorRepository,
+} from "@/repositorys/tutor.repositorys";
 
 // 강사 생성
 export const createTutorService = async (
   dto: CreateTutorDto,
 ): Promise<CreateTutorDto | null> => {
   try {
-    const tutor = await prisma.tutor.create({
-      data: {
-        name: dto.name,
-        introduction: dto.introduction,
-        career: dto.career,
-        profile_img: dto.profile_img,
-        traning_name: dto.traning_name,
-        traning_location: dto.traning_location,
-        corporation_name: dto.corporation_name,
-        occupation: dto.occupation,
-        corporationId: dto.corporationId,
-      },
-    });
+    // const isExisted = await getTutorByIdRepository(dto.id);
+    // if(isExisted) return null;
 
-    if (!tutor) {
-      return null;
-    }
+    const tutor = await createTutorRepository(dto);
+
     return tutor as CreateTutorDto;
   } catch {
     return null;
   }
 };
 
-// 모든 강의 조회
+// 모든 강사 조회
 export const getAllTutorsService = async (): Promise<GetTutorDto[]> => {
   try {
-    const tutors = await prisma.tutor.findMany();
+    const tutors = await getAllTutorsRepository();
 
     return tutors as GetTutorDto[];
   } catch {
@@ -40,16 +34,17 @@ export const getAllTutorsService = async (): Promise<GetTutorDto[]> => {
   }
 };
 
-// 특정 ID의 강의 조회
+// 특정 ID의 강사 조회
 export const getTutorByIdService = async (
   id: string,
 ): Promise<GetTutorDto | null> => {
   try {
-    const tutor = await prisma.tutor.findUnique({
-      where: {
-        id: id,
-      },
-    });
+    const tutor = await getTutorByIdRepository(id);
+
+    if (!tutor) {
+      return null;
+    }
+
     return tutor as GetTutorDto;
   } catch {
     return null;
@@ -62,44 +57,34 @@ export const updateTutorService = async (
   dto: Partial<CreateTutorDto>,
 ): Promise<CreateTutorDto | null> => {
   try {
-    const tutor = getTutorByIdService(id);
+    const tutor = getTutorByIdRepository(id);
 
     if (!tutor) {
       return null;
     }
 
-    const updatedTutor = await prisma.tutor.update({
-      where: {
-        id: id,
-      },
-      data: {
-        ...dto,
-        updatedAt: new Date(),
-      },
-    });
+    const updatedTutor = await updateTutorRepository(id, dto);
+
     return updatedTutor as CreateTutorDto;
   } catch {
     return null;
   }
 };
 
-// 강의 삭제
+// 강사 삭제
 export const deleteTutorService = async (
   id: string,
-): Promise<GetTutorDto | null> => {
+): Promise<CreateTutorDto | null> => {
   try {
-    const tutor = getTutorByIdService(id);
+    const tutor = getTutorByIdRepository(id);
 
     if (!tutor) {
       return null;
     }
 
-    const deletedTutor = await prisma.tutor.delete({
-      where: {
-        id: id,
-      },
-    });
-    return deletedTutor as GetTutorDto;
+    const deletedTutor = await deleteTutorRepository(id);
+
+    return deletedTutor as CreateTutorDto;
   } catch {
     return null;
   }

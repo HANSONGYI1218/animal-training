@@ -2,19 +2,13 @@ import { startOfMonth, startOfWeek, addMonths, subMonths } from "date-fns";
 import { useState } from "react";
 import CalendarHeader from "./calendar-header";
 import CalendarTable from "./calendar-table";
-import { AttendanceRecord } from "@/types/tyeps.all";
 
 export interface CalendarProps {
   currentMonth: Date;
   selectedDate: Date;
-  attendances?: AttendanceRecord[];
 }
 
-const CustomCalendar = ({
-  attendances,
-}: {
-  attendances: AttendanceRecord[];
-}) => {
+const CustomCalendar = () => {
   //현재 보고 있는 달
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -41,11 +35,7 @@ const CustomCalendar = ({
         prevMonth={prevMonth}
         nextMonth={nextMonth}
       />
-      <CalendarTable
-        currentMonth={currentMonth}
-        selectedDate={selectedDate}
-        attendances={attendances}
-      />
+      <CalendarTable currentMonth={currentMonth} selectedDate={selectedDate} />
     </div>
   );
 };

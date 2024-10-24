@@ -10,7 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils/utils";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { DayPicker, DropdownProps } from "react-day-picker";
 import { ko } from "date-fns/locale";
@@ -93,7 +93,7 @@ function Calendar({
             >
               <SelectTrigger
                 tabIndex={0}
-                className="pr-1.5 focus:ring-0 bg-white"
+                className="bg-white pr-1.5 focus:ring-0"
               >
                 <SelectValue>{selected?.props?.children}</SelectValue>
               </SelectTrigger>

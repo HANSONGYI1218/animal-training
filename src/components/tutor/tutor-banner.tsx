@@ -1,18 +1,19 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Tutor } from "@prisma/client";
 import { occupationTypeSwap } from "@/constants/constants.all";
 import { Badge } from "../ui/badge";
 import { Building2, Grip } from "lucide-react";
+import { GetTutorDto } from "@/dtos/tutor.dtos";
 
 interface TutorBannerProps {
-  tutor: Tutor;
+  tutor: GetTutorDto;
+  count: number;
 }
 
-export default function TutorBanner({ tutor }: TutorBannerProps) {
+export default function TutorBanner({ tutor, count }: TutorBannerProps) {
   return (
-    <section className="relative flex w-full flex-col overflow-hidden bg-[#EDEDE9]/50">
+    <section className="relative flex w-full flex-col overflow-hidden bg-[#EDEDE9]/20">
       <div className="container relative z-10 mx-auto flex w-full max-w-[1150px]">
         <div className="flex w-full flex-col gap-4 py-12">
           <span className="text-3xl font-bold">{tutor?.name}</span>
@@ -21,26 +22,33 @@ export default function TutorBanner({ tutor }: TutorBannerProps) {
               {occupationTypeSwap[tutor?.occupation]}
             </Badge>
             <Badge className="opacity-100" variant={"secondary"}>
-              {tutor?.career}
+              {tutor?.trainingCenter?.name}
             </Badge>
           </div>
-          <span className="mt-5 min-h-32 whitespace-pre-line text-sm leading-6">
+          <span className="whitespace-pre-line font-[440] leading-6 text-neutral-600">
+            {tutor?.career}
+          </span>
+          <span className="min-h-28 whitespace-pre-line font-[440] leading-6 text-neutral-600">
             {tutor?.introduction}
           </span>
           <div className="flex items-center gap-6">
-            <div className="flex items-center gap-2">
-              <Grip width={16} height={16} stroke="#000000" />
-              <span className="text-[0.93rem]">영상 12개</span>
+            <div className="flex items-center gap-1">
+              <Grip width={16} height={16} stroke="rgb(82 82 82)" />
+              <span className="text-[0.93rem] text-neutral-600">
+                영상 {count}개
+              </span>
             </div>
-            <div className="flex items-center gap-2">
-              <Building2 width={16} height={16} stroke="#000000" />
-              <span className="text-[0.93rem]">{tutor?.corporation_name}</span>
+            <div className="flex items-center gap-1">
+              <Building2 width={16} height={16} stroke="rgb(82 82 82)" />
+              <span className="text-[0.93rem] text-neutral-600">
+                {tutor?.corporation?.corporation_name}
+              </span>
             </div>
           </div>
         </div>
-        <div className="flex w-full items-end justify-end">
+        <div className="flex w-full items-center justify-center">
           <img
-            src={"/Test-tutor.png"}
+            src={tutor?.profile_img}
             alt="lecture-thumbnail"
             className="h-64 rounded-lg object-cover"
           />

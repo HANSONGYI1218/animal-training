@@ -31,10 +31,10 @@ model User {
   isPromotion_Email  Boolean         @default(true)
   createdAt          DateTime        @default(now())
   updatedAt          DateTime        @updatedAt
-  lectureId          String
+  lectureId          String?
   lecture            Lecture?        @relation(fields: [lectureId], references: [id])
-  adoptions          Adoption[]
-  Abandons           Abandon[]
+  adopterAdoptions   Adoption[]      @relation("AdopterAdoptions")
+  breederAdoptions   Adoption[]      @relation("BreederAdoptions")
   animals            Animal[]
   userCurriculum     UserCurriculum[]
   reviews            Review[]
@@ -57,16 +57,16 @@ model UserPayment {
 }
 
 model UserCurriculum {
-  id                  String          @id  @default(uuid())
-  curriculumType      AnimalType      @default(DOG)
-  curriculumStep      CurriculumStep  @default(LECTURE)
-  currentCategory     Category        @default(TRAINING)
-  currentIndex        Int             @default(1)
+  id                  String              @id  @default(uuid())
+  animal_type         AnimalType          @default(DOG)
+  curriculumStep      CurriculumStep      @default(LECTURE)
+  curriculumCategory  CurriculumCategory  @default(TRAINING)
+  curriculumIndex     Int                 @default(1)
   attendances         Json?
-  createdAt           DateTime        @default(now())
-  updatedAt           DateTime        @updatedAt
+  createdAt           DateTime            @default(now())
+  updatedAt           DateTime            @updatedAt
   userId              String
-  user                User?           @relation(fields: [userId], references: [id])
+  user                User?               @relation(fields: [userId], references: [id])
 
   @@index([userId])
 }
@@ -82,10 +82,10 @@ model Corporation {
   createdAt         DateTime        @default(now())
   updatedAt         DateTime        @updatedAt
   tutors            Tutor[]
-  adoptions         Adoption[]
-  Abandons          Abandon[]
+  adopterAdoptions  Adoption[]      @relation("AdopterCorporationAdoptions")
+  breederAdoptions  Adoption[]      @relation("BreederCorporationAdoptions")
   animals           Animal[]
-  traningCenter     TraningCenter[]
+  trainingCenter    TrainingCenter[]
 }
 
 model Tutor {
@@ -94,17 +94,14 @@ model Tutor {
   introduction       String          @db.Text
   career             String          @db.VarChar(255)
   profile_img        String          @db.VarChar(255)
-  traning_location   String          @db.VarChar(255)
-  traning_name       String          @db.VarChar(255)
-  corporation_name   String          @db.VarChar(255)
   occupation         OccupationType  @default(TRAINER)
   createdAt          DateTime        @default(now())
   updatedAt          DateTime        @updatedAt
-  corporationId      String    
+  corporationId      String 
   corporation        Corporation?    @relation(fields: [corporationId], references: [id])
+  trainingCenter     TrainingCenter?
   lectures           Lecture[]
   curriculumLectures CurriculumLecture[]
-  traningCenter      TraningCenter[]
 
   @@index([corporationId])
 }
@@ -121,8 +118,6 @@ model Lecture {
   like              Int             @default(0)
   tags              String[]    
   bookmark          Boolean         @default(false)
-  tutor_name        String          @db.VarChar(255)
-  tutor_occupation  OccupationType  @default(TRAINER)
   createdAt         DateTime        @default(now())
   updatedAt         DateTime        @updatedAt
   tutorId           String
@@ -133,60 +128,46 @@ model Lecture {
 }
 
 model CurriculumLecture {
-  id                      String          @id  @default(uuid())
-  index                   Int             @default(0)
-  title                   String          @db.VarChar(255)
-  content                 String          @db.Text
-  animal_type             AnimalType      @default(CAT)
-  category                Category        @default(TRAINING)
-  thumbnailPath           String          @db.VarChar(255)
-  videoUrl                String          @db.VarChar(255)  
-  tutor_name              String          @db.VarChar(255)
-  tutor_occupation        OccupationType  @default(TRAINER)
-  createdAt               DateTime        @default(now())
-  updatedAt               DateTime        @updatedAt
+  id                      String               @id  @default(uuid())
+  index                   Int                  @default(0)
+  title                   String               @db.VarChar(255)
+  content                 String               @db.Text
+  animal_type             AnimalType           @default(CAT)
+  category                CurriculumCategory   @default(TRAINING)
+  thumbnailPath           String               @db.VarChar(255)
+  videoUrl                String               @db.VarChar(255)
+  videoTime               String?              @db.VarChar(255)
+  createdAt               DateTime             @default(now())
+  updatedAt               DateTime             @updatedAt
   tutorId                 String
-  curriculumCollectionId  String
-  tutor                   Tutor?          @relation(fields: [tutorId], references: [id])
+  tutor                   Tutor?               @relation(fields: [tutorId], references: [id])
 
   @@index([tutorId])
 }
 
 model Adoption {
-  id                String          @id  @default(uuid())
-  adoption_date     DateTime        @default(now())
-  abandon_date      DateTime?
-  status            AdoptionStatus  @default(ADOPTION)
-  createdAt         DateTime        @default(now())
-  updatedAt         DateTime        @updatedAt
-  userId            String
-  corporationId     String
-  animalId          String
-  user              User?           @relation(fields: [userId], references: [id])
-  corporation       Corporation?    @relation(fields: [corporationId], references: [id])
-  animal            Animal?         @relation(fields: [animalId], references: [id])
+  id                    String          @id  @default(uuid())
+  adoption_date         DateTime        @default(now())
+  abandon_date          DateTime?
+  status                AdoptionStatus  @default(ADOPTION)
+  abandon_reason        String?         @db.Text
+  createdAt             DateTime        @default(now())
+  updatedAt             DateTime        @updatedAt
+  adopterId             String?
+  breederId             String?
+  adopterCorporationId  String?
+  breederCorporationId  String?
+  animalId              String
+  adopter               User?           @relation("AdopterAdoptions", fields: [adopterId], references: [id])
+  breeder               User?           @relation("BreederAdoptions", fields: [breederId], references: [id])
+  adopterCorporation    Corporation?    @relation("AdopterCorporationAdoptions", fields: [adopterCorporationId], references: [id])
+  breederCorporation    Corporation?    @relation("BreederCorporationAdoptions", fields: [breederCorporationId], references: [id])
+  animal                Animal?         @relation(fields: [animalId], references: [id])
 
-  @@index([userId])
-  @@index([corporationId])
-  @@index([animalId])
-}
-
-model Abandon {
-  id                String          @id  @default(uuid())
-  abandon_date      DateTime        @default(now())
-  adoption_date     DateTime?     
-  abandon_reason    String          @db.Text
-  createdAt         DateTime        @default(now())
-  updatedAt         DateTime        @updatedAt
-  userId            String
-  corporationId     String
-  animalId          String
-  user              User?           @relation(fields: [userId], references: [id])
-  corporation       Corporation?    @relation(fields: [corporationId], references: [id])
-  animal            Animal?         @relation(fields: [animalId], references: [id])
-  
-  @@index([userId])
-  @@index([corporationId])
+  @@index([adopterId])
+  @@index([breederId])
+  @@index([adopterCorporationId])
+  @@index([breederCorporationId])
   @@index([animalId])
 }
 
@@ -200,18 +181,17 @@ model Animal {
   additionalImgs    String[]          
   createdAt         DateTime        @default(now())
   updatedAt         DateTime        @updatedAt
-  userId            String
-  corporationId     String
+  userId            String?
+  corporationId     String?
   user              User?                                                                                                                                                                                                             @relation(fields: [userId], references: [id])
   corporation       Corporation?    @relation(fields: [corporationId], references: [id])
   adoptions         Adoption[]
-  Abandons          Abandon[]
 
   @@index([userId])
   @@index([corporationId])
 }
 
-model TraningCenter {
+model TrainingCenter {
   id                 String          @id  @default(uuid())
   name               String          @db.VarChar(255)
   introduction       String          @db.Text
@@ -221,16 +201,29 @@ model TraningCenter {
   holidays           String[]
   price              Int             @default(0)
   like               Int             @default(0)
+  refundPolicys      String[]
   createdAt          DateTime        @default(now())
   updatedAt          DateTime        @updatedAt
-  tutorId            String  
-  corporationId      String
-  tutor              Tutor?          @relation(fields: [tutorId], references: [id])
+  tutorId            String?         @unique
+  corporationId      String          
   corporation        Corporation?    @relation(fields: [corporationId], references: [id])
+  tutor              Tutor?          @relation(fields: [tutorId], references: [id])          
   reviews            Review[]
 
-  @@index([tutorId])
   @@index([corporationId])
+  @@index([tutorId])
+}
+
+model CurriculumTraining {
+  id                      String               @id  @default(uuid())
+  index                   Int                  @default(0)
+  title                   String               @db.VarChar(255)
+  content                 String               @db.Text
+  animal_type             AnimalType           @default(CAT)
+  category                CurriculumCategory   @default(TRAINING)
+  trainingTime            Int                  @default(0)
+  createdAt               DateTime             @default(now())
+  updatedAt               DateTime             @updatedAt
 }
 
 model Review {
@@ -241,12 +234,12 @@ model Review {
   createdAt          DateTime        @default(now())
   updatedAt          DateTime        @updatedAt
   userId             String  
-  traningCenterId    String
-  user               User?          @relation(fields: [userId], references: [id])
-  traningCenter      TraningCenter? @relation(fields: [traningCenterId], references: [id])
+  trainingCenterId   String?
+  user               User?           @relation(fields: [userId], references: [id])
+  trainingCenter     TrainingCenter? @relation(fields: [trainingCenterId], references: [id])
 
   @@index([userId])
-  @@index([traningCenterId])
+  @@index([trainingCenterId])
 }
 
 model Notice{
@@ -269,9 +262,16 @@ enum AnimalType {
 enum CurriculumStep {
   LECTURE 
   LECTURE_END
-  TRANING
+  TRAINING
   END
 }
+
+enum CurriculumCategory {
+  COMMUNICATION
+  TRAINING 
+  BEAUTY
+}
+
 
 
 enum PriceType {
@@ -304,7 +304,7 @@ enum Category {
 
 enum AdoptionStatus {
   ADOPTION 
-  Abandon
+  ABANDON
 }
 
 enum RatingStatus {

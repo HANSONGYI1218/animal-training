@@ -1,11 +1,11 @@
-import { CurriculumLecture } from "@/types/tyeps.all";
+import { GetCurriculumLectureDto } from "@/dtos/curriculum-lecture.dtos";
 import { CirclePlay } from "lucide-react";
 import Link from "next/link";
 
 export default function LectureSection({
   lecture,
 }: {
-  lecture: CurriculumLecture;
+  lecture: GetCurriculumLectureDto;
 }) {
   return (
     <div
@@ -31,7 +31,7 @@ export default function LectureSection({
         </div>
         <span className="flex-1"> {lecture?.title}</span>
       </Link>
-      <span className="self-end">03:56</span>
+      <span className="self-end">{lecture?.videoTime}</span>
     </div>
   );
 }

@@ -1,6 +1,14 @@
+"use client";
+
 import Link from "next/link";
 import { Building2, ChevronRight, Dot, SquareUser } from "lucide-react";
-import { useEffect, useState, Dispatch, SetStateAction } from "react";
+import {
+  useEffect,
+  useState,
+  Dispatch,
+  SetStateAction,
+  createContext,
+} from "react";
 import dummydata from "@/utils/dummydata";
 import Image from "next/image";
 import CustomCalendar from "../custom-calendar/custom-calendar";
@@ -10,6 +18,8 @@ import { ko } from "date-fns/locale";
 import { attandanceStatusSwap } from "@/constants/constants.all";
 
 export type PickerType = "date" | "month" | "year" | "";
+
+export const CalendarContext = createContext(null);
 
 export interface DatePickerProps {
   selectedDate: Date;
@@ -95,9 +105,7 @@ export default function TraningCenterTab() {
                 </div>
                 <div className="flex items-center gap-2">
                   <Building2 width={16} height={16} stroke="#000000" />
-                  <span className="text-[0.93rem]">
-                    {tutor?.corporation_name}
-                  </span>
+                  <span className="text-[0.93rem]">"마곡컴퍼니"</span>
                 </div>
               </div>
               <Link
@@ -173,7 +181,9 @@ export default function TraningCenterTab() {
           </div>
         </div>
         <div className="flex w-full gap-6 p-6">
-          <CustomCalendar attendances={currentCurriculum?.attendances} />
+          <CalendarContext.Provider value={currentCurriculum?.attendances}>
+            <CustomCalendar />
+          </CalendarContext.Provider>
         </div>
         <div className="flex flex-col gap-6 rounded-xl border p-6">
           <span className="font-semibold">다음 예정일을 확인해보세요📆</span>

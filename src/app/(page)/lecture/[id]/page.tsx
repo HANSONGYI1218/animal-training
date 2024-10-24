@@ -1,49 +1,55 @@
 import LectureBanner from "@/components/lecture/lecture-d-banner";
-import dummyDate from "@/utils/dummydata";
 import LectureContent from "@/components/lecture/lecture-d-content";
 import LectureCard from "@/components/lecture/lecture-card";
 import { ChevronRight } from "lucide-react";
 import LectureTagSelect from "@/components/lecture/lecture-d-tag-select";
 import Link from "next/link";
-import prisma from "@/utils/db";
-import { Lecture, Tutor } from "@prisma/client";
+import { GetLectureDetailDto, GetLectureDto } from "@/dtos/lecture.dtos";
+import { occupationTypeSwap } from "@/constants/constants.all";
 
-export default function LectureDetailPage({
+export default async function LectureDetailPage({
   params,
 }: {
   params: { id: string };
 }) {
   const { id } = params;
 
-  const lecture: Lecture = dummyDate.lectureData.find(
-    (item) => item.id === id,
-  ) as Lecture;
-
-  if (!lecture) {
-    return <span>!에러에러</span>;
+  const responseLecture = await fetch(
+    `${process.env.NEXT_PUBLIC_WEB_URL}/api/lecture?id=${id}`,
+    {
+      method: "GET",
+      cache: "no-store",
+    },
+  );
+  if (!responseLecture.ok) {
+    return null;
   }
 
-  const tutor: Tutor = dummyDate.TutorData.find(
-    (item) => item.id === lecture?.tutorId,
-  ) as Tutor;
+  const lecture: GetLectureDetailDto = await responseLecture.json();
 
-  const trainerLectures: Lecture[] = dummyDate.lectureData
-    .filter((item) => item.tutor_name === lecture?.tutor_name)
-    .slice(0, 4);
-
-  const tagLectures: Lecture[] = dummyDate.lectureData.filter((item) =>
-    item.tags.some((tag) => lecture?.tags.includes(tag)),
+  const responseTutorLectures = await fetch(
+    `${process.env.NEXT_PUBLIC_WEB_URL}/api/lecture?tutorId=${lecture?.tutor?.id}`,
+    {
+      method: "GET",
+      cache: "no-store",
+    },
   );
+  if (!responseTutorLectures.ok) {
+    return null;
+  }
+
+  const tutorLectures: GetLectureDto[] = await responseTutorLectures.json();
 
   return (
     <main className="mb-24 flex w-full flex-col">
       <LectureBanner lecture={lecture} />
-      <LectureContent lecture={lecture} tutor={tutor} />
+      <LectureContent lecture={lecture} />
       <section className="container mx-auto mt-32 flex max-w-[1150px] flex-col gap-6">
         <span className="flex h-8 items-center justify-between gap-2 text-xl font-semibold text-gray-700">
-          {lecture?.tutor_name} {lecture?.tutor_occupation}님의 강의 더보기
+          {lecture?.tutor?.name}{" "}
+          {occupationTypeSwap[lecture?.tutor?.occupation]}님의 강의 더보기
           <Link
-            href={`/tutor/${lecture?.tutorId}`}
+            href={`/tutor/${lecture?.tutor?.id}`}
             className="group relative flex h-8 w-20"
           >
             <div className="relative z-10 flex w-full items-center justify-center gap-1">
@@ -63,7 +69,7 @@ export default function LectureDetailPage({
           </Link>
         </span>
         <div className="grid w-full grid-cols-4 gap-6">
-          {trainerLectures.map((lecture: Lecture, index: number) => {
+          {tutorLectures.map((lecture: GetLectureDto, index: number) => {
             return <LectureCard key={index} lecture={lecture} />;
           })}
         </div>
@@ -72,10 +78,7 @@ export default function LectureDetailPage({
         <span className="text-xl font-semibold text-gray-700">
           비슷한 강의 더보기
         </span>
-        <LectureTagSelect
-          tagLectures={tagLectures}
-          tags={lecture?.tags ?? []}
-        />
+        <LectureTagSelect tags={lecture?.tags} />
       </section>
     </main>
   );

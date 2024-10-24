@@ -1,10 +1,11 @@
 import { Button } from "@/components/ui/button";
+import { GetUserCurriculumDto } from "@/dtos/user-curriculum.dtos";
 import { UserCurriculum } from "@/types/tyeps.all";
 
 export default function CurriculumLecturePromotion({
-  currentCurriculum,
+  userCurriculum,
 }: {
-  currentCurriculum: UserCurriculum;
+  userCurriculum: GetUserCurriculumDto;
 }) {
   return (
     <div className="sticky top-24 h-fit w-80 rounded-xl border">
@@ -16,7 +17,7 @@ export default function CurriculumLecturePromotion({
           <span className="text-xl font-semibold">
             지금{" "}
             <span className="text-red-500">
-              {currentCurriculum?.currentIndex}강
+              {userCurriculum?.curriculumIndex + 1}강
             </span>
             을 학습할 차례에요!
           </span>

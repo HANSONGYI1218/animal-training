@@ -1,13 +1,13 @@
 "use client";
 
-import { Dot, Goal, Home, Monitor } from "lucide-react";
-import type { UserCurriculum } from "@/types/tyeps.all";
+import { Goal, Home, Monitor } from "lucide-react";
 import { motion } from "framer-motion";
+import { GetUserCurriculumDto } from "@/dtos/user-curriculum.dtos";
 
 export default function CurriculumBanner({
-  currentCurriculum,
+  userCurriculum,
 }: {
-  currentCurriculum: UserCurriculum;
+  userCurriculum: GetUserCurriculumDto;
 }) {
   return (
     <section className="relative flex w-full flex-col overflow-hidden bg-[#F9F9F9] py-12">
@@ -22,7 +22,7 @@ export default function CurriculumBanner({
             <div className="flex flex-col items-center">
               <motion.div
                 animate={
-                  currentCurriculum?.curriculumStep === "LECTURE" && {
+                  userCurriculum?.curriculumStep === "LECTURE" && {
                     scale: 1.1,
                   }
                 }
@@ -32,7 +32,7 @@ export default function CurriculumBanner({
                   repeatType: "mirror",
                   ease: "easeInOut",
                 }}
-                className={`flex h-10 w-10 items-center justify-center rounded-full ${currentCurriculum?.curriculumStep === "LECTURE" ? "bg-green-100" : "bg-neutral-300"}`}
+                className={`flex h-10 w-10 items-center justify-center rounded-full ${userCurriculum?.curriculumStep === "LECTURE" ? "bg-green-100" : "bg-neutral-300"}`}
               >
                 <Monitor
                   stroke="#ffffff"
@@ -45,12 +45,12 @@ export default function CurriculumBanner({
               </span>
             </div>
             <hr
-              className={`w-24 -translate-y-3 border-2 ${currentCurriculum?.curriculumStep === "LECTURE" ? "border-green-100" : "border-neutral-300"}`}
+              className={`w-24 -translate-y-3 border-2 ${userCurriculum?.curriculumStep === "LECTURE" ? "border-green-100" : "border-neutral-300"}`}
             />
             <div className="flex flex-col items-center">
               <motion.div
                 animate={
-                  currentCurriculum?.curriculumStep === "TRANING" && {
+                  userCurriculum?.curriculumStep === "TRAINING" && {
                     scale: 1.1,
                   }
                 }
@@ -60,7 +60,7 @@ export default function CurriculumBanner({
                   repeatType: "mirror",
                   ease: "easeInOut",
                 }}
-                className={`flex h-10 w-10 items-center justify-center rounded-full ${currentCurriculum?.curriculumStep === "TRANING" ? "bg-green-100" : "bg-neutral-300"}`}
+                className={`flex h-10 w-10 items-center justify-center rounded-full ${userCurriculum?.curriculumStep === "TRAINING" ? "bg-green-100" : "bg-neutral-300"}`}
               >
                 <Home stroke="#ffffff" className="h-4 w-4" strokeWidth={2.5} />
               </motion.div>
@@ -69,12 +69,12 @@ export default function CurriculumBanner({
               </span>
             </div>
             <hr
-              className={`w-24 -translate-y-3 border-2 ${currentCurriculum?.curriculumStep === "TRANING" ? "border-green-100" : "border-neutral-300"}`}
+              className={`w-24 -translate-y-3 border-2 ${userCurriculum?.curriculumStep === "TRAINING" ? "border-green-100" : "border-neutral-300"}`}
             />
             <div className="flex flex-col items-center">
               <motion.div
                 animate={
-                  currentCurriculum?.curriculumStep === "END" && {
+                  userCurriculum?.curriculumStep === "END" && {
                     scale: 1.1,
                   }
                 }
@@ -84,7 +84,7 @@ export default function CurriculumBanner({
                   repeatType: "mirror",
                   ease: "easeInOut",
                 }}
-                className={`flex h-10 w-10 items-center justify-center rounded-full ${currentCurriculum?.curriculumStep === "END" ? "bg-green-100" : "bg-neutral-300"}`}
+                className={`flex h-10 w-10 items-center justify-center rounded-full ${userCurriculum?.curriculumStep === "END" ? "bg-green-100" : "bg-neutral-300"}`}
               >
                 <Goal stroke="#ffffff" className="h-4 w-4" strokeWidth={2.5} />
               </motion.div>
@@ -94,7 +94,7 @@ export default function CurriculumBanner({
             </div>
           </div>
         </div>
-        <div className="bg-grass-pattern flex w-1/2 flex-col items-center rounded-xl bg-cover p-6">
+        <div className="flex w-1/2 flex-col items-center rounded-xl bg-grass-pattern bg-cover p-6">
           <div className="flex w-full flex-col items-center gap-4 rounded-xl bg-white p-6">
             <span className="text-lg font-semibold">커리큘럼 수칙</span>
             <div className="flex flex-col gap-2">
