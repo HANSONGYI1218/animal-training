@@ -1,5 +1,6 @@
 import {
   CreateTrainingCenterDto,
+  GetTrainingCenterDetailDto,
   GetTrainingCenterDto,
 } from "@/dtos/training-center.dtos";
 import prisma from "@/utils/db";
@@ -30,12 +31,21 @@ export const createTrainingCenterRepository = async (
 
 // 모든 훈련소 조회
 export const getAllTrainingCentersRepository = async (): Promise<
-  GetTrainingCenterDto[]
+  GetTrainingCenterDetailDto[]
 > => {
   try {
-    const trainingCenter = await prisma.trainingCenter.findMany();
+    const trainingCenter = await prisma.trainingCenter.findMany({
+      include: {
+        tutor: true,
+        reviews: true,
+        corporation: true,
+      },
+      orderBy: [
+        { like: "desc" }, // isFixed 값이 true인 항목을 우선
+      ],
+    });
 
-    return trainingCenter as GetTrainingCenterDto[];
+    return trainingCenter as GetTrainingCenterDetailDto[];
   } catch {
     return [];
   }
@@ -44,18 +54,23 @@ export const getAllTrainingCentersRepository = async (): Promise<
 // 특정 ID의 훈련소 조회
 export const getTrainingCenterByIdRepository = async (
   id: string,
-): Promise<GetTrainingCenterDto | null> => {
+): Promise<GetTrainingCenterDetailDto | null> => {
   try {
     const trainingCenter = await prisma.trainingCenter.findUnique({
       where: {
         id: id,
+      },
+      include: {
+        tutor: true,
+        reviews: true,
+        corporation: true,
       },
     });
 
     if (!trainingCenter) {
       return null;
     }
-    return trainingCenter as GetTrainingCenterDto;
+    return trainingCenter as GetTrainingCenterDetailDto;
   } catch {
     return null;
   }
@@ -85,14 +100,14 @@ export const updateTrainingCenterRepository = async (
 // 훈련소 삭제
 export const deleteTrainingCenterRepository = async (
   id: string,
-): Promise<GetTrainingCenterDto | null> => {
+): Promise<CreateTrainingCenterDto | null> => {
   try {
     const deletedTrainingCenter = await prisma.trainingCenter.delete({
       where: {
         id: id,
       },
     });
-    return deletedTrainingCenter as GetTrainingCenterDto;
+    return deletedTrainingCenter as CreateTrainingCenterDto;
   } catch {
     return null;
   }

@@ -97,15 +97,13 @@ model Tutor {
   occupation         OccupationType  @default(TRAINER)
   createdAt          DateTime        @default(now())
   updatedAt          DateTime        @updatedAt
-  corporationId      String
-  trainingCenterId   String?
-  trainingCenter     TrainingCenter? @relation(fields: [trainingCenterId], references: [id])    
+  corporationId      String 
   corporation        Corporation?    @relation(fields: [corporationId], references: [id])
+  trainingCenter     TrainingCenter?
   lectures           Lecture[]
   curriculumLectures CurriculumLecture[]
 
   @@index([corporationId])
-  @@index([trainingCenterId])
 }
 
 model Lecture {
@@ -216,14 +214,29 @@ model TrainingCenter {
   holidays           String[]
   price              Int             @default(0)
   like               Int             @default(0)
+  refundPolicys      String[]
   createdAt          DateTime        @default(now())
   updatedAt          DateTime        @updatedAt
+  tutorId            String?         @unique
   corporationId      String          
   corporation        Corporation?    @relation(fields: [corporationId], references: [id])
-  tutors             Tutor[]
+  tutor              Tutor?          @relation(fields: [tutorId], references: [id])          
   reviews            Review[]
 
   @@index([corporationId])
+  @@index([tutorId])
+}
+
+model CurriculumTraining {
+  id                      String               @id  @default(uuid())
+  index                   Int                  @default(0)
+  title                   String               @db.VarChar(255)
+  content                 String               @db.Text
+  animal_type             AnimalType           @default(CAT)
+  category                CurriculumCategory   @default(TRAINING)
+  trainingTime            Int                  @default(0)
+  createdAt               DateTime             @default(now())
+  updatedAt               DateTime             @updatedAt
 }
 
 model Review {
@@ -235,7 +248,7 @@ model Review {
   updatedAt          DateTime        @updatedAt
   userId             String  
   trainingCenterId   String?
-  user               User?          @relation(fields: [userId], references: [id])
+  user               User?           @relation(fields: [userId], references: [id])
   trainingCenter     TrainingCenter? @relation(fields: [trainingCenterId], references: [id])
 
   @@index([userId])

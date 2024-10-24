@@ -2,7 +2,6 @@
 
 import { motion } from "framer-motion";
 import { SquareUser, ThumbsUp } from "lucide-react";
-import type { Tutor } from "@/types/tyeps.all";
 import Autoplay from "embla-carousel-autoplay";
 import Image from "next/image";
 import {
@@ -14,17 +13,13 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import React from "react";
-import { TrainingCenter } from "@prisma/client";
+import { GetTrainingCenterDetailDto } from "@/dtos/training-center.dtos";
 
 interface CenterDetailProps {
-  center: TrainingCenter | undefined;
-  tutor: Tutor | undefined;
+  center: GetTrainingCenterDetailDto | undefined;
 }
 
-export default function CenterDetailBanner({
-  center,
-  tutor,
-}: CenterDetailProps) {
+export default function CenterDetailBanner({ center }: CenterDetailProps) {
   const plugin: any = React.useRef(
     Autoplay({ delay: 4000, stopOnInteraction: false }),
   );
@@ -51,20 +46,24 @@ export default function CenterDetailBanner({
       <div className="container relative z-10 mx-auto flex w-full max-w-[1150px]">
         <div className="flex w-full flex-col gap-4">
           <span className="text-3xl font-bold">{center?.name}</span>
-          <span className="mt-5 h-20 whitespace-pre-line text-sm leading-6">
+          <span className="mt-5 h-20 whitespace-pre-line font-[440] leading-6 text-neutral-600">
             {center?.introduction}
           </span>
-          <span className="whitespace-pre-line text-sm leading-6">
+          <span className="whitespace-pre-line font-[440] leading-6 text-neutral-600">
             {center?.address}
           </span>
           <div className="flex items-center gap-6">
-            <div className="flex items-center gap-2">
-              <SquareUser width={17} height={17} stroke="#000000" />
-              <span className="text-[0.93rem]">{tutor?.name}</span>
+            <div className="flex items-center gap-1">
+              <SquareUser width={17} height={17} stroke="rgb(82 82 82)" />
+              <span className="text-[0.93rem] text-neutral-600">
+                {center?.tutor?.name}
+              </span>
             </div>
-            <div className="flex items-center gap-2">
-              <ThumbsUp width={16} height={16} stroke="#000000" />
-              <span className="text-[0.93rem]">{center?.like}개</span>
+            <div className="flex items-center gap-1">
+              <ThumbsUp width={16} height={16} stroke="rgb(82 82 82)" />
+              <span className="text-[0.93rem] text-neutral-600">
+                {center?.like}개
+              </span>
             </div>
           </div>
         </div>

@@ -4,52 +4,74 @@ import { useEffect, useState } from "react";
 import SelectBox from "../common/select-box";
 import SearchBox from "../common/search-box";
 import TrainingCenterCard from "./training-center-card";
-import { TrainingCenter } from "@prisma/client";
+import { GetTrainingCenterDetailDto } from "@/dtos/training-center.dtos";
 
-export default function TrainingFiltering({
-  trainingCenters,
-}: {
-  trainingCenters: TrainingCenter[];
-}) {
-  const [centers, setCenters] = useState(trainingCenters);
+export default function TrainingFiltering() {
+  const [centers, setCenters] = useState<GetTrainingCenterDetailDto[]>([]);
   const [sort, setSort] = useState("별점좋은순");
   const [search, setSearch] = useState("");
   const [location, setLocation] = useState("");
 
   useEffect(() => {
-    const filteredCenters = trainingCenters.filter((center: TrainingCenter) => {
-      const matchesLocation =
-        location.length === 0 || center.address.includes(location);
+    if (centers.length > 0) {
+      const filteredCenters = centers.filter(
+        (center: GetTrainingCenterDetailDto) => {
+          const matchesLocation =
+            location.length === 0 || center.address.includes(location);
 
-      const matchesSearch = search.length === 0 || center.name.includes(search); //튜터 이름 포함 시켜야 됨
+          const matchesSearch =
+            search.length === 0 || center.name.includes(search); //튜터 이름 포함 시켜야 됨
 
-      return matchesSearch && matchesLocation;
-    });
+          return matchesSearch && matchesLocation;
+        },
+      );
 
-    const sortedCenters = filteredCenters.sort((a, b) => {
-      //   if (sort === "별점좋은순") {
-      //     return b.createdAt.getTime() - a.createdAt.getTime();
-      //   }
-      //   if (sort === "후기많은순") {
-      //     return a.createdAt.getTime() - b.createdAt.getTime();
-      //   }
-      if (sort === "최신순") {
-        return b.createdAt.getTime() - a.createdAt.getTime();
+      const sortedCenters = filteredCenters.sort((a, b) => {
+        //   if (sort === "별점좋은순") {
+        //     return b.createdAt.getTime() - a.createdAt.getTime();
+        //   }
+        //   if (sort === "후기많은순") {
+        //     return a.createdAt.getTime() - b.createdAt.getTime();
+        //   }
+        if (sort === "최신순") {
+          return b.createdAt.getTime() - a.createdAt.getTime();
+        }
+        if (sort === "가격낮은순") {
+          return a.price - b.price;
+        }
+        if (sort === "가격높은순") {
+          return b.price - a.price;
+        }
+        //   if (sort === "가까운순") {
+        //     return b.like - a.like;
+        //   }
+        return 0;
+      });
+
+      setCenters(sortedCenters);
+    }
+  }, [sort, search, location]);
+
+  useEffect(() => {
+    const getData = async () => {
+      const responseTrainingCenters = await fetch(
+        `${process.env.NEXT_PUBLIC_WEB_URL}/api/training-center`,
+        {
+          method: "GET",
+          cache: "no-store",
+        },
+      );
+      if (!responseTrainingCenters.ok) {
+        return null;
       }
-      if (sort === "가격낮은순") {
-        return a.price - b.price;
-      }
-      if (sort === "가격높은순") {
-        return b.price - a.price;
-      }
-      //   if (sort === "가까운순") {
-      //     return b.like - a.like;
-      //   }
-      return 0;
-    });
+      const trainingCenters: GetTrainingCenterDetailDto[] =
+        await responseTrainingCenters.json();
 
-    setCenters(sortedCenters);
-  }, [sort, search, location, trainingCenters]);
+      setCenters(trainingCenters);
+    };
+
+    getData();
+  }, []);
 
   return (
     <div className="flex w-full flex-col gap-12">
@@ -81,7 +103,7 @@ export default function TrainingFiltering({
         />
       </div>
       <div className="flex flex-col">
-        {centers.map((trainingCenter) => {
+        {centers.map((trainingCenter: GetTrainingCenterDetailDto) => {
           return (
             <TrainingCenterCard
               key={trainingCenter.id}

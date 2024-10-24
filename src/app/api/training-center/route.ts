@@ -7,6 +7,7 @@ import {
 } from "@/controllers/training-center.controllers";
 import {
   CreateTrainingCenterDto,
+  GetTrainingCenterDetailDto,
   GetTrainingCenterDto,
 } from "@/dtos/training-center.dtos";
 import { NextRequest, NextResponse } from "next/server";
@@ -33,7 +34,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
 
   try {
     if (id) {
-      const trainingCenter: GetTrainingCenterDto | null =
+      const trainingCenter: GetTrainingCenterDetailDto | null =
         await getTrainingCenterById(id as string);
 
       if (!trainingCenter)
@@ -41,7 +42,8 @@ export async function GET(req: NextRequest, res: NextResponse) {
 
       return NextResponse.json(trainingCenter);
     } else {
-      const trainingCenters = await getAllTrainingCenters();
+      const trainingCenters: GetTrainingCenterDetailDto[] =
+        await getAllTrainingCenters();
 
       return NextResponse.json(trainingCenters);
     }

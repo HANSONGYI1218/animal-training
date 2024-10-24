@@ -1,5 +1,6 @@
 import {
   CreateTrainingCenterDto,
+  GetTrainingCenterDetailDto,
   GetTrainingCenterDto,
 } from "@/dtos/training-center.dtos";
 import {
@@ -31,12 +32,12 @@ export const createTrainingCenterService = async (
 
 // 모든 강의 조회
 export const getAllTrainingCentersService = async (): Promise<
-  GetTrainingCenterDto[]
+  GetTrainingCenterDetailDto[]
 > => {
   try {
     const trainingCenters = await getAllTrainingCentersRepository();
 
-    return trainingCenters as GetTrainingCenterDto[];
+    return trainingCenters as GetTrainingCenterDetailDto[];
   } catch {
     return [];
   }
@@ -45,14 +46,14 @@ export const getAllTrainingCentersService = async (): Promise<
 // 특정 ID의 강의 조회
 export const getTrainingCenterByIdService = async (
   id: string,
-): Promise<GetTrainingCenterDto | null> => {
+): Promise<GetTrainingCenterDetailDto | null> => {
   try {
     const trainingCenter = await getTrainingCenterByIdRepository(id);
 
     if (!trainingCenter) {
       return null;
     }
-    return trainingCenter as GetTrainingCenterDto;
+    return trainingCenter as GetTrainingCenterDetailDto;
   } catch {
     return null;
   }

@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import CurriculumNav from "./curriculum-nav";
-import dummydata from "@/utils/dummydata";
 import { CurriculumCategory } from "@prisma/client";
 import TraningFiltering from "./training-center-filtering";
 import TraningCenterPromotion from "./training-center-promotion";
@@ -25,8 +24,6 @@ export default function CurriculumContainer({
     },
   );
 
-  const trainingCenters = dummydata.traningCenterData;
-
   return (
     <div className="container mx-auto flex max-w-[1150px] flex-col gap-12">
       <CurriculumNav tab={tab} setTab={setTab} />
@@ -47,7 +44,7 @@ export default function CurriculumContainer({
         </div>
       ) : (
         <div className="relative flex w-full gap-6">
-          <TraningFiltering trainingCenters={trainingCenters} />
+          <TraningFiltering />
           <TraningCenterPromotion />
         </div>
       )}

@@ -1,4 +1,3 @@
-import prisma from "@/utils/db";
 import { CreateTutorDto, GetTutorDto } from "@/dtos/tutor.dtos";
 import {
   createTutorRepository,
@@ -24,7 +23,7 @@ export const createTutorService = async (
   }
 };
 
-// 모든 강의 조회
+// 모든 강사 조회
 export const getAllTutorsService = async (): Promise<GetTutorDto[]> => {
   try {
     const tutors = await getAllTutorsRepository();
@@ -35,7 +34,7 @@ export const getAllTutorsService = async (): Promise<GetTutorDto[]> => {
   }
 };
 
-// 특정 ID의 강의 조회
+// 특정 ID의 강사 조회
 export const getTutorByIdService = async (
   id: string,
 ): Promise<GetTutorDto | null> => {
@@ -72,7 +71,7 @@ export const updateTutorService = async (
   }
 };
 
-// 강의 삭제
+// 강사 삭제
 export const deleteTutorService = async (
   id: string,
 ): Promise<CreateTutorDto | null> => {

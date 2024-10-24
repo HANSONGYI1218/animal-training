@@ -1,6 +1,5 @@
 "use client";
 
-import { Review, Tutor } from "@/types/tyeps.all";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import CenterNav from "./center-nav";
@@ -11,20 +10,22 @@ import { MessageCircleMore, ThumbsUp } from "lucide-react";
 import { format } from "date-fns";
 import { Badge } from "@/components/ui/badge";
 import CenterPromotion from "./center-promotion";
-import { TrainingCenter } from "@prisma/client";
+import { GetTrainingCenterDetailDto } from "@/dtos/training-center.dtos";
+import { Review } from "@prisma/client";
+import { GetCurriculumTrainingDto } from "@/dtos/curriculum-training.dtos";
 
 interface CenterDetailProp {
-  center: TrainingCenter | undefined;
-  tutor: Tutor | undefined;
-  reviews: Review[];
+  center: GetTrainingCenterDetailDto | undefined;
+  curriculumTrainings: GetCurriculumTrainingDto[];
 }
 
 export default function CenterContainer({
   center,
-  tutor,
-  reviews,
+  curriculumTrainings,
 }: CenterDetailProp) {
-  const [sortedReivews, setSortedReviews] = useState(reviews);
+  const [sortedReivews, setSortedReviews] = useState<Review[]>(
+    center?.reviews ?? [],
+  );
   const [tab, setTab] = useState("info");
   const [sort, setSort] = useState("추천순");
 
@@ -32,6 +33,13 @@ export default function CenterContainer({
   const sectionCurriRef = useRef<HTMLDivElement>(null);
   const sectionPriceRef = useRef<HTMLDivElement>(null);
   const sectionReviewRef = useRef<HTMLDivElement>(null);
+
+  const handleCurricumTotalTime = () => {
+    return curriculumTrainings.reduce(
+      (total: number, curriculum) => total + curriculum.trainingTime,
+      0,
+    );
+  };
 
   const scrollToSection = (v: string) => {
     let currentRef: React.RefObject<HTMLDivElement> | null;
@@ -58,26 +66,32 @@ export default function CenterContainer({
   };
 
   useEffect(() => {
-    const ratingOrder = ["VERY_GOOD", "GOOD", "GENERAL", "BAD"];
+    if (center && center.reviews && center?.reviews.length > 0) {
+      const ratingOrder = ["VERY_GOOD", "GOOD", "GENERAL", "BAD"];
 
-    const sortingReviews = [...reviews].sort((a, b) => {
-      if (sort === "추천순") {
-        const aRatingIndex = ratingOrder.indexOf(a.rating);
-        const bRatingIndex = ratingOrder.indexOf(b.rating);
+      const sortingReviews = [...center.reviews].sort((a, b) => {
+        if (sort === "추천순") {
+          const aRatingIndex = ratingOrder.indexOf(a.rating);
+          const bRatingIndex = ratingOrder.indexOf(b.rating);
 
-        return aRatingIndex - bRatingIndex;
-      }
-      if (sort === "최신순") {
-        return b.createdAt.getTime() - a.createdAt.getTime();
-      }
-      if (sort === "오래된순") {
-        return a.createdAt.getTime() - b.createdAt.getTime();
-      }
+          return aRatingIndex - bRatingIndex;
+        }
+        if (sort === "최신순") {
+          return (
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+          );
+        }
+        if (sort === "오래된순") {
+          return (
+            new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+          );
+        }
 
-      return 0;
-    });
+        return 0;
+      });
 
-    setSortedReviews(sortingReviews);
+      setSortedReviews(sortingReviews);
+    }
   }, [sort]);
 
   return (
@@ -89,34 +103,28 @@ export default function CenterContainer({
           <section ref={sectionInfoRef} className="flex flex-col gap-6">
             <span className="ml-4 text-xl font-bold">정보</span>
             <div className="flex gap-3 p-6">
-              <div className="flex flex-1 flex-col gap-3">
+              <div className="flex flex-1 flex-col gap-6">
                 <div className="flex gap-2">
-                  <span className="w-24 font-semibold text-neutral-600">
-                    이름
-                  </span>
-                  <span className="flex-1">{center?.name}</span>
+                  <span className="w-24 text-neutral-600">이름</span>
+                  <span className="flex-1 font-[440]">{center?.name}</span>
                 </div>
                 <div className="flex gap-2">
-                  <span className="w-24 font-semibold text-neutral-600">
-                    훈련사
-                  </span>
-                  <span className="flex-1">{tutor?.name}</span>
-                </div>
-                <div className="flex gap-2">
-                  <span className="w-24 font-semibold text-neutral-600">
-                    훈련사 소개
-                  </span>
-                  <span className="flex-1 whitespace-pre-line leading-7">
-                    {tutor?.introduction}
+                  <span className="w-24 text-neutral-600">훈련사</span>
+                  <span className="flex-1 font-[440]">
+                    {center?.tutor?.name}
                   </span>
                 </div>
                 <div className="flex gap-2">
-                  <span className="w-24 font-semibold text-neutral-600">
-                    휴일
+                  <span className="w-24 text-neutral-600">훈련사 소개</span>
+                  <span className="flex-1 whitespace-pre-line font-[440] leading-7">
+                    {center?.tutor?.introduction}
                   </span>
+                </div>
+                <div className="flex gap-2">
+                  <span className="w-24 text-neutral-600">휴일</span>
                   {center?.holidays.map((holiday, index: number) => (
                     <span key={index}>
-                      <span>{holiday}</span>
+                      <span className="font-[440]">{holiday}</span>
                       <span
                         className={`${index === center?.holidays.length - 1 && "hidden"}`}
                       >
@@ -126,16 +134,14 @@ export default function CenterContainer({
                   ))}
                 </div>
                 <div className="flex gap-2">
-                  <span className="w-24 font-semibold text-neutral-600">
-                    회당 가격
+                  <span className="w-24 text-neutral-600">회당 가격</span>
+                  <span className="flex-1 font-[440]">
+                    {formatPrice(center?.price)}원
                   </span>
-                  <span className="flex-1">{formatPrice(center?.price)}원</span>
                 </div>
                 <div className="flex gap-2">
-                  <span className="w-24 font-semibold text-neutral-600">
-                    위치
-                  </span>
-                  <span className="flex-1">{center?.address}</span>
+                  <span className="w-24 text-neutral-600">위치</span>
+                  <span className="flex-1 font-[440]">{center?.address}</span>
                 </div>
                 <Image src="/map.png" width={400} height={300} alt="map" />
               </div>
@@ -145,28 +151,35 @@ export default function CenterContainer({
           <section ref={sectionCurriRef} className="flex flex-col gap-6">
             <div className="mx-4 flex flex-col gap-1">
               <span className="text-xl font-bold">커리큘럼</span>
-              <span className="text-end text-neutral-500">8차시 | 16시간</span>
+              <span className="text-end text-neutral-500">
+                {curriculumTrainings.length}차시 | {handleCurricumTotalTime()}
+                시간
+              </span>
               <span className="text-end text-red-500">
                 * 커리큘럼은 모든 훈련소가 동일합니다.
               </span>
             </div>
             <div className="flex flex-col p-6">
-              {trainigCurriculums.map((curriculum, index) => (
-                <div
-                  key={`item-${index + 1}`}
-                  className="flex flex-col gap-3 border-b px-3 py-6"
-                >
-                  <span className="font-semibold text-neutral-600">
-                    {`${index + 1}`}. {curriculum?.title}
-                  </span>
-                  <div className="mx-3 flex justify-between text-base">
-                    <span className="text-neutral-600">
-                      {curriculum?.content}
+              {curriculumTrainings.map(
+                (curriculum: GetCurriculumTrainingDto) => (
+                  <div
+                    key={`item-${curriculum?.index + 1}`}
+                    className="flex flex-col gap-3 border-b px-3 py-6"
+                  >
+                    <span className="font-semibold text-neutral-600">
+                      {`${curriculum?.index + 1}`}. {curriculum?.title}
                     </span>
-                    <span className="text-neutral-600">{curriculum?.hour}</span>
+                    <div className="mx-3 flex justify-between text-base">
+                      <span className="text-neutral-600">
+                        {curriculum?.content}
+                      </span>
+                      <span className="text-neutral-600">
+                        {curriculum?.trainingTime}시간
+                      </span>
+                    </div>
                   </div>
-                </div>
-              ))}
+                ),
+              )}
               <div className="mt-10 flex flex-col gap-2">
                 <span className="text-lg font-semibold text-red-500">
                   * 주의사항
@@ -194,9 +207,9 @@ export default function CenterContainer({
                 <span className="text-lg font-semibold text-red-500">
                   * 환불 정책
                 </span>
-                {traningCaution.map((caution: string, index: number) => (
+                {center?.refundPolicys.map((policy: string, index: number) => (
                   <span key={index}>
-                    {index + 1}. {caution}
+                    {index + 1}. {policy}
                   </span>
                 ))}
               </div>
@@ -212,7 +225,9 @@ export default function CenterContainer({
                     className="h-4 w-4"
                     stroke="rgb(115 115 115)"
                   />
-                  <span className="text-neutral-500">12개</span>
+                  <span className="text-neutral-500">
+                    {center?.reviews.length}개
+                  </span>
                 </div>
                 <div className="flex items-center gap-1">
                   <ThumbsUp className="h-4 w-4" stroke="rgb(115 115 115)" />

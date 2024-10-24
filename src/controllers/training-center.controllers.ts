@@ -1,5 +1,6 @@
 import {
   CreateTrainingCenterDto,
+  GetTrainingCenterDetailDto,
   GetTrainingCenterDto,
 } from "@/dtos/training-center.dtos";
 import {
@@ -29,7 +30,7 @@ export const createTrainingCenter = async (
 
 // 모든 훈련소 조회
 export const getAllTrainingCenters = async (): Promise<
-  GetTrainingCenterDto[]
+  GetTrainingCenterDetailDto[]
 > => {
   return await getAllTrainingCentersService();
 };
@@ -37,7 +38,7 @@ export const getAllTrainingCenters = async (): Promise<
 // 특정 ID의 훈련소 조회
 export const getTrainingCenterById = async (
   id: string,
-): Promise<GetTrainingCenterDto | null> => {
+): Promise<GetTrainingCenterDetailDto | null> => {
   return (await getTrainingCenterByIdService(id)) ?? null;
 };
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { Dot, Goal, Home, Monitor } from "lucide-react";
+import { Goal, Home, Monitor } from "lucide-react";
 import { motion } from "framer-motion";
 import { GetUserCurriculumDto } from "@/dtos/user-curriculum.dtos";
 

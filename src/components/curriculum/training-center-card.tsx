@@ -8,12 +8,12 @@ import {
 import Image from "next/image";
 import { Button } from "../ui/button";
 import Link from "next/link";
-import { TrainingCenter } from "@prisma/client";
+import { GetTrainingCenterDetailDto } from "@/dtos/training-center.dtos";
 
 export default function TrainingCenterCard({
   trainingCenter,
 }: {
-  trainingCenter: TrainingCenter;
+  trainingCenter: GetTrainingCenterDetailDto;
 }) {
   return (
     <div className="flex gap-3 border-b px-6 py-12">
@@ -27,12 +27,14 @@ export default function TrainingCenterCard({
           />
         </span>
         <div className="mt-2 flex gap-3">
-          <span>강형욱</span>
-          <span>훈련사 8년</span>
+          <span>{trainingCenter?.tutor?.name}</span>
+          <span>{trainingCenter?.tutor?.career}</span>
         </div>
         <div className="mt-8 flex flex-col gap-3">
           <div className="flex gap-3">
-            <span className="w-20 text-neutral-500">훈련사 소개</span>
+            <span className="w-20 text-neutral-500">
+              {trainingCenter?.tutor?.introduction}
+            </span>
             <span className="whitespace-pre-line">
               {trainingCenter?.introduction}
             </span>
@@ -48,7 +50,7 @@ export default function TrainingCenterCard({
           <div className="mt-6 flex items-center gap-6">
             <div className="flex items-center gap-1">
               <MessageCircleMore className="h-4 w-4" />
-              <span>12개</span>
+              <span>{trainingCenter?.reviews?.length ?? 0}개</span>
             </div>
             <div className="flex items-center gap-1">
               <ThumbsUp className="h-4 w-4" />

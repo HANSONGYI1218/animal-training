@@ -12,9 +12,19 @@ export default async function NoticeDetailPage({
   params: { id: string };
 }) {
   const { id } = params;
-  const notice: Notice = dummydata.noticeData.find(
-    (notice) => notice.id === id,
-  ) as Notice;
+
+  const responseNotice = await fetch(
+    `${process.env.NEXT_PUBLIC_WEB_URL}/api/notice?id=${id}`,
+    {
+      method: "GET",
+      cache: "no-store",
+    },
+  );
+  if (!responseNotice.ok) {
+    return null;
+  }
+
+  const notice = await responseNotice.json();
 
   return (
     <main className="container mx-auto flex w-full max-w-[1150px] flex-col items-center gap-12 py-6">
@@ -36,7 +46,7 @@ export default async function NoticeDetailPage({
           </div>
         </div>
         <div className="flex w-full flex-col items-end gap-2 border-b px-6 py-3">
-          {notice?.attachments.map((attachment) => {
+          {notice?.attachments.map((attachment: string) => {
             return (
               <div
                 key={attachment}
