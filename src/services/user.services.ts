@@ -1,8 +1,13 @@
-import { CreateUserDto, GetUserDto, UpdateUserDto } from "@/dtos/user.dtos";
+import {
+  CreateUserDto,
+  GetUserAdoptionRecordDto,
+  GetUserDto,
+  UpdateUserDto,
+} from "@/dtos/user.dtos";
 import {
   createUserRepository,
   deleteUserRepository,
-  getAllUsersRepository,
+  getUserByUserInfoRepository,
   getUserByIdRepository,
   updateUserRepository,
 } from "@/repositorys/user.repository";
@@ -26,17 +31,6 @@ const createUserService = async (
   }
 };
 
-// 모든 유저 조회
-const getAllUsersService = async (): Promise<GetUserDto[]> => {
-  try {
-    const users = await getAllUsersRepository();
-
-    return users as GetUserDto[];
-  } catch {
-    return [];
-  }
-};
-
 // 특정 ID의 유저 조회
 const getUserByIdService = async (id: string): Promise<GetUserDto | null> => {
   try {
@@ -46,6 +40,23 @@ const getUserByIdService = async (id: string): Promise<GetUserDto | null> => {
       return null;
     }
     return user as GetUserDto;
+  } catch {
+    return null;
+  }
+};
+
+// 특정 userInfo로 유저 조회
+const getUserByUserInfoService = async (
+  name: string,
+  registrationNumber: string,
+): Promise<GetUserAdoptionRecordDto | null> => {
+  try {
+    const user = await getUserByUserInfoRepository(name, registrationNumber);
+
+    if (!user) {
+      return null;
+    }
+    return user as GetUserAdoptionRecordDto;
   } catch {
     return null;
   }
@@ -90,8 +101,8 @@ const deleteUserService = async (id: string): Promise<GetUserDto | null> => {
 
 export {
   createUserService,
-  getAllUsersService,
   getUserByIdService,
+  getUserByUserInfoService,
   updateUserService,
   deleteUserService,
 };

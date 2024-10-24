@@ -2,7 +2,7 @@ import {
   IsNotEmptyDate,
   IsNotEmptyString,
 } from "@/validate-decoration/validate-deco";
-import { GenderType } from "@prisma/client";
+import { Adoption, GenderType } from "@prisma/client";
 import { IsEnum } from "class-validator";
 
 export class CreateUserDto {
@@ -61,6 +61,21 @@ export class GetUserDto {
   birthday!: Date;
   gender!: GenderType;
   lectureId!: string;
+  createdAt!: Date;
+  updatedAt!: Date;
+}
+
+export class GetUserAdoptionRecordDto {
+  id!: string;
+  name!: string;
+  email!: string;
+  address!: string;
+  phoneNumber!: string;
+  registrationNumber!: string;
+  nickname!: string;
+  birthday!: Date;
+  gender!: GenderType;
+  adopterAdoptions!: Adoption[] | null;
   createdAt!: Date;
   updatedAt!: Date;
 }

@@ -1,4 +1,3 @@
-import prisma from "@/utils/db";
 import {
   CreateCorporationDto,
   GetCorporationDto,
@@ -30,7 +29,7 @@ export const createCorporationService = async (
   }
 };
 
-// 모든 강의 조회
+// 모든 기업 조회
 export const getAllCorporationsService = async (): Promise<
   GetCorporationDto[]
 > => {
@@ -43,7 +42,7 @@ export const getAllCorporationsService = async (): Promise<
   }
 };
 
-// 특정 ID의 강의 조회
+// 특정 ID의 기업 조회
 export const getCorporationByIdService = async (
   id: string,
 ): Promise<GetCorporationDto | null> => {
@@ -79,7 +78,7 @@ export const updateCorporationService = async (
   }
 };
 
-// 강의 삭제
+// 기업 삭제
 export const deleteCorporationService = async (
   id: string,
 ): Promise<GetCorporationDto | null> => {

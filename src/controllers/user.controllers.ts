@@ -1,9 +1,14 @@
 import { NextResponse } from "next/server";
-import { CreateUserDto, GetUserDto, UpdateUserDto } from "@/dtos/user.dtos";
+import {
+  CreateUserDto,
+  GetUserAdoptionRecordDto,
+  GetUserDto,
+  UpdateUserDto,
+} from "@/dtos/user.dtos";
 import {
   createUserService,
   getUserByIdService,
-  getAllUsersService,
+  getUserByUserInfoService,
   updateUserService,
   deleteUserService,
 } from "@/services/user.services";
@@ -22,14 +27,17 @@ export const createUser = async (dto: CreateUserDto): Promise<NextResponse> => {
   return NextResponse.json({ status: 200 });
 };
 
-// 모든 유저 조회 함수
-export const getAllUsers = async (): Promise<GetUserDto[]> => {
-  return await getAllUsersService();
-};
-
 // 특정 ID의 유저 조회 함수
 export const getUserById = async (id: string): Promise<GetUserDto | null> => {
   return (await getUserByIdService(id)) ?? null;
+};
+
+// 특정 userInfo로 유저 조회 함수
+export const getUserByUserInfo = async (
+  name: string,
+  registrationNumber: string,
+): Promise<GetUserAdoptionRecordDto | null> => {
+  return (await getUserByUserInfoService(name, registrationNumber)) ?? null;
 };
 
 // 유저 업데이트 함수

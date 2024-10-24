@@ -33,8 +33,8 @@ model User {
   updatedAt          DateTime        @updatedAt
   lectureId          String?
   lecture            Lecture?        @relation(fields: [lectureId], references: [id])
-  adoptions          Adoption[]
-  Abandons           Abandon[]
+  adopterAdoptions   Adoption[]      @relation("AdopterAdoptions")
+  breederAdoptions   Adoption[]      @relation("BreederAdoptions")
   animals            Animal[]
   userCurriculum     UserCurriculum[]
   reviews            Review[]
@@ -82,8 +82,8 @@ model Corporation {
   createdAt         DateTime        @default(now())
   updatedAt         DateTime        @updatedAt
   tutors            Tutor[]
-  adoptions         Adoption[]
-  Abandons          Abandon[]
+  adopterAdoptions  Adoption[]      @relation("AdopterCorporationAdoptions")
+  breederAdoptions  Adoption[]      @relation("BreederCorporationAdoptions")
   animals           Animal[]
   trainingCenter    TrainingCenter[]
 }
@@ -146,40 +146,28 @@ model CurriculumLecture {
 }
 
 model Adoption {
-  id                String          @id  @default(uuid())
-  adoption_date     DateTime        @default(now())
-  abandon_date      DateTime?
-  status            AdoptionStatus  @default(ADOPTION)
-  createdAt         DateTime        @default(now())
-  updatedAt         DateTime        @updatedAt
-  userId            String
-  corporationId     String
-  animalId          String
-  user              User?           @relation(fields: [userId], references: [id])
-  corporation       Corporation?    @relation(fields: [corporationId], references: [id])
-  animal            Animal?         @relation(fields: [animalId], references: [id])
+  id                    String          @id  @default(uuid())
+  adoption_date         DateTime        @default(now())
+  abandon_date          DateTime?
+  status                AdoptionStatus  @default(ADOPTION)
+  abandon_reason        String?         @db.Text
+  createdAt             DateTime        @default(now())
+  updatedAt             DateTime        @updatedAt
+  adopterId             String?
+  breederId             String?
+  adopterCorporationId  String?
+  breederCorporationId  String?
+  animalId              String
+  adopter               User?           @relation("AdopterAdoptions", fields: [adopterId], references: [id])
+  breeder               User?           @relation("BreederAdoptions", fields: [breederId], references: [id])
+  adopterCorporation    Corporation?    @relation("AdopterCorporationAdoptions", fields: [adopterCorporationId], references: [id])
+  breederCorporation    Corporation?    @relation("BreederCorporationAdoptions", fields: [breederCorporationId], references: [id])
+  animal                Animal?         @relation(fields: [animalId], references: [id])
 
-  @@index([userId])
-  @@index([corporationId])
-  @@index([animalId])
-}
-
-model Abandon {
-  id                String          @id  @default(uuid())
-  abandon_date      DateTime        @default(now())
-  adoption_date     DateTime?     
-  abandon_reason    String          @db.Text
-  createdAt         DateTime        @default(now())
-  updatedAt         DateTime        @updatedAt
-  userId            String
-  corporationId     String
-  animalId          String
-  user              User?           @relation(fields: [userId], references: [id])
-  corporation       Corporation?    @relation(fields: [corporationId], references: [id])
-  animal            Animal?         @relation(fields: [animalId], references: [id])
-  
-  @@index([userId])
-  @@index([corporationId])
+  @@index([adopterId])
+  @@index([breederId])
+  @@index([adopterCorporationId])
+  @@index([breederCorporationId])
   @@index([animalId])
 }
 
@@ -193,12 +181,11 @@ model Animal {
   additionalImgs    String[]          
   createdAt         DateTime        @default(now())
   updatedAt         DateTime        @updatedAt
-  userId            String
-  corporationId     String
+  userId            String?
+  corporationId     String?
   user              User?                                                                                                                                                                                                             @relation(fields: [userId], references: [id])
   corporation       Corporation?    @relation(fields: [corporationId], references: [id])
   adoptions         Adoption[]
-  Abandons          Abandon[]
 
   @@index([userId])
   @@index([corporationId])
@@ -317,7 +304,7 @@ enum Category {
 
 enum AdoptionStatus {
   ADOPTION 
-  Abandon
+  ABANDON
 }
 
 enum RatingStatus {

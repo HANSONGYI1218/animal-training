@@ -37,7 +37,6 @@ export default function AlarmSettingForm({ item }: { item?: any }) {
 
   async function onSubmit(data: z.infer<typeof AlarmSettingSchema>) {
     try {
-      console.log("서버 api 호출");
       await fetch(`${process.env.NEXT_PUBLIC_WEB_URL}/api/mypage/${item.id}`, {
         method: "PUT",
         headers: {

@@ -26,7 +26,7 @@ export const createCorporationRepository = async (
   }
 };
 
-// 모든 강의 조회
+// 모든 기업 조회
 export const getAllCorporationsRepository = async (): Promise<
   GetCorporationDto[]
 > => {
@@ -39,7 +39,7 @@ export const getAllCorporationsRepository = async (): Promise<
   }
 };
 
-// 특정 ID의 강의 조회
+// 특정 ID의 기업 조회
 export const getCorporationByIdRepository = async (
   id: string,
 ): Promise<GetCorporationDto | null> => {
@@ -80,7 +80,7 @@ export const updateCorporationRepository = async (
   }
 };
 
-// 강의 삭제
+// 기업 삭제
 export const deleteCorporationRepository = async (
   id: string,
 ): Promise<GetCorporationDto | null> => {

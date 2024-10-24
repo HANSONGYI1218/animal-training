@@ -1,5 +1,10 @@
 import prisma from "@/utils/db";
-import { CreateUserDto, GetUserDto, UpdateUserDto } from "@/dtos/user.dtos";
+import {
+  CreateUserDto,
+  GetUserAdoptionRecordDto,
+  GetUserDto,
+  UpdateUserDto,
+} from "@/dtos/user.dtos";
 
 // 유저 생성
 const createUserRepository = async (
@@ -26,17 +31,6 @@ const createUserRepository = async (
   }
 };
 
-// 모든 유저 조회
-const getAllUsersRepository = async (): Promise<GetUserDto[]> => {
-  try {
-    const users = await prisma.user.findMany();
-
-    return users as GetUserDto[];
-  } catch {
-    return [];
-  }
-};
-
 // 특정 ID의 유저 조회
 const getUserByIdRepository = async (
   id: string,
@@ -52,6 +46,35 @@ const getUserByIdRepository = async (
       return null;
     }
     return user as GetUserDto;
+  } catch {
+    return null;
+  }
+};
+
+// 특정 userInfo로 유저 조회
+const getUserByUserInfoRepository = async (
+  name: string,
+  registrationNumber: string,
+): Promise<GetUserAdoptionRecordDto | null> => {
+  try {
+    const user = await prisma.user.findFirst({
+      where: {
+        name: name,
+        registrationNumber: registrationNumber,
+      },
+      include: {
+        adopterAdoptions: {
+          include: {
+            animal: true, // Animal 정보도 함께 포함
+          },
+        },
+      },
+    });
+    if (!user) {
+      return null;
+    }
+
+    return user as GetUserAdoptionRecordDto;
   } catch {
     return null;
   }
@@ -94,7 +117,7 @@ const deleteUserRepository = async (id: string): Promise<GetUserDto | null> => {
 
 export {
   createUserRepository,
-  getAllUsersRepository,
+  getUserByUserInfoRepository,
   getUserByIdRepository,
   updateUserRepository,
   deleteUserRepository,

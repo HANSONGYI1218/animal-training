@@ -56,7 +56,7 @@ export const updateCorporation = async (
   return NextResponse.json({ status: 200 });
 };
 
-// 강의 삭제
+// 기업 삭제
 export const deleteCorporation = async (id: string): Promise<NextResponse> => {
   const deletedCorporation = await deleteCorporationService(id);
 

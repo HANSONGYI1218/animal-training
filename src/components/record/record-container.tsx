@@ -2,47 +2,54 @@
 
 import { useEffect, useState } from "react";
 import RecordSearchForm from "./record-search-form";
-import { Abandon, Adoption, User } from "@prisma/client";
+import { Adoption } from "@prisma/client";
 import RecordLayout from "./record-layout";
 import { ChevronDown } from "lucide-react";
 import RecordStep from "./record-step";
-import dummydata from "@/utils/dummydata";
 import RecordContent from "./record-content";
 import { format } from "date-fns";
+import { GetUserAdoptionRecordDto } from "@/dtos/user.dtos";
+import { GetAdoptionWithAnimalDto } from "@/dtos/adoption.dtos";
 
 export default function RecordContainer() {
-  const [searchUser, setSearchUser] = useState<User | null>(null);
+  const [searchUser, setSearchUser] = useState<GetUserAdoptionRecordDto | null>(
+    null,
+  );
   const [tab, setTab] = useState<string>("adoption");
-  const [adoptionDatas, setAdoptionData] = useState<Adoption[] | null>(null);
-  const [abandonDatas, setAbandonData] = useState<Abandon[] | null>(null);
+  const [adoptionDatas, setAdoptionDatas] = useState<
+    GetAdoptionWithAnimalDto[]
+  >([]);
+  const [abandonDatas, setAbandonDatas] = useState<GetAdoptionWithAnimalDto[]>(
+    [],
+  );
 
-  const getFilteredData = (data: any[], sortKey: string) => {
-    return data
-      .filter((item) => item.userId === searchUser?.id)
-      .sort(
-        (a, b) =>
-          new Date(a[sortKey]).getTime() - new Date(b[sortKey]).getTime(),
-      );
+  const getFilteredData = (data: any[]) => {
+    return data.sort(
+      (a, b) =>
+        new Date(a.adoption_date).getTime() -
+        new Date(b.adoption_date).getTime(),
+    );
   };
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const getAdoptionData = getFilteredData(
-          dummydata.AdoptionData,
-          "adoption_date",
+        const abandons = searchUser!.adopterAdoptions!.filter(
+          (abandon: Adoption) => abandon.abandon_date,
         );
-        setAdoptionData(getAdoptionData);
 
-        const getAbandonData = getFilteredData(
-          dummydata.AbandonData,
-          "abandon_date",
-        );
-        setAbandonData(getAbandonData);
+        setAdoptionDatas(getFilteredData(searchUser!.adopterAdoptions!));
+        setAbandonDatas(getFilteredData(abandons));
       } catch {}
     };
 
-    fetchData();
+    if (
+      searchUser &&
+      searchUser?.adopterAdoptions &&
+      searchUser?.adopterAdoptions.length > 0
+    ) {
+      fetchData();
+    }
   }, [searchUser]);
 
   return (
@@ -57,44 +64,42 @@ export default function RecordContainer() {
           <span>dkdk dkdkd dkdk</span>
         </div>
         <RecordLayout tab={tab} setTab={setTab} user={searchUser}>
-          {(adoptionDatas || abandonDatas) &&
-            (tab === "adoption"
-              ? (adoptionDatas as Adoption[])
-              : (abandonDatas as Abandon[])
-            ).map((data: Adoption | Abandon, index: number) => {
-              const previousData =
-                index > 0
-                  ? (tab === "adoption"
-                      ? (adoptionDatas as Adoption[])
-                      : (abandonDatas as Abandon[]))[index - 1]
-                  : null;
+          {adoptionDatas &&
+            (tab === "adoption" ? adoptionDatas : abandonDatas).map(
+              (data: GetAdoptionWithAnimalDto, index: number) => {
+                const previousData =
+                  index > 0
+                    ? (tab === "adoption" ? adoptionDatas : abandonDatas)[
+                        index - 1
+                      ]
+                    : null;
 
-              // 현재와 이전 데이터의 날짜를 가져오는 함수
-              const getDate = (item: Adoption | Abandon) => {
-                const date =
-                  tab === "adoption"
-                    ? (item as Adoption).adoption_date
-                    : (item as Abandon).abandon_date;
-                return date;
-              };
-              const showYear =
-                !previousData ||
-                format(getDate(data)!, "yyyy") !==
-                  format(getDate(previousData)!, "yyyy");
+                // 현재와 이전 데이터의 날짜를 가져오는 함수
+                const getDate = (item: GetAdoptionWithAnimalDto) => {
+                  const date =
+                    tab === "adoption" ? item.adoption_date : item.abandon_date;
+                  return typeof date === "string" ? new Date(date) : date;
+                };
 
-              return (
-                <div className="flex flex-col" key={index}>
-                  <span
-                    className={`my-5 text-lg font-semibold ${showYear || index === 0 ? "flex" : "hidden"}`}
-                  >
-                    {format(getDate(data)!, "yyyy")}
-                  </span>
-                  <RecordStep record_date={getDate(data) ?? ""}>
-                    <RecordContent content={data} />
-                  </RecordStep>
-                </div>
-              );
-            })}
+                const showYear =
+                  !previousData ||
+                  format(getDate(data)!, "yyyy") !==
+                    format(getDate(previousData)!, "yyyy");
+
+                return (
+                  <div className="flex flex-col" key={index}>
+                    <span
+                      className={`my-5 text-lg font-semibold ${showYear || index === 0 ? "flex" : "hidden"}`}
+                    >
+                      {format(getDate(data)!, "yyyy")}
+                    </span>
+                    <RecordStep record_date={getDate(data)!}>
+                      <RecordContent adoption={data} />
+                    </RecordStep>
+                  </div>
+                );
+              },
+            )}
         </RecordLayout>
       </div>
     </div>
