@@ -5,8 +5,9 @@ import { Button } from "../ui/button";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { GetUserDto } from "@/dtos/user.dtos";
 
-export default function MypageSidebar() {
+export default function MypageSidebar({ user }: { user: GetUserDto }) {
   const [currentBar, setCurrentBar] = useState("");
   const path = usePathname();
 
@@ -26,7 +27,7 @@ export default function MypageSidebar() {
           height={72}
           alt="profile"
         />
-        <span className="text-xl font-semibold">한송이</span>
+        <span className="text-xl font-semibold">{user?.name}</span>
       </div>
       <hr className="w-full" />
       <div className="flex flex-col gap-3">

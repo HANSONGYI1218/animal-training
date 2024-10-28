@@ -47,12 +47,12 @@ const Td = ({ weekDate, currentMonth }: TdProps) => {
 
           return (
             <div
+              key={index}
               onMouseOver={() => handleMouseOver(p.formattedDate)}
               onMouseLeave={() => handleMouseLeave(p.formattedDate)}
               className="relative flex"
             >
-              <td
-                key={p.formattedDate}
+              <div
                 className={`relative flex h-[80px] w-full flex-col items-center gap-3 ${
                   !isThisMonth && "text-transparent"
                 }`}
@@ -91,7 +91,7 @@ const Td = ({ weekDate, currentMonth }: TdProps) => {
                     }`}
                   />
                 )}
-              </td>
+              </div>
               <div
                 className={`absolute bottom-12 left-20 z-10 w-fit flex-col gap-2 rounded-xl bg-white p-6 shadow-md ${attendance && hoveredCells[p.formattedDate] ? "flex" : "hidden"}`}
               >

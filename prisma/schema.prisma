@@ -31,16 +31,15 @@ model User {
   isPromotion_Email  Boolean         @default(true)
   createdAt          DateTime        @default(now())
   updatedAt          DateTime        @updatedAt
-  lectureId          String?
-  lecture            Lecture?        @relation(fields: [lectureId], references: [id])
   adopterAdoptions   Adoption[]      @relation("AdopterAdoptions")
   breederAdoptions   Adoption[]      @relation("BreederAdoptions")
   animals            Animal[]
   userCurriculum     UserCurriculum[]
   reviews            Review[]
   userPayment        UserPayment[]
+  lectureBookmarks   LectureBookmark[]   // One-to-many relationship with Bookmark
+  tutorBookmarks     TutorBookmark[]
 
-  @@index([lectureId])
 }
 
 model UserPayment {
@@ -102,6 +101,7 @@ model Tutor {
   trainingCenter     TrainingCenter?
   lectures           Lecture[]
   curriculumLectures CurriculumLecture[]
+  bookmarks          TutorBookmark[]
 
   @@index([corporationId])
 }
@@ -116,15 +116,38 @@ model Lecture {
   thumbnailPath     String          @db.VarChar(255)
   videoUrl          String          @db.VarChar(255)
   like              Int             @default(0)
-  tags              String[]    
-  bookmark          Boolean         @default(false)
+  tags              String[]
   createdAt         DateTime        @default(now())
   updatedAt         DateTime        @updatedAt
   tutorId           String
   tutor             Tutor?          @relation(fields: [tutorId], references: [id])
-  users             User[]
+  bookmarks         LectureBookmark[]   // One-to-many relationship with Bookmark
 
   @@index([tutorId])
+}
+
+model LectureBookmark {
+  id        String    @id @default(uuid())
+  userId    String
+  user      User      @relation(fields: [userId], references: [id])
+  lectureId String
+  lecture   Lecture   @relation(fields: [lectureId], references: [id])
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @default(now())
+  
+  @@unique([userId, lectureId]) // Ensures a user can't bookmark the same lecture more than once
+}
+
+model TutorBookmark {
+  id        String    @id @default(uuid())
+  userId    String
+  user      User      @relation(fields: [userId], references: [id])
+  tutorId   String
+  tutor     Tutor     @relation(fields: [tutorId], references: [id])
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @default(now())
+
+  @@unique([userId, tutorId]) // Ensures a user can't bookmark the same lecture more than once
 }
 
 model CurriculumLecture {

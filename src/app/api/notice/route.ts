@@ -1,19 +1,19 @@
 import { NextRequest, NextResponse } from "next/server";
 import { CreateNoticeDto, GetNoticeDto } from "@/dtos/notice.dtos";
 import {
-  createNotice,
-  deleteNotice,
-  getAllNotices,
-  getNoticeById,
-  updateNotice,
-} from "@/controllers/notice.controllers";
+  createNoticeService,
+  getNoticeByIdService,
+  updateNoticeService,
+  deleteNoticeService,
+  getAllNoticesService,
+} from "@/services/notice.services";
 
 // POST 요청 핸들러
 export async function POST(req: NextRequest, res: NextResponse) {
   try {
     const dto: CreateNoticeDto = await req.json();
 
-    await createNotice(dto);
+    await createNoticeService(dto);
     return new NextResponse("Notice created successfully", { status: 200 });
   } catch (error) {
     return new NextResponse("Failed to create Notice", { status: 500 });
@@ -28,13 +28,15 @@ export async function GET(req: NextRequest, res: NextResponse) {
 
   try {
     if (id) {
-      const notice: GetNoticeDto | null = await getNoticeById(id as string);
+      const notice: GetNoticeDto | null = await getNoticeByIdService(
+        id as string,
+      );
 
       if (!notice) return new Response("Notice not found", { status: 404 });
 
       return NextResponse.json(notice);
     } else {
-      const notices = await getAllNotices();
+      const notices = await getAllNoticesService();
 
       return NextResponse.json(notices);
     }
@@ -52,7 +54,8 @@ export async function PUT(req: NextRequest, res: NextResponse) {
 
     const dto: CreateNoticeDto = await req.json();
 
-    await updateNotice(id as string, dto);
+    await updateNoticeService(id as string, dto);
+
     return new NextResponse("Notice updated successfully", { status: 200 });
   } catch (error) {
     return new NextResponse("Failed to update Notice", { status: 500 });
@@ -65,9 +68,11 @@ export async function DELETE(req: NextRequest, res: NextResponse) {
     const { searchParams } = req.nextUrl;
 
     const id = searchParams.get("id");
-    const deletedNotice = await deleteNotice(id as string);
+    const deletedNotice = await deleteNoticeService(id as string);
+
     if (!deletedNotice)
       return new Response("Notice not found", { status: 404 });
+
     return new NextResponse("Notice deleted successfully", { status: 200 });
   } catch (error) {
     return new NextResponse("Failed to delete Notice", { status: 500 });

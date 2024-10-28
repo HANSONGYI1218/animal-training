@@ -4,18 +4,18 @@ import {
   GetCurriculumTrainingDto,
 } from "@/dtos/curriculum-training.dtos";
 import {
-  createCurriculumTraining,
-  deleteCurriculumTraining,
-  getAllCurriculumTrainings,
-  updateCurriculumTraining,
-} from "@/controllers/curriculum-training.controllers";
+  createCurriculumTrainingService,
+  getAllCurriculumTrainingsService,
+  updateCurriculumTrainingService,
+  deleteCurriculumTrainingService,
+} from "@/services/curriculum-training.services";
 
 // POST 요청 핸들러
 export async function POST(req: NextRequest, res: NextResponse) {
   try {
     const dto: CreateCurriculumTrainingDto = await req.json();
 
-    await createCurriculumTraining(dto);
+    await createCurriculumTrainingService(dto);
     return new NextResponse("CurriculumTraining created successfully", {
       status: 200,
     });
@@ -30,7 +30,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
 export async function GET(req: NextRequest, res: NextResponse) {
   try {
     const curriculumTrainings: GetCurriculumTrainingDto[] =
-      await getAllCurriculumTrainings();
+      await getAllCurriculumTrainingsService();
 
     return NextResponse.json(curriculumTrainings);
   } catch (error) {
@@ -47,7 +47,7 @@ export async function PUT(req: NextRequest, res: NextResponse) {
 
     const dto: CreateCurriculumTrainingDto = await req.json();
 
-    await updateCurriculumTraining(id as string, dto);
+    await updateCurriculumTrainingService(id as string, dto);
     return new NextResponse("CurriculumTraining updated successfully", {
       status: 200,
     });
@@ -64,7 +64,7 @@ export async function DELETE(req: NextRequest, res: NextResponse) {
     const { searchParams } = req.nextUrl;
 
     const id = searchParams.get("id");
-    const deletedCurriculumTraining = await deleteCurriculumTraining(
+    const deletedCurriculumTraining = await deleteCurriculumTrainingService(
       id as string,
     );
     if (!deletedCurriculumTraining)

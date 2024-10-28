@@ -4,13 +4,13 @@ import {
   GetCurriculumLectureDto,
 } from "@/dtos/curriculum-lecture.dtos";
 import {
-  createCurriculumLecture,
-  deleteCurriculumLecture,
-  getAllCurriculumLectures,
-  getCurriculumLectureById,
-  getCurriculumLectureByCategory,
-  updateCurriculumLecture,
-} from "@/controllers/curriculum-lecture.controllers";
+  createCurriculumLectureService,
+  getAllCurriculumLecturesService,
+  getCurriculumLectureByIdService,
+  getCurriculumLectureByCategoryService,
+  updateCurriculumLectureService,
+  deleteCurriculumLectureService,
+} from "@/services/curriculum-lecture.services";
 import { CurriculumCategory } from "@prisma/client";
 
 // POST 요청 핸들러
@@ -18,7 +18,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
   try {
     const dto: CreateCurriculumLectureDto = await req.json();
 
-    await createCurriculumLecture(dto);
+    await createCurriculumLectureService(dto);
     return new NextResponse("CurriculumLecture created successfully", {
       status: 200,
     });
@@ -39,7 +39,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
   try {
     if (category) {
       const curriculumLecture: GetCurriculumLectureDto[] =
-        await getCurriculumLectureByCategory(
+        await getCurriculumLectureByCategoryService(
           CurriculumCategory[
             category as keyof typeof CurriculumCategory
           ] as CurriculumCategory,
@@ -49,14 +49,14 @@ export async function GET(req: NextRequest, res: NextResponse) {
     }
     if (id) {
       const curriculumLecture: GetCurriculumLectureDto | null =
-        await getCurriculumLectureById(id as string);
+        await getCurriculumLectureByIdService(id as string);
 
       if (!curriculumLecture)
         return new Response("CurriculumLecture not found", { status: 404 });
 
       return NextResponse.json(curriculumLecture);
     } else {
-      const curriculumLectures = await getAllCurriculumLectures();
+      const curriculumLectures = await getAllCurriculumLecturesService();
 
       return NextResponse.json(curriculumLectures);
     }
@@ -74,7 +74,7 @@ export async function PUT(req: NextRequest, res: NextResponse) {
 
     const dto: CreateCurriculumLectureDto = await req.json();
 
-    await updateCurriculumLecture(id as string, dto);
+    await updateCurriculumLectureService(id as string, dto);
     return new NextResponse("CurriculumLecture updated successfully", {
       status: 200,
     });
@@ -91,7 +91,7 @@ export async function DELETE(req: NextRequest, res: NextResponse) {
     const { searchParams } = req.nextUrl;
 
     const id = searchParams.get("id");
-    const deletedCurriculumLecture = await deleteCurriculumLecture(
+    const deletedCurriculumLecture = await deleteCurriculumLectureService(
       id as string,
     );
     if (!deletedCurriculumLecture)

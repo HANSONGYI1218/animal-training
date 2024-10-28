@@ -1,5 +1,6 @@
 import { OccupationType } from "@/types/tyeps.all";
 import { IsNotEmptyString } from "@/validate-decoration/validate-deco";
+import { TutorBookmark } from "@prisma/client";
 import { IsEnum } from "class-validator";
 
 export class CreateTutorDto {
@@ -40,6 +41,7 @@ export class GetTutorDto {
     name: string;
     address: string;
   };
+  bookmarks!: TutorBookmark[];
   createdAt!: Date;
   updatedAt!: Date;
 }

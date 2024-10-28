@@ -2,19 +2,19 @@ import { NextRequest, NextResponse } from "next/server";
 
 import { CreateTutorDto, GetTutorDto } from "@/dtos/tutor.dtos";
 import {
-  createTutor,
-  deleteTutor,
-  getAllTutors,
-  getTutorById,
-  updateTutor,
-} from "@/controllers/tutor.controllers";
+  createTutorService,
+  getTutorByIdService,
+  updateTutorService,
+  deleteTutorService,
+  getAllTutorsService,
+} from "@/services/tutor.services";
 
 // POST 요청 핸들러
 export async function POST(req: NextRequest, res: NextResponse) {
   try {
     const dto: CreateTutorDto = await req.json();
 
-    await createTutor(dto);
+    await createTutorService(dto);
     return new NextResponse("Tutor created successfully", { status: 200 });
   } catch (error) {
     return new NextResponse("Failed to create Tutor", { status: 500 });
@@ -29,13 +29,13 @@ export async function GET(req: NextRequest, res: NextResponse) {
 
   try {
     if (id) {
-      const tutor: GetTutorDto | null = await getTutorById(id as string);
+      const tutor: GetTutorDto | null = await getTutorByIdService(id as string);
 
       if (!tutor) return new Response("Tutor not found", { status: 404 });
 
       return NextResponse.json(tutor);
     } else {
-      const tutors = await getAllTutors();
+      const tutors = await getAllTutorsService();
 
       return NextResponse.json(tutors);
     }
@@ -53,7 +53,7 @@ export async function PUT(req: NextRequest, res: NextResponse) {
 
     const dto: CreateTutorDto = await req.json();
 
-    await updateTutor(id as string, dto);
+    await updateTutorService(id as string, dto);
     return new NextResponse("Tutor updated successfully", { status: 200 });
   } catch (error) {
     return new NextResponse("Failed to update Tutor", { status: 500 });
@@ -66,7 +66,7 @@ export async function DELETE(req: NextRequest, res: NextResponse) {
     const { searchParams } = req.nextUrl;
 
     const id = searchParams.get("id");
-    const deletedTutor = await deleteTutor(id as string);
+    const deletedTutor = await deleteTutorService(id as string);
     if (!deletedTutor) return new Response("Tutor not found", { status: 404 });
     return new NextResponse("Tutor deleted successfully", { status: 200 });
   } catch (error) {

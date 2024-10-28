@@ -2,7 +2,14 @@ import {
   IsNotEmptyDate,
   IsNotEmptyString,
 } from "@/validate-decoration/validate-deco";
-import { Adoption, GenderType } from "@prisma/client";
+import {
+  Adoption,
+  GenderType,
+  Lecture,
+  LectureBookmark,
+  Tutor,
+  TutorBookmark,
+} from "@prisma/client";
 import { IsEnum } from "class-validator";
 
 export class CreateUserDto {
@@ -31,22 +38,12 @@ export class CreateUserDto {
     message: "gender must be a valid gender value",
   })
   gender!: GenderType;
-
-  @IsNotEmptyString()
-  lectureId!: string;
 }
 
 export class UpdateUserDto {
-  @IsNotEmptyString()
   email!: string;
-
-  @IsNotEmptyString()
   address!: string;
-
-  @IsNotEmptyString()
   phoneNumber!: string;
-
-  @IsNotEmptyString()
   nickname!: string;
 }
 
@@ -60,7 +57,20 @@ export class GetUserDto {
   nickname!: string;
   birthday!: Date;
   gender!: GenderType;
-  lectureId!: string;
+  lectureBookmarks!: {
+    id: string;
+    lecture: Lecture;
+  }[];
+  tutorBookmarks!: {
+    id: string;
+    tutor: Tutor;
+  }[];
+  isNewNews_SMS!: boolean;
+  isNotice_SMS!: boolean;
+  isPromotion_SMS!: boolean;
+  isNewNews_Email!: boolean;
+  isNotice_Email!: boolean;
+  isPromotion_Email!: boolean;
   createdAt!: Date;
   updatedAt!: Date;
 }

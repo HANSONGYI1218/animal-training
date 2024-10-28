@@ -2,19 +2,19 @@ import { NextRequest, NextResponse } from "next/server";
 
 import { CreateAdoptionDto, GetAdoptionDto } from "@/dtos/adoption.dtos";
 import {
-  createAdoption,
-  deleteAdoption,
-  getAdoptionById,
-  getAdoptionByUserId,
-  updateAdoption,
-} from "@/controllers/adoption.controllers";
+  createAdoptionService,
+  deleteAdoptionService,
+  getAdoptionByIdService,
+  getAdoptionByUserIdService,
+  updateAdoptionService,
+} from "@/services/adoption.services";
 
 // POST 요청 핸들러
 export async function POST(req: NextRequest, res: NextResponse) {
   try {
     const dto: CreateAdoptionDto = await req.json();
 
-    await createAdoption(dto);
+    await createAdoptionService(dto);
     return new NextResponse("Adoption created successfully", { status: 200 });
   } catch (error) {
     return new NextResponse("Failed to create Adoption", { status: 500 });
@@ -30,7 +30,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
 
   try {
     if (userId) {
-      const userAdoption: GetAdoptionDto[] = await getAdoptionByUserId(
+      const userAdoption: GetAdoptionDto[] = await getAdoptionByUserIdService(
         userId as string,
       );
 
@@ -40,7 +40,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
       return NextResponse.json(userAdoption);
     }
     if (id) {
-      const adoption: GetAdoptionDto | null = await getAdoptionById(
+      const adoption: GetAdoptionDto | null = await getAdoptionByIdService(
         id as string,
       );
 
@@ -62,7 +62,8 @@ export async function PUT(req: NextRequest, res: NextResponse) {
 
     const dto: CreateAdoptionDto = await req.json();
 
-    await updateAdoption(id as string, dto);
+    await updateAdoptionService(id as string, dto);
+
     return new NextResponse("Adoption updated successfully", { status: 200 });
   } catch (error) {
     return new NextResponse("Failed to update Adoption", { status: 500 });
@@ -75,9 +76,11 @@ export async function DELETE(req: NextRequest, res: NextResponse) {
     const { searchParams } = req.nextUrl;
 
     const id = searchParams.get("id");
-    const deletedAdoption = await deleteAdoption(id as string);
+    const deletedAdoption = await deleteAdoptionService(id as string);
+
     if (!deletedAdoption)
       return new Response("Adoption not found", { status: 404 });
+
     return new NextResponse("Adoption deleted successfully", { status: 200 });
   } catch (error) {
     return new NextResponse("Failed to delete Adoption", { status: 500 });

@@ -23,7 +23,6 @@ export const createLectureRepository = async (
         videoUrl: dto.videoUrl,
         like: dto.like,
         tags: dto.tags,
-        bookmark: dto.bookmark,
         tutorId: dto.tutorId,
       },
     });
@@ -46,6 +45,7 @@ export const getAllLecturesRepository = async (): Promise<GetLectureDto[]> => {
             occupation: true,
           },
         },
+        bookmarks: { where: { userId: "1" } }, //유저의 북마크 하나만 나옴
       },
     });
 
@@ -75,6 +75,7 @@ export const getLectureByIdRepository = async (
             profile_img: true,
           },
         },
+        bookmarks: { where: { userId: "1" } },
       },
     });
     return lecture as GetLectureDetailDto;
@@ -96,6 +97,7 @@ export const getLectureByTutorIdRepository = async (
         tutor: {
           select: { id: true, name: true, occupation: true },
         },
+        bookmarks: { where: { userId: "1" } },
       },
     });
     return lecture as GetLectureDto[];
@@ -117,6 +119,7 @@ export const getLectureByCategoryRepository = async (
         tutor: {
           select: { id: true, name: true, occupation: true },
         },
+        bookmarks: { where: { userId: "1" } },
       },
     });
 
@@ -142,6 +145,7 @@ export const getLectureByTagRepository = async (
         tutor: {
           select: { id: true, name: true, occupation: true },
         },
+        bookmarks: { where: { userId: "1" } },
       },
       take: 6,
     });

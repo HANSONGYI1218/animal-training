@@ -138,7 +138,7 @@ export default function TraningCenterTab() {
             ([status, label], index) => {
               const count = attendanceCounts(index);
               return (
-                <span key={status}>
+                <span key={index}>
                   {label}: {count}
                 </span>
               );
@@ -205,9 +205,13 @@ export default function TraningCenterTab() {
                       index === 14 || index === 15 || index === 16;
 
                     if (hasNumbers || hasDays) {
-                      return <span className="font-semibold">{letter}</span>;
+                      return (
+                        <span key={index} className="font-semibold">
+                          {letter}
+                        </span>
+                      );
                     }
-                    return letter;
+                    return <span key={index}>{letter}</span>;
                   })}
               </span>
             ) : (

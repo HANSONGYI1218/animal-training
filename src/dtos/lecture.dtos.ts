@@ -9,6 +9,7 @@ import {
   IsNotEmptyNumber,
   IsNotEmptyString,
 } from "@/validate-decoration/validate-deco";
+import { LectureBookmark } from "@prisma/client";
 import { IsEnum } from "class-validator";
 
 export class CreateLectureDto {
@@ -40,9 +41,6 @@ export class CreateLectureDto {
 
   tags!: string[];
 
-  @IsNotEmptyBoolean()
-  bookmark!: boolean;
-
   @IsNotEmptyString()
   tutorId!: string;
 }
@@ -58,12 +56,12 @@ export class GetLectureDto {
   videoUrl!: string;
   like!: number;
   tags!: string[];
-  bookmark!: boolean;
   tutor!: {
     id: string;
     name: string;
     occupation: string;
   };
+  bookmarks!: LectureBookmark[];
   createdAt!: Date;
   updatedAt!: Date;
 }
@@ -79,7 +77,6 @@ export class GetLectureDetailDto {
   videoUrl!: string;
   like!: number;
   tags!: string[];
-  bookmark!: boolean;
   tutor!: {
     id: string;
     name: string;
@@ -88,6 +85,7 @@ export class GetLectureDetailDto {
     profile_img: string;
     occupation: string;
   };
+  bookmarks!: LectureBookmark[];
   createdAt!: Date;
   updatedAt!: Date;
 }

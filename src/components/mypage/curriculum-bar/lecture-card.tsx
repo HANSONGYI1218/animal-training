@@ -1,34 +1,57 @@
+"use client";
+
 import { Badge } from "../../ui/badge";
 import { Button } from "../../ui/button";
-import { Bookmark, SquareUser, ThumbsUp, Triangle } from "lucide-react";
+import { Heart, SquareUser, ThumbsUp, Triangle } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { categorySwap, priceTypeSwap } from "@/constants/constants.all";
-import { Lecture } from "@prisma/client";
+import { BookmarkProps } from "./lecture-tab";
+import { useRouter } from "next/navigation";
 
-export default function LectureCard({ lecture }: { lecture: Lecture }) {
+export default function LectureCard({ bookmark }: { bookmark: BookmarkProps }) {
+  const router = useRouter();
+
+  const bookmarkAPI = async () => {
+    //북마크 삭제
+    const responseDeletedBookmark = await fetch(
+      `${process.env.NEXT_PUBLIC_WEB_URL}/api/lecture-bookmark?id=${bookmark?.id}`,
+      {
+        method: "DELETE",
+        cache: "no-store",
+      },
+    );
+    if (!responseDeletedBookmark.ok) {
+      return null;
+    }
+    router.refresh();
+  };
+
   return (
     <div className="relative mb-7 flex h-full w-full cursor-pointer flex-col gap-4 rounded-lg">
-      <Bookmark
-        className="absolute -top-2 right-2"
-        stroke="rgb(253 224 71)"
-        fill="rgb(253 224 71)"
+      <Heart
+        stroke="rgb(239 68 68)"
+        fill="rgb(239 68 68)"
+        className="absolute -top-2 right-2 hover:scale-110 hover:stroke-red-500"
+        onClick={() => {
+          bookmarkAPI();
+        }}
       />
 
       <img
-        src={lecture?.thumbnailPath}
+        src={bookmark?.lecture?.thumbnailPath}
         alt="lecture-thumbnail"
         className="h-1/2 rounded-lg object-cover"
       />
       <div className="flex flex-col gap-3 px-3">
         <div className="flex gap-2">
-          <Badge>{categorySwap[lecture?.category]}</Badge>
+          <Badge>{categorySwap[bookmark?.lecture?.category]}</Badge>
           <Badge variant={"secondary"}>
-            {priceTypeSwap[lecture?.price_type]}
+            {priceTypeSwap[bookmark?.lecture?.price_type]}
           </Badge>
         </div>
         <span className="my-2 line-clamp-2 h-12 font-[540]">
-          {lecture?.title}
+          {bookmark?.lecture?.title}
         </span>
         <div className="flex items-center gap-6">
           <div className="flex items-center gap-1">
@@ -37,11 +60,11 @@ export default function LectureCard({ lecture }: { lecture: Lecture }) {
           </div>
           <div className="flex items-center gap-1">
             <ThumbsUp width={16} height={16} />
-            <span className="text-[0.93rem]">{lecture?.like}</span>
+            <span className="text-[0.93rem]">{bookmark?.lecture?.like}</span>
           </div>
         </div>
         <Link
-          href={`/lecture/${lecture?.id}`}
+          href={`/lecture/${bookmark?.lecture?.id}`}
           className="group relative flex w-32 self-end"
         >
           <div className="absolute bottom-0 left-0 h-full w-4 rounded-full bg-black opacity-0 transition-all duration-300 group-hover:w-32 group-hover:opacity-100" />

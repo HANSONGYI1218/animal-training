@@ -4,6 +4,7 @@ import {
   CreateUserDto,
   GetUserAdoptionRecordDto,
   GetUserDto,
+  UpdateUserDto,
 } from "@/dtos/user.dtos";
 import {
   createUser,
@@ -12,6 +13,8 @@ import {
   getUserById,
   updateUser,
 } from "@/controllers/user.controllers";
+import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 
 // POST 요청 핸들러
 export async function POST(req: NextRequest, res: NextResponse) {
@@ -63,13 +66,15 @@ export async function PUT(req: NextRequest, res: NextResponse) {
 
     const id = searchParams.get("id");
 
-    const dto: CreateUserDto = await req.json();
+    const dto: UpdateUserDto = await req.json();
 
     await updateUser(id as string, dto);
+
     return new NextResponse("User updated successfully", { status: 200 });
   } catch (error) {
     return new NextResponse("Failed to update User", { status: 500 });
   }
+  redirect("/mypage/profile");
 }
 
 // DELETE 요청 핸들러

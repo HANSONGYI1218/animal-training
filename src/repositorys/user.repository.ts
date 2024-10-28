@@ -21,7 +21,6 @@ const createUserRepository = async (
         nickname: dto.nickname,
         birthday: dto.birthday,
         gender: dto.gender,
-        lectureId: dto.lectureId,
       },
     });
 
@@ -39,6 +38,20 @@ const getUserByIdRepository = async (
     const user = await prisma.user.findUnique({
       where: {
         id: id,
+      },
+      include: {
+        lectureBookmarks: {
+          select: {
+            id: true, // 북마크의 ID
+            lecture: true, // 관련 강의 정보
+          },
+        },
+        tutorBookmarks: {
+          select: {
+            id: true, // 북마크의 ID
+            tutor: true,
+          },
+        },
       },
     });
 
@@ -84,7 +97,7 @@ const getUserByUserInfoRepository = async (
 const updateUserRepository = async (
   id: string,
   dto: Partial<UpdateUserDto>,
-): Promise<UpdateUserDto | null> => {
+): Promise<CreateUserDto | null> => {
   try {
     const updatedUser = await prisma.user.update({
       where: {
@@ -95,8 +108,9 @@ const updateUserRepository = async (
         updatedAt: new Date(),
       },
     });
+
     return updatedUser as CreateUserDto;
-  } catch {
+  } catch (error) {
     return null;
   }
 };

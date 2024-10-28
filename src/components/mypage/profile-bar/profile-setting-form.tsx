@@ -13,8 +13,10 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { toast } from "@/components/ui/use-toast";
+import { UserContext } from "../user-provider";
+import { Loader2 } from "lucide-react";
 
 const ProfileSettingSchema = z.object({
   nickname: z.string({
@@ -31,26 +33,31 @@ const ProfileSettingSchema = z.object({
   }),
 });
 
-export default function ProfileSettingForm({ item }: { item?: any }) {
+export default function ProfileSettingForm() {
+  const user = useContext(UserContext);
+
   const form = useForm<z.infer<typeof ProfileSettingSchema>>({
     resolver: zodResolver(ProfileSettingSchema),
     defaultValues: {
-      nickname: item?.nickname ?? "한송이",
-      address: item?.address ?? "한송이",
-      email: item?.email ?? "한송이",
-      phoneNumber: item?.phoneNumber ?? "한송이",
+      nickname: user?.nickname ?? "",
+      address: user?.address ?? "",
+      email: user?.email ?? "",
+      phoneNumber: user?.phoneNumber ?? "",
     },
   });
   const [isEdit, setIsEdit] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   async function onSubmit(data: z.infer<typeof ProfileSettingSchema>) {
+    setIsLoading(true);
     try {
-      // await fetch(`/api/mypage?id=${item.id}`, {
-      //   method: "PUT",
-      //   body: JSON.stringify({
-      //     data,
-      //   }),
-      // });
+      await fetch(`/api/user?id=${user?.id}`, {
+        method: "PUT",
+        body: JSON.stringify({
+          ...data,
+        }),
+      });
+      setIsLoading(false);
     } catch {
       toast({
         title: "You submitted the following values:",
@@ -189,14 +196,19 @@ export default function ProfileSettingForm({ item }: { item?: any }) {
           </div>
         </section>
         <Button
-          type={isEdit ? "submit" : "button"}
+          type={isEdit ? "button" : "submit"}
           variant={"destructive"}
           onClick={() => {
-            setIsEdit((prev) => !prev);
+            setIsEdit((prev) => {
+              if (!isLoading) {
+                return !prev;
+              }
+              return prev;
+            });
           }}
-          className="w-fit self-end"
+          className="w-24 self-end"
         >
-          {isEdit ? "완료하기" : "수정하기"}
+          {isLoading ? <Loader2 /> : isEdit ? "완료하기" : "수정하기"}
         </Button>
       </form>
     </Form>

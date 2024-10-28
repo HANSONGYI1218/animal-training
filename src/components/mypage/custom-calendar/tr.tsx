@@ -53,9 +53,9 @@ const Tr = ({ currentMonth }: PropsWithChildren<CalendarProps>) => {
     <>
       {wholeDate.map((p) => {
         return (
-          <tr className="grid w-full grid-cols-7" key={Math.random()}>
+          <div className="grid w-full grid-cols-7" key={Math.random()}>
             <Td weekDate={p} currentMonth={currentMonth}></Td>
-          </tr>
+          </div>
         );
       })}
     </>

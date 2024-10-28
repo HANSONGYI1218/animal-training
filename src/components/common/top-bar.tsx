@@ -51,7 +51,7 @@ export default function TopBar() {
         <div className="container mx-auto flex items-center justify-between">
           <Image src="/next.svg" width={70} height={100} alt="main-logo" />
           <div className="flex items-center gap-4">
-            <Link href="/lecture?category=all">
+            <Link href="/lecture?category=all" replace={true}>
               <Button
                 onClick={() => {
                   setPage("lecture");
@@ -62,7 +62,7 @@ export default function TopBar() {
                 강의
               </Button>
             </Link>
-            <Link href="/curriculum">
+            <Link href="/curriculum" replace={true}>
               <Button
                 onClick={() => {
                   setPage("curriculum");
@@ -73,7 +73,7 @@ export default function TopBar() {
                 커리큘럼
               </Button>
             </Link>
-            <Link href="/record">
+            <Link href="/record" replace={true}>
               <Button
                 onClick={() => {
                   setPage("record");
@@ -84,7 +84,7 @@ export default function TopBar() {
                 입양기록
               </Button>
             </Link>
-            <Link href="/mypage/profile">
+            <Link href="/mypage/profile" replace={true}>
               <Button
                 onClick={() => {
                   setPage("mypage");
@@ -95,7 +95,7 @@ export default function TopBar() {
                 내 정보
               </Button>
             </Link>
-            <Link href="/store">
+            <Link href="/store" replace={true}>
               <Button
                 onClick={() => {
                   setPage("store");
@@ -106,7 +106,7 @@ export default function TopBar() {
                 스토어
               </Button>
             </Link>
-            <Link href="/notice">
+            <Link href="/notice" replace={true}>
               <Button
                 onClick={() => {
                   setPage("notice");

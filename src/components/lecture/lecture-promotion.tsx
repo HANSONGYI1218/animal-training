@@ -15,11 +15,8 @@ export default function LecturePromotion({
           <div className="flex w-full gap-6">
             {tutors.map((tutor, index) => {
               return (
-                <Link href={`/tutor/${tutor?.id}`}>
-                  <div
-                    className="flex min-w-fit cursor-pointer flex-col items-center gap-4 px-4"
-                    key={index}
-                  >
+                <Link href={`/tutor/${tutor?.id}`} key={index}>
+                  <div className="flex min-w-fit cursor-pointer flex-col items-center gap-4 px-4">
                     <img
                       src={tutor?.profile_img}
                       className="h-24 w-24 rounded-full border"
