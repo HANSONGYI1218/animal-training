@@ -7,12 +7,20 @@ import {
   adoptionStatusTypeSwap,
   genderAmianlTypeSwap,
 } from "@/constants/constants.all";
-import { GetAdoptionWithAnimalDto } from "@/dtos/adoption.dtos";
+import { AdoptionStatus, Animal } from "@prisma/client";
+
+type RecordContentProps = {
+  animal: Animal;
+  status: AdoptionStatus;
+  adoption_date: Date;
+  abandon_date?: Date;
+  abandon_reason?: string;
+};
 
 export default function RecordContent({
   adoption,
 }: {
-  adoption: GetAdoptionWithAnimalDto;
+  adoption: RecordContentProps;
 }) {
   return (
     <div className="flex flex-col gap-4">

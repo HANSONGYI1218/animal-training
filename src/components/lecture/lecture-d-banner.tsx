@@ -5,12 +5,23 @@ import { motion } from "framer-motion";
 import { Badge } from "../ui/badge";
 import { SquareUser, ThumbsUp } from "lucide-react";
 import { categorySwap, priceTypeSwap } from "@/constants/constants.all";
-import { GetLectureDetailDto } from "@/dtos/lecture.dtos";
+import { Category, PriceType } from "@prisma/client";
+
+type LectureBannerProps = {
+  title: string;
+  category: Category;
+  content: string;
+  price_type: PriceType;
+  tutor_name: string;
+  like: number;
+  tags: string[];
+  thumbnailPath: string;
+};
 
 export default function LectureBanner({
   lecture,
 }: {
-  lecture: GetLectureDetailDto;
+  lecture: LectureBannerProps;
 }) {
   return (
     <section className="relative flex w-full flex-col overflow-hidden bg-black/95 py-12">
@@ -34,7 +45,7 @@ export default function LectureBanner({
             <div className="flex items-center gap-1">
               <SquareUser width={17} height={17} stroke="#ffffff" />
               <span className="text-[0.93rem] text-white">
-                {lecture?.tutor?.name}
+                {lecture?.tutor_name}
               </span>
             </div>
             <div className="flex items-center gap-1">

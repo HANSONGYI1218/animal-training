@@ -65,16 +65,7 @@ export const getLectureByIdRepository = async (
         id: id,
       },
       include: {
-        tutor: {
-          select: {
-            id: true,
-            name: true,
-            occupation: true,
-            introduction: true,
-            career: true,
-            profile_img: true,
-          },
-        },
+        tutor: true,
         bookmarks: { where: { userId: "1" } },
       },
     });

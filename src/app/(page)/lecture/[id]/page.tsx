@@ -42,7 +42,12 @@ export default async function LectureDetailPage({
 
   return (
     <main className="mb-24 flex w-full flex-col">
-      <LectureBanner lecture={lecture} />
+      <LectureBanner
+        lecture={{
+          ...lecture,
+          tutor_name: lecture?.tutor?.name,
+        }}
+      />
       <LectureContent lecture={lecture} />
       <section className="container mx-auto mt-32 flex max-w-[1150px] flex-col gap-6">
         <span className="flex h-8 items-center justify-between gap-2 text-xl font-semibold text-gray-700">

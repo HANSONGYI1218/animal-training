@@ -5,9 +5,9 @@ import Link from "next/link";
 import { Progress } from "../ui/progress";
 import React from "react";
 import { CurriculumCategory } from "@prisma/client";
-import { GetUserCurriculumDto } from "@/dtos/user-curriculum.dtos";
 import { GetCurriculumLectureDto } from "@/dtos/curriculum-lecture.dtos";
 import { lectureCategorySwap } from "@/constants/constants.all";
+import { userCurriculumProps } from "./curriculum-contrainer";
 
 const bgColor = [
   "bg-communication-pattern",
@@ -21,7 +21,7 @@ export default function CurriculumLectureCard({
   index,
 }: {
   curriculumLectures: GetCurriculumLectureDto[];
-  userCurriculum: GetUserCurriculumDto;
+  userCurriculum: userCurriculumProps;
   index: number;
 }) {
   const [progress, setProgress] = React.useState(0);

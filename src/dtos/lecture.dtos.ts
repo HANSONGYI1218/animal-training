@@ -1,15 +1,15 @@
 import {
-  AnimalType,
-  Category,
-  OccupationType,
-  PriceType,
-} from "@/types/tyeps.all";
-import {
   IsNotEmptyBoolean,
   IsNotEmptyNumber,
   IsNotEmptyString,
 } from "@/validate-decoration/validate-deco";
-import { LectureBookmark } from "@prisma/client";
+import {
+  LectureBookmark,
+  AnimalType,
+  Category,
+  PriceType,
+  Tutor,
+} from "@prisma/client";
 import { IsEnum } from "class-validator";
 
 export class CreateLectureDto {
@@ -77,14 +77,7 @@ export class GetLectureDetailDto {
   videoUrl!: string;
   like!: number;
   tags!: string[];
-  tutor!: {
-    id: string;
-    name: string;
-    introduction: string;
-    career: string;
-    profile_img: string;
-    occupation: string;
-  };
+  tutor!: Tutor;
   bookmarks!: LectureBookmark[];
   createdAt!: Date;
   updatedAt!: Date;

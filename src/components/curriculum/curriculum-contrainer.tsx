@@ -7,14 +7,18 @@ import TraningFiltering from "./training-center-filtering";
 import TraningCenterPromotion from "./training-center-promotion";
 import { GetCurriculumLectureDto } from "@/dtos/curriculum-lecture.dtos";
 import CurriculumLectureCard from "./curriculum-lecture-card";
-import { GetUserCurriculumDto } from "@/dtos/user-curriculum.dtos";
+
+export type userCurriculumProps = {
+  curriculumCategory: CurriculumCategory;
+  curriculumIndex: number;
+};
 
 export default function CurriculumContainer({
   curriculumLectures,
   userCurriculum,
 }: {
   curriculumLectures: GetCurriculumLectureDto[];
-  userCurriculum: GetUserCurriculumDto;
+  userCurriculum: userCurriculumProps;
 }) {
   const [tab, setTab] = useState("lecture");
 

@@ -11,8 +11,7 @@ export const createLectureBookmarkRepository = async (
   try {
     const lectureBookmark = await prisma.lectureBookmark.create({
       data: {
-        userId: dto.userId,
-        lectureId: dto.lectureId,
+        ...dto,
       },
     });
 

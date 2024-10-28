@@ -33,10 +33,13 @@ export default async function CurriculumPage() {
 
   return (
     <main className="mb-24 flex w-full flex-col gap-12">
-      <CurriculumBanner userCurriculum={userCurriculum} />
+      <CurriculumBanner curriculumStep={userCurriculum?.curriculumStep} />
       <CurriculumContainer
         curriculumLectures={curriculumLectures}
-        userCurriculum={userCurriculum}
+        userCurriculum={{
+          curriculumCategory: userCurriculum?.curriculumCategory,
+          curriculumIndex: userCurriculum?.curriculumIndex,
+        }}
       />
     </main>
   );

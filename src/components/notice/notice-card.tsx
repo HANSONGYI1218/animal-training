@@ -1,6 +1,5 @@
 import { Notice } from "@prisma/client";
 import { format } from "date-fns";
-import { Badge } from "../ui/badge";
 import Link from "next/link";
 import { Paperclip } from "lucide-react";
 

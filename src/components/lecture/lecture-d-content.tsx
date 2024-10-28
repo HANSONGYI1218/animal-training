@@ -15,14 +15,19 @@ import {
 import Image from "next/image";
 import { occupationTypeSwap, priceTypeSwap } from "@/constants/constants.all";
 import { useState } from "react";
-import { GetLectureDetailDto } from "@/dtos/lecture.dtos";
 import { GetTutorDto } from "@/dtos/tutor.dtos";
 import Link from "next/link";
+import { PriceType, Tutor } from "@prisma/client";
+
+type LectureContentProps = {
+  price_type: PriceType;
+  tutor: Tutor;
+};
 
 export default function LectureContent({
   lecture,
 }: {
-  lecture: GetLectureDetailDto;
+  lecture: LectureContentProps;
 }) {
   const [isClicked, setIsClicked] = useState(false);
   const [tutor, setTutor] = useState<GetTutorDto | null>(null);

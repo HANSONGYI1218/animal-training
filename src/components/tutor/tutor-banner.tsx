@@ -4,10 +4,23 @@ import { motion } from "framer-motion";
 import { occupationTypeSwap } from "@/constants/constants.all";
 import { Badge } from "../ui/badge";
 import { Building2, Grip } from "lucide-react";
-import { GetTutorDto } from "@/dtos/tutor.dtos";
+import { OccupationType, TutorBookmark } from "@prisma/client";
 
 interface TutorBannerProps {
-  tutor: GetTutorDto;
+  tutor: {
+    name: string;
+    introduction: string;
+    career: string;
+    profile_img: string;
+    occupation: OccupationType;
+    corporation: {
+      corporation_name: string;
+    };
+    trainingCenter: {
+      name: string;
+    };
+    bookmarks: TutorBookmark[];
+  };
   count: number;
 }
 

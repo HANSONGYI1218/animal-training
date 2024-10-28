@@ -1,6 +1,5 @@
 import { Button } from "@/components/ui/button";
 import { GetUserCurriculumDto } from "@/dtos/user-curriculum.dtos";
-import { UserCurriculum } from "@/types/tyeps.all";
 
 export default function CurriculumLecturePromotion({
   userCurriculum,

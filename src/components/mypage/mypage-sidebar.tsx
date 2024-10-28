@@ -5,9 +5,9 @@ import { Button } from "../ui/button";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { GetUserDto } from "@/dtos/user.dtos";
+import { User } from "./user-provider";
 
-export default function MypageSidebar({ user }: { user: GetUserDto }) {
+export default function MypageSidebar({ user }: { user: User }) {
   const [currentBar, setCurrentBar] = useState("");
   const path = usePathname();
 

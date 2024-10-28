@@ -6,7 +6,6 @@ import { Badge } from "../ui/badge";
 import { useEffect, useState } from "react";
 import LectureContainer from "../lecture/lecture-container";
 import { GetLectureDto } from "@/dtos/lecture.dtos";
-import { GetTutorDto } from "@/dtos/tutor.dtos";
 
 export default function TutorCategory({
   lectures,

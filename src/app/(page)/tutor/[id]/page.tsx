@@ -1,7 +1,5 @@
 import TutorBanner from "@/components/tutor/tutor-banner";
 import TutorCategory from "@/components/tutor/tutor-category";
-import { Lecture, Tutor } from "@prisma/client";
-import dummyDate from "@/utils/dummydata";
 import { GetTutorDto } from "@/dtos/tutor.dtos";
 import { GetLectureDto } from "@/dtos/lecture.dtos";
 
