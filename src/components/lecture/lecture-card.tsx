@@ -1,19 +1,55 @@
+"use client";
+
 import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
-import { SquareUser, ThumbsUp } from "lucide-react";
+import { Heart, ShoppingCart, SquareUser, ThumbsUp } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { categorySwap, priceTypeSwap } from "@/constants/constants.all";
-import { GetLectureDetailDto, GetLectureDto } from "@/dtos/lecture.dtos";
+import { GetLectureDto, GetLectureWithTutorDto } from "@/dtos/lecture.dto";
+import { useState } from "react";
 
 export default function LectureCard({
   lecture,
 }: {
-  lecture: GetLectureDto | GetLectureDetailDto;
+  lecture: GetLectureWithTutorDto | GetLectureDto;
 }) {
+  const [isBookmarked, setIsBookmarked] = useState(!!lecture?.bookmarks[0]);
+
+  const bookmarkAPI = async () => {
+    if (isBookmarked) {
+      // 북마크 삭제
+      const responseDeletedBookmark = await fetch(
+        `${process.env.NEXT_PUBLIC_WEB_URL}/api/lecture-bookmark?id=${lecture?.bookmarks[0].id}`,
+        {
+          method: "DELETE",
+          cache: "no-store",
+        },
+      );
+      if (!responseDeletedBookmark.ok) return;
+    } else {
+      // 북마크 생성
+      const responseCreatedBookmark = await fetch(
+        `${process.env.NEXT_PUBLIC_WEB_URL}/api/lecture-bookmark`,
+        {
+          method: "POST",
+          cache: "no-store",
+          body: JSON.stringify({
+            userId: "1",
+            lectureId: lecture?.id,
+          }),
+        },
+      );
+      if (!responseCreatedBookmark.ok) return;
+    }
+
+    // 로컬 상태 업데이트
+    setIsBookmarked(!isBookmarked);
+  };
+
   return (
     <div className="group relative mb-7 flex h-full w-full cursor-pointer flex-col gap-4 rounded-lg">
-      <div className="absolute left-0 top-0 z-10 flex h-full w-full items-center justify-center rounded-lg transition-all duration-300 group-hover:bg-black group-hover:bg-opacity-75">
+      <div className="absolute left-0 top-0 z-10 flex h-full w-full flex-col items-center justify-center rounded-lg transition-all duration-300 group-hover:bg-black group-hover:bg-opacity-75">
         <Link href={`/lecture/${lecture?.id}`}>
           <Button
             className="flex gap-2 bg-white opacity-0 transition-all duration-300 group-hover:opacity-100"
@@ -23,6 +59,17 @@ export default function LectureCard({
             보러가기
           </Button>
         </Link>
+        <div className="absolute bottom-8 right-8 flex hidden flex-col gap-3 group-hover:flex">
+          <ShoppingCart stroke="#ffffff" className="hover:stroke-yellow-500" />
+          <Heart
+            stroke={isBookmarked ? "rgb(239 68 68)" : "#ffffff"}
+            fill={isBookmarked ? "rgb(239 68 68)" : "none"}
+            className="hover:stroke-red-500"
+            onClick={() => {
+              bookmarkAPI();
+            }}
+          />
+        </div>
       </div>
       <img
         src={lecture?.thumbnailPath}

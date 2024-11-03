@@ -5,16 +5,20 @@ import CurriculumNav from "./curriculum-nav";
 import { CurriculumCategory } from "@prisma/client";
 import TraningFiltering from "./training-center-filtering";
 import TraningCenterPromotion from "./training-center-promotion";
-import { GetCurriculumLectureDto } from "@/dtos/curriculum-lecture.dtos";
+import { CurriculumLectureDto } from "@/dtos/curriculum.lecture.dto";
 import CurriculumLectureCard from "./curriculum-lecture-card";
-import { GetUserCurriculumDto } from "@/dtos/user-curriculum.dtos";
+
+export type userCurriculumProps = {
+  curriculumCategory: CurriculumCategory;
+  curriculumIndex: number;
+};
 
 export default function CurriculumContainer({
   curriculumLectures,
   userCurriculum,
 }: {
-  curriculumLectures: GetCurriculumLectureDto[];
-  userCurriculum: GetUserCurriculumDto;
+  curriculumLectures: CurriculumLectureDto[];
+  userCurriculum: userCurriculumProps;
 }) {
   const [tab, setTab] = useState("lecture");
 
@@ -30,7 +34,7 @@ export default function CurriculumContainer({
       {tab === "lecture" ? (
         <div className="flex flex-col gap-6">
           {categorizedCurriculumLectures.map(
-            (lectures: GetCurriculumLectureDto[], index: number) => {
+            (lectures: CurriculumLectureDto[], index: number) => {
               return (
                 <CurriculumLectureCard
                   key={index}

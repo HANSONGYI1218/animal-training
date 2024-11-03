@@ -1,15 +1,19 @@
 import { NextRequest, NextResponse } from "next/server";
-import { CreateLectureDto, GetLectureDetailDto } from "@/dtos/lecture.dtos";
 import {
-  createLecture,
-  deleteLecture,
-  getAllLectures,
-  getLectureByCategory,
-  getLectureById,
-  getLectureByTag,
-  getLectureByTutorId,
-  updateLecture,
-} from "@/controllers/lecture.controllers";
+  CreateLectureDto,
+  GetLectureDto,
+  UpdateLectureDto,
+} from "@/dtos/lecture.dto";
+import {
+  createLectureService,
+  getAllLecturesService,
+  getLectureByIdService,
+  getLectureByCategoryService,
+  updateLectureService,
+  deleteLectureService,
+  getLectureByTutorIdService,
+  getLectureByTagService,
+} from "@/services/lecture.service";
 import { Category } from "@prisma/client";
 
 // POST 요청 핸들러
@@ -17,7 +21,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
   try {
     const dto: CreateLectureDto = await req.json();
 
-    await createLecture(dto);
+    await createLectureService(dto);
     return new NextResponse("Lecture created successfully", { status: 200 });
   } catch (error) {
     return new NextResponse("Failed to create Lecture", { status: 500 });
@@ -35,12 +39,12 @@ export async function GET(req: NextRequest, res: NextResponse) {
 
   try {
     if (tag) {
-      const lecture = await getLectureByTag(tag as string);
+      const lecture = await getLectureByTagService(tag as string);
 
       return NextResponse.json(lecture);
     }
     if (category && category !== "all") {
-      const lecture = await getLectureByCategory(
+      const lecture = await getLectureByCategoryService(
         Category[category.toUpperCase() as keyof typeof Category] as Category,
       );
 
@@ -48,13 +52,13 @@ export async function GET(req: NextRequest, res: NextResponse) {
     }
 
     if (tutorId) {
-      const lecture = await getLectureByTutorId(tutorId as string);
+      const lecture = await getLectureByTutorIdService(tutorId as string);
 
       return NextResponse.json(lecture);
     }
 
     if (id) {
-      const lecture: GetLectureDetailDto | null = await getLectureById(
+      const lecture: GetLectureDto | null = await getLectureByIdService(
         id as string,
       );
 
@@ -62,7 +66,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
 
       return NextResponse.json(lecture);
     } else {
-      const lectures = await getAllLectures();
+      const lectures = await getAllLecturesService();
 
       return NextResponse.json(lectures);
     }
@@ -74,13 +78,10 @@ export async function GET(req: NextRequest, res: NextResponse) {
 // PUT 요청 핸들러
 export async function PUT(req: NextRequest, res: NextResponse) {
   try {
-    const { searchParams } = req.nextUrl;
+    const dto: UpdateLectureDto = await req.json();
 
-    const id = searchParams.get("id");
+    await updateLectureService(dto);
 
-    const dto: CreateLectureDto = await req.json();
-
-    await updateLecture(id as string, dto);
     return new NextResponse("Lecture updated successfully", { status: 200 });
   } catch (error) {
     return new NextResponse("Failed to update Lecture", { status: 500 });
@@ -93,9 +94,8 @@ export async function DELETE(req: NextRequest, res: NextResponse) {
     const { searchParams } = req.nextUrl;
 
     const id = searchParams.get("id");
-    const deletedLecture = await deleteLecture(id as string);
-    if (!deletedLecture)
-      return new Response("Lecture not found", { status: 404 });
+    const deletedLecture = await deleteLectureService(id as string);
+
     return new NextResponse("Lecture deleted successfully", { status: 200 });
   } catch (error) {
     return new NextResponse("Failed to delete Lecture", { status: 500 });

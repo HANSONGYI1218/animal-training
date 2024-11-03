@@ -4,21 +4,22 @@ import {
   CreateUserDto,
   GetUserAdoptionRecordDto,
   GetUserDto,
-} from "@/dtos/user.dtos";
+  UpdateUserDto,
+} from "@/dtos/user.dto";
 import {
-  createUser,
-  deleteUser,
-  getUserByUserInfo,
-  getUserById,
-  updateUser,
-} from "@/controllers/user.controllers";
+  createUserService,
+  deleteUserService,
+  getUserByIdService,
+  getUserByUserInfoService,
+  updateUserService,
+} from "@/services/user.service";
 
 // POST 요청 핸들러
-export async function POST(req: NextRequest, res: NextResponse) {
+async function POST(req: NextRequest, res: NextResponse) {
   try {
     const dto: CreateUserDto = await req.json();
 
-    await createUser(dto);
+    await createUserService(dto);
     return new NextResponse("User created successfully", { status: 200 });
   } catch (error) {
     return new NextResponse("Failed to create User", { status: 500 });
@@ -26,7 +27,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
 }
 
 // GET 요청 핸들러
-export async function GET(req: NextRequest, res: NextResponse) {
+async function GET(req: NextRequest, res: NextResponse) {
   const { searchParams } = req?.nextUrl;
 
   const id = searchParams.get("id");
@@ -35,17 +36,15 @@ export async function GET(req: NextRequest, res: NextResponse) {
 
   try {
     if (name && registrationNumber) {
-      const user: GetUserAdoptionRecordDto | null = await getUserByUserInfo(
-        name,
-        registrationNumber,
-      );
+      const user: GetUserAdoptionRecordDto | null =
+        await getUserByUserInfoService(name, registrationNumber);
 
       if (!user) return new Response("user not found", { status: 404 });
 
       return NextResponse.json(user);
     }
     if (id) {
-      const user: GetUserDto | null = await getUserById(id as string);
+      const user: GetUserDto | null = await getUserByIdService(id as string);
 
       if (!user) return new Response("user not found", { status: 404 });
 
@@ -57,15 +56,12 @@ export async function GET(req: NextRequest, res: NextResponse) {
 }
 
 // PUT 요청 핸들러
-export async function PUT(req: NextRequest, res: NextResponse) {
+async function PUT(req: NextRequest, res: NextResponse) {
   try {
-    const { searchParams } = req.nextUrl;
+    const dto: UpdateUserDto = await req.json();
 
-    const id = searchParams.get("id");
+    await updateUserService(dto);
 
-    const dto: CreateUserDto = await req.json();
-
-    await updateUser(id as string, dto);
     return new NextResponse("User updated successfully", { status: 200 });
   } catch (error) {
     return new NextResponse("Failed to update User", { status: 500 });
@@ -73,15 +69,17 @@ export async function PUT(req: NextRequest, res: NextResponse) {
 }
 
 // DELETE 요청 핸들러
-export async function DELETE(req: NextRequest, res: NextResponse) {
+async function DELETE(req: NextRequest, res: NextResponse) {
   try {
     const { searchParams } = req.nextUrl;
 
     const id = searchParams.get("id");
-    const deletedUser = await deleteUser(id as string);
-    if (!deletedUser) return new Response("User not found", { status: 404 });
+    await deleteUserService(id as string);
+
     return new NextResponse("User deleted successfully", { status: 200 });
   } catch (error) {
     return new NextResponse("Failed to delete User", { status: 500 });
   }
 }
+
+export { POST, GET, DELETE, PUT };

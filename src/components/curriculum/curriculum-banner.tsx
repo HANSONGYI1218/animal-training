@@ -2,12 +2,12 @@
 
 import { Goal, Home, Monitor } from "lucide-react";
 import { motion } from "framer-motion";
-import { GetUserCurriculumDto } from "@/dtos/user-curriculum.dtos";
+import { CurriculumStep } from "@prisma/client";
 
 export default function CurriculumBanner({
-  userCurriculum,
+  curriculumStep,
 }: {
-  userCurriculum: GetUserCurriculumDto;
+  curriculumStep: CurriculumStep;
 }) {
   return (
     <section className="relative flex w-full flex-col overflow-hidden bg-[#F9F9F9] py-12">
@@ -22,7 +22,7 @@ export default function CurriculumBanner({
             <div className="flex flex-col items-center">
               <motion.div
                 animate={
-                  userCurriculum?.curriculumStep === "LECTURE" && {
+                  curriculumStep === "LECTURE" && {
                     scale: 1.1,
                   }
                 }
@@ -32,7 +32,7 @@ export default function CurriculumBanner({
                   repeatType: "mirror",
                   ease: "easeInOut",
                 }}
-                className={`flex h-10 w-10 items-center justify-center rounded-full ${userCurriculum?.curriculumStep === "LECTURE" ? "bg-green-100" : "bg-neutral-300"}`}
+                className={`flex h-10 w-10 items-center justify-center rounded-full ${curriculumStep === "LECTURE" ? "bg-green-100" : "bg-neutral-300"}`}
               >
                 <Monitor
                   stroke="#ffffff"
@@ -45,12 +45,12 @@ export default function CurriculumBanner({
               </span>
             </div>
             <hr
-              className={`w-24 -translate-y-3 border-2 ${userCurriculum?.curriculumStep === "LECTURE" ? "border-green-100" : "border-neutral-300"}`}
+              className={`w-24 -translate-y-3 border-2 ${curriculumStep === "LECTURE" ? "border-green-100" : "border-neutral-300"}`}
             />
             <div className="flex flex-col items-center">
               <motion.div
                 animate={
-                  userCurriculum?.curriculumStep === "TRAINING" && {
+                  curriculumStep === "TRAINING" && {
                     scale: 1.1,
                   }
                 }
@@ -60,7 +60,7 @@ export default function CurriculumBanner({
                   repeatType: "mirror",
                   ease: "easeInOut",
                 }}
-                className={`flex h-10 w-10 items-center justify-center rounded-full ${userCurriculum?.curriculumStep === "TRAINING" ? "bg-green-100" : "bg-neutral-300"}`}
+                className={`flex h-10 w-10 items-center justify-center rounded-full ${curriculumStep === "TRAINING" ? "bg-green-100" : "bg-neutral-300"}`}
               >
                 <Home stroke="#ffffff" className="h-4 w-4" strokeWidth={2.5} />
               </motion.div>
@@ -69,12 +69,12 @@ export default function CurriculumBanner({
               </span>
             </div>
             <hr
-              className={`w-24 -translate-y-3 border-2 ${userCurriculum?.curriculumStep === "TRAINING" ? "border-green-100" : "border-neutral-300"}`}
+              className={`w-24 -translate-y-3 border-2 ${curriculumStep === "TRAINING" ? "border-green-100" : "border-neutral-300"}`}
             />
             <div className="flex flex-col items-center">
               <motion.div
                 animate={
-                  userCurriculum?.curriculumStep === "END" && {
+                  curriculumStep === "END" && {
                     scale: 1.1,
                   }
                 }
@@ -84,7 +84,7 @@ export default function CurriculumBanner({
                   repeatType: "mirror",
                   ease: "easeInOut",
                 }}
-                className={`flex h-10 w-10 items-center justify-center rounded-full ${userCurriculum?.curriculumStep === "END" ? "bg-green-100" : "bg-neutral-300"}`}
+                className={`flex h-10 w-10 items-center justify-center rounded-full ${curriculumStep === "END" ? "bg-green-100" : "bg-neutral-300"}`}
               >
                 <Goal stroke="#ffffff" className="h-4 w-4" strokeWidth={2.5} />
               </motion.div>

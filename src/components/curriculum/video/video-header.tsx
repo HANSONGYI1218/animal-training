@@ -2,8 +2,8 @@ import { ChevronLeft } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import VideoSheet from "./video-sheet";
-import { GetUserCurriculumDto } from "@/dtos/user-curriculum.dtos";
-import { GetCurriculumLectureDto } from "@/dtos/curriculum-lecture.dtos";
+import { UserCurriculumDto } from "@/dtos/user.curriculum.dto";
+import { CurriculumLectureDto } from "@/dtos/curriculum.lecture.dto";
 
 export default function VideoHeader({
   lecture,
@@ -11,10 +11,10 @@ export default function VideoHeader({
   lectures,
   userCurriculum,
 }: {
-  lecture: GetCurriculumLectureDto;
+  lecture: CurriculumLectureDto;
   category: string;
-  lectures: GetCurriculumLectureDto[];
-  userCurriculum: GetUserCurriculumDto;
+  lectures: CurriculumLectureDto[];
+  userCurriculum: UserCurriculumDto;
 }) {
   return (
     <header className="sticky top-0 z-30 flex w-full items-center justify-between bg-neutral-800 p-4">

@@ -15,14 +15,14 @@ import {
 import Image from "next/image";
 import { occupationTypeSwap, priceTypeSwap } from "@/constants/constants.all";
 import { useState } from "react";
-import { GetLectureDetailDto } from "@/dtos/lecture.dtos";
-import { GetTutorDto } from "@/dtos/tutor.dtos";
+import { GetTutorDto } from "@/dtos/tutor.dto";
 import Link from "next/link";
+import { GetLectureDto } from "@/dtos/lecture.dto";
 
 export default function LectureContent({
   lecture,
 }: {
-  lecture: GetLectureDetailDto;
+  lecture: GetLectureDto;
 }) {
   const [isClicked, setIsClicked] = useState(false);
   const [tutor, setTutor] = useState<GetTutorDto | null>(null);

@@ -20,7 +20,7 @@ import {
   InputOTPSlot,
 } from "@/components/ui/input-otp";
 import { Button } from "../ui/button";
-import { GetUserAdoptionRecordDto } from "@/dtos/user.dtos";
+import { GetUserAdoptionRecordDto } from "@/dtos/user.dto";
 
 const RecordSearchSchema = z.object({
   name: z.string({

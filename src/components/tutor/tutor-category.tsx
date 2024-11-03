@@ -5,16 +5,15 @@ import { categorySwap } from "@/constants/constants.all";
 import { Badge } from "../ui/badge";
 import { useEffect, useState } from "react";
 import LectureContainer from "../lecture/lecture-container";
-import { GetLectureDto } from "@/dtos/lecture.dtos";
-import { GetTutorDto } from "@/dtos/tutor.dtos";
+import { GetLectureWithTutorDto } from "@/dtos/lecture.dto";
 
 export default function TutorCategory({
   lectures,
 }: {
-  lectures: GetLectureDto[];
+  lectures: GetLectureWithTutorDto[];
 }) {
   const [filterLectures, setFilterLectures] =
-    useState<GetLectureDto[]>(lectures);
+    useState<GetLectureWithTutorDto[]>(lectures);
   const [selectCategory, setSelectCategory] = useState<string>("ALL");
 
   useEffect(() => {

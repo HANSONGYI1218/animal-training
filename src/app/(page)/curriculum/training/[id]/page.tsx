@@ -1,7 +1,7 @@
 import CenterDetailBanner from "@/components/curriculum/training/center-banner";
 import CenterContainer from "@/components/curriculum/training/center-container";
-import { GetCurriculumTrainingDto } from "@/dtos/curriculum-training.dtos";
-import { GetTrainingCenterDetailDto } from "@/dtos/training-center.dtos";
+import { GetCurriculumTrainingDto } from "@/dtos/curriculum.training.dto";
+import { GetTrainingCenterDetailDto } from "@/dtos/training.center.dto";
 
 export default async function TrainingDetailPage({
   params,

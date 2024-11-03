@@ -51,7 +51,7 @@ export default function TopBar() {
         <div className="container mx-auto flex items-center justify-between">
           <Image src="/next.svg" width={70} height={100} alt="main-logo" />
           <div className="flex items-center gap-4">
-            <Link href="/lecture?category=all">
+            <a href="/lecture?category=all">
               <Button
                 onClick={() => {
                   setPage("lecture");
@@ -61,7 +61,7 @@ export default function TopBar() {
               >
                 강의
               </Button>
-            </Link>
+            </a>
             <Link href="/curriculum">
               <Button
                 onClick={() => {
@@ -73,7 +73,7 @@ export default function TopBar() {
                 커리큘럼
               </Button>
             </Link>
-            <Link href="/record">
+            <a href="/record">
               <Button
                 onClick={() => {
                   setPage("record");
@@ -83,8 +83,8 @@ export default function TopBar() {
               >
                 입양기록
               </Button>
-            </Link>
-            <Link href="/mypage/profile">
+            </a>
+            <a href="/mypage/profile">
               <Button
                 onClick={() => {
                   setPage("mypage");
@@ -94,7 +94,7 @@ export default function TopBar() {
               >
                 내 정보
               </Button>
-            </Link>
+            </a>
             <Link href="/store">
               <Button
                 onClick={() => {

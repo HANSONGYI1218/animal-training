@@ -5,13 +5,9 @@ import { motion } from "framer-motion";
 import { Badge } from "../ui/badge";
 import { SquareUser, ThumbsUp } from "lucide-react";
 import { categorySwap, priceTypeSwap } from "@/constants/constants.all";
-import { GetLectureDetailDto } from "@/dtos/lecture.dtos";
+import { GetLectureDto } from "@/dtos/lecture.dto";
 
-export default function LectureBanner({
-  lecture,
-}: {
-  lecture: GetLectureDetailDto;
-}) {
+export default function LectureBanner({ lecture }: { lecture: GetLectureDto }) {
   return (
     <section className="relative flex w-full flex-col overflow-hidden bg-black/95 py-12">
       <div className="container relative z-10 mx-auto flex w-full max-w-[1150px]">

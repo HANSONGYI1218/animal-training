@@ -1,6 +1,6 @@
 "use client";
 
-import { GetCurriculumLectureDto } from "@/dtos/curriculum-lecture.dtos";
+import { CurriculumLectureDto } from "@/dtos/curriculum.lecture.dto";
 import { CirclePlay, ScreenShare } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
@@ -8,7 +8,7 @@ import { useState } from "react";
 export default function VideoList({
   lecture,
 }: {
-  lecture: GetCurriculumLectureDto;
+  lecture: CurriculumLectureDto;
 }) {
   const [isHovered, setIsHovered] = useState(false);
   return (

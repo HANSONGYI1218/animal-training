@@ -31,16 +31,15 @@ model User {
   isPromotion_Email  Boolean         @default(true)
   createdAt          DateTime        @default(now())
   updatedAt          DateTime        @updatedAt
-  lectureId          String?
-  lecture            Lecture?        @relation(fields: [lectureId], references: [id])
   adopterAdoptions   Adoption[]      @relation("AdopterAdoptions")
   breederAdoptions   Adoption[]      @relation("BreederAdoptions")
   animals            Animal[]
   userCurriculum     UserCurriculum[]
   reviews            Review[]
   userPayment        UserPayment[]
+  lectureBookmarks   LectureBookmark[]   // One-to-many relationship with Bookmark
+  tutorBookmarks     TutorBookmark[]
 
-  @@index([lectureId])
 }
 
 model UserPayment {
@@ -72,18 +71,19 @@ model UserCurriculum {
 }
 
 model Corporation {
-  id                String          @id  @default(uuid())
-  owner_name        String          @db.VarChar(255)        
-  corporation_name  String          @db.VarChar(255)      
-  address           String          @db.VarChar(255)
-  phoneNumber       String          @unique @db.VarChar(255)  
-  email             String          @unique @db.VarChar(255)
-  business_number   String          @unique @db.VarChar(255)
-  createdAt         DateTime        @default(now())
-  updatedAt         DateTime        @updatedAt
+  id                String                    @id  @default(uuid())
+  owner_name        String                    @db.VarChar(255)        
+  corporation_name  String                    @db.VarChar(255)      
+  address           String                    @db.VarChar(255)
+  phoneNumber       String                    @unique @db.VarChar(255)  
+  email             String                    @unique @db.VarChar(255)
+  business_number   String                    @unique @db.VarChar(255)
+  accessStatus      CorporationAccessStatus   @default(STANDARD)
+  createdAt         DateTime                  @default(now())
+  updatedAt         DateTime                  @updatedAt
   tutors            Tutor[]
-  adopterAdoptions  Adoption[]      @relation("AdopterCorporationAdoptions")
-  breederAdoptions  Adoption[]      @relation("BreederCorporationAdoptions")
+  adopterAdoptions  Adoption[]                @relation("AdopterCorporationAdoptions") //[임시]기업은 입양 못함
+  breederAdoptions  Adoption[]                @relation("BreederCorporationAdoptions")
   animals           Animal[]
   trainingCenter    TrainingCenter[]
 }
@@ -102,6 +102,7 @@ model Tutor {
   trainingCenter     TrainingCenter?
   lectures           Lecture[]
   curriculumLectures CurriculumLecture[]
+  bookmarks          TutorBookmark[]
 
   @@index([corporationId])
 }
@@ -110,21 +111,44 @@ model Lecture {
   id                String          @id  @default(uuid())
   title             String          @db.VarChar(255)
   content           String          @db.Text
-  animal_type       AnimalType      @default(CAT)
+  animal_type       AnimalType      @default(DOG)
   price_type        PriceType       @default(FREE)
   category          Category        @default(TRAINING)
   thumbnailPath     String          @db.VarChar(255)
   videoUrl          String          @db.VarChar(255)
   like              Int             @default(0)
-  tags              String[]    
-  bookmark          Boolean         @default(false)
+  tags              String[]
   createdAt         DateTime        @default(now())
   updatedAt         DateTime        @updatedAt
   tutorId           String
-  tutor             Tutor?          @relation(fields: [tutorId], references: [id])
-  users             User[]
+  tutor             Tutor           @relation(fields: [tutorId], references: [id])
+  bookmarks         LectureBookmark[]   // One-to-many relationship with Bookmark
 
   @@index([tutorId])
+}
+
+model LectureBookmark {
+  id        String    @id @default(uuid())
+  userId    String
+  user      User      @relation(fields: [userId], references: [id])
+  lectureId String
+  lecture   Lecture   @relation(fields: [lectureId], references: [id])
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @default(now())
+  
+  @@unique([userId, lectureId]) // Ensures a user can't bookmark the same lecture more than once
+}
+
+model TutorBookmark {
+  id        String    @id @default(uuid())
+  userId    String
+  user      User      @relation(fields: [userId], references: [id])
+  tutorId   String
+  tutor     Tutor     @relation(fields: [tutorId], references: [id])
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @default(now())
+
+  @@unique([userId, tutorId]) // Ensures a user can't bookmark the same lecture more than once
 }
 
 model CurriculumLecture {
@@ -324,4 +348,9 @@ enum AttendanceStatus {
 enum MembershipType {
   STANDARD 
   PREMIUM
+}
+
+enum CorporationAccessStatus {
+  OPERATION //입양, 분양 ,강사 등록, 강의 등록
+  STANDARD //입양, 분양까지
 }

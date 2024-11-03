@@ -2,20 +2,20 @@ import { NextRequest, NextResponse } from "next/server";
 import {
   CreateCurriculumTrainingDto,
   GetCurriculumTrainingDto,
-} from "@/dtos/curriculum-training.dtos";
+} from "@/dtos/curriculum.training.dto";
 import {
-  createCurriculumTraining,
-  deleteCurriculumTraining,
-  getAllCurriculumTrainings,
-  updateCurriculumTraining,
-} from "@/controllers/curriculum-training.controllers";
+  createCurriculumTrainingService,
+  getAllCurriculumTrainingsService,
+  updateCurriculumTrainingService,
+  deleteCurriculumTrainingService,
+} from "@/services/curriculum.training.service";
 
 // POST 요청 핸들러
-export async function POST(req: NextRequest, res: NextResponse) {
+async function POST(req: NextRequest, res: NextResponse) {
   try {
     const dto: CreateCurriculumTrainingDto = await req.json();
 
-    await createCurriculumTraining(dto);
+    await createCurriculumTrainingService(dto);
     return new NextResponse("CurriculumTraining created successfully", {
       status: 200,
     });
@@ -27,10 +27,10 @@ export async function POST(req: NextRequest, res: NextResponse) {
 }
 
 // GET 요청 핸들러
-export async function GET(req: NextRequest, res: NextResponse) {
+async function GET(req: NextRequest, res: NextResponse) {
   try {
     const curriculumTrainings: GetCurriculumTrainingDto[] =
-      await getAllCurriculumTrainings();
+      await getAllCurriculumTrainingsService();
 
     return NextResponse.json(curriculumTrainings);
   } catch (error) {
@@ -39,7 +39,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
 }
 
 // PUT 요청 핸들러
-export async function PUT(req: NextRequest, res: NextResponse) {
+async function PUT(req: NextRequest, res: NextResponse) {
   try {
     const { searchParams } = req.nextUrl;
 
@@ -47,7 +47,7 @@ export async function PUT(req: NextRequest, res: NextResponse) {
 
     const dto: CreateCurriculumTrainingDto = await req.json();
 
-    await updateCurriculumTraining(id as string, dto);
+    await updateCurriculumTrainingService(id as string, dto);
     return new NextResponse("CurriculumTraining updated successfully", {
       status: 200,
     });
@@ -59,12 +59,12 @@ export async function PUT(req: NextRequest, res: NextResponse) {
 }
 
 // DELETE 요청 핸들러
-export async function DELETE(req: NextRequest, res: NextResponse) {
+async function DELETE(req: NextRequest, res: NextResponse) {
   try {
     const { searchParams } = req.nextUrl;
 
     const id = searchParams.get("id");
-    const deletedCurriculumTraining = await deleteCurriculumTraining(
+    const deletedCurriculumTraining = await deleteCurriculumTrainingService(
       id as string,
     );
     if (!deletedCurriculumTraining)
@@ -78,3 +78,5 @@ export async function DELETE(req: NextRequest, res: NextResponse) {
     });
   }
 }
+
+export { POST, GET, DELETE, PUT };

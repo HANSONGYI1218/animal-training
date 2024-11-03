@@ -1,6 +1,6 @@
 import VideoHeader from "@/components/curriculum/video/video-header";
-import { GetCurriculumLectureDto } from "@/dtos/curriculum-lecture.dtos";
-import { GetUserCurriculumDto } from "@/dtos/user-curriculum.dtos";
+import { CurriculumLectureDto } from "@/dtos/curriculum.lecture.dto";
+import { UserCurriculumDto } from "@/dtos/user.curriculum.dto";
 import { CurriculumLecture } from "@/types/tyeps.all";
 import dummydata from "@/utils/dummydata";
 
@@ -21,7 +21,7 @@ export default async function LectureVideoPage({
   if (!responseCurriculums.ok) {
     return null;
   }
-  const curriculumLectures: GetCurriculumLectureDto[] =
+  const curriculumLectures: CurriculumLectureDto[] =
     await responseCurriculums.json();
 
   const responseLecture = await fetch(
@@ -34,7 +34,7 @@ export default async function LectureVideoPage({
   if (!responseLecture.ok) {
     return null;
   }
-  const currentLecture: GetCurriculumLectureDto = await responseLecture.json();
+  const currentLecture: CurriculumLectureDto = await responseLecture.json();
 
   const responseUserCurriculum = await fetch(
     `${process.env.NEXT_PUBLIC_WEB_URL}/api/user-curriculum?userId=${"1"}`,
@@ -47,8 +47,7 @@ export default async function LectureVideoPage({
     return null;
   }
 
-  const userCurriculum: GetUserCurriculumDto =
-    await responseUserCurriculum.json();
+  const userCurriculum: UserCurriculumDto = await responseUserCurriculum.json();
 
   return (
     <main className="flex w-full flex-col bg-black">
