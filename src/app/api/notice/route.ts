@@ -1,12 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
-import { CreateNoticeDto, GetNoticeDto } from "@/dtos/notice.dtos";
+import { CreateNoticeDto, NoticeDto, UpdateNoticeDto } from "@/dtos/notice.dto";
 import {
   createNoticeService,
   getNoticeByIdService,
   updateNoticeService,
   deleteNoticeService,
   getAllNoticesService,
-} from "@/services/notice.services";
+} from "@/services/notice.service";
 
 // POST 요청 핸들러
 export async function POST(req: NextRequest, res: NextResponse) {
@@ -28,9 +28,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
 
   try {
     if (id) {
-      const notice: GetNoticeDto | null = await getNoticeByIdService(
-        id as string,
-      );
+      const notice: NoticeDto | null = await getNoticeByIdService(id as string);
 
       if (!notice) return new Response("Notice not found", { status: 404 });
 
@@ -48,13 +46,9 @@ export async function GET(req: NextRequest, res: NextResponse) {
 // PUT 요청 핸들러
 export async function PUT(req: NextRequest, res: NextResponse) {
   try {
-    const { searchParams } = req.nextUrl;
+    const dto: UpdateNoticeDto = await req.json();
 
-    const id = searchParams.get("id");
-
-    const dto: CreateNoticeDto = await req.json();
-
-    await updateNoticeService(id as string, dto);
+    await updateNoticeService(dto);
 
     return new NextResponse("Notice updated successfully", { status: 200 });
   } catch (error) {
@@ -68,10 +62,7 @@ export async function DELETE(req: NextRequest, res: NextResponse) {
     const { searchParams } = req.nextUrl;
 
     const id = searchParams.get("id");
-    const deletedNotice = await deleteNoticeService(id as string);
-
-    if (!deletedNotice)
-      return new Response("Notice not found", { status: 404 });
+    await deleteNoticeService(id as string);
 
     return new NextResponse("Notice deleted successfully", { status: 200 });
   } catch (error) {

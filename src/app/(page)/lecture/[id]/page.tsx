@@ -4,7 +4,7 @@ import LectureCard from "@/components/lecture/lecture-card";
 import { ChevronRight } from "lucide-react";
 import LectureTagSelect from "@/components/lecture/lecture-d-tag-select";
 import Link from "next/link";
-import { GetLectureDetailDto, GetLectureDto } from "@/dtos/lecture.dtos";
+import { GetLectureDto, GetLectureWithTutorDto } from "@/dtos/lecture.dto";
 import { occupationTypeSwap } from "@/constants/constants.all";
 
 export default async function LectureDetailPage({
@@ -25,7 +25,7 @@ export default async function LectureDetailPage({
     return null;
   }
 
-  const lecture: GetLectureDetailDto = await responseLecture.json();
+  const lecture: GetLectureDto = await responseLecture.json();
 
   const responseTutorLectures = await fetch(
     `${process.env.NEXT_PUBLIC_WEB_URL}/api/lecture?tutorId=${lecture?.tutor?.id}`,
@@ -38,16 +38,12 @@ export default async function LectureDetailPage({
     return null;
   }
 
-  const tutorLectures: GetLectureDto[] = await responseTutorLectures.json();
+  const tutorLectures: GetLectureWithTutorDto[] =
+    await responseTutorLectures.json();
 
   return (
     <main className="mb-24 flex w-full flex-col">
-      <LectureBanner
-        lecture={{
-          ...lecture,
-          tutor_name: lecture?.tutor?.name,
-        }}
-      />
+      <LectureBanner lecture={lecture} />
       <LectureContent lecture={lecture} />
       <section className="container mx-auto mt-32 flex max-w-[1150px] flex-col gap-6">
         <span className="flex h-8 items-center justify-between gap-2 text-xl font-semibold text-gray-700">
@@ -74,9 +70,11 @@ export default async function LectureDetailPage({
           </Link>
         </span>
         <div className="grid w-full grid-cols-4 gap-6">
-          {tutorLectures.map((lecture: GetLectureDto, index: number) => {
-            return <LectureCard key={index} lecture={lecture} />;
-          })}
+          {tutorLectures.map(
+            (lecture: GetLectureWithTutorDto, index: number) => {
+              return <LectureCard key={index} lecture={lecture} />;
+            },
+          )}
         </div>
       </section>
       <section className="container mx-auto mt-24 flex max-w-[1150px] flex-col gap-6">

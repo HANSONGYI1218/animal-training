@@ -51,7 +51,7 @@ export default function TopBar() {
         <div className="container mx-auto flex items-center justify-between">
           <Image src="/next.svg" width={70} height={100} alt="main-logo" />
           <div className="flex items-center gap-4">
-            <Link href="/lecture?category=all" replace={true}>
+            <a href="/lecture?category=all">
               <Button
                 onClick={() => {
                   setPage("lecture");
@@ -61,8 +61,8 @@ export default function TopBar() {
               >
                 강의
               </Button>
-            </Link>
-            <Link href="/curriculum" replace={true}>
+            </a>
+            <Link href="/curriculum">
               <Button
                 onClick={() => {
                   setPage("curriculum");
@@ -73,7 +73,7 @@ export default function TopBar() {
                 커리큘럼
               </Button>
             </Link>
-            <Link href="/record" replace={true}>
+            <a href="/record">
               <Button
                 onClick={() => {
                   setPage("record");
@@ -83,8 +83,8 @@ export default function TopBar() {
               >
                 입양기록
               </Button>
-            </Link>
-            <Link href="/mypage/profile" replace={true}>
+            </a>
+            <a href="/mypage/profile">
               <Button
                 onClick={() => {
                   setPage("mypage");
@@ -94,8 +94,8 @@ export default function TopBar() {
               >
                 내 정보
               </Button>
-            </Link>
-            <Link href="/store" replace={true}>
+            </a>
+            <Link href="/store">
               <Button
                 onClick={() => {
                   setPage("store");
@@ -106,7 +106,7 @@ export default function TopBar() {
                 스토어
               </Button>
             </Link>
-            <Link href="/notice" replace={true}>
+            <Link href="/notice">
               <Button
                 onClick={() => {
                   setPage("notice");

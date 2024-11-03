@@ -1,10 +1,10 @@
 import { Button } from "@/components/ui/button";
-import { GetUserCurriculumDto } from "@/dtos/user-curriculum.dtos";
+import { UserCurriculumDto } from "@/dtos/user.curriculum.dto";
 
 export default function CurriculumLecturePromotion({
   userCurriculum,
 }: {
-  userCurriculum: GetUserCurriculumDto;
+  userCurriculum: UserCurriculumDto;
 }) {
   return (
     <div className="sticky top-24 h-fit w-80 rounded-xl border">

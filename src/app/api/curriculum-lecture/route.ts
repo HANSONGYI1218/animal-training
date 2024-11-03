@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import {
   CreateCurriculumLectureDto,
-  GetCurriculumLectureDto,
-} from "@/dtos/curriculum-lecture.dtos";
+  CurriculumLectureDto,
+  UpdateCurriculumLectureDto,
+} from "@/dtos/curriculum.lecture.dto";
 import {
   createCurriculumLectureService,
   getAllCurriculumLecturesService,
@@ -10,11 +11,11 @@ import {
   getCurriculumLectureByCategoryService,
   updateCurriculumLectureService,
   deleteCurriculumLectureService,
-} from "@/services/curriculum-lecture.services";
+} from "@/services/curriculum.lecture.service";
 import { CurriculumCategory } from "@prisma/client";
 
 // POST 요청 핸들러
-export async function POST(req: NextRequest, res: NextResponse) {
+async function POST(req: NextRequest, res: NextResponse) {
   try {
     const dto: CreateCurriculumLectureDto = await req.json();
 
@@ -30,7 +31,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
 }
 
 // GET 요청 핸들러
-export async function GET(req: NextRequest, res: NextResponse) {
+async function GET(req: NextRequest, res: NextResponse) {
   const { searchParams } = req?.nextUrl;
 
   const id = searchParams.get("id");
@@ -38,7 +39,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
 
   try {
     if (category) {
-      const curriculumLecture: GetCurriculumLectureDto[] =
+      const curriculumLecture: CurriculumLectureDto[] =
         await getCurriculumLectureByCategoryService(
           CurriculumCategory[
             category as keyof typeof CurriculumCategory
@@ -48,7 +49,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
       return NextResponse.json(curriculumLecture);
     }
     if (id) {
-      const curriculumLecture: GetCurriculumLectureDto | null =
+      const curriculumLecture: CurriculumLectureDto | null =
         await getCurriculumLectureByIdService(id as string);
 
       if (!curriculumLecture)
@@ -66,15 +67,11 @@ export async function GET(req: NextRequest, res: NextResponse) {
 }
 
 // PUT 요청 핸들러
-export async function PUT(req: NextRequest, res: NextResponse) {
+async function PUT(req: NextRequest, res: NextResponse) {
   try {
-    const { searchParams } = req.nextUrl;
+    const dto: UpdateCurriculumLectureDto = await req.json();
 
-    const id = searchParams.get("id");
-
-    const dto: CreateCurriculumLectureDto = await req.json();
-
-    await updateCurriculumLectureService(id as string, dto);
+    await updateCurriculumLectureService(dto);
     return new NextResponse("CurriculumLecture updated successfully", {
       status: 200,
     });
@@ -86,16 +83,13 @@ export async function PUT(req: NextRequest, res: NextResponse) {
 }
 
 // DELETE 요청 핸들러
-export async function DELETE(req: NextRequest, res: NextResponse) {
+async function DELETE(req: NextRequest, res: NextResponse) {
   try {
     const { searchParams } = req.nextUrl;
 
     const id = searchParams.get("id");
-    const deletedCurriculumLecture = await deleteCurriculumLectureService(
-      id as string,
-    );
-    if (!deletedCurriculumLecture)
-      return new Response("CurriculumLecture not found", { status: 404 });
+    await deleteCurriculumLectureService(id as string);
+
     return new NextResponse("CurriculumLecture deleted successfully", {
       status: 200,
     });
@@ -105,3 +99,5 @@ export async function DELETE(req: NextRequest, res: NextResponse) {
     });
   }
 }
+
+export { POST, GET, DELETE, PUT };

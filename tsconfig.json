@@ -30,6 +30,6 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "svgr.d.ts"
-  ],
+, "src/services/tutor.servicests", "src/dtos/notice.dtosts", "src/repositories/curriculum-training.repositoriests", "src/repositories/adoption.repositoriests"  ],
   "exclude": ["node_modules"]
 }

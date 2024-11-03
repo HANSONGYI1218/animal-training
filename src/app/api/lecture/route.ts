@@ -1,5 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
-import { CreateLectureDto, GetLectureDetailDto } from "@/dtos/lecture.dtos";
+import {
+  CreateLectureDto,
+  GetLectureDto,
+  UpdateLectureDto,
+} from "@/dtos/lecture.dto";
 import {
   createLectureService,
   getAllLecturesService,
@@ -9,7 +13,7 @@ import {
   deleteLectureService,
   getLectureByTutorIdService,
   getLectureByTagService,
-} from "@/services/lecture.services";
+} from "@/services/lecture.service";
 import { Category } from "@prisma/client";
 
 // POST 요청 핸들러
@@ -54,7 +58,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
     }
 
     if (id) {
-      const lecture: GetLectureDetailDto | null = await getLectureByIdService(
+      const lecture: GetLectureDto | null = await getLectureByIdService(
         id as string,
       );
 
@@ -74,13 +78,9 @@ export async function GET(req: NextRequest, res: NextResponse) {
 // PUT 요청 핸들러
 export async function PUT(req: NextRequest, res: NextResponse) {
   try {
-    const { searchParams } = req.nextUrl;
+    const dto: UpdateLectureDto = await req.json();
 
-    const id = searchParams.get("id");
-
-    const dto: CreateLectureDto = await req.json();
-
-    await updateLectureService(id as string, dto);
+    await updateLectureService(dto);
 
     return new NextResponse("Lecture updated successfully", { status: 200 });
   } catch (error) {
@@ -95,9 +95,6 @@ export async function DELETE(req: NextRequest, res: NextResponse) {
 
     const id = searchParams.get("id");
     const deletedLecture = await deleteLectureService(id as string);
-
-    if (!deletedLecture)
-      return new Response("Lecture not found", { status: 404 });
 
     return new NextResponse("Lecture deleted successfully", { status: 200 });
   } catch (error) {

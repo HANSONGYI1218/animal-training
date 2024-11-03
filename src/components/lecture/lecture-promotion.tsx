@@ -1,6 +1,6 @@
 import Link from "next/link";
 import TouchScroll from "../common/touch-scroll";
-import { GetTutorDto } from "@/dtos/tutor.dtos";
+import { GetTutorDto } from "@/dtos/tutor.dto";
 
 export default function LecturePromotion({
   tutors,

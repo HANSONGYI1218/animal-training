@@ -6,13 +6,13 @@ import { Heart, ShoppingCart, SquareUser, ThumbsUp } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { categorySwap, priceTypeSwap } from "@/constants/constants.all";
-import { GetLectureDetailDto, GetLectureDto } from "@/dtos/lecture.dtos";
+import { GetLectureDto, GetLectureWithTutorDto } from "@/dtos/lecture.dto";
 import { useState } from "react";
 
 export default function LectureCard({
   lecture,
 }: {
-  lecture: GetLectureDto | GetLectureDetailDto;
+  lecture: GetLectureWithTutorDto | GetLectureDto;
 }) {
   const [isBookmarked, setIsBookmarked] = useState(!!lecture?.bookmarks[0]);
 

@@ -5,18 +5,17 @@ import {
   GetUserAdoptionRecordDto,
   GetUserDto,
   UpdateUserDto,
-} from "@/dtos/user.dtos";
-import { redirect } from "next/navigation";
+} from "@/dtos/user.dto";
 import {
   createUserService,
   deleteUserService,
   getUserByIdService,
   getUserByUserInfoService,
   updateUserService,
-} from "@/services/user.services";
+} from "@/services/user.service";
 
 // POST 요청 핸들러
-export async function POST(req: NextRequest, res: NextResponse) {
+async function POST(req: NextRequest, res: NextResponse) {
   try {
     const dto: CreateUserDto = await req.json();
 
@@ -28,7 +27,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
 }
 
 // GET 요청 핸들러
-export async function GET(req: NextRequest, res: NextResponse) {
+async function GET(req: NextRequest, res: NextResponse) {
   const { searchParams } = req?.nextUrl;
 
   const id = searchParams.get("id");
@@ -57,33 +56,30 @@ export async function GET(req: NextRequest, res: NextResponse) {
 }
 
 // PUT 요청 핸들러
-export async function PUT(req: NextRequest, res: NextResponse) {
+async function PUT(req: NextRequest, res: NextResponse) {
   try {
-    const { searchParams } = req.nextUrl;
-
-    const id = searchParams.get("id");
-
     const dto: UpdateUserDto = await req.json();
 
-    await updateUserService(id as string, dto);
+    await updateUserService(dto);
 
     return new NextResponse("User updated successfully", { status: 200 });
   } catch (error) {
     return new NextResponse("Failed to update User", { status: 500 });
   }
-  redirect("/mypage/profile");
 }
 
 // DELETE 요청 핸들러
-export async function DELETE(req: NextRequest, res: NextResponse) {
+async function DELETE(req: NextRequest, res: NextResponse) {
   try {
     const { searchParams } = req.nextUrl;
 
     const id = searchParams.get("id");
-    const deletedUser = await deleteUserService(id as string);
-    if (!deletedUser) return new Response("User not found", { status: 404 });
+    await deleteUserService(id as string);
+
     return new NextResponse("User deleted successfully", { status: 200 });
   } catch (error) {
     return new NextResponse("Failed to delete User", { status: 500 });
   }
 }
+
+export { POST, GET, DELETE, PUT };

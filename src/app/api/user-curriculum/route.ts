@@ -1,15 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
 import {
   CreateUserCurriculumDto,
-  GetUserCurriculumDto,
-} from "@/dtos/user-curriculum.dtos";
+  UpdateUserCurriculumDto,
+  UserCurriculumDto,
+} from "@/dtos/user.curriculum.dto";
 import {
   createUserCurriculumService,
   deleteUserCurriculumService,
   getAllUserCurriculumsService,
   getUserCurriculumByUserIdService,
   updateUserCurriculumService,
-} from "@/services/user-curriculum.services";
+} from "@/services/user.curriculum.service";
 
 // POST 요청 핸들러
 export async function POST(req: NextRequest, res: NextResponse) {
@@ -35,7 +36,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
 
   try {
     if (userId) {
-      const userCurriculum: GetUserCurriculumDto | null =
+      const userCurriculum: UserCurriculumDto | null =
         await getUserCurriculumByUserIdService(userId as string);
 
       if (!userCurriculum)
@@ -57,13 +58,9 @@ export async function GET(req: NextRequest, res: NextResponse) {
 // PUT 요청 핸들러
 export async function PUT(req: NextRequest, res: NextResponse) {
   try {
-    const { searchParams } = req.nextUrl;
+    const dto: UpdateUserCurriculumDto = await req.json();
 
-    const id = searchParams.get("id");
-
-    const dto: CreateUserCurriculumDto = await req.json();
-
-    await updateUserCurriculumService(id as string, dto);
+    await updateUserCurriculumService(dto);
     return new NextResponse("UserCurriculum updated successfully", {
       status: 200,
     });
@@ -80,11 +77,9 @@ export async function DELETE(req: NextRequest, res: NextResponse) {
     const { searchParams } = req.nextUrl;
 
     const id = searchParams.get("id");
-    const deletedUserCurriculum = await deleteUserCurriculumService(
-      id as string,
-    );
-    if (!deletedUserCurriculum)
-      return new Response("UserCurriculum not found", { status: 404 });
+
+    await deleteUserCurriculumService(id as string);
+
     return new NextResponse("UserCurriculum deleted successfully", {
       status: 200,
     });

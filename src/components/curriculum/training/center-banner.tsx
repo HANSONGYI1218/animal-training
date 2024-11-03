@@ -13,7 +13,7 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import React from "react";
-import { GetTrainingCenterDetailDto } from "@/dtos/training-center.dtos";
+import { GetTrainingCenterDetailDto } from "@/dtos/training.center.dto";
 
 interface CenterDetailProps {
   center: GetTrainingCenterDetailDto | undefined;

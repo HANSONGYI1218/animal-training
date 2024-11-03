@@ -14,11 +14,11 @@ import {
   SortType,
 } from "@/constants/constants.all";
 import LecturePromotion from "./lecture-promotion";
-import { GetLectureDto } from "@/dtos/lecture.dtos";
-import { GetTutorDto } from "@/dtos/tutor.dtos";
+import { GetLectureWithTutorDto } from "@/dtos/lecture.dto";
+import { GetTutorDto } from "@/dtos/tutor.dto";
 
 interface LectureContainerProps {
-  lectures: GetLectureDto[];
+  lectures: GetLectureWithTutorDto[];
   isPromotion?: boolean;
   tutors?: GetTutorDto[];
 }
@@ -35,24 +35,26 @@ export default function LectureContainer({
   const [search, setSearch] = useState("");
 
   useEffect(() => {
-    const filteredLectures = lectures.filter((lecture: GetLectureDto) => {
-      const matchesPrice =
-        !priceState ||
-        priceState === "전체" ||
-        lecture.price_type === getPriceTypeByValue(priceState);
+    const filteredLectures = lectures.filter(
+      (lecture: GetLectureWithTutorDto) => {
+        const matchesPrice =
+          !priceState ||
+          priceState === "전체" ||
+          lecture.price_type === getPriceTypeByValue(priceState);
 
-      const matchesType =
-        !animalType ||
-        animalType === "전체" ||
-        lecture.animal_type === getAnimalTypeByValue(animalType);
+        const matchesType =
+          !animalType ||
+          animalType === "전체" ||
+          lecture.animal_type === getAnimalTypeByValue(animalType);
 
-      const matchesSearch =
-        search.length === 0 ||
-        lecture.content.includes(search) ||
-        lecture.title.includes(search);
+        const matchesSearch =
+          search.length === 0 ||
+          lecture.content.includes(search) ||
+          lecture.title.includes(search);
 
-      return matchesPrice && matchesSearch && matchesType;
-    });
+        return matchesPrice && matchesSearch && matchesType;
+      },
+    );
 
     const sortedLectures = filteredLectures.sort((a, b) => {
       if (sort === "오래된순") {
@@ -114,15 +116,17 @@ export default function LectureContainer({
       <div className="container mx-auto grid w-full grid-cols-4 gap-6 px-5">
         {lecturesData
           .slice(0, 20)
-          .map((lecture: GetLectureDto, index: number) => {
+          .map((lecture: GetLectureWithTutorDto, index: number) => {
             return <LectureCard key={index} lecture={lecture} />;
           })}
       </div>
       {isPromotion && tutors && <LecturePromotion tutors={tutors} />}
       <div className="container mx-auto grid w-full grid-cols-4 gap-6 px-5">
-        {lecturesData.slice(20).map((lecture: GetLectureDto, index: number) => {
-          return <LectureCard key={index} lecture={lecture} />;
-        })}
+        {lecturesData
+          .slice(20)
+          .map((lecture: GetLectureWithTutorDto, index: number) => {
+            return <LectureCard key={index} lecture={lecture} />;
+          })}
       </div>
     </section>
   );

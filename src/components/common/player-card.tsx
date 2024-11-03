@@ -18,7 +18,9 @@ export default function PlayableCard({
   const [isWindow, setIsWindow] = useState<boolean>(false);
 
   useEffect(() => {
-    setIsWindow(true);
+    if (typeof window !== "undefined") {
+      setIsWindow(true);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

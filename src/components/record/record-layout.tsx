@@ -3,7 +3,7 @@ import Image from "next/image";
 import { calculateAge } from "@/utils/utils";
 import { genderTypeSwap } from "@/constants/constants.all";
 import { Mail, MapPin, PersonStanding, Phone } from "lucide-react";
-import { GetUserAdoptionRecordDto } from "@/dtos/user.dtos";
+import { GetUserAdoptionRecordDto } from "@/dtos/user.dto";
 
 export default function RecordLayout({
   user,

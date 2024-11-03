@@ -8,8 +8,8 @@ import { ChevronDown } from "lucide-react";
 import RecordStep from "./record-step";
 import RecordContent from "./record-content";
 import { format } from "date-fns";
-import { GetUserAdoptionRecordDto } from "@/dtos/user.dtos";
-import { GetAdoptionWithAnimalDto } from "@/dtos/adoption.dtos";
+import { GetUserAdoptionRecordDto } from "@/dtos/user.dto";
+import { GetAdoptionWithAnimalDto } from "@/dtos/adoption.dto";
 
 export default function RecordContainer() {
   const [searchUser, setSearchUser] = useState<GetUserAdoptionRecordDto | null>(

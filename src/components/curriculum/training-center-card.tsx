@@ -8,7 +8,7 @@ import {
 import Image from "next/image";
 import { Button } from "../ui/button";
 import Link from "next/link";
-import { GetTrainingCenterDetailDto } from "@/dtos/training-center.dtos";
+import { GetTrainingCenterDetailDto } from "@/dtos/training.center.dto";
 
 export default function TrainingCenterCard({
   trainingCenter,

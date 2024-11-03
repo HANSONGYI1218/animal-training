@@ -1,7 +1,7 @@
 import TutorBanner from "@/components/tutor/tutor-banner";
 import TutorCategory from "@/components/tutor/tutor-category";
-import { GetTutorDto } from "@/dtos/tutor.dtos";
-import { GetLectureDto } from "@/dtos/lecture.dtos";
+import { GetTutorDto } from "@/dtos/tutor.dto";
+import { GetLectureWithTutorDto } from "@/dtos/lecture.dto";
 
 export default async function TutorDetailPage({
   params,
@@ -33,7 +33,8 @@ export default async function TutorDetailPage({
     return null;
   }
 
-  const tutorLectures: GetLectureDto[] = await responseTutorLectures.json();
+  const tutorLectures: GetLectureWithTutorDto[] =
+    await responseTutorLectures.json();
 
   return (
     <main className="mb-24 flex w-full flex-col gap-12">

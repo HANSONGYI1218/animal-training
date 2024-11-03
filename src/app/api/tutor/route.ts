@@ -1,13 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import { CreateTutorDto, GetTutorDto } from "@/dtos/tutor.dtos";
+import { CreateTutorDto, GetTutorDto } from "@/dtos/tutor.dto";
 import {
   createTutorService,
   getTutorByIdService,
   updateTutorService,
   deleteTutorService,
   getAllTutorsService,
-} from "@/services/tutor.services";
+} from "@/services/tutor.service";
 
 // POST 요청 핸들러
 export async function POST(req: NextRequest, res: NextResponse) {
@@ -47,13 +47,9 @@ export async function GET(req: NextRequest, res: NextResponse) {
 // PUT 요청 핸들러
 export async function PUT(req: NextRequest, res: NextResponse) {
   try {
-    const { searchParams } = req.nextUrl;
-
-    const id = searchParams.get("id");
-
     const dto: CreateTutorDto = await req.json();
 
-    await updateTutorService(id as string, dto);
+    await updateTutorService(dto);
     return new NextResponse("Tutor updated successfully", { status: 200 });
   } catch (error) {
     return new NextResponse("Failed to update Tutor", { status: 500 });
@@ -64,10 +60,10 @@ export async function PUT(req: NextRequest, res: NextResponse) {
 export async function DELETE(req: NextRequest, res: NextResponse) {
   try {
     const { searchParams } = req.nextUrl;
-
     const id = searchParams.get("id");
-    const deletedTutor = await deleteTutorService(id as string);
-    if (!deletedTutor) return new Response("Tutor not found", { status: 404 });
+
+    await deleteTutorService(id as string);
+
     return new NextResponse("Tutor deleted successfully", { status: 200 });
   } catch (error) {
     return new NextResponse("Failed to delete Tutor", { status: 500 });

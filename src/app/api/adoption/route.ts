@@ -1,13 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import { CreateAdoptionDto, GetAdoptionDto } from "@/dtos/adoption.dtos";
+import { CreateAdoptionDto, GetAdoptionDto } from "@/dtos/adoption.dto";
 import {
   createAdoptionService,
   deleteAdoptionService,
   getAdoptionByIdService,
   getAdoptionByUserIdService,
   updateAdoptionService,
-} from "@/services/adoption.services";
+} from "@/services/adoption.service";
 
 // POST 요청 핸들러
 export async function POST(req: NextRequest, res: NextResponse) {

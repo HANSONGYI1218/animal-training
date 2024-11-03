@@ -3,12 +3,12 @@ import { NextRequest, NextResponse } from "next/server";
 import {
   CreateTutorBookmarkDto,
   GetTutorBookmarkDto,
-} from "@/dtos/tutor-bookmark.dtos";
+} from "@/dtos/tutor.bookmark.dto";
 import {
   createTutorBookmarkService,
   deleteTutorBookmarkService,
   getTutorBookmarkByIdService,
-} from "@/services/tutor-bookmark.services";
+} from "@/services/tutor.bookmark.service";
 
 // POST 요청 핸들러
 export async function POST(req: NextRequest, res: NextResponse) {

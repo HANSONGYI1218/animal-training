@@ -17,15 +17,15 @@ import {
 } from "@/components/ui/accordion";
 import { Menu } from "lucide-react";
 import VideoList from "./video-list";
-import { GetUserCurriculumDto } from "@/dtos/user-curriculum.dtos";
-import { GetCurriculumLectureDto } from "@/dtos/curriculum-lecture.dtos";
+import { UserCurriculumDto } from "@/dtos/user.curriculum.dto";
+import { CurriculumLectureDto } from "@/dtos/curriculum.lecture.dto";
 
 export default function VideoSheet({
   lectures,
   userCurriculum,
 }: {
-  lectures: GetCurriculumLectureDto[];
-  userCurriculum: GetUserCurriculumDto;
+  lectures: CurriculumLectureDto[];
+  userCurriculum: UserCurriculumDto;
 }) {
   return (
     <Sheet>

@@ -11,8 +11,8 @@ import { Button } from "@/components/ui/button";
 import { GanttChart } from "lucide-react";
 import CurriculumLecturePromotion from "@/components/curriculum/learning/lecture-promotion";
 import LectureSection from "@/components/curriculum/learning/lecture-section";
-import { GetCurriculumLectureDto } from "@/dtos/curriculum-lecture.dtos";
-import { GetUserCurriculumDto } from "@/dtos/user-curriculum.dtos";
+import { CurriculumLectureDto } from "@/dtos/curriculum.lecture.dto";
+import { UserCurriculumDto } from "@/dtos/user.curriculum.dto";
 
 export default async function CurriculumDetailPage({
   params,
@@ -31,7 +31,7 @@ export default async function CurriculumDetailPage({
   if (!responseCurriculums.ok) {
     return null;
   }
-  const curriculumLectures: GetCurriculumLectureDto[] =
+  const curriculumLectures: CurriculumLectureDto[] =
     await responseCurriculums.json();
 
   const responseUserCurriculum = await fetch(
@@ -45,12 +45,11 @@ export default async function CurriculumDetailPage({
     return null;
   }
 
-  const userCurriculum: GetUserCurriculumDto =
-    await responseUserCurriculum.json();
+  const userCurriculum: UserCurriculumDto = await responseUserCurriculum.json();
 
   return (
     <main className="mb-24 flex w-full flex-col">
-      <CurriculumBanner userCurriculum={userCurriculum} />
+      <CurriculumBanner curriculumStep={userCurriculum?.curriculumStep} />
       <section className="container mx-auto mt-12 flex max-w-[1150px] flex-col gap-6">
         <Link href={"/curriculum"}>
           <Button variant={"link"} className="flex gap-1 p-0 text-sm">
@@ -76,7 +75,7 @@ export default async function CurriculumDetailPage({
                 <div className="mx-4 flex flex-1 flex-col">
                   {curriculumLectures
                     .slice(0, 1)
-                    .map((lecture: GetCurriculumLectureDto) => {
+                    .map((lecture: CurriculumLectureDto) => {
                       return (
                         <LectureSection key={lecture?.id} lecture={lecture} />
                       );
@@ -93,7 +92,7 @@ export default async function CurriculumDetailPage({
                 <div className="mx-4 flex flex-1 flex-col">
                   {curriculumLectures
                     .slice(1, 3)
-                    .map((lecture: GetCurriculumLectureDto) => {
+                    .map((lecture: CurriculumLectureDto) => {
                       return (
                         <LectureSection key={lecture?.id} lecture={lecture} />
                       );
@@ -110,7 +109,7 @@ export default async function CurriculumDetailPage({
                 <div className="mx-4 flex flex-1 flex-col">
                   {curriculumLectures
                     .slice(3)
-                    .map((lecture: GetCurriculumLectureDto) => {
+                    .map((lecture: CurriculumLectureDto) => {
                       return (
                         <LectureSection key={lecture?.id} lecture={lecture} />
                       );

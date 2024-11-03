@@ -10,9 +10,9 @@ import { MessageCircleMore, ThumbsUp } from "lucide-react";
 import { format } from "date-fns";
 import { Badge } from "@/components/ui/badge";
 import CenterPromotion from "./center-promotion";
-import { GetTrainingCenterDetailDto } from "@/dtos/training-center.dtos";
+import { GetTrainingCenterDetailDto } from "@/dtos/training.center.dto";
 import { Review } from "@prisma/client";
-import { GetCurriculumTrainingDto } from "@/dtos/curriculum-training.dtos";
+import { GetCurriculumTrainingDto } from "@/dtos/curriculum.training.dto";
 
 interface CenterDetailProp {
   center: GetTrainingCenterDetailDto | undefined;

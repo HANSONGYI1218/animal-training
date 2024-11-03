@@ -4,7 +4,6 @@
   "plugins": ["@typescript-eslint", "react", "prettier"],
   "env": {
     "browser": true,
-    "es6": true,
     "node": true
   },
   "extends": [
@@ -30,16 +29,6 @@
     "react/no-unescaped-entities": 0,
     "react/jsx-filename-extension": [1, { "extensions": [".ts", ".tsx"] }]
   },
-  "overrides": [
-    // Only uses Testing Library lint rules in test files
-    {
-      "files": [
-        "**/__tests__/**/*.[jt]s?(x)",
-        "**/?(*.)+(spec|test).[jt]s?(x)"
-      ],
-      "extends": ["plugin:testing-library/react"]
-    }
-  ],
   "settings": {
     "import/resolver": {
       "node": {

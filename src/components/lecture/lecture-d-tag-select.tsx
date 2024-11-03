@@ -4,10 +4,12 @@ import TouchScroll from "@/components/common/touch-scroll";
 import LectureCard from "./lecture-card";
 import { Badge } from "../ui/badge";
 import { useEffect, useState } from "react";
-import { GetLectureDto } from "@/dtos/lecture.dtos";
+import { GetLectureWithTutorDto } from "@/dtos/lecture.dto";
 
 export default function LectureTagSelect({ tags }: { tags: string[] }) {
-  const [filterLectures, setFilterLectures] = useState<GetLectureDto[]>([]);
+  const [filterLectures, setFilterLectures] = useState<
+    GetLectureWithTutorDto[]
+  >([]);
   const [selectTag, setSelectTag] = useState<string>(tags[0]);
 
   useEffect(() => {
@@ -22,7 +24,7 @@ export default function LectureTagSelect({ tags }: { tags: string[] }) {
       if (!responseLectures.ok) {
         return null;
       }
-      const lectures: GetLectureDto[] = await responseLectures.json();
+      const lectures: GetLectureWithTutorDto[] = await responseLectures.json();
 
       setFilterLectures(lectures);
     };
@@ -49,14 +51,16 @@ export default function LectureTagSelect({ tags }: { tags: string[] }) {
         })}
       </div>
       <TouchScroll isStepbar>
-        {filterLectures.map((tagLecture: GetLectureDto, index: number) => (
-          <div
-            key={index}
-            className={`flex h-[371px] min-w-[269px] max-w-[269px]`}
-          >
-            <LectureCard lecture={tagLecture} />
-          </div>
-        ))}
+        {filterLectures.map(
+          (tagLecture: GetLectureWithTutorDto, index: number) => (
+            <div
+              key={index}
+              className={`flex h-[371px] min-w-[269px] max-w-[269px]`}
+            >
+              <LectureCard lecture={tagLecture} />
+            </div>
+          ),
+        )}
       </TouchScroll>
     </div>
   );

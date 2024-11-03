@@ -1,5 +1,5 @@
 import LectureContainer from "@/components/lecture/lecture-container";
-import { GetLectureDto } from "@/dtos/lecture.dtos";
+import { GetLectureWithTutorDto } from "@/dtos/lecture.dto";
 
 type SearchParams = {
   category: string;
@@ -36,13 +36,15 @@ export default async function LecturePage({
 
   const getLectures = await responseLectures.json();
 
-  const filteredLectures = getLectures.filter((lecture: GetLectureDto) => {
-    if (category === "all") {
-      return true;
-    } else {
-      return lecture.category.toUpperCase() === category?.toUpperCase();
-    }
-  });
+  const filteredLectures = getLectures.filter(
+    (lecture: GetLectureWithTutorDto) => {
+      if (category === "all") {
+        return true;
+      } else {
+        return lecture.category.toUpperCase() === category?.toUpperCase();
+      }
+    },
+  );
 
   const getTutors = await responseTutors.json();
 

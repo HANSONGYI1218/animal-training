@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import SelectBox from "../common/select-box";
 import SearchBox from "../common/search-box";
 import TrainingCenterCard from "./training-center-card";
-import { GetTrainingCenterDetailDto } from "@/dtos/training-center.dtos";
+import { GetTrainingCenterDetailDto } from "@/dtos/training.center.dto";
 
 export default function TrainingFiltering() {
   const [centers, setCenters] = useState<GetTrainingCenterDetailDto[]>([]);

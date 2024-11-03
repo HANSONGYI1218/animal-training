@@ -1,7 +1,7 @@
 import CurriculumBanner from "@/components/curriculum/curriculum-banner";
 import CurriculumContainer from "@/components/curriculum/curriculum-contrainer";
-import { GetCurriculumLectureDto } from "@/dtos/curriculum-lecture.dtos";
-import { GetUserCurriculumDto } from "@/dtos/user-curriculum.dtos";
+import { CurriculumLectureDto } from "@/dtos/curriculum.lecture.dto";
+import { UserCurriculumDto } from "@/dtos/user.curriculum.dto";
 
 export default async function CurriculumPage() {
   const responseCurriculums = await fetch(
@@ -14,7 +14,7 @@ export default async function CurriculumPage() {
   if (!responseCurriculums.ok) {
     return null;
   }
-  const curriculumLectures: GetCurriculumLectureDto[] =
+  const curriculumLectures: CurriculumLectureDto[] =
     await responseCurriculums.json();
 
   const responseUserCurriculum = await fetch(
@@ -28,8 +28,7 @@ export default async function CurriculumPage() {
     return null;
   }
 
-  const userCurriculum: GetUserCurriculumDto =
-    await responseUserCurriculum.json();
+  const userCurriculum: UserCurriculumDto = await responseUserCurriculum.json();
 
   return (
     <main className="mb-24 flex w-full flex-col gap-12">

@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Progress } from "../ui/progress";
 import React from "react";
 import { CurriculumCategory } from "@prisma/client";
-import { GetCurriculumLectureDto } from "@/dtos/curriculum-lecture.dtos";
+import { CurriculumLectureDto } from "@/dtos/curriculum.lecture.dto";
 import { lectureCategorySwap } from "@/constants/constants.all";
 import { userCurriculumProps } from "./curriculum-contrainer";
 
@@ -20,7 +20,7 @@ export default function CurriculumLectureCard({
   userCurriculum,
   index,
 }: {
-  curriculumLectures: GetCurriculumLectureDto[];
+  curriculumLectures: CurriculumLectureDto[];
   userCurriculum: userCurriculumProps;
   index: number;
 }) {
@@ -32,16 +32,16 @@ export default function CurriculumLectureCard({
       Object.values(CurriculumCategory).indexOf(
         userCurriculum?.curriculumCategory,
       ) ===
-      Object.values(CurriculumCategory).indexOf(curriculumLectures[0].category)
+      Object.values(CurriculumCategory).indexOf(curriculumLectures[0]?.category)
     ) {
       return setProgress(
-        (userCurriculum?.curriculumIndex / curriculumLectures.length) * 100,
+        (userCurriculum?.curriculumIndex / curriculumLectures?.length) * 100,
       );
     } else if (
       Object.values(CurriculumCategory).indexOf(
         userCurriculum?.curriculumCategory,
       ) <
-      Object.values(CurriculumCategory).indexOf(curriculumLectures[0].category)
+      Object.values(CurriculumCategory).indexOf(curriculumLectures[0]?.category)
     ) {
       setProgress(0);
     } else {
@@ -83,7 +83,7 @@ export default function CurriculumLectureCard({
             <Dot />
             <span className="font-semibold">
               {curriculumLectures[0] &&
-                lectureCategorySwap[curriculumLectures[0].category]}
+                lectureCategorySwap[curriculumLectures[0]?.category]}
             </span>
           </div>
           <div className="group relative flex h-8 w-20">
@@ -105,7 +105,7 @@ export default function CurriculumLectureCard({
         </div>
         <div className="flex items-center gap-6">
           <span className="text-neutral-600">강의 수</span>
-          <span className="font-semibold">{curriculumLectures.length}개</span>
+          <span className="font-semibold">{curriculumLectures?.length}개</span>
         </div>
         <div className="flex gap-6">
           <span className="text-neutral-600">책갈피</span>

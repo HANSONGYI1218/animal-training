@@ -1,11 +1,11 @@
-import { GetCurriculumLectureDto } from "@/dtos/curriculum-lecture.dtos";
+import { CurriculumLectureDto } from "@/dtos/curriculum.lecture.dto";
 import { CirclePlay } from "lucide-react";
 import Link from "next/link";
 
 export default function LectureSection({
   lecture,
 }: {
-  lecture: GetCurriculumLectureDto;
+  lecture: CurriculumLectureDto;
 }) {
   return (
     <div
