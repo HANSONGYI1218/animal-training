@@ -1,8 +1,8 @@
 import {
   AnimalType,
-  AttendanceStatus,
   CurriculumCategory,
   CurriculumStep,
+  Prisma,
 } from "@prisma/client";
 
 interface UserCurriculumEntityProps {
@@ -11,13 +11,7 @@ interface UserCurriculumEntityProps {
   curriculumStep: CurriculumStep;
   curriculumCategory: CurriculumCategory;
   curriculumIndex: number;
-  attendances: {
-    training_date: Date;
-    start_time: string | null;
-    end_time: string | null;
-    absent_reason: string | null;
-    attendance_status: AttendanceStatus;
-  }[];
+  attendances: Prisma.JsonValue[];
   userId: string;
   updatedAt?: Date;
 }
@@ -28,13 +22,7 @@ export class UserCurriculumEntity {
   private curriculumStep: CurriculumStep;
   private curriculumCategory: CurriculumCategory;
   private curriculumIndex: number;
-  private attendances: {
-    training_date: Date;
-    start_time: string | null;
-    end_time: string | null;
-    absent_reason: string | null;
-    attendance_status: AttendanceStatus;
-  }[];
+  private attendances: Prisma.JsonValue[];
   private userId: string;
   private createdAt: Date;
   private updatedAt: Date;

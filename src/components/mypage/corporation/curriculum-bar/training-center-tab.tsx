@@ -3,12 +3,12 @@
 import { CorporationDetailDto } from "@/dtos/corporation.dto";
 import { GetTrainingCenterDetailDto } from "@/dtos/training.center.dto";
 import TrainingCenterCard from "./training-center-card";
+import { useContext } from "react";
+import { CorporationContext } from "../corporation-provider";
 
-export default function TrainingCenterTab({
-  corporation,
-}: {
-  corporation: CorporationDetailDto;
-}) {
+export default function TrainingCenterTab() {
+  const corporation = useContext(CorporationContext);
+
   const trainingCenters: GetTrainingCenterDetailDto[] =
     corporation?.trainingCenter ?? [];
 

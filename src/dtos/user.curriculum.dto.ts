@@ -1,8 +1,8 @@
 import {
   AnimalType,
-  AttendanceStatus,
   CurriculumStep,
   CurriculumCategory,
+  Prisma,
 } from "@prisma/client";
 
 export type CreateUserCurriculumDto = {
@@ -10,13 +10,7 @@ export type CreateUserCurriculumDto = {
   curriculumStep: CurriculumStep;
   curriculumCategory: CurriculumCategory;
   curriculumIndex: number;
-  attendances: {
-    training_date: Date;
-    start_time: string | null;
-    end_time: string | null;
-    absent_reason: string | null;
-    attendance_status: AttendanceStatus;
-  }[];
+  attendances: Prisma.JsonValue[];
   userId: string;
 };
 
@@ -26,13 +20,7 @@ export type UpdateUserCurriculumDto = {
   curriculumStep?: CurriculumStep;
   curriculumCategory?: CurriculumCategory;
   curriculumIndex?: number;
-  attendances: {
-    training_date: Date;
-    start_time: string | null;
-    end_time: string | null;
-    absent_reason: string | null;
-    attendance_status: AttendanceStatus;
-  }[];
+  attendances: Prisma.JsonValue[];
   userId?: string;
 };
 
@@ -42,13 +30,7 @@ export type UserCurriculumDto = {
   curriculumStep: CurriculumStep;
   curriculumCategory: CurriculumCategory;
   curriculumIndex: number;
-  attendances: {
-    training_date: Date;
-    start_time: string | null;
-    end_time: string | null;
-    absent_reason: string | null;
-    attendance_status: AttendanceStatus;
-  }[];
+  attendances: Prisma.JsonValue[];
   userId: string;
   createdAt: Date;
   updatedAt: Date;
