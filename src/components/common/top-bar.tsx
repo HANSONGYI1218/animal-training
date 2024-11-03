@@ -84,7 +84,7 @@ export default function TopBar() {
                 입양기록
               </Button>
             </a>
-            <a href="/mypage/profile">
+            <a href="/mypage/corporation/profile">
               <Button
                 onClick={() => {
                   setPage("mypage");

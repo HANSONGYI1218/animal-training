@@ -40,7 +40,6 @@ export default function TutorCategory({
           전체
         </Badge>
         {Object.values(Category).map((value, index: number) => {
-          console.log("value, ", value);
           return (
             <Badge
               onClick={() => {

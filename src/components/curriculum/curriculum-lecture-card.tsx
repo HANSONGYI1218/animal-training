@@ -120,7 +120,7 @@ export default function CurriculumLectureCard({
         <div className="flex items-center gap-6">
           <span className="text-neutral-600">진도율</span>
           <Progress
-            value={progress}
+            value={Math.ceil(progress)}
             className={`w-[60%] ${
               progressColor === "[&>*]:bg-red-500"
                 ? "[&>*]:bg-red-500"
@@ -130,7 +130,7 @@ export default function CurriculumLectureCard({
             } `}
           />
           <span className="text-lg font-semibold text-neutral-700">
-            {progress}%
+            {Math.ceil(progress)}%
           </span>
         </div>
       </div>

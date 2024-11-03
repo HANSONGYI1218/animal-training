@@ -26,15 +26,13 @@ export default function TrainingCenterCard({
             stroke="#ffffff"
           />
         </span>
-        <div className="mt-2 flex gap-3">
+        <div className="mt-2 flex w-full gap-3">
           <span>{trainingCenter?.tutor?.name}</span>
           <span>{trainingCenter?.tutor?.career}</span>
         </div>
-        <div className="mt-8 flex flex-col gap-3">
+        <div className="mt-8 flex w-full flex-col gap-3">
           <div className="flex gap-3">
-            <span className="w-20 text-neutral-500">
-              {trainingCenter?.tutor?.introduction}
-            </span>
+            <span className="w-20 text-neutral-500">소개</span>
             <span className="whitespace-pre-line">
               {trainingCenter?.introduction}
             </span>
