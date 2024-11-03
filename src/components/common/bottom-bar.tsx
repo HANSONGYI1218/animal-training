@@ -40,34 +40,6 @@ export default function BottomBar() {
               <p className="mx-2">|</p>
               <p>환불규정</p>
             </div>
-            <div className="flex flex-row gap-4">
-              <Link
-                href="https://www.instagram.com/sniperfactory_official/"
-                target="_blank"
-                className="sns-link"
-              >
-                <Image
-                  src="/instagram.svg"
-                  width={30}
-                  height={30}
-                  alt="instagram"
-                  className="sns-icon"
-                />
-              </Link>
-              <Link
-                href="https://www.youtube.com/@user-tl4ho6fw4u"
-                target="_blank"
-                className="sns-link"
-              >
-                <Image
-                  src="/youtube.svg"
-                  width={30}
-                  height={30}
-                  alt="youtube"
-                  className="sns-icon"
-                />
-              </Link>
-            </div>
           </div>
         </section>
       </footer>
@@ -95,34 +67,6 @@ export default function BottomBar() {
                 </Link>
                 <p className="mx-2">|</p>
                 <p className="underline">환불규정</p>
-              </div>
-              <div className="flex flex-row gap-4">
-                <Link
-                  href="https://www.instagram.com/sniperfactory_official/"
-                  target="_blank"
-                  className="sns-link"
-                >
-                  <Image
-                    src="/instagram.svg"
-                    width={30}
-                    height={30}
-                    alt="instagram"
-                    className="sns-icon"
-                  />
-                </Link>
-                <Link
-                  href="https://www.youtube.com/@user-tl4ho6fw4u"
-                  target="_blank"
-                  className="sns-link"
-                >
-                  <Image
-                    src="/youtube.svg"
-                    width={30}
-                    height={30}
-                    alt="youtube"
-                    className="sns-icon"
-                  />
-                </Link>
               </div>
             </div>
           </section>
