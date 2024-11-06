@@ -1,3 +1,5 @@
+import { GetTrainingCenterDetailDto } from "@/dtos/training.center.dto";
+import { GetTutorDto, GetTutorWithLecture } from "@/dtos/tutor.dto";
 import { CorporationAccessStatus } from "@prisma/client";
 
 interface CorporationEntityProps {

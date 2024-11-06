@@ -1,7 +1,7 @@
 "use client";
 
-import { Badge } from "../../../ui/badge";
-import { Button } from "../../../ui/button";
+import { Badge } from "../../../../ui/badge";
+import { Button } from "../../../../ui/button";
 import { Pencil, SquareUser, ThumbsUp, Triangle } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";

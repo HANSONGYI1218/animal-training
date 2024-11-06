@@ -85,24 +85,24 @@ model Corporation {
   adopterAdoptions  Adoption[]                @relation("AdopterCorporationAdoptions") //[임시]기업은 입양 못함
   breederAdoptions  Adoption[]                @relation("BreederCorporationAdoptions")
   animals           Animal[]
-  trainingCenter    TrainingCenter[]
+  trainingCenters   TrainingCenter[]
 }
 
 model Tutor {
-  id                 String          @id @default(uuid())
-  name               String          @db.VarChar(255)
-  introduction       String          @db.Text
-  career             String          @db.VarChar(255)
-  profile_img        String          @db.VarChar(255)
-  occupation         OccupationType  @default(TRAINER)
-  createdAt          DateTime        @default(now())
-  updatedAt          DateTime        @updatedAt
-  corporationId      String 
-  corporation        Corporation?    @relation(fields: [corporationId], references: [id])
-  trainingCenter     TrainingCenter?
-  lectures           Lecture[]
-  curriculumLectures CurriculumLecture[]
-  bookmarks          TutorBookmark[]
+  id                   String          @id @default(uuid())
+  name                 String          @db.VarChar(255)
+  introduction         String          @db.Text
+  career               String          @db.VarChar(255)
+  profile_img          String          @db.VarChar(255)
+  occupation           OccupationType  @default(TRAINER)
+  createdAt            DateTime        @default(now())
+  updatedAt            DateTime        @updatedAt
+  corporationId        String
+  corporation          Corporation?    @relation(fields: [corporationId], references: [id])
+  lectures             Lecture[]
+  curriculumLectures   CurriculumLecture[]
+  bookmarks            TutorBookmark[]
+  tutorTrainingCenters TutorTrainingCenter[]
 
   @@index([corporationId])
 }
@@ -222,20 +222,32 @@ model TrainingCenter {
   profile            String          @db.VarChar(255)
   additionalImgs     String[]       
   address            String          @db.VarChar(255)
-  holidays           String[]
-  price              Int             @default(0)
-  like               Int             @default(0)
   refundPolicys      String[]
   createdAt          DateTime        @default(now())
   updatedAt          DateTime        @updatedAt
-  tutorId            String?         @unique
   corporationId      String          
   corporation        Corporation?    @relation(fields: [corporationId], references: [id])
-  tutor              Tutor?          @relation(fields: [tutorId], references: [id])          
-  reviews            Review[]
+  tutorTrainingCenters TutorTrainingCenter[]
 
   @@index([corporationId])
+}
+
+model TutorTrainingCenter {
+  tutorId            String
+  trainingCenterId   String
+  price              String?         @db.VarChar(255)
+  holidays           String[]
+  like               Int             @default(0)
+  reviews            Review[]
+  createdAt          DateTime        @default(now())
+  updatedAt          DateTime        @updatedAt
+
+  tutor              Tutor           @relation(fields: [tutorId], references: [id])
+  trainingCenter     TrainingCenter  @relation(fields: [trainingCenterId], references: [id])
+
+  @@id([tutorId, trainingCenterId]) // 복합 기본 키
   @@index([tutorId])
+  @@index([trainingCenterId])
 }
 
 model CurriculumTraining {
@@ -253,17 +265,19 @@ model CurriculumTraining {
 model Review {
   id                 String          @id  @default(uuid())
   parentId           String?
+  userName           String          @db.VarChar(255)
   rating             RatingStatus
   content            String          @db.VarChar(255)
   createdAt          DateTime        @default(now())
   updatedAt          DateTime        @updatedAt
-  userId             String  
-  trainingCenterId   String?
+  userId             String
+  tutorId            String  
+  trainingCenterId   String
   user               User?           @relation(fields: [userId], references: [id])
-  trainingCenter     TrainingCenter? @relation(fields: [trainingCenterId], references: [id])
+  tutorTrainingCenter   TutorTrainingCenter @relation(fields: [tutorId, trainingCenterId], references: [tutorId, trainingCenterId])
 
   @@index([userId])
-  @@index([trainingCenterId])
+  @@index([tutorId, trainingCenterId]) // 복합 인덱스 설정
 }
 
 model Notice{

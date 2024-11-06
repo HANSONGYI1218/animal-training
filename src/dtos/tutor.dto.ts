@@ -1,8 +1,13 @@
 import { OccupationType } from "@/types/tyeps.all";
-import { Lecture, TutorBookmark } from "@prisma/client";
+import {
+  Lecture,
+  Review,
+  TutorBookmark,
+  TutorTrainingCenter,
+} from "@prisma/client";
 
 export type TutorDto = {
-  id: string;
+  id?: string;
   name: string;
   introduction: string;
   career: string;
@@ -34,10 +39,19 @@ export type GetTutorDto = {
     id: string;
     corporation_name: string;
   };
-  trainingCenter: {
-    id: string;
-    name: string;
-    address: string;
+  tutorTrainingCenter: {
+    tutorId: string;
+    trainingCenterId: string;
+    price: string;
+    holidays: string[];
+    like: number;
+    reviews: Review[];
+    createdAt: Date;
+    updatedAt: Date;
+    trainingCenter: {
+      name: string;
+      address: string;
+    };
   };
   bookmarks: TutorBookmark[];
   createdAt: Date;
@@ -61,6 +75,7 @@ export type UpdateTutorDto = {
   profile_img?: string;
   occupation?: OccupationType;
   corporationId?: string;
+  price?: string;
 };
 
 export type GetTutorWithLecture = {
@@ -76,6 +91,17 @@ export type GetTutorWithLecture = {
   updatedAt: Date;
 };
 
-export function toJSON(user: any) {
-  return JSON.parse(JSON.stringify(user));
+export function toJSON(tutor: any) {
+  return JSON.parse(JSON.stringify(tutor));
+}
+
+export function toGetDtoJSON(tutor: any) {
+  return {
+    ...tutor,
+    corporation: {
+      id: tutor.id,
+      corporation_name: tutor.id,
+    },
+    tutorTrainingCenter: tutor?.tutorTrainingCenters[0] ?? null,
+  };
 }

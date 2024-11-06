@@ -1,6 +1,9 @@
 import {
   GetTrainingCenterDetailDto,
+  toGetDtoJSON,
+  toJSON,
   TrainingCenterDto,
+  TrainingCenterOnlyOneTutorDto,
 } from "@/dtos/training.center.dto";
 import prisma from "@/utils/db";
 
@@ -24,16 +27,25 @@ export const getAllTrainingCentersRepository = async (): Promise<
   try {
     const trainingCenter = await prisma.trainingCenter.findMany({
       include: {
-        tutor: true,
-        reviews: true,
+        tutorTrainingCenters: {
+          select: {
+            tutor: {
+              select: {
+                id: true,
+                name: true,
+                career: true,
+              },
+            },
+          },
+        },
         corporation: true,
       },
       orderBy: [
-        { like: "desc" }, // isFixed 값이 true인 항목을 우선
+        { createdAt: "desc" }, // isFixed 값이 true인 항목을 우선
       ],
     });
 
-    return trainingCenter as GetTrainingCenterDetailDto[];
+    return toJSON(trainingCenter);
   } catch {
     return [];
   }
@@ -49,8 +61,17 @@ export const getTrainingCenterByIdRepository = async (
         id: id,
       },
       include: {
-        tutor: true,
-        reviews: true,
+        tutorTrainingCenters: {
+          select: {
+            tutor: {
+              select: {
+                id: true,
+                name: true,
+                profile_img: true,
+              },
+            },
+          },
+        },
         corporation: true,
       },
     });
@@ -58,7 +79,51 @@ export const getTrainingCenterByIdRepository = async (
     if (!trainingCenter) {
       return null;
     }
-    return trainingCenter as GetTrainingCenterDetailDto;
+    return toJSON(trainingCenter);
+  } catch {
+    return null;
+  }
+};
+
+// 특정 tutorId의 훈련소 조회
+export const getTrainingCenterByTutorIdRepository = async (
+  trainingCenterId: string,
+  tutorId: string,
+): Promise<TrainingCenterOnlyOneTutorDto | null> => {
+  try {
+    const trainingCenter = await prisma.trainingCenter.findUnique({
+      where: {
+        id: trainingCenterId,
+      },
+      include: {
+        tutorTrainingCenters: {
+          where: {
+            tutorId: tutorId,
+          },
+          select: {
+            price: true,
+            holidays: true,
+            like: true,
+            reviews: true,
+            tutor: {
+              select: {
+                id: true,
+                name: true,
+                career: true,
+                introduction: true,
+              },
+            },
+          },
+          take: 1,
+        },
+        corporation: true,
+      },
+    });
+
+    if (!trainingCenter) {
+      return null;
+    }
+    return toGetDtoJSON(trainingCenter);
   } catch {
     return null;
   }

@@ -2,14 +2,16 @@ import {
   CreateTrainingCenterDto,
   GetTrainingCenterDetailDto,
   toJSON,
+  TrainingCenterOnlyOneTutorDto,
   UpdateTrainingCenterDto,
 } from "@/dtos/training.center.dto";
-import { TrainingCenterEntity } from "@/entities/training-center.entity";
+import { TrainingCenterEntity } from "@/entities/training.center.entity";
 import {
   createTrainingCenterRepository,
   deleteTrainingCenterRepository,
   getAllTrainingCentersRepository,
   getTrainingCenterByIdRepository,
+  getTrainingCenterByTutorIdRepository,
   updateTrainingCenterRepository,
 } from "@/repositories/training.center.repository";
 
@@ -60,6 +62,26 @@ export const getTrainingCenterByIdService = async (
   }
 };
 
+// 특정 tutorID의 강의 조회
+export const getTrainingCenterByTutorIdService = async (
+  trainingCenterId: string,
+  tutorId: string,
+): Promise<TrainingCenterOnlyOneTutorDto | null> => {
+  try {
+    const trainingCenter = await getTrainingCenterByTutorIdRepository(
+      trainingCenterId,
+      tutorId,
+    );
+
+    if (!trainingCenter) {
+      throw new Error("trainingCenter is not found");
+    }
+    return trainingCenter;
+  } catch {
+    return null;
+  }
+};
+
 // 훈련소 업데이트
 export const updateTrainingCenterService = async (
   dto: UpdateTrainingCenterDto,
@@ -78,12 +100,8 @@ export const updateTrainingCenterService = async (
       profile: dto?.profile ?? trainingCenter?.profile,
       additionalImgs: dto?.additionalImgs ?? trainingCenter?.additionalImgs,
       address: dto?.address ?? trainingCenter?.address,
-      holidays: dto?.holidays ?? trainingCenter?.holidays,
-      price: dto?.price ?? trainingCenter?.price,
-      like: dto?.like ?? trainingCenter?.like,
+      corporationId: trainingCenter?.corportaionId,
       refundPolicys: dto?.refundPolicys ?? trainingCenter?.refundPolicys,
-      tutorId: dto?.tutorId ?? trainingCenter?.tutor?.id,
-      corporationId: dto?.corporationId ?? trainingCenter?.corporation?.id,
       updatedAt: new Date(),
     });
 

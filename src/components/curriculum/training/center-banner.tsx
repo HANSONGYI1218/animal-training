@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { SquareUser, ThumbsUp } from "lucide-react";
+import { MessageCircleMore, SquareUser, ThumbsUp } from "lucide-react";
 import Autoplay from "embla-carousel-autoplay";
 import Image from "next/image";
 import {
@@ -13,13 +13,13 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import React from "react";
-import { GetTrainingCenterDetailDto } from "@/dtos/training.center.dto";
+import { TrainingCenterOnlyOneTutorDto } from "@/dtos/training.center.dto";
 
-interface CenterDetailProps {
-  center: GetTrainingCenterDetailDto | undefined;
-}
-
-export default function CenterDetailBanner({ center }: CenterDetailProps) {
+export default function CenterDetailBanner({
+  center,
+}: {
+  center: TrainingCenterOnlyOneTutorDto;
+}) {
   const plugin: any = React.useRef(
     Autoplay({ delay: 4000, stopOnInteraction: false }),
   );
@@ -56,13 +56,22 @@ export default function CenterDetailBanner({ center }: CenterDetailProps) {
             <div className="flex items-center gap-1">
               <SquareUser width={17} height={17} stroke="rgb(82 82 82)" />
               <span className="text-[0.93rem] text-neutral-600">
-                {center?.tutor?.name}
+                {center?.tutorTrainingCenter?.tutor?.name}
               </span>
             </div>
             <div className="flex items-center gap-1">
               <ThumbsUp width={16} height={16} stroke="rgb(82 82 82)" />
               <span className="text-[0.93rem] text-neutral-600">
-                {center?.like}개
+                {center?.tutorTrainingCenter?.like}개
+              </span>
+            </div>
+            <div className="flex items-center gap-1">
+              <MessageCircleMore
+                className="h-4 w-4"
+                stroke="rgb(115 115 115)"
+              />
+              <span className="text-neutral-500">
+                {center?.tutorTrainingCenter?.reviews?.length}개
               </span>
             </div>
           </div>

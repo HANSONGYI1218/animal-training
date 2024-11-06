@@ -11,7 +11,7 @@ import {
   deleteCorporationRepository,
   getCorporationByIdRepository,
   updateCorporationRepository,
-} from "@/repositories/corporation.repositories";
+} from "@/repositories/corporation.repository";
 
 // 기업 생성
 export const createCorporationService = async (

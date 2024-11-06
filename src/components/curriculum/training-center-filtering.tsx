@@ -7,7 +7,7 @@ import TrainingCenterCard from "./training-center-card";
 import { GetTrainingCenterDetailDto } from "@/dtos/training.center.dto";
 
 export default function TrainingFiltering() {
-  const [centers, setCenters] = useState<GetTrainingCenterDetailDto[]>([]);
+  const [centers, setCenters] = useState<any[]>([]);
   const [sort, setSort] = useState("별점좋은순");
   const [search, setSearch] = useState("");
   const [location, setLocation] = useState("");
@@ -37,10 +37,10 @@ export default function TrainingFiltering() {
           return b.createdAt.getTime() - a.createdAt.getTime();
         }
         if (sort === "가격낮은순") {
-          return a.price - b.price;
+          return parseInt(a.price) - parseInt(b.price);
         }
         if (sort === "가격높은순") {
-          return b.price - a.price;
+          return parseInt(b.price) - parseInt(a.price);
         }
         //   if (sort === "가까운순") {
         //     return b.like - a.like;
@@ -67,7 +67,16 @@ export default function TrainingFiltering() {
       const trainingCenters: GetTrainingCenterDetailDto[] =
         await responseTrainingCenters.json();
 
-      setCenters(trainingCenters);
+      const filteringCenters = trainingCenters
+        .filter((center) => center.tutorTrainingCenters.length > 0)
+        .flatMap((center) =>
+          center.tutorTrainingCenters.map((tutorCenter) => ({
+            ...center, // 센터의 정보
+            tutor: tutorCenter.tutor, // 해당 튜터 정보
+          })),
+        );
+
+      setCenters(filteringCenters);
     };
 
     getData();
@@ -103,7 +112,7 @@ export default function TrainingFiltering() {
         />
       </div>
       <div className="flex flex-col">
-        {centers.map((trainingCenter: GetTrainingCenterDetailDto) => {
+        {centers.map((trainingCenter) => {
           return (
             <TrainingCenterCard
               key={trainingCenter.id}
