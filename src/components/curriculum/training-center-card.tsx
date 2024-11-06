@@ -8,12 +8,11 @@ import {
 import Image from "next/image";
 import { Button } from "../ui/button";
 import Link from "next/link";
-import { GetTrainingCenterDetailDto } from "@/dtos/training.center.dto";
 
 export default function TrainingCenterCard({
   trainingCenter,
 }: {
-  trainingCenter: GetTrainingCenterDetailDto;
+  trainingCenter: any;
 }) {
   return (
     <div className="flex gap-3 border-b px-6 py-12">
@@ -43,7 +42,7 @@ export default function TrainingCenterCard({
           </div>
           <div className="flex gap-3">
             <span className="w-20 text-neutral-500">가격</span>
-            <span>{formatPrice(trainingCenter?.price)}원</span>
+            <span>{formatPrice(parseInt(trainingCenter?.price))}원</span>
           </div>
           <div className="mt-6 flex items-center gap-6">
             <div className="flex items-center gap-1">
@@ -65,7 +64,12 @@ export default function TrainingCenterCard({
           alt="profile"
           className="rounded-full"
         />
-        <Link href={`/curriculum/traning/${trainingCenter?.id}`}>
+        <Link
+          href={{
+            pathname: `/curriculum/training/${trainingCenter?.id}`,
+            query: { tutorId: trainingCenter?.tutor?.id },
+          }}
+        >
           <Button variant={"destructive"} className="flex gap-1">
             자세히 보기
             <ChevronRight className="h-4 w-4" strokeWidth={2.5} />

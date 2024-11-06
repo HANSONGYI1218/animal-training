@@ -1,4 +1,4 @@
-import { Corporation, Review, Tutor } from "@prisma/client";
+import { Corporation, Review } from "@prisma/client";
 
 export type TrainingCenterDto = {
   id: string;
@@ -7,11 +7,7 @@ export type TrainingCenterDto = {
   profile: string;
   additionalImgs: string[];
   address: string;
-  holidays: string[];
-  price: number;
-  like: number;
   refundPolicys: string[];
-  tutorId: string;
   corporationId: string;
   createdAt: Date;
   updatedAt: Date;
@@ -23,11 +19,7 @@ export type CreateTrainingCenterDto = {
   profile: string;
   additionalImgs: string[];
   address: string;
-  holidays: string[];
-  price: number;
-  like: number;
   refundPolicys: string[];
-  tutorId: string;
   corporationId: string;
 };
 
@@ -38,12 +30,7 @@ export type UpdateTrainingCenterDto = {
   profile?: string;
   additionalImgs?: string[];
   address?: string;
-  holidays?: string[];
-  price?: number;
-  like?: number;
   refundPolicys?: string[];
-  tutorId?: string;
-  corporationId?: string;
 };
 
 export type GetTrainingCenterDto = {
@@ -53,15 +40,33 @@ export type GetTrainingCenterDto = {
   profile: string;
   additionalImgs: string[];
   address: string;
-  holidays: string[];
-  price: number;
-  like: number;
   refundPolicys: string[];
-  _count: {
-    reviews: number;
-  };
-  tutorId: string;
   corporationId: string;
+  createdAt: Date;
+  updatedAt: Date;
+};
+
+export type TrainingCenterOnlyOneTutorDto = {
+  id: string;
+  name: string;
+  introduction: string;
+  profile: string;
+  additionalImgs: string[];
+  address: string;
+  refundPolicys: string[];
+  tutorTrainingCenter: {
+    price: string;
+    reviews: Review[];
+    holidays: string[];
+    like: number;
+    tutor: {
+      id: string;
+      name: string;
+      career: string;
+      introduction: string;
+    };
+  };
+  corporation: Corporation;
   createdAt: Date;
   updatedAt: Date;
 };
@@ -73,17 +78,43 @@ export type GetTrainingCenterDetailDto = {
   profile: string;
   additionalImgs: string[];
   address: string;
-  holidays: string[];
-  price: number;
-  like: number;
   refundPolicys: string[];
-  reviews: Review[];
-  tutor: Tutor;
+  tutorTrainingCenters: {
+    tutor: {
+      id: string;
+      name: string;
+      career?: string;
+      profile_img?: string;
+    };
+  }[];
+  corportaionId: string;
   corporation: Corporation;
   createdAt: Date;
   updatedAt: Date;
 };
 
-export function toJSON(user: any) {
-  return JSON.parse(JSON.stringify(user));
+export function toJSON(trainingCenter: any) {
+  return JSON.parse(JSON.stringify(trainingCenter));
+}
+
+export function toGetDtoJSON(trainingCenter: any) {
+  return {
+    ...trainingCenter,
+    tutorTrainingCenter:
+      trainingCenter.tutorTrainingCenters.length > 0
+        ? {
+            price: trainingCenter.tutorTrainingCenters[0].price,
+            holidays: trainingCenter.tutorTrainingCenters[0].holidays,
+            like: trainingCenter.tutorTrainingCenters[0].like,
+            reviews: trainingCenter.tutorTrainingCenters[0].reviews,
+            tutor: {
+              id: trainingCenter.tutorTrainingCenters[0].tutor.id,
+              name: trainingCenter.tutorTrainingCenters[0].tutor.name,
+              career: trainingCenter.tutorTrainingCenters[0].tutor.career,
+              introduction:
+                trainingCenter.tutorTrainingCenters[0].tutor.introduction,
+            },
+          }
+        : null,
+  };
 }

@@ -164,13 +164,13 @@ export default function LectureContent({
                       <span className="flex gap-3 text-sm font-semibold text-gray-700">
                         이름
                         <span className="font-medium">
-                          {tutor?.trainingCenter?.name}
+                          {tutor?.tutorTrainingCenter?.trainingCenter?.name}
                         </span>
                       </span>
                       <span className="flex gap-3 text-sm font-semibold text-gray-700">
                         위치
                         <span className="font-medium">
-                          {tutor?.trainingCenter?.address}
+                          {tutor?.tutorTrainingCenter?.trainingCenter?.address}
                         </span>
                       </span>
                     </div>

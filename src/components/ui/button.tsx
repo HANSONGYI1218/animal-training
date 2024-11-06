@@ -23,6 +23,8 @@ const buttonVariants = cva(
         ghost: "hover:bg-slate-100 hover:text-accent-foreground",
         link: "w-fit rounded-full text-primary hover:scale-105",
         profile: "bg-white text-base font-semibold  hover:bg-green-40",
+        delete:
+          "bg-red-500 text-white font-semibold text-base hover:bg-red-400",
       },
       size: {
         default: "h-10 px-4 py-2",

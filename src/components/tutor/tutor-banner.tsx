@@ -12,6 +12,7 @@ interface TutorBannerProps {
 }
 
 export default function TutorBanner({ tutor, count }: TutorBannerProps) {
+  console.log("tutor:", tutor);
   return (
     <section className="relative flex w-full flex-col overflow-hidden bg-[#EDEDE9]/20">
       <div className="container relative z-10 mx-auto flex w-full max-w-[1150px]">
@@ -22,7 +23,7 @@ export default function TutorBanner({ tutor, count }: TutorBannerProps) {
               {occupationTypeSwap[tutor?.occupation]}
             </Badge>
             <Badge className="opacity-100" variant={"secondary"}>
-              {tutor?.trainingCenter?.name}
+              {tutor?.tutorTrainingCenter?.trainingCenter?.name}
             </Badge>
           </div>
           <span className="whitespace-pre-line font-[440] leading-6 text-neutral-600">

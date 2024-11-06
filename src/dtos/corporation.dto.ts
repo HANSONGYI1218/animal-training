@@ -1,5 +1,5 @@
 import { OccupationType } from "@/types/tyeps.all";
-import { CorporationAccessStatus, TrainingCenter, Tutor } from "@prisma/client";
+import { CorporationAccessStatus } from "@prisma/client";
 import { GetTrainingCenterDetailDto } from "./training.center.dto";
 import { GetTutorWithLecture } from "./tutor.dto";
 
@@ -45,7 +45,7 @@ export type CorporationDetailDto = {
   accessStatus: CorporationAccessStatus;
   business_number: string;
   tutors: GetTutorWithLecture[];
-  trainingCenter: GetTrainingCenterDetailDto[];
+  trainingCenters: GetTrainingCenterDetailDto[];
   createdAt: Date;
   updatedAt: Date;
 };

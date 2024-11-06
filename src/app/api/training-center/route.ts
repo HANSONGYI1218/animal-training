@@ -3,11 +3,13 @@ import {
   deleteTrainingCenterService,
   getAllTrainingCentersService,
   getTrainingCenterByIdService,
+  getTrainingCenterByTutorIdService,
   updateTrainingCenterService,
 } from "@/services/training.center.service";
 import {
   CreateTrainingCenterDto,
   GetTrainingCenterDetailDto,
+  TrainingCenterOnlyOneTutorDto,
   UpdateTrainingCenterDto,
 } from "@/dtos/training.center.dto";
 import { NextRequest, NextResponse } from "next/server";
@@ -31,16 +33,30 @@ export async function GET(req: NextRequest, res: NextResponse) {
   const { searchParams } = req?.nextUrl;
 
   const id = searchParams.get("id");
+  const tutorId = searchParams.get("tutorId");
 
   try {
     if (id) {
-      const trainingCenter: GetTrainingCenterDetailDto | null =
-        await getTrainingCenterByIdService(id as string);
+      if (tutorId) {
+        const trainingCenter: TrainingCenterOnlyOneTutorDto | null =
+          await getTrainingCenterByTutorIdService(
+            id as string,
+            tutorId as string,
+          );
 
-      if (!trainingCenter)
-        return new Response("TrainingCenter not found", { status: 404 });
+        if (!trainingCenter)
+          return new Response("TrainingCenter not found", { status: 404 });
 
-      return NextResponse.json(trainingCenter);
+        return NextResponse.json(trainingCenter);
+      } else {
+        const trainingCenter: GetTrainingCenterDetailDto | null =
+          await getTrainingCenterByIdService(id as string);
+
+        if (!trainingCenter)
+          return new Response("TrainingCenter not found", { status: 404 });
+
+        return NextResponse.json(trainingCenter);
+      }
     } else {
       const trainingCenters: GetTrainingCenterDetailDto[] =
         await getAllTrainingCentersService();

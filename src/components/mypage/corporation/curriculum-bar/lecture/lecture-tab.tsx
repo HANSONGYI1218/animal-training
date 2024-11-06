@@ -3,9 +3,9 @@
 import LectureCard from "./lecture-card";
 import { useContext, useEffect, useState } from "react";
 import { Lecture, Tutor } from "@prisma/client";
-import { Badge } from "../../../ui/badge";
+import { Badge } from "../../../../ui/badge";
 import TutorCard from "./tutor-card";
-import { CorporationContext } from "../corporation-provider";
+import { CorporationContext } from "../../corporation-provider";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import Link from "next/link";

@@ -33,9 +33,19 @@ export const getCorporationByIdRepository = async (
             lectures: true,
           },
         },
-        trainingCenter: {
+        trainingCenters: {
           include: {
-            tutor: true,
+            tutorTrainingCenters: {
+              select: {
+                tutor: {
+                  select: {
+                    id: true,
+                    name: true,
+                    profile_img: true,
+                  },
+                },
+              },
+            },
           },
         },
       },
@@ -44,6 +54,7 @@ export const getCorporationByIdRepository = async (
     if (!corporation) {
       return null;
     }
+
     return toJSON(corporation);
   } catch {
     return null;

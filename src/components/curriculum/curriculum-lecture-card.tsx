@@ -82,8 +82,7 @@ export default function CurriculumLectureCard({
             <span className="font-semibold">{`STEP 0${index + 1}`}</span>
             <Dot />
             <span className="font-semibold">
-              {curriculumLectures[0] &&
-                lectureCategorySwap[curriculumLectures[0]?.category]}
+              {lectureCategorySwap[curriculumLectures[0]?.category]}
             </span>
           </div>
           <div className="group relative flex h-8 w-20">
