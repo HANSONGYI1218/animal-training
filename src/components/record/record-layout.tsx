@@ -71,7 +71,9 @@ export default function RecordLayout({
             <MapPin className="h-3 w-3" strokeWidth={2.5} />
             주소
           </span>
-          <span className="text-gray-800">{user?.address}</span>
+          <span className="text-gray-800">
+            {user?.address} {user?.detailAddress}
+          </span>
         </div>
       </aside>
       <div className="flex flex-1 flex-col">

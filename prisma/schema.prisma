@@ -227,7 +227,9 @@ model TrainingCenter {
   introduction       String          @db.Text
   profile            String          @db.VarChar(255)
   additionalImgs     String[]       
+  zipCode            String          @db.VarChar(255)
   address            String          @db.VarChar(255)
+  detailAddress      String          @db.VarChar(255)
   refundPolicys      String[]
   createdAt          DateTime        @default(now())
   updatedAt          DateTime        @updatedAt

@@ -1,10 +1,5 @@
 import { OccupationType } from "@/types/tyeps.all";
-import {
-  Lecture,
-  Review,
-  TutorBookmark,
-  TutorTrainingCenter,
-} from "@prisma/client";
+import { Lecture, Review, TutorBookmark } from "@prisma/client";
 
 export type TutorDto = {
   id?: string;
@@ -51,6 +46,7 @@ export type GetTutorDto = {
     trainingCenter: {
       name: string;
       address: string;
+      detailAddress: string;
     };
   };
   bookmarks: TutorBookmark[];

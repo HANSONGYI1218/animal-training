@@ -144,7 +144,9 @@ export default function CenterContainer({
                 </div>
                 <div className="flex gap-2">
                   <span className="w-24 text-neutral-600">위치</span>
-                  <span className="flex-1 font-[440]">{center?.address}</span>
+                  <span className="flex-1 font-[440]">
+                    {center?.address} {center?.detailAddress}
+                  </span>
                 </div>
                 <Image src="/map.png" width={400} height={300} alt="map" />
               </div>

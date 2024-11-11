@@ -170,7 +170,11 @@ export default function LectureContent({
                       <span className="flex gap-3 text-sm font-semibold text-gray-700">
                         위치
                         <span className="font-medium">
-                          {tutor?.tutorTrainingCenter?.trainingCenter?.address}
+                          {tutor?.tutorTrainingCenter?.trainingCenter?.address}{" "}
+                          {
+                            tutor?.tutorTrainingCenter?.trainingCenter
+                              ?.detailAddress
+                          }
                         </span>
                       </span>
                     </div>

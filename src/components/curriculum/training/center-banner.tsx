@@ -50,7 +50,7 @@ export default function CenterDetailBanner({
             {center?.introduction}
           </span>
           <span className="whitespace-pre-line font-[440] leading-6 text-neutral-600">
-            {center?.address}
+            {center?.address} {center?.detailAddress}
           </span>
           <div className="flex items-center gap-6">
             <div className="flex items-center gap-1">

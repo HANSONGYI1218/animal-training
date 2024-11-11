@@ -38,7 +38,8 @@ export default function TrainingCenterCard({
           </div>
           <div className="flex gap-3">
             <span className="w-20 text-neutral-500">위치</span>
-            <span>{trainingCenter?.address}</span>
+            <span>{trainingCenter?.address}</span> +{" "}
+            <span>{trainingCenter?.detailAdress}</span>
           </div>
           <div className="flex gap-3">
             <span className="w-20 text-neutral-500">가격</span>

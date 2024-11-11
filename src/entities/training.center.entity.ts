@@ -4,7 +4,9 @@ interface TrainingCenterEntityProps {
   introduction: string;
   profile: string;
   additionalImgs: string[];
+  zipCode: string;
   address: string;
+  detailAddress: string;
   refundPolicys: string[];
   corporationId: string;
   updatedAt?: Date;
@@ -16,7 +18,9 @@ export class TrainingCenterEntity {
   private introduction: string;
   private profile: string;
   private additionalImgs: string[];
+  private zipCode: string;
   private address: string;
+  private detailAddress: string;
   private refundPolicys: string[];
   private corporationId: string;
   private createdAt: Date;
@@ -28,7 +32,9 @@ export class TrainingCenterEntity {
     introduction,
     profile,
     additionalImgs,
+    zipCode,
     address,
+    detailAddress,
     refundPolicys,
     corporationId,
     updatedAt,
@@ -38,7 +44,9 @@ export class TrainingCenterEntity {
     this.introduction = introduction;
     this.profile = profile;
     this.additionalImgs = additionalImgs;
+    this.zipCode = zipCode;
     this.address = address;
+    this.detailAddress = detailAddress;
     this.refundPolicys = refundPolicys;
     this.corporationId = corporationId;
     this.createdAt = new Date();

@@ -6,7 +6,9 @@ export type TrainingCenterDto = {
   introduction: string;
   profile: string;
   additionalImgs: string[];
+  zipCode: string;
   address: string;
+  detailAddress: string;
   refundPolicys: string[];
   corporationId: string;
   createdAt: Date;
@@ -18,7 +20,9 @@ export type CreateTrainingCenterDto = {
   introduction: string;
   profile: string;
   additionalImgs: string[];
+  zipCode: string;
   address: string;
+  detailAddress: string;
   refundPolicys: string[];
   corporationId: string;
 };
@@ -29,7 +33,9 @@ export type UpdateTrainingCenterDto = {
   introduction?: string;
   profile?: string;
   additionalImgs?: string[];
+  zipCode?: string;
   address?: string;
+  detailAddress?: string;
   refundPolicys?: string[];
 };
 
@@ -39,7 +45,9 @@ export type GetTrainingCenterDto = {
   introduction: string;
   profile: string;
   additionalImgs: string[];
+  zipCode: string;
   address: string;
+  detailAddress: string;
   refundPolicys: string[];
   corporationId: string;
   createdAt: Date;
@@ -52,7 +60,9 @@ export type TrainingCenterOnlyOneTutorDto = {
   introduction: string;
   profile: string;
   additionalImgs: string[];
+  zipCode: string;
   address: string;
+  detailAddress: string;
   refundPolicys: string[];
   tutorTrainingCenter: {
     price: string;
@@ -77,7 +87,9 @@ export type GetTrainingCenterDetailDto = {
   introduction: string;
   profile: string;
   additionalImgs: string[];
+  zipCode: string;
   address: string;
+  detailAddress: string;
   refundPolicys: string[];
   tutorTrainingCenters: {
     tutor: {
