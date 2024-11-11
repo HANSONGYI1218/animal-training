@@ -1,67 +1,78 @@
 import {
-  IsNotEmptyDate,
-  IsNotEmptyString,
-} from "@/validate-decoration/validate-deco";
-import { AdoptionStatus, Animal, GenderType, User } from "@prisma/client";
-import { IsEnum } from "class-validator";
+  AdoptionStatus,
+  AdoptionStep,
+  Animal,
+  Corporation,
+  User,
+} from "@prisma/client";
 
-export class CreateAdoptionDto {
-  @IsNotEmptyDate()
-  adoption_date!: Date;
+export type CreateAdoptionDto = {
+  status: AdoptionStatus;
+  step: AdoptionStep;
+  adopterId: string;
+  breederId?: string;
+  breederCorporationId?: string;
+};
 
-  @IsNotEmptyDate()
-  abandon_date!: Date;
+export type UpdateAdoptionDto = {
+  id: string;
+  adoption_date?: Date;
+  abandon_date?: Date;
+  status?: AdoptionStatus;
+  step?: AdoptionStep;
+  abandon_reason?: string;
+};
 
-  @IsEnum(AdoptionStatus, {
-    message: "AdoptionStatus must be a valid gender value",
-  })
-  status!: AdoptionStatus;
+export type GetAdoptionDto = {
+  id: string;
+  adoption_date: Date;
+  abandon_date: Date;
+  status: AdoptionStatus;
+  step: AdoptionStep;
+  abandon_reason: string;
+  adopterId: string;
+  breederId?: string;
+  breederCorporationId?: string;
+  animalId: string | null;
+  createdAt: Date;
+  updatedAt: Date;
+};
 
-  @IsNotEmptyString()
-  abandon_reason!: string;
+export type AdoptionTableDto = {
+  //입양자 리스트 표에서 사용
+  id: string;
+  status: AdoptionStatus;
+  step: AdoptionStep;
+  adopter: User;
+  breeder: User | null;
+  breederCorporation: Corporation | null;
+  animalId: string | null;
+  createdAt: Date;
+  updatedAt: Date;
+};
 
-  @IsNotEmptyString()
-  adopterId!: string;
+export type AdoptionAgreementDto = {
+  id: string;
+  educationForm: string[];
+  trainingForm: string[];
+  adoptionForm: string[];
+};
 
-  @IsNotEmptyString()
-  breederId!: string;
+export type GetAdoptionWithAnimalDto = {
+  //입양기록에서 사용
+  id: string;
+  adoption_date: Date;
+  abandon_date: Date;
+  status: AdoptionStatus;
+  abandon_reason: string;
+  adopterId: string;
+  breederId: string | null;
+  breederCorporationId: string | null;
+  animal: Animal;
+  createdAt: Date;
+  updatedAt: Date;
+};
 
-  @IsNotEmptyString()
-  adopterCorporationId!: string;
-
-  @IsNotEmptyString()
-  breederCorporationId!: string;
-
-  @IsNotEmptyString()
-  animalId!: string;
-}
-
-export class GetAdoptionDto {
-  id!: string;
-  adoption_date!: Date;
-  abandon_date!: Date;
-  status!: AdoptionStatus;
-  abandon_reason!: string;
-  adopter!: User[] | null;
-  breeder!: User[] | null;
-  adopterCorporation!: User[] | null;
-  breederCorporation!: User[] | null;
-  animalId!: string;
-  createdAt!: Date;
-  updatedAt!: Date;
-}
-
-export class GetAdoptionWithAnimalDto {
-  id!: string;
-  adoption_date!: Date;
-  abandon_date!: Date;
-  status!: AdoptionStatus;
-  abandon_reason!: string;
-  adopterId!: string | null;
-  breederId!: string | null;
-  adopterCorporationId!: string | null;
-  breederCorporationId!: string | null;
-  animal!: Animal;
-  createdAt!: Date;
-  updatedAt!: Date;
+export function toJSON(adoption: any) {
+  return JSON.parse(JSON.stringify(adoption));
 }

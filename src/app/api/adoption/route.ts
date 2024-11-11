@@ -1,11 +1,18 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import { CreateAdoptionDto, GetAdoptionDto } from "@/dtos/adoption.dto";
+import {
+  AdoptionAgreementDto,
+  AdoptionTableDto,
+  CreateAdoptionDto,
+  GetAdoptionDto,
+  UpdateAdoptionDto,
+} from "@/dtos/adoption.dto";
 import {
   createAdoptionService,
   deleteAdoptionService,
+  getAdoptionAgreementService,
   getAdoptionByIdService,
-  getAdoptionByUserIdService,
+  getAdoptionTableService,
   updateAdoptionService,
 } from "@/services/adoption.service";
 
@@ -26,27 +33,27 @@ export async function GET(req: NextRequest, res: NextResponse) {
   const { searchParams } = req?.nextUrl;
 
   const id = searchParams.get("id");
-  const userId = searchParams.get("userId");
+  const breederId = searchParams.get("breederId");
 
   try {
-    if (userId) {
-      const userAdoption: GetAdoptionDto[] = await getAdoptionByUserIdService(
-        userId as string,
-      );
+    if (breederId) {
+      const breederAdoptions: AdoptionTableDto[] =
+        await getAdoptionTableService(breederId as string);
 
-      if (!userAdoption)
+      if (!breederAdoptions)
         return new Response("Adoption not found", { status: 404 });
 
-      return NextResponse.json(userAdoption);
+      return NextResponse.json(breederAdoptions);
     }
     if (id) {
-      const adoption: GetAdoptionDto | null = await getAdoptionByIdService(
+      const agreement: AdoptionAgreementDto = await getAdoptionAgreementService(
         id as string,
       );
 
-      if (!adoption) return new Response("Adoption not found", { status: 404 });
+      if (!agreement)
+        return new Response("agreement not found", { status: 404 });
 
-      return NextResponse.json(adoption);
+      return NextResponse.json(agreement);
     }
   } catch (error) {
     return new NextResponse("Failed to create Adoption(s)", { status: 500 });
@@ -56,13 +63,9 @@ export async function GET(req: NextRequest, res: NextResponse) {
 // PUT 요청 핸들러
 export async function PUT(req: NextRequest, res: NextResponse) {
   try {
-    const { searchParams } = req.nextUrl;
+    const dto: UpdateAdoptionDto = await req.json();
 
-    const id = searchParams.get("id");
-
-    const dto: CreateAdoptionDto = await req.json();
-
-    await updateAdoptionService(id as string, dto);
+    await updateAdoptionService(dto);
 
     return new NextResponse("Adoption updated successfully", { status: 200 });
   } catch (error) {
@@ -76,10 +79,7 @@ export async function DELETE(req: NextRequest, res: NextResponse) {
     const { searchParams } = req.nextUrl;
 
     const id = searchParams.get("id");
-    const deletedAdoption = await deleteAdoptionService(id as string);
-
-    if (!deletedAdoption)
-      return new Response("Adoption not found", { status: 404 });
+    await deleteAdoptionService(id as string);
 
     return new NextResponse("Adoption deleted successfully", { status: 200 });
   } catch (error) {

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import {
   CorporationDetailDto,
+  CorporationDto,
   CreateCorporationDto,
   UpdateCorporationDto,
 } from "@/dtos/corporation.dto";
@@ -8,6 +9,7 @@ import {
   createCorporationService,
   deleteCorporationService,
   getCorporationByIdService,
+  getCorporationByLoginService,
   updateCorporationService,
 } from "@/services/corporation.service";
 
@@ -30,6 +32,9 @@ async function GET(req: NextRequest, res: NextResponse) {
   const { searchParams } = req?.nextUrl;
   const id = searchParams.get("id");
 
+  const email = searchParams.get("email");
+  const password = searchParams.get("password");
+
   try {
     if (id) {
       const Corporation: CorporationDetailDto | null =
@@ -39,6 +44,14 @@ async function GET(req: NextRequest, res: NextResponse) {
         return new Response("Corporation not found", { status: 404 });
 
       return NextResponse.json(Corporation);
+    }
+    if (email && password) {
+      const user: CorporationDto | null = await getCorporationByLoginService(
+        email,
+        password,
+      );
+
+      return NextResponse.json(user);
     }
   } catch (error) {
     return new NextResponse("Failed to create Corporation(s)", { status: 500 });

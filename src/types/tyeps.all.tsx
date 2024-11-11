@@ -32,8 +32,17 @@ export enum Category {
 }
 
 export enum AdoptionStatus {
+  NOT_ADOPTION = "NOT_ADOPTION",
   ADOPTION = "ADOPTION",
   ABANDON = "ABANDON",
+}
+
+export enum AdoptionStep {
+  NOT_INVITATION = "NOT_INVITATION",
+  INVITATION = "INVITATION",
+  CURRICULUM = "CURRICULUM",
+  FINAL_CONSENTFORM = "FINAL_CONSENTFORM",
+  ADOPTION = "ADOPTION",
 }
 
 export enum CurriculumStep {

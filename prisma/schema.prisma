@@ -16,8 +16,11 @@ datasource db {
 model User {
   id                 String          @id  @default(uuid())
   name               String          @db.VarChar(255)
-  email              String          @unique @db.VarChar(255)   
+  email              String          @unique @db.VarChar(255)  
+  password           String          @db.VarChar(255)
+  zipCode            String          @db.VarChar(255)
   address            String          @db.VarChar(255)
+  detailAddress      String          @db.VarChar(255)
   phoneNumber        String          @unique @db.VarChar(255)
   registrationNumber String          @unique @db.VarChar(255)
   nickname           String          @unique @db.VarChar(255)
@@ -72,9 +75,12 @@ model UserCurriculum {
 
 model Corporation {
   id                String                    @id  @default(uuid())
+  password          String                    @db.VarChar(255)
   owner_name        String                    @db.VarChar(255)        
   corporation_name  String                    @db.VarChar(255)      
+  zipCode           String                    @db.VarChar(255)
   address           String                    @db.VarChar(255)
+  detailAddress     String                    @db.VarChar(255)
   phoneNumber       String                    @unique @db.VarChar(255)  
   email             String                    @unique @db.VarChar(255)
   business_number   String                    @unique @db.VarChar(255)
@@ -82,7 +88,6 @@ model Corporation {
   createdAt         DateTime                  @default(now())
   updatedAt         DateTime                  @updatedAt
   tutors            Tutor[]
-  adopterAdoptions  Adoption[]                @relation("AdopterCorporationAdoptions") //[임시]기업은 입양 못함
   breederAdoptions  Adoption[]                @relation("BreederCorporationAdoptions")
   animals           Animal[]
   trainingCenters   TrainingCenter[]
@@ -171,26 +176,27 @@ model CurriculumLecture {
 
 model Adoption {
   id                    String          @id  @default(uuid())
-  adoption_date         DateTime        @default(now())
+  adoption_date         DateTime?       @default(now())
   abandon_date          DateTime?
-  status                AdoptionStatus  @default(ADOPTION)
+  status                AdoptionStatus  @default(NOT_ADOPTION)
+  step                  AdoptionStep    @default(NOT_INVITATION)
   abandon_reason        String?         @db.Text
+  educationForm         String[] //[0] 분양자, [1] 입양자
+  trainingForm          String[] //[0] 분양자, [1] 입양자
+  adoptionForm          String[] //[0] 분양자, [1] 입양자
   createdAt             DateTime        @default(now())
   updatedAt             DateTime        @updatedAt
   adopterId             String?
   breederId             String?
-  adopterCorporationId  String?
   breederCorporationId  String?
-  animalId              String
+  animalId              String?
   adopter               User?           @relation("AdopterAdoptions", fields: [adopterId], references: [id])
   breeder               User?           @relation("BreederAdoptions", fields: [breederId], references: [id])
-  adopterCorporation    Corporation?    @relation("AdopterCorporationAdoptions", fields: [adopterCorporationId], references: [id])
   breederCorporation    Corporation?    @relation("BreederCorporationAdoptions", fields: [breederCorporationId], references: [id])
   animal                Animal?         @relation(fields: [animalId], references: [id])
 
   @@index([adopterId])
   @@index([breederId])
-  @@index([adopterCorporationId])
   @@index([breederCorporationId])
   @@index([animalId])
 }
@@ -341,9 +347,18 @@ enum Category {
 }
 
 enum AdoptionStatus {
+  NOT_ADOPTION
   ADOPTION 
   ABANDON
 }
+
+enum AdoptionStep {
+  NOT_INVITATION
+  INVITATION
+  CURRICULUM
+  FINAL_CONSENTFORM
+  ADOPTION
+  }
 
 enum RatingStatus {
   VERY_GOOD 

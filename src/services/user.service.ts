@@ -4,6 +4,7 @@ import {
   GetUserDto,
   toJSON,
   UpdateUserDto,
+  UserDto,
 } from "@/dtos/user.dto";
 import { UserEntity } from "@/entities/user.entity";
 import {
@@ -12,7 +13,9 @@ import {
   getUserByUserInfoRepository,
   getUserByIdRepository,
   updateUserRepository,
+  getUserByLoginRepository,
 } from "@/repositories/user.repository";
+import { GenderType } from "@prisma/client";
 
 // 유저 생성
 const createUserService = async (dto: CreateUserDto): Promise<void> => {
@@ -20,6 +23,21 @@ const createUserService = async (dto: CreateUserDto): Promise<void> => {
     // const isExisted = await getUserByIdRepository(dto.id);
     // if(isExisted) return null;
     const newUser = new UserEntity({
+      name: "",
+      zipCode: "",
+      address: "",
+      detailAddress: "",
+      phoneNumber: "",
+      registrationNumber: "",
+      nickname: "",
+      birthday: new Date(),
+      gender: GenderType.MALE,
+      isNewNews_SMS: true,
+      isNotice_SMS: true,
+      isPromotion_SMS: true,
+      isNewNews_Email: true,
+      isNotice_Email: true,
+      isPromotion_Email: true,
       ...dto,
     });
 
@@ -38,6 +56,23 @@ const getUserByIdService = async (id: string): Promise<GetUserDto | null> => {
       return null;
     }
     return user as GetUserDto;
+  } catch {
+    return null;
+  }
+};
+
+// 특정 ID의 유저 로그인 조회
+const getUserByLoginService = async (
+  email: string,
+  password: string,
+): Promise<UserDto | null> => {
+  try {
+    const user = await getUserByLoginRepository(email, password);
+
+    if (!user) {
+      return null;
+    }
+    return user as UserDto;
   } catch {
     return null;
   }
@@ -72,7 +107,10 @@ const updateUserService = async (dto: UpdateUserDto): Promise<void> => {
     const updateUser = new UserEntity({
       ...user,
       email: dto?.email ?? user.email,
+      password: dto?.password ?? user.password,
+      zipCode: dto?.zipCode ?? user.zipCode,
       address: dto?.address ?? user.address,
+      detailAddress: dto?.detailAddress ?? user.detailAddress,
       phoneNumber: dto?.phoneNumber ?? user.phoneNumber,
       nickname: dto?.nickname ?? user.nickname,
       isNewNews_SMS: dto?.isNewNews_SMS ?? user.isNewNews_SMS,
@@ -108,6 +146,7 @@ const deleteUserService = async (id: string): Promise<void> => {
 export {
   createUserService,
   getUserByIdService,
+  getUserByLoginService,
   getUserByUserInfoService,
   updateUserService,
   deleteUserService,
