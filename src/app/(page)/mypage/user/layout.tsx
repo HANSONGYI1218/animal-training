@@ -1,5 +1,5 @@
 import MypageSidebar from "@/components/mypage/user/mypage-sidebar";
-import UserProvider from "@/components/mypage/user/user-provider";
+import UserProvider from "@/providers/user-provider";
 import { GetUserDto } from "@/dtos/user.dto";
 
 export default async function MypageUserLayout({

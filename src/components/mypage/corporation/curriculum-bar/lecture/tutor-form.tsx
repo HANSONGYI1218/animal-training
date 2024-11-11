@@ -25,7 +25,7 @@ import { ChevronLeft, Loader2, Plus } from "lucide-react";
 import { OccupationType } from "@prisma/client";
 import Link from "next/link";
 import { Textarea } from "@/components/ui/textarea";
-import { CorporationContext } from "../../corporation-provider";
+import { CorporationContext } from "../../../../../providers/corporation-provider";
 import { occupationTypeSwap } from "@/constants/constants.all";
 import { GetTutorDto } from "@/dtos/tutor.dto";
 import { TutorTrainingCenterDto } from "@/dtos/tutor.trainingCenter.dto";

@@ -27,7 +27,7 @@ import { AnimalType, PriceType, Category, Lecture } from "@prisma/client";
 import Link from "next/link";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
-import { CorporationContext } from "../../corporation-provider";
+import { CorporationContext } from "../../../../../providers/corporation-provider";
 
 const LectureSchema = z.object({
   title: z.string().min(1, { message: "제목을 적어주세요." }),

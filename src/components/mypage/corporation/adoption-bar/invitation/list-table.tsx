@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/table";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { useContext, useEffect, useState } from "react";
-import { CorporationContext } from "../../corporation-provider";
+import { CorporationContext } from "../../../../../providers/corporation-provider";
 import { AdoptionAgreementDto, AdoptionTableDto } from "@/dtos/adoption.dto";
 import Image from "next/image";
 import {

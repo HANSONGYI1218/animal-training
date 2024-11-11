@@ -15,7 +15,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { useState, useContext } from "react";
 import { toast } from "@/components/ui/use-toast";
-import { UserContext } from "../user-provider";
+import { UserContext } from "../../../../providers/user-provider";
 import { Loader2 } from "lucide-react";
 
 const ProfileSettingSchema = z.object({

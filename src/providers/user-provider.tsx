@@ -1,7 +1,6 @@
 "use client";
 
 import { GetUserDto } from "@/dtos/user.dto";
-import { User } from "@prisma/client";
 import { createContext, ReactNode } from "react";
 
 // UserContext를 생성합니다.

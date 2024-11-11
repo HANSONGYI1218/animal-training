@@ -15,7 +15,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { useState, useContext } from "react";
 import { toast } from "@/components/ui/use-toast";
-import { CorporationContext } from "../../corporation/corporation-provider";
+import { CorporationContext } from "../../../../providers/corporation-provider";
 import { Loader2 } from "lucide-react";
 import { CorporationAccessStatus } from "@prisma/client";
 

@@ -13,7 +13,7 @@ import {
 import { toast } from "@/components/ui/use-toast";
 import { Switch } from "@/components/ui/switch";
 import { useContext } from "react";
-import { UserContext } from "../user-provider";
+import { UserContext } from "../../../../providers/user-provider";
 
 const AlarmSettingSchema = z.object({
   isNewNews_SMS: z.boolean(),

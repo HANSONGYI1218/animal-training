@@ -1,4 +1,4 @@
-import CorporationProvider from "@/components/mypage/corporation/corporation-provider";
+import CorporationProvider from "@/providers/corporation-provider";
 import MypageSidebar from "@/components/mypage/corporation/mypage-sidebar";
 import { CorporationDetailDto } from "@/dtos/corporation.dto";
 

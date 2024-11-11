@@ -5,7 +5,7 @@ import Image from "next/image";
 import { GetTrainingCenterDetailDto } from "@/dtos/training.center.dto";
 import TrainingCenterCard from "./training-center-card";
 import { useContext, useState } from "react";
-import { CorporationContext } from "../../corporation-provider";
+import { CorporationContext } from "../../../../../providers/corporation-provider";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Pencil, Plus } from "lucide-react";
