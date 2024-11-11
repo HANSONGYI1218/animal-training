@@ -7,6 +7,6 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 - 로그인
   - 이메일 인증 양식 만들기
   - 핸드폰 인증 나이스 API 연결
-  - 추가인증 user PUT API 연결
+  - 추가인증 user, corporation PUT API 연결
   - 로그인 시 추가인증 안했으면 추가인증 페이지로 redirect
   - 추가인증 후 로그인 페이지로 redirect
