@@ -1,3 +1,4 @@
+import { AttendanceStatus } from "@/types/tyeps.all";
 import {
   Category,
   AnimalType,
@@ -5,8 +6,9 @@ import {
   GenderType,
   OccupationType,
   AdoptionStatus,
-  AttendanceStatus,
-} from "@/types/tyeps.all";
+  CurriculumCategory,
+  AdoptionStep,
+} from "@prisma/client";
 
 export const categorySwap: { [key in Category | string]: string } = {
   [Category.FOOD]: "식품",
@@ -50,22 +52,27 @@ export const occupationTypeSwap: { [key in OccupationType | string]: string } =
 export const adoptionStatusTypeSwap: {
   [key in AdoptionStatus | string]: string;
 } = {
+  [AdoptionStatus.NOT_ADOPTION]: "미입양",
   [AdoptionStatus.ADOPTION]: "입양중",
   [AdoptionStatus.ABANDON]: "파양",
 };
 
-export enum LectureCategory {
-  COMMUNICATION = "COMMUNICATION",
-  TRAINING = "TRAINING",
-  BEAUTY = "BEAUTY",
-}
+export const adoptionStepTypeSwap: {
+  [key in AdoptionStep | string]: string;
+} = {
+  [AdoptionStep.NOT_INVITATION]: "미초대",
+  [AdoptionStep.INVITATION]: "초대",
+  [AdoptionStep.CURRICULUM]: "교육",
+  [AdoptionStep.FINAL_CONSENTFORM]: "입양동의서",
+  [AdoptionStep.ADOPTION]: "입양",
+};
 
 export const lectureCategorySwap: {
-  [key in LectureCategory | string]: string;
+  [key in CurriculumCategory | string]: string;
 } = {
-  [LectureCategory.COMMUNICATION]: "의사소통",
-  [LectureCategory.TRAINING]: "훈련",
-  [LectureCategory.BEAUTY]: "미용",
+  [CurriculumCategory.COMMUNICATION]: "의사소통",
+  [CurriculumCategory.TRAINING]: "훈련",
+  [CurriculumCategory.BEAUTY]: "미용",
 };
 
 export enum SortType {

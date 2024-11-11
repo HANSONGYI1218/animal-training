@@ -5,11 +5,13 @@ import {
   GetUserAdoptionRecordDto,
   GetUserDto,
   UpdateUserDto,
+  UserDto,
 } from "@/dtos/user.dto";
 import {
   createUserService,
   deleteUserService,
   getUserByIdService,
+  getUserByLoginService,
   getUserByUserInfoService,
   updateUserService,
 } from "@/services/user.service";
@@ -34,12 +36,20 @@ async function GET(req: NextRequest, res: NextResponse) {
   const name = searchParams.get("name");
   const registrationNumber = searchParams.get("registrationNumber");
 
+  const email = searchParams.get("email");
+  const password = searchParams.get("password");
+
   try {
     if (name && registrationNumber) {
       const user: GetUserAdoptionRecordDto | null =
         await getUserByUserInfoService(name, registrationNumber);
 
       if (!user) return new Response("user not found", { status: 404 });
+
+      return NextResponse.json(user);
+    }
+    if (email && password) {
+      const user: UserDto | null = await getUserByLoginService(email, password);
 
       return NextResponse.json(user);
     }

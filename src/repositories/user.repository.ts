@@ -51,6 +51,28 @@ const getUserByIdRepository = async (
   }
 };
 
+// 특정 ID의 유저 로그인 조회
+const getUserByLoginRepository = async (
+  email: string,
+  password: string,
+): Promise<UserDto | null> => {
+  try {
+    const user = await prisma.user.findFirst({
+      where: {
+        email: email,
+        password: password,
+      },
+    });
+
+    if (!user) {
+      return null;
+    }
+    return toJSON(user);
+  } catch {
+    return null;
+  }
+};
+
 // 특정 userInfo로 유저 조회
 const getUserByUserInfoRepository = async (
   name: string,
@@ -113,6 +135,7 @@ const deleteUserRepository = async (id: string): Promise<void> => {
 export {
   createUserRepository,
   getUserByUserInfoRepository,
+  getUserByLoginRepository,
   getUserByIdRepository,
   updateUserRepository,
   deleteUserRepository,

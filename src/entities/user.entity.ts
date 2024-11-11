@@ -4,7 +4,10 @@ interface UserEntityProps {
   id?: string;
   name: string;
   email: string;
+  zipCode: string;
   address: string;
+  detailAddress: string;
+  password: string;
   phoneNumber: string;
   registrationNumber: string;
   nickname: string;
@@ -20,10 +23,13 @@ interface UserEntityProps {
 }
 
 export class UserEntity {
-  private id: string;
+  private id?: string;
   private name: string;
   private email: string;
+  private zipCode: string;
   private address: string;
+  private detailAddress: string;
+  private password: string;
   private phoneNumber: string;
   private registrationNumber: string;
   private nickname: string;
@@ -42,7 +48,10 @@ export class UserEntity {
     id,
     name,
     email,
+    zipCode,
     address,
+    detailAddress,
+    password,
     phoneNumber,
     registrationNumber,
     nickname,
@@ -56,10 +65,13 @@ export class UserEntity {
     isPromotion_Email = true,
     updatedAt,
   }: UserEntityProps) {
-    this.id = id ?? "";
+    this.id = id;
     this.name = name;
     this.email = email;
+    this.password = password;
+    this.zipCode = zipCode;
     this.address = address;
+    this.detailAddress = detailAddress;
     this.phoneNumber = phoneNumber;
     this.registrationNumber = registrationNumber;
     this.nickname = nickname;

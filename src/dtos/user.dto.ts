@@ -4,7 +4,10 @@ export type UserDto = {
   id: string;
   name: string;
   email: string;
+  password: string;
+  zipCode: string;
   address: string;
+  detailAddress: string;
   phoneNumber: string;
   registrationNumber: string;
   nickname: string;
@@ -21,20 +24,17 @@ export type UserDto = {
 };
 
 export type CreateUserDto = {
-  name: string;
   email: string;
-  address: string;
-  phoneNumber: string;
-  registrationNumber: string;
-  nickname: string;
-  birthday: Date;
-  gender: GenderType;
+  password: string;
 };
 
 export type UpdateUserDto = {
   id: string;
   email?: string;
+  password?: string;
+  zipCode?: string;
   address?: string;
+  detailAddress?: string;
   phoneNumber?: string;
   nickname?: string;
   isNewNews_SMS?: boolean;
@@ -49,7 +49,10 @@ export type GetUserDto = {
   id: string;
   name: string;
   email: string;
+  password: string;
+  zipCode: string;
   address: string;
+  detailAddress: string;
   phoneNumber: string;
   registrationNumber: string;
   nickname: string;
@@ -77,7 +80,9 @@ export type GetUserAdoptionRecordDto = {
   id: string;
   name: string;
   email: string;
+  zipCode: string;
   address: string;
+  detailAddress: string;
   phoneNumber: string;
   registrationNumber: string;
   nickname: string;

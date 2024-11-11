@@ -21,20 +21,18 @@ export default function SelectBox({
   useStateF,
 }: SelectBoxProps) {
   return (
-    <Select onValueChange={(v) => useStateF(v)}>
+    <Select onValueChange={(v) => useStateF(v)} defaultValue={placeholder}>
       <SelectTrigger className={className}>
         <SelectValue placeholder={placeholder} />
       </SelectTrigger>
       <SelectContent className="w-full">
-        <SelectGroup>
-          {lists.map((item: any, index: number) => {
-            return (
-              <SelectItem key={index} value={item}>
-                {item}
-              </SelectItem>
-            );
-          })}
-        </SelectGroup>
+        {lists.map((item: any, index: number) => {
+          return (
+            <SelectItem key={index} value={item}>
+              {item}
+            </SelectItem>
+          );
+        })}
       </SelectContent>
     </Select>
   );

@@ -25,3 +25,8 @@ export function formatPrice(price: number | undefined) {
 export function generateId(): string {
   return Math.random().toString(36).slice(2, 9);
 }
+
+// 렌덤값 생성
+export function generateSixDigitCode() {
+  return Math.floor(100000 + Math.random() * 900000);
+}

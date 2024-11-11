@@ -4,19 +4,18 @@ import { GetTrainingCenterDetailDto } from "./training.center.dto";
 import { GetTutorWithLecture } from "./tutor.dto";
 
 export type CreateCorporationDto = {
-  owner_name: string;
-  corporation_name: string;
-  address: string;
-  phoneNumber: string;
   email: string;
-  business_number: string;
+  password: string;
 };
 
 export type UpdateCorporationDto = {
   id: string;
+  password?: string;
   owner_name?: string;
   corporation_name?: string;
+  zipCode?: string;
   address?: string;
+  detailAddress?: string;
   phoneNumber?: string;
   email?: string;
   business_number?: string;
@@ -24,9 +23,12 @@ export type UpdateCorporationDto = {
 
 export type CorporationDto = {
   id: string;
+  password: string;
   owner_name: string;
   corporation_name: string;
+  zipCode: string;
   address: string;
+  detailAddress: string;
   phoneNumber: string;
   email: OccupationType;
   business_number: string;
@@ -37,9 +39,12 @@ export type CorporationDto = {
 
 export type CorporationDetailDto = {
   id: string;
+  password: string;
   owner_name: string;
   corporation_name: string;
+  zipCode: string;
   address: string;
+  detailAddress: string;
   phoneNumber: string;
   email: OccupationType;
   accessStatus: CorporationAccessStatus;

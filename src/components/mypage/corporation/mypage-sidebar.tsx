@@ -56,18 +56,18 @@ export default function MypageSidebar({
             }}
             className={`w-full text-base ${currentBar === "curriculum" && "bg-slate-100 font-semibold"}`}
           >
-            커리큘럼
+            커리큘럼 관리
           </Button>
         </Link>
-        <Link href={"/mypage/corporation/payment"}>
+        <Link href={"/mypage/corporation/adoption"}>
           <Button
             variant={"ghost"}
             onClick={() => {
-              setCurrentBar("payment");
+              setCurrentBar("adoption");
             }}
-            className={`w-full text-base ${currentBar === "payment" && "bg-slate-100 font-semibold"}`}
+            className={`w-full text-base ${currentBar === "adoption" && "bg-slate-100 font-semibold"}`}
           >
-            결제 관리
+            입양 관리
           </Button>
         </Link>
         <Button

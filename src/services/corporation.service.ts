@@ -10,6 +10,7 @@ import {
   createCorporationRepository,
   deleteCorporationRepository,
   getCorporationByIdRepository,
+  getCorporationByLoginRepository,
   updateCorporationRepository,
 } from "@/repositories/corporation.repository";
 
@@ -23,11 +24,36 @@ export const createCorporationService = async (
 
     const newCorportaion = new CorporationEntity({
       ...dto,
+      owner_name: "",
+      corporation_name: "",
+      zipCode: "",
+      address: "",
+      detailAddress: "",
+      phoneNumber: "",
+      business_number: "",
+      accessStatus: "STANDARD",
     });
 
     await createCorporationRepository(toJSON(newCorportaion));
   } catch (error: any) {
     return error;
+  }
+};
+
+// 특정 ID의 기업 로그인 조회
+export const getCorporationByLoginService = async (
+  email: string,
+  password: string,
+): Promise<CorporationDto | null> => {
+  try {
+    const corporation = await getCorporationByLoginRepository(email, password);
+
+    if (!corporation) {
+      return null;
+    }
+    return corporation;
+  } catch {
+    return null;
   }
 };
 
@@ -60,9 +86,12 @@ export const updateCorporationService = async (
 
     const updateCorporation = new CorporationEntity({
       ...corporation,
+      password: dto?.password ?? corporation.password,
       owner_name: dto?.owner_name ?? corporation.owner_name,
       corporation_name: dto?.corporation_name ?? corporation.corporation_name,
+      zipCode: dto?.zipCode ?? corporation.zipCode,
       address: dto?.address ?? corporation.address,
+      detailAddress: dto?.detailAddress ?? corporation.detailAddress,
       phoneNumber: dto?.phoneNumber ?? corporation.phoneNumber,
       email: dto?.email ?? corporation.email,
       business_number: dto?.business_number ?? corporation.business_number,
