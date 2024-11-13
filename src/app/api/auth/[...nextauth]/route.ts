@@ -1,8 +1,8 @@
-import NextAuth from "next-auth";
+import NextAuth, { AuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { redirect } from "next/navigation";
+import { cookies } from "next/headers";
 
-const handler = NextAuth({
+export const authOptions: AuthOptions = {
   pages: {
     signIn: "login",
   },
@@ -43,6 +43,7 @@ const handler = NextAuth({
 
         if (user) {
           // 유저 정보와 토큰을 NextAuth.js 세션에 저장합니다.
+          cookies().set("userType", `${credentials?.userType}`);
           return user;
         } else {
           return null; // 잘못된 자격 증명
@@ -52,15 +53,17 @@ const handler = NextAuth({
   ],
   callbacks: {
     async jwt({ token, user }) {
-      return { ...token, ...user };
-    },
+      if (user) token.sub = user.id;
 
+      return token;
+    },
     async session({ session, token }) {
-      // 세션에 토큰 정보를 추가합니다.
-      session.user = token as any;
+      if (session.user) {
+        session.user.id = token.sub as string;
+      }
       return session;
     },
   },
-});
+};
 
-export { handler as GET, handler as POST };
+export default NextAuth(authOptions);

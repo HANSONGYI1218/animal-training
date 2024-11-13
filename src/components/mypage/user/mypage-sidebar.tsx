@@ -53,6 +53,17 @@ export default function MypageSidebar({ user }: { user: GetUserDto }) {
             커리큘럼
           </Button>
         </Link>
+        <Link href={"/mypage/user/adoption"}>
+          <Button
+            variant={"ghost"}
+            onClick={() => {
+              setCurrentBar("adoption");
+            }}
+            className={`w-full text-base ${currentBar === "adoption" && "bg-slate-100 font-semibold"}`}
+          >
+            입양 관리
+          </Button>
+        </Link>
         <Link href={"/mypage/user/payment"}>
           <Button
             variant={"ghost"}
@@ -73,15 +84,17 @@ export default function MypageSidebar({ user }: { user: GetUserDto }) {
         >
           주문 목록
         </Button>
-        <Button
-          variant={"ghost"}
-          onClick={() => {
-            setCurrentBar("password");
-          }}
-          className={`w-full text-base ${currentBar === "password" && "bg-slate-100 font-semibold"}`}
-        >
-          비밀번호 변경
-        </Button>
+        <Link href={"/mypage/user/password"}>
+          <Button
+            variant={"ghost"}
+            onClick={() => {
+              setCurrentBar("password");
+            }}
+            className={`w-full text-base ${currentBar === "password" && "bg-slate-100 font-semibold"}`}
+          >
+            비밀번호 변경
+          </Button>
+        </Link>
         <Link href={"/mypage/user/alarm"}>
           <Button
             variant={"ghost"}

@@ -16,6 +16,7 @@ import {
   getAdoptionTableRepository,
   updateAdoptionRepository,
 } from "@/repositories/adoption.repository";
+import { AdoptionStatus, AdoptionStep } from "@prisma/client";
 
 // 입양 생성
 export const createAdoptionService = async (
@@ -28,11 +29,16 @@ export const createAdoptionService = async (
     const newAdoption = new AdoptionEntity({
       adoption_date: null,
       abandon_date: null,
+      status: AdoptionStatus.NOT_ADOPTION,
+      step: AdoptionStep.NOT_INVITATION,
       abandon_reason: null,
       educationForm: [],
       trainingForm: [],
       adoptionForm: [],
+      adopterId: null,
       animalId: null,
+      breederId: dto?.breederId ?? null,
+      breederCorporationId: dto?.breederCorporationId ?? null,
       ...dto,
     });
 
@@ -45,9 +51,10 @@ export const createAdoptionService = async (
 // 분양자의 입양 리스트 가져오기
 export const getAdoptionTableService = async (
   breederId: string,
+  isRecord: string,
 ): Promise<AdoptionTableDto[]> => {
   try {
-    const adoption = await getAdoptionTableRepository(breederId);
+    const adoption = await getAdoptionTableRepository(breederId, isRecord);
 
     return adoption;
   } catch {
@@ -107,8 +114,17 @@ export const updateAdoptionService = async (
     if (!adoption) {
       throw new Error("adoption is not found");
     }
+    const updateCorporation = new AdoptionEntity({
+      ...adoption,
+      adoption_date: dto?.adoption_date ?? adoption?.adoption_date ?? null,
+      abandon_date: dto?.abandon_date ?? adoption?.abandon_date ?? null,
+      status: dto?.status ?? adoption.status,
+      step: dto?.step ?? adoption.step,
+      abandon_reason: dto?.abandon_reason ?? adoption.abandon_reason,
+      updatedAt: new Date(),
+    });
 
-    await updateAdoptionRepository(dto);
+    await updateAdoptionRepository(toJSON(updateCorporation));
   } catch (error: any) {
     return error;
   }

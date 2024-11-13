@@ -15,8 +15,8 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { toast } from "@/components/ui/use-toast";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
-import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
 
 const LoginSchema = z.object({
   userType: z.enum(["USER", "CORPORATION"]).default("USER"),

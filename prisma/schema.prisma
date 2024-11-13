@@ -176,8 +176,9 @@ model CurriculumLecture {
 
 model Adoption {
   id                    String          @id  @default(uuid())
-  adoption_date         DateTime?       @default(now())
+  adoption_date         DateTime?       
   abandon_date          DateTime?
+  invite_email          String          @db.VarChar(255)
   status                AdoptionStatus  @default(NOT_ADOPTION)
   step                  AdoptionStep    @default(NOT_INVITATION)
   abandon_reason        String?         @db.Text

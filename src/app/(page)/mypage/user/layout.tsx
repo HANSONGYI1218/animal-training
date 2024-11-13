@@ -1,13 +1,16 @@
 import MypageSidebar from "@/components/mypage/user/mypage-sidebar";
 import UserProvider from "@/providers/user-provider";
 import { GetUserDto } from "@/dtos/user.dto";
+import { currentAccount } from "@/action/user-action";
 
 export default async function MypageUserLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const userId = 1; //session 으로 받아옴
+  const session = await currentAccount();
+
+  const userId = session?.user?.id;
 
   const responseUser = await fetch(
     `${process.env.NEXT_PUBLIC_WEB_URL}/api/user?id=${userId}`,

@@ -7,10 +7,10 @@ import { useContext, useState } from "react";
 import ListTable from "./list-table";
 import { generateSixDigitCode } from "@/utils/utils";
 import { toast } from "@/components/ui/use-toast";
-import { CorporationContext } from "@/providers/corporation-provider";
+import { UserContext } from "@/providers/user-provider";
 
 export default function InvitaionTab() {
-  const corporation = useContext(CorporationContext);
+  const user = useContext(UserContext);
   const [selectCategory, setSelectCategory] = useState("invite");
   const [randomMailNumber, setRandomMailNumber] = useState<number | null>(null);
   const [isSending, setIsSending] = useState(false);
@@ -38,7 +38,7 @@ export default function InvitaionTab() {
         method: "POST",
         body: JSON.stringify({
           invite_email: v,
-          breederCorporationId: corporation?.id,
+          breederId: user?.id,
         }),
         headers: {
           "Content-Type": "application/json",

@@ -6,12 +6,14 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import LectureCategory from "../lecture/lecture-category";
 import { usePathname } from "next/navigation";
+import { getCookie } from "@/utils/utils";
 
 export default function TopBar() {
   const [scrollY, setScrollY] = useState(0);
   const path = usePathname();
   const [page, setPage] = useState<string>("lecture");
   const [scrollDirection, setScrollDirection] = useState<"up" | "down">("up");
+  const [cookie, setCookie] = useState<string>("");
 
   const handleScroll = () => {
     const currentScrollY = window.scrollY;
@@ -84,7 +86,7 @@ export default function TopBar() {
                 입양기록
               </Button>
             </a>
-            <a href="/mypage/corporation/profile">
+            <a href={`/mypage/${getCookie("userType")?.toLowerCase()}/profile`}>
               <Button
                 onClick={() => {
                   setPage("mypage");

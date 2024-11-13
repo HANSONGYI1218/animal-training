@@ -2,7 +2,6 @@ import prisma from "@/utils/db";
 import {
   AdoptionAgreementDto,
   AdoptionTableDto,
-  CreateAdoptionDto,
   GetAdoptionDto,
   toJSON,
   UpdateAdoptionDto,
@@ -13,8 +12,10 @@ export const createAdoptionRepository = async (
   dto: GetAdoptionDto,
 ): Promise<void> => {
   try {
-    await prisma.adoption.create({
-      data: dto,
+    const result = await prisma.adoption.create({
+      data: {
+        ...dto,
+      },
     });
   } catch (error: any) {
     return error;
@@ -24,11 +25,16 @@ export const createAdoptionRepository = async (
 // 분양자의 입양 리스트 가져오기
 export const getAdoptionTableRepository = async (
   breederId: string,
+  isRecord: string,
 ): Promise<AdoptionTableDto[]> => {
   try {
     const adoption = await prisma.adoption.findMany({
       where: {
         breederCorporationId: breederId,
+        status:
+          isRecord === "true"
+            ? { in: ["ADOPTION", "ABANDON"] }
+            : "NOT_ADOPTION",
       },
       include: {
         adopter: true,

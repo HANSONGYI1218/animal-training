@@ -6,7 +6,7 @@ import BottomBar from "@/components/common/bottom-bar";
 import { Toaster } from "@/components/ui/toaster";
 import Script from "next/script";
 import AuthSession from "@/providers/auth-session";
-import { getSession } from "next-auth/react";
+import { getServerSession } from "next-auth/next";
 
 declare global {
   interface Window {
@@ -24,16 +24,13 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const session = await getSession();
   return (
     <html lang="ko">
       <Script src="https://cdn.iamport.kr/v1/iamport.js" />
       <Script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js" />
       <body className={`${Pretendard.className}`}>
         <TopBar />
-        <AuthSession session={session}>
-          <section className="flex min-h-screen">{children}</section>
-        </AuthSession>
+        <section className="flex min-h-screen">{children}</section>
         <BottomBar />
         <Toaster />
       </body>

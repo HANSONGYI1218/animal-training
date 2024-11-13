@@ -16,6 +16,7 @@ import { useState } from "react";
 import { toast } from "@/components/ui/use-toast";
 import { Check, Eye, EyeOff, Loader2 } from "lucide-react";
 import { generateSixDigitCode } from "@/utils/utils";
+import { cookies } from "next/headers";
 
 const LoginInfoSchema = z
   .object({
@@ -86,7 +87,6 @@ export default function LoginInfoForm({
     try {
       setIsLoading(true);
       if (data.userType === "USER") {
-        localStorage.setItem("userType", "USER");
         await fetch(`${process.env.NEXT_PUBLIC_WEB_URL}/api/user`, {
           method: "POST",
           body: JSON.stringify({
@@ -98,7 +98,6 @@ export default function LoginInfoForm({
           },
         });
       } else {
-        localStorage.setItem("userType", "CORPORATION");
         await fetch(`${process.env.NEXT_PUBLIC_WEB_URL}/api/corporation`, {
           method: "POST",
           body: JSON.stringify({
