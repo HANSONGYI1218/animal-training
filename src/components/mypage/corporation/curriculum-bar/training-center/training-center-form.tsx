@@ -219,9 +219,12 @@ export default function TrainingCenterForm({
                       </Button>
                     </div>
                     <div className="flex flex-col gap-2">
-                      {field?.value.map((tag) => {
+                      {field?.value.map((tag: string, index: number) => {
                         return (
-                          <div className="flex items-center gap-1 rounded-lg bg-slate-100 p-2">
+                          <div
+                            key={index}
+                            className="flex items-center gap-1 rounded-lg bg-slate-100 p-2"
+                          >
                             <Plus
                               className="h-4 w-4 rotate-45 cursor-pointer"
                               onClick={() => {
@@ -325,9 +328,12 @@ export default function TrainingCenterForm({
                     </Button>
                   </div>
                   <div className="flex flex-col gap-2">
-                    {field?.value.map((image) => {
+                    {field?.value.map((image: string, index: number) => {
                       return (
-                        <div className="flex items-center gap-1 rounded-lg bg-slate-100 p-2">
+                        <div
+                          key={index}
+                          className="flex items-center gap-1 rounded-lg bg-slate-100 p-2"
+                        >
                           <Plus
                             className="h-4 w-4 rotate-45 cursor-pointer"
                             onClick={() => {

@@ -136,9 +136,10 @@ export default function TutorTrainingForm({
               return (
                 <FormItem className="flex flex-col space-y-3">
                   <div className="flex gap-2">
-                    {field?.value.map((tag) => {
+                    {field?.value.map((tag: string, index: number) => {
                       return (
                         <Badge
+                          key={index}
                           variant={"tag"}
                           className="flex justify-between gap-1 px-3 hover:scale-100"
                         >

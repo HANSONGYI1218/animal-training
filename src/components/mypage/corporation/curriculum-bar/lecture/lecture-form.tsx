@@ -335,6 +335,7 @@ export default function LectureForm({ lecture }: { lecture?: Lecture }) {
                       {field?.value.map((tag) => {
                         return (
                           <Badge
+                            key={tag}
                             variant={"tag"}
                             className="flex justify-between gap-1 px-3 hover:scale-100"
                           >

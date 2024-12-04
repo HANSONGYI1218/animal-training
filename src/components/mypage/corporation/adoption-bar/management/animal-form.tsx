@@ -271,9 +271,12 @@ export default function AnimalForm({ animal }: { animal?: GetAnimalDto }) {
                     추가
                   </Button>
                 </div>
-                {field?.value?.map((remark: string) => {
+                {field?.value?.map((remark: string, index: number) => {
                   return (
-                    <div className="flex h-11 items-center rounded-xl border px-3">
+                    <div
+                      className="flex h-11 items-center rounded-xl border px-3"
+                      key={index}
+                    >
                       {remark}
                     </div>
                   );

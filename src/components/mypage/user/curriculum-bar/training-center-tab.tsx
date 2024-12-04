@@ -71,6 +71,7 @@ export default function TraningCenterTab() {
               {tutorTraningCenters.map((tutorTraningCenter, index) => {
                 return (
                   <Badge
+                    key={index}
                     onClick={() => {
                       setSelectIndex(index);
                     }}

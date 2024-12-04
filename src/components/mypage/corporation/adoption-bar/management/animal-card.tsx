@@ -77,8 +77,8 @@ export default function AnimalCard({ animal }: { animal: GetAnimalDto }) {
           <div className="flex flex-col gap-1">
             <span className="text-neutral-600">기타사항</span>
             <div className="ml-2 flex flex-col gap-1">
-              {animal?.remarks?.map((remark: string) => (
-                <div className="flex items-center gap-2">
+              {animal?.remarks?.map((remark: string, index: number) => (
+                <div className="flex items-center gap-2" key={index}>
                   <Dot className="h-1 w-1 rounded-full bg-black" />
                   <span className="font-semibold">{remark}</span>
                 </div>

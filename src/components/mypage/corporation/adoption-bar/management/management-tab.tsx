@@ -71,7 +71,7 @@ export default function ManagementTab() {
           </Link>
           <div className="grid w-full grid-cols-3 gap-6">
             {animals?.map((animal: GetAnimalDto) => {
-              return <AnimalCard animal={animal} />;
+              return <AnimalCard animal={animal} key={animal?.id} />;
             })}
           </div>
         </>
