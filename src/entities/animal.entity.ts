@@ -1,10 +1,11 @@
-import { GenderType } from "@prisma/client";
+import { AnimalType, GenderType } from "@prisma/client";
 
 interface AnimalEntityProps {
   id?: string;
   name: string;
   age: number;
   gender: GenderType;
+  animalType: AnimalType;
   breed: string;
   profile: string;
   additionalImgs: string[] | null;
@@ -20,6 +21,7 @@ export class AnimalEntity {
   private name: string;
   private age: number;
   private gender: GenderType;
+  private animalType: AnimalType;
   private breed: string;
   private profile: string;
   private additionalImgs: string[] | null;
@@ -35,6 +37,7 @@ export class AnimalEntity {
     name,
     age,
     gender,
+    animalType,
     breed,
     profile,
     additionalImgs,
@@ -48,6 +51,7 @@ export class AnimalEntity {
     this.name = name;
     this.age = age;
     this.gender = gender;
+    this.animalType = animalType;
     this.breed = breed;
     this.profile = profile;
     this.additionalImgs = additionalImgs;

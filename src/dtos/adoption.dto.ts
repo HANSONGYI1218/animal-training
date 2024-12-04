@@ -12,7 +12,6 @@ import {
 
 export type AdoptionDto = {
   id?: string;
-  invite_email: string;
   status: AdoptionStatus;
   step: AdoptionStep;
   animal_type: AnimalType;
@@ -34,11 +33,11 @@ export type AdoptionDto = {
 };
 
 export type CreateAdoptionDto = {
-  invite_email: string;
   animal_type: AnimalType;
   adopterId: string;
   breederId?: string;
   breederCorporationId?: string;
+  animalId: string;
 };
 
 export type UpdateAdoptionDto = {
@@ -54,11 +53,11 @@ export type UpdateAdoptionDto = {
   trainingForm?: string[];
   adoptionForm?: string[];
   attendances?: Prisma.JsonArray;
+  adopterId?: string;
 };
 
 export type GetAdoptionDto = {
   id?: string;
-  invite_email: string;
   status: AdoptionStatus;
   step: AdoptionStep;
   animal_type: AnimalType;
@@ -97,7 +96,6 @@ export type GetCurriculumDto = {
 export type AdoptionTableDto = {
   //입양자 리스트 표에서 사용
   id: string;
-  invite_email: string;
   status: AdoptionStatus;
   step: AdoptionStep;
   adopter: User;

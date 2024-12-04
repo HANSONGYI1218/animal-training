@@ -72,6 +72,7 @@ export const updateAnimalService = async (
       name: dto?.name ?? animal.name,
       age: dto?.age ?? animal.age,
       gender: dto?.gender ?? animal.gender,
+      animalType: dto?.animalType ?? animal?.animalType,
       breed: dto?.breed ?? animal.breed,
       profile: dto?.profile ?? animal?.profile ?? null,
       additionalImgs: dto?.additionalImgs ?? animal?.additionalImgs ?? null,

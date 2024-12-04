@@ -161,7 +161,6 @@ model CurriculumLecture {
 
 model Adoption {
   id                    String               @id  @default(uuid())
-  invite_email          String               @db.VarChar(255)
   status                AdoptionStatus       @default(NOT_ADOPTION)
   step                  AdoptionStep         @default(NOT_INVITATION)
   animal_type           AnimalType           @default(DOG)
@@ -197,6 +196,7 @@ model Animal {
   name              String?         @db.VarChar(255)
   age               Int?            @default(0)
   gender            GenderType      @default(MALE)
+  animalType        AnimalType      @default(DOG)
   breed             String          @db.VarChar(255)
   profile           String          @db.VarChar(255)
   additionalImgs    String[]

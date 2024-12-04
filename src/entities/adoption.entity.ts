@@ -8,7 +8,6 @@ import {
 
 interface AdoptionEntityProps {
   id?: string;
-  invite_email: string;
   status: AdoptionStatus;
   step: AdoptionStep;
   animal_type: AnimalType;
@@ -21,16 +20,15 @@ interface AdoptionEntityProps {
   adoptionForm: string[];
   attendances: Prisma.JsonArray;
   adopterId: string;
-  breederId: string;
-  breederCorporationId: string;
+  breederId: string | null;
+  breederCorporationId: string | null;
   animalId: string;
-  tutorTrainingCenterId: string;
+  tutorTrainingCenterId: string | null;
   updatedAt?: Date;
 }
 
 export class AdoptionEntity {
   private id?: string;
-  private invite_email: string;
   private status: AdoptionStatus;
   private step: AdoptionStep;
   private animal_type: AnimalType;
@@ -43,16 +41,15 @@ export class AdoptionEntity {
   private adoptionForm: string[];
   private attendances: Prisma.JsonArray;
   private adopterId: string;
-  private breederId: string;
-  private breederCorporationId: string;
+  private breederId: string | null;
+  private breederCorporationId: string | null;
   private animalId: string;
-  private tutorTrainingCenterId: string;
+  private tutorTrainingCenterId: string | null;
   private createdAt: Date;
   private updatedAt: Date;
 
   constructor({
     id,
-    invite_email,
     status,
     step,
     animal_type,
@@ -72,7 +69,6 @@ export class AdoptionEntity {
     updatedAt,
   }: AdoptionEntityProps) {
     this.id = id;
-    this.invite_email = invite_email;
     this.status = status;
     this.step = step;
     this.animal_type = animal_type;

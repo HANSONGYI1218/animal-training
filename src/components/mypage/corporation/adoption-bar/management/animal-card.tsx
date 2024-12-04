@@ -1,7 +1,10 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { genderAmianlTypeSwap } from "@/constants/constants.all";
+import {
+  animalTypeSwap,
+  genderAmianlTypeSwap,
+} from "@/constants/constants.all";
 import { GetAnimalDto } from "@/dtos/animal.dto";
 import { format } from "date-fns";
 import { Dot } from "lucide-react";
@@ -9,7 +12,13 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 
-export default function AnimalCard({ animal }: { animal: GetAnimalDto }) {
+export default function AnimalCard({
+  animal,
+  isEdit,
+}: {
+  animal: GetAnimalDto;
+  isEdit: boolean;
+}) {
   const cardRef = useRef<HTMLDivElement>(null);
   const [isHover, setIsHover] = useState(false);
   const [height, setHeight] = useState<number | null>(null);
@@ -28,7 +37,7 @@ export default function AnimalCard({ animal }: { animal: GetAnimalDto }) {
       onMouseLeave={() => {
         setIsHover(false);
       }}
-      className="group flex h-80 flex-col items-center overflow-hidden rounded-xl px-1"
+      className="group flex h-[350px] flex-col items-center overflow-hidden rounded-xl px-1"
     >
       <Image
         src="/Test-face.png"
@@ -42,7 +51,7 @@ export default function AnimalCard({ animal }: { animal: GetAnimalDto }) {
         className="flex w-full flex-col gap-2 rounded-xl bg-white p-4 duration-700"
         style={{
           transform: isHover
-            ? `translateY(-${(height ?? 0) - 90}px)`
+            ? `translateY(-${(height ?? 0) - 120}px)`
             : "translateY(0)",
           boxShadow: isHover ? "0px 4px 10px rgba(0, 0, 0, 0.15)" : "none",
         }}
@@ -63,7 +72,12 @@ export default function AnimalCard({ animal }: { animal: GetAnimalDto }) {
               {genderAmianlTypeSwap[animal?.gender]}
             </span>
           </div>
-
+          <div className="flex gap-2">
+            <span className="text-neutral-600">종류</span>
+            <span className="font-semibold">
+              {animalTypeSwap[animal?.animalType]}
+            </span>
+          </div>
           <div className="flex gap-2">
             <span className="text-neutral-600">품종:</span>
             <span className="font-semibold">{animal?.breed}</span>
@@ -86,17 +100,30 @@ export default function AnimalCard({ animal }: { animal: GetAnimalDto }) {
             </div>
           </div>
         </div>
-        <Link
-          href={{
-            pathname: `/mypage/corporation/adoption/management/${animal?.adoption?.id ? `edit/adoption/${animal?.adoption?.id}` : "new/adoption"}`,
-            query: { animalId: animal?.id },
-          }}
-          className="flex w-full"
-        >
-          <Button variant={"destructive"} className="w-full">
-            {animal?.adoption?.id ? "입양서 수정" : "입양서 작성"}
-          </Button>
-        </Link>
+        {isEdit ? (
+          <Link
+            href={{
+              pathname: `/mypage/corporation/adoption/management/edit/animal/${animal?.id}`,
+            }}
+            className="flex w-full"
+          >
+            <Button variant={"destructive"} className="w-full">
+              분양동물 수정
+            </Button>
+          </Link>
+        ) : (
+          <Link
+            href={{
+              pathname: `/mypage/corporation/adoption/management/${animal?.adoption?.id ? `edit/adoption/${animal?.adoption?.id}` : "new/adoption"}`,
+              query: { animalId: animal?.id },
+            }}
+            className="flex w-full"
+          >
+            <Button variant={"destructive"} className="w-full">
+              {animal?.adoption?.id ? "입양서 수정" : "입양서 작성"}
+            </Button>
+          </Link>
+        )}
       </div>
     </div>
   );
