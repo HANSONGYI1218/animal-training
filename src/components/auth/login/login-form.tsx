@@ -13,10 +13,10 @@ import {
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
-import { toast } from "@/components/ui/use-toast";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
+import { toast } from "sonner";
 
 const LoginSchema = z.object({
   userType: z.enum(["USER", "CORPORATION"]).default("USER"),
@@ -24,7 +24,7 @@ const LoginSchema = z.object({
   password: z.string().min(1, { message: "비밀번호를 적어주세요." }),
 });
 
-export default function LoginForm() {
+export default function LoginForm({ isInvited }: { isInvited?: boolean }) {
   const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
     defaultValues: { userType: "USER", email: "", password: "" },
@@ -47,19 +47,16 @@ export default function LoginForm() {
 
       if (response?.error === "CredentialsSignin") {
         setIsUserExist(false);
+      } else if (isInvited) {
+        router.replace("/curriculum");
       } else {
         router.replace("/lecture");
       }
 
       setIsLoading(false);
     } catch {
-      toast({
-        title: "You submitted the following values:",
-        description: (
-          <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-            <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-          </pre>
-        ),
+      toast("not found", {
+        description: "잠시 후 다시 시도해 주세요.",
       });
     }
   }

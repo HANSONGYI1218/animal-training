@@ -13,10 +13,10 @@ import {
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
-import { toast } from "@/components/ui/use-toast";
+
 import { Check, Eye, EyeOff, Loader2 } from "lucide-react";
 import { generateSixDigitCode } from "@/utils/utils";
-import { cookies } from "next/headers";
+import { toast } from "sonner";
 
 const LoginInfoSchema = z
   .object({
@@ -72,13 +72,8 @@ export default function LoginInfoForm({
 
       setIsSending(true);
     } catch {
-      toast({
-        title: "You submitted the following values:",
-        description: (
-          <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-            <code className="text-white">{JSON.stringify(null, null, 2)}</code>
-          </pre>
-        ),
+      toast("not found", {
+        description: "잠시 후 다시 시도해 주세요.",
       });
     }
   };
@@ -113,13 +108,8 @@ export default function LoginInfoForm({
       setIsLoading(false);
       setCurrentIndex(1);
     } catch {
-      toast({
-        title: "You submitted the following values:",
-        description: (
-          <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-            <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-          </pre>
-        ),
+      toast("not found", {
+        description: "잠시 후 다시 시도해 주세요.",
       });
     }
   }

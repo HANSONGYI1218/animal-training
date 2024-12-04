@@ -20,7 +20,6 @@ import {
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { useContext, useState } from "react";
-import { toast } from "@/components/ui/use-toast";
 import { ChevronLeft, Loader2, Plus } from "lucide-react";
 import { OccupationType } from "@prisma/client";
 import Link from "next/link";
@@ -30,6 +29,7 @@ import { occupationTypeSwap } from "@/constants/constants.all";
 import { GetTutorDto } from "@/dtos/tutor.dto";
 import { TutorTrainingCenterDto } from "@/dtos/tutor.trainingCenter.dto";
 import { Badge } from "@/components/ui/badge";
+import { toast } from "sonner";
 
 const TutorSchema = z.object({
   name: z.string().min(1, { message: "이름을 적어주세요." }),
@@ -93,13 +93,8 @@ export default function TutorForm({
         );
       }
     } catch {
-      toast({
-        title: "You submitted the following values:",
-        description: (
-          <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-            <code className="text-white">{JSON.stringify(null, null, 2)}</code>
-          </pre>
-        ),
+      toast("not found", {
+        description: "잠시 후 다시 시도해 주세요.",
       });
     }
   };
@@ -120,8 +115,7 @@ export default function TutorForm({
       ? {
           price: formTutorTrainingCenter.watch("price"),
           holidays: formTutorTrainingCenter.watch("holidays"),
-          tutorId: tutorTrainingCenter?.tutorId,
-          trainingCenterId: tutorTrainingCenter?.trainingCenterId,
+          id: tutorTrainingCenter?.id ?? "",
         }
       : null;
 
@@ -145,18 +139,11 @@ export default function TutorForm({
       setIsLoading(false);
       window.location.href = "/mypage/corporation/curriculum";
     } catch (error) {
-      toast({
-        title: "Error submitting the form",
-        description: (
-          <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-            <code className="text-white">{JSON.stringify(error, null, 2)}</code>
-          </pre>
-        ),
+      toast("not found", {
+        description: "잠시 후 다시 시도해 주세요.",
       });
-      setIsLoading(false);
     }
   }
-
   return (
     <div className="flex flex-col gap-6">
       <Form {...formTutor}>

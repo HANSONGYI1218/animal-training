@@ -1,65 +1,78 @@
+import { currentAccount } from "@/action/user-action";
+import PlayableCard from "@/components/common/player-card";
 import VideoHeader from "@/components/curriculum/video/video-header";
 import { CurriculumLectureDto } from "@/dtos/curriculum.lecture.dto";
-import { UserCurriculumDto } from "@/dtos/user.curriculum.dto";
-import { CurriculumLecture } from "@/types/tyeps.all";
-import dummydata from "@/utils/dummydata";
+import { GetUserByCurriculumDto } from "@/dtos/user.dto";
+import UserCurriculumProvider from "@/providers/user-curriculum-provider";
+import { AnimalType } from "@prisma/client";
 
 export default async function LectureVideoPage({
   params,
+  searchParams,
 }: {
   params: { category: string; id: string };
+  searchParams: {
+    animalType: AnimalType;
+  };
 }) {
   const { category, id } = params;
+  const { animalType } = searchParams;
+  const session = await currentAccount();
 
-  const responseCurriculums = await fetch(
-    `${process.env.NEXT_PUBLIC_WEB_URL}/api/curriculum-lecture?category=${category.toUpperCase()}`,
-    {
-      method: "GET",
-      cache: "no-store",
-    },
-  );
-  if (!responseCurriculums.ok) {
-    return null;
-  }
-  const curriculumLectures: CurriculumLectureDto[] =
-    await responseCurriculums.json();
+  const userId = session?.user?.id;
 
-  const responseLecture = await fetch(
-    `${process.env.NEXT_PUBLIC_WEB_URL}/api/curriculum-lecture?id=${id}`,
-    {
-      method: "GET",
-      cache: "no-store",
-    },
-  );
-  if (!responseLecture.ok) {
-    return null;
-  }
-  const currentLecture: CurriculumLectureDto = await responseLecture.json();
+  const [responseCurriculums, responseUser] = await Promise.all([
+    fetch(
+      `${process.env.NEXT_PUBLIC_WEB_URL}/api/curriculum-lecture?category=${category.toUpperCase()}&animalType=${animalType.toUpperCase()}`,
+      {
+        method: "GET",
+        cache: "no-store",
+      },
+    ),
+    fetch(
+      `${process.env.NEXT_PUBLIC_WEB_URL}/api/user?curriculum_userId=${userId}`,
+      {
+        method: "GET",
+        cache: "no-store",
+      },
+    ),
+  ]);
 
-  const responseUserCurriculum = await fetch(
-    `${process.env.NEXT_PUBLIC_WEB_URL}/api/user-curriculum?userId=${"1"}`,
-    {
-      method: "GET",
-      cache: "no-store",
-    },
-  );
-  if (!responseUserCurriculum.ok) {
+  if (!responseCurriculums.ok || !responseUser.ok) {
     return null;
   }
 
-  const userCurriculum: UserCurriculumDto = await responseUserCurriculum.json();
+  const [curriculumLectures, user] = await Promise.all([
+    responseCurriculums.json() as Promise<CurriculumLectureDto[]>,
+    responseUser.json() as Promise<GetUserByCurriculumDto>,
+  ]);
+
+  const currentLecture = curriculumLectures.find(
+    (lecture) => lecture?.id === id,
+  ) as CurriculumLectureDto;
+
+  const userWithId = { ...user, id };
 
   return (
     <main className="flex w-full flex-col bg-black">
-      <VideoHeader
-        lecture={currentLecture}
-        category={category}
-        lectures={curriculumLectures}
-        userCurriculum={userCurriculum}
+      <UserCurriculumProvider user={userWithId}>
+        <VideoHeader lecture={currentLecture} lectures={curriculumLectures} />
+      </UserCurriculumProvider>
+      <PlayableCard
+        url={currentLecture?.videoUrl}
+        userId={user?.id}
+        animalType={animalType}
+        lastPlayedTime={
+          animalType === AnimalType.DOG
+            ? user?.lastVideoTimes[0]
+            : user?.lastVideoTimes[1]
+        }
+        lastVideoIndex={
+          animalType === AnimalType.DOG
+            ? user?.lastVideoIndexs[0]
+            : user?.lastVideoIndexs[1]
+        }
       />
-      <section className="container mx-auto h-full bg-white text-white">
-        콘텐츠 영역
-      </section>
     </main>
   );
 }

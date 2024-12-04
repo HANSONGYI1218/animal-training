@@ -11,12 +11,12 @@ export default function AdoptionNav({
     <div className="flex w-full gap-2 border-b">
       <Button
         onClick={() => {
-          setTab("invitation");
+          setTab("management");
         }}
         variant={"default"}
-        className={`w-24 rounded-none border-b-2 border-white bg-transparent py-6 hover:border-gray-300 ${tab === "invitation" && "border-green-100 text-green-100 hover:border-green-100"}`}
+        className={`w-24 rounded-none border-b-2 border-white bg-transparent py-6 hover:border-gray-300 ${tab === "management" && "border-green-100 text-green-100 hover:border-green-100"}`}
       >
-        관리
+        입양 관리
       </Button>
       <Button
         onClick={() => {
@@ -25,7 +25,7 @@ export default function AdoptionNav({
         variant={"default"}
         className={`w-24 rounded-none border-b-2 border-white bg-transparent py-6 hover:border-gray-300 ${tab === "record" && "border-green-100 text-green-100 hover:border-green-100"}`}
       >
-        기록
+        입양 기록
       </Button>
     </div>
   );

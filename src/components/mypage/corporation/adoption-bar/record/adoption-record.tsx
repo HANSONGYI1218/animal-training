@@ -1,4 +1,4 @@
-import ListTable from "../invitation/list-table";
+import ListTable from "../management/list-table";
 
 export default function AdoptionRecord() {
   return (

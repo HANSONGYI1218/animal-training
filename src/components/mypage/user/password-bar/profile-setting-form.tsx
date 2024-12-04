@@ -7,9 +7,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { useState, useContext } from "react";
-import { toast } from "@/components/ui/use-toast";
+
 import { Loader2 } from "lucide-react";
 import { UserContext } from "@/providers/user-provider";
+import { toast } from "sonner";
 
 const PasswordSchema = z
   .object({
@@ -60,13 +61,8 @@ export default function PasswordForm() {
       });
       setIsLoading(false);
     } catch {
-      toast({
-        title: "You submitted the following values:",
-        description: (
-          <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-            <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-          </pre>
-        ),
+      toast("not found", {
+        description: "잠시 후 다시 시도해 주세요.",
       });
     }
   }

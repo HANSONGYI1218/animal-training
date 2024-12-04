@@ -25,7 +25,7 @@ import SearchBox from "@/components/common/search-box";
 import { AdoptionStatus, AdoptionStep } from "@prisma/client";
 import { ExternalLink } from "lucide-react";
 import AgreementCarousel from "./agreement-carousel";
-import { toast } from "@/components/ui/use-toast";
+import { toast } from "sonner";
 
 export default function ListTable({ isRecord }: { isRecord?: boolean }) {
   const corporation = useContext(CorporationContext);
@@ -54,13 +54,8 @@ export default function ListTable({ isRecord }: { isRecord?: boolean }) {
 
       setAgreement(agreement);
     } catch {
-      toast({
-        title: "You submitted the following values:",
-        description: (
-          <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-            <code className="text-white">{JSON.stringify(null, null, 2)}</code>
-          </pre>
-        ),
+      toast("not found", {
+        description: "잠시 후 다시 시도해 주세요.",
       });
     }
   };

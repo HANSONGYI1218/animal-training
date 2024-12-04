@@ -2,6 +2,7 @@ import CorporationProvider from "@/providers/corporation-provider";
 import MypageSidebar from "@/components/mypage/corporation/mypage-sidebar";
 import { CorporationDetailDto } from "@/dtos/corporation.dto";
 import { currentAccount } from "@/action/user-action";
+import { redirect } from "next/navigation";
 
 export default async function MypageCorporationLayout({
   children,
@@ -9,6 +10,10 @@ export default async function MypageCorporationLayout({
   children: React.ReactNode;
 }>) {
   const session = await currentAccount();
+
+  if (!session) {
+    redirect("/login");
+  }
 
   const corporationId = session?.user?.id;
 

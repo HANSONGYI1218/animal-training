@@ -1,6 +1,7 @@
 import { Review } from "@prisma/client";
 
 interface TutorTrainingCenterEntityProps {
+  id?: string;
   tutorId: string;
   trainingCenterId: string;
   price: string;
@@ -10,6 +11,7 @@ interface TutorTrainingCenterEntityProps {
 }
 
 export class TutorTrainingCenterEntity {
+  private id?: string;
   private tutorId: string;
   private trainingCenterId: string;
   private price: string;
@@ -19,6 +21,7 @@ export class TutorTrainingCenterEntity {
   private updatedAt: Date;
 
   constructor({
+    id,
     tutorId,
     trainingCenterId,
     holidays,
@@ -26,6 +29,7 @@ export class TutorTrainingCenterEntity {
     like,
     updatedAt,
   }: TutorTrainingCenterEntityProps) {
+    this.id = id;
     this.tutorId = tutorId;
     this.trainingCenterId = trainingCenterId;
     this.holidays = holidays;

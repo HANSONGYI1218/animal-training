@@ -24,7 +24,7 @@ model User {
   phoneNumber        String          @unique @db.VarChar(255)
   registrationNumber String          @unique @db.VarChar(255)
   nickname           String          @unique @db.VarChar(255)
-  birthday           DateTime        @default(now())
+  birthday           DateTime
   gender             GenderType      @default(MALE)
   isNewNews_SMS      Boolean         @default(true)
   isNotice_SMS       Boolean         @default(true)
@@ -32,17 +32,17 @@ model User {
   isNewNews_Email    Boolean         @default(true)
   isNotice_Email     Boolean         @default(true)
   isPromotion_Email  Boolean         @default(true)
+  lastVideoIndexs    Int[]    //[0] 강아지 강의, [1] 고양이 강의
+  lastVideoTimes     Float[]  //[0] 강아지 강의 시청 시간, [1] 고양이 강의 시청 시간  
   createdAt          DateTime        @default(now())
   updatedAt          DateTime        @updatedAt
   adopterAdoptions   Adoption[]      @relation("AdopterAdoptions")
   breederAdoptions   Adoption[]      @relation("BreederAdoptions")
   animals            Animal[]
-  userCurriculum     UserCurriculum[]
   reviews            Review[]
   userPayment        UserPayment[]
   lectureBookmarks   LectureBookmark[]   // One-to-many relationship with Bookmark
   tutorBookmarks     TutorBookmark[]
-
 }
 
 model UserPayment {
@@ -54,21 +54,6 @@ model UserPayment {
   updatedAt           DateTime        @updatedAt
   userId              String
   user                User?           @relation(fields: [userId], references: [id])
-
-  @@index([userId])
-}
-
-model UserCurriculum {
-  id                  String              @id  @default(uuid())
-  animal_type         AnimalType          @default(DOG)
-  curriculumStep      CurriculumStep      @default(LECTURE)
-  curriculumCategory  CurriculumCategory  @default(TRAINING)
-  curriculumIndex     Int                 @default(1)
-  attendances         Json?
-  createdAt           DateTime            @default(now())
-  updatedAt           DateTime            @updatedAt
-  userId              String
-  user                User?               @relation(fields: [userId], references: [id])
 
   @@index([userId])
 }
@@ -175,31 +160,36 @@ model CurriculumLecture {
 }
 
 model Adoption {
-  id                    String          @id  @default(uuid())
+  id                    String               @id  @default(uuid())
+  invite_email          String               @db.VarChar(255)
+  status                AdoptionStatus       @default(NOT_ADOPTION)
+  step                  AdoptionStep         @default(NOT_INVITATION)
+  animal_type           AnimalType           @default(DOG)
+  curriculumStep        CurriculumStep       @default(LECTURE)                
   adoption_date         DateTime?       
   abandon_date          DateTime?
-  invite_email          String          @db.VarChar(255)
-  status                AdoptionStatus  @default(NOT_ADOPTION)
-  step                  AdoptionStep    @default(NOT_INVITATION)
-  abandon_reason        String?         @db.Text
+  abandon_reason        String?              @db.Text
   educationForm         String[] //[0] 분양자, [1] 입양자
   trainingForm          String[] //[0] 분양자, [1] 입양자
   adoptionForm          String[] //[0] 분양자, [1] 입양자
-  createdAt             DateTime        @default(now())
-  updatedAt             DateTime        @updatedAt
+  attendances           Json[]               @default([])
+  createdAt             DateTime             @default(now())
+  updatedAt             DateTime             @updatedAt
   adopterId             String?
   breederId             String?
   breederCorporationId  String?
-  animalId              String?
-  adopter               User?           @relation("AdopterAdoptions", fields: [adopterId], references: [id])
-  breeder               User?           @relation("BreederAdoptions", fields: [breederId], references: [id])
-  breederCorporation    Corporation?    @relation("BreederCorporationAdoptions", fields: [breederCorporationId], references: [id])
-  animal                Animal?         @relation(fields: [animalId], references: [id])
+  tutorTrainingCenterId String?
+  animalId              String               @unique         
+  adopter               User?                @relation("AdopterAdoptions", fields: [adopterId], references: [id])
+  breeder               User?                @relation("BreederAdoptions", fields: [breederId], references: [id])
+  breederCorporation    Corporation?         @relation("BreederCorporationAdoptions", fields: [breederCorporationId], references: [id])
+  animal                Animal?              @relation(fields: [animalId], references: [id])
+  tutorTrainingCenter   TutorTrainingCenter? @relation(fields: [tutorTrainingCenterId], references: [id])
 
+  @@index([tutorTrainingCenterId])
   @@index([adopterId])
   @@index([breederId])
   @@index([breederCorporationId])
-  @@index([animalId])
 }
 
 model Animal {
@@ -209,14 +199,17 @@ model Animal {
   gender            GenderType      @default(MALE)
   breed             String          @db.VarChar(255)
   profile           String          @db.VarChar(255)
-  additionalImgs    String[]          
+  additionalImgs    String[]
+  intakeDate        DateTime?
+  remarks           String[]
+  animalCode        String?
   createdAt         DateTime        @default(now())
   updatedAt         DateTime        @updatedAt
   userId            String?
   corporationId     String?
   user              User?                                                                                                                                                                                                             @relation(fields: [userId], references: [id])
   corporation       Corporation?    @relation(fields: [corporationId], references: [id])
-  adoptions         Adoption[]
+  adoption          Adoption?     
 
   @@index([userId])
   @@index([corporationId])
@@ -242,19 +235,19 @@ model TrainingCenter {
 }
 
 model TutorTrainingCenter {
+  id                 String          @id  @default(uuid())
   tutorId            String
   trainingCenterId   String
   price              String?         @db.VarChar(255)
   holidays           String[]
   like               Int             @default(0)
-  reviews            Review[]
   createdAt          DateTime        @default(now())
   updatedAt          DateTime        @updatedAt
-
+  reviews            Review[]
   tutor              Tutor           @relation(fields: [tutorId], references: [id])
   trainingCenter     TrainingCenter  @relation(fields: [trainingCenterId], references: [id])
+  adoption           Adoption[]
 
-  @@id([tutorId, trainingCenterId]) // 복합 기본 키
   @@index([tutorId])
   @@index([trainingCenterId])
 }
@@ -272,21 +265,20 @@ model CurriculumTraining {
 }
 
 model Review {
-  id                 String          @id  @default(uuid())
-  parentId           String?
-  userName           String          @db.VarChar(255)
-  rating             RatingStatus
-  content            String          @db.VarChar(255)
-  createdAt          DateTime        @default(now())
-  updatedAt          DateTime        @updatedAt
-  userId             String
-  tutorId            String  
-  trainingCenterId   String
-  user               User?           @relation(fields: [userId], references: [id])
-  tutorTrainingCenter   TutorTrainingCenter @relation(fields: [tutorId, trainingCenterId], references: [tutorId, trainingCenterId])
+  id                      String          @id  @default(uuid())
+  parentId                String?
+  userName                String          @db.VarChar(255)
+  rating                  RatingStatus
+  content                 String          @db.VarChar(255)
+  createdAt               DateTime        @default(now())
+  updatedAt               DateTime        @updatedAt
+  userId                  String
+  tutorTrainingCenterId   String
+  user                    User?           @relation(fields: [userId], references: [id])
+  tutorTrainingCenter     TutorTrainingCenter @relation(fields: [tutorTrainingCenterId], references: [id])
 
   @@index([userId])
-  @@index([tutorId, trainingCenterId]) // 복합 인덱스 설정
+  @@index([tutorTrainingCenterId]) // 복합 인덱스 설정
 }
 
 model Notice{
@@ -318,8 +310,6 @@ enum CurriculumCategory {
   TRAINING 
   BEAUTY
 }
-
-
 
 enum PriceType {
   FREE

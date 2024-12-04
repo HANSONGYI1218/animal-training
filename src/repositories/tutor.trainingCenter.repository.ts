@@ -35,14 +35,12 @@ export const getAllTutorTrainingCentersRepository = async (): Promise<
 
 // 특정 ID의 훈련소와 강사 관계 조회
 export const getTutorTrainingCenterByIdRepository = async (
-  tutorId: string,
-  trainingCenterId: string,
+  id: string,
 ): Promise<TutorTrainingCenterDto | null> => {
   try {
     const tutorTrainingCenter = await prisma.tutorTrainingCenter.findFirst({
       where: {
-        tutorId: tutorId,
-        trainingCenterId: trainingCenterId,
+        id: id,
       },
     });
 
@@ -62,10 +60,7 @@ export const updateTutorTrainingCenterRepository = async (
   try {
     await prisma.tutorTrainingCenter.update({
       where: {
-        tutorId_trainingCenterId: {
-          tutorId: dto.tutorId,
-          trainingCenterId: dto.trainingCenterId,
-        },
+        id: dto?.id,
       },
       data: dto,
     });
@@ -76,16 +71,12 @@ export const updateTutorTrainingCenterRepository = async (
 
 // 훈련소와 강사 관계 삭제
 export const deleteTutorTrainingCenterRepository = async (
-  tutorId: string,
-  trainingCenterId: string,
+  id: string,
 ): Promise<void> => {
   try {
     await prisma.tutorTrainingCenter.delete({
       where: {
-        tutorId_trainingCenterId: {
-          tutorId: tutorId,
-          trainingCenterId: trainingCenterId,
-        },
+        id: id,
       },
     });
   } catch (error: any) {

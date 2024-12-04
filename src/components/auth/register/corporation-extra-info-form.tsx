@@ -20,11 +20,12 @@ import { Calendar } from "@/components/ui/calendar";
 import { CalendarIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
-import { toast } from "@/components/ui/use-toast";
+
 import { Loader2, Search } from "lucide-react";
 import { cn } from "@/utils/utils";
 import { format } from "date-fns";
 import { ko } from "date-fns/locale";
+import { toast } from "sonner";
 
 const CorporationExtraInfSchema = z.object({
   owner_name: z.string().min(1, { message: "대표자 이름을 적어주세요." }),
@@ -127,13 +128,8 @@ export default function CorporationExtraInfForm() {
       setIsLoading(false);
     } catch {
       setIsLoading(false);
-      toast({
-        title: "You submitted the following values:",
-        description: (
-          <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-            잘못잘못
-          </pre>
-        ),
+      toast("not found", {
+        description: "잠시 후 다시 시도해 주세요.",
       });
     }
   }

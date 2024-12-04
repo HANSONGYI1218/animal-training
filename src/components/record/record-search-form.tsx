@@ -5,7 +5,7 @@ import { Input } from "../ui/input";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { toast } from "../ui/use-toast";
+
 import {
   Form,
   FormControl,
@@ -21,6 +21,7 @@ import {
 } from "@/components/ui/input-otp";
 import { Button } from "../ui/button";
 import { GetUserAdoptionRecordDto } from "@/dtos/user.dto";
+import { toast } from "sonner";
 
 const RecordSearchSchema = z.object({
   name: z.string({
@@ -63,13 +64,8 @@ export default function RecordSearchForm({
         setSearchUser(user);
       }
     } catch {
-      toast({
-        title: "You submitted the following values:",
-        description: (
-          <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-            <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-          </pre>
-        ),
+      toast("not found", {
+        description: "잠시 후 다시 시도해 주세요.",
       });
     }
   }

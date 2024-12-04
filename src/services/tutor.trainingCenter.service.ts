@@ -47,14 +47,10 @@ export const getAllTutorTrainingCentersService = async (): Promise<
 
 // 특정 ID의 강의 조회
 export const getTutorTrainingCenterByIdService = async (
-  tutorId: string,
-  trainingCenterId: string,
+  id: string,
 ): Promise<TutorTrainingCenterDto | null> => {
   try {
-    const TutortrainingCenter = await getTutorTrainingCenterByIdRepository(
-      tutorId,
-      trainingCenterId,
-    );
+    const TutortrainingCenter = await getTutorTrainingCenterByIdRepository(id);
 
     if (!TutortrainingCenter) {
       throw new Error("TutortrainingCenter is not found");
@@ -71,8 +67,7 @@ export const updateTutorTrainingCenterService = async (
 ): Promise<void> => {
   try {
     const TutortrainingCenter = await getTutorTrainingCenterByIdRepository(
-      dto?.tutorId,
-      dto?.trainingCenterId,
+      dto?.id,
     );
 
     if (!TutortrainingCenter) {
@@ -97,20 +92,16 @@ export const updateTutorTrainingCenterService = async (
 
 // 강의 삭제
 export const deleteTutorTrainingCenterService = async (
-  tutorId: string,
-  trainingCenterId: string,
+  id: string,
 ): Promise<void> => {
   try {
-    const TutortrainingCenter = await getTutorTrainingCenterByIdRepository(
-      tutorId,
-      trainingCenterId,
-    );
+    const TutortrainingCenter = await getTutorTrainingCenterByIdRepository(id);
 
     if (!TutortrainingCenter) {
       throw new Error("TutortrainingCenter is not found");
     }
 
-    await deleteTutorTrainingCenterRepository(tutorId, trainingCenterId);
+    await deleteTutorTrainingCenterRepository(id);
   } catch (error: any) {
     return error;
   }

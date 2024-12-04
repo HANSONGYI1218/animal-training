@@ -13,7 +13,7 @@ import {
   getCurriculumLectureByCategoryRepository,
   updateCurriculumLectureRepository,
 } from "@/repositories/curriculum.lecture.repository";
-import { CurriculumCategory } from "@prisma/client";
+import { AnimalType, CurriculumCategory } from "@prisma/client";
 
 // 커리큘럼 강의 생성
 export const createCurriculumLectureService = async (
@@ -64,11 +64,14 @@ export const getCurriculumLectureByIdService = async (
 
 // 특정 category의 커리큘럼 강의 조회
 export const getCurriculumLectureByCategoryService = async (
-  id: CurriculumCategory,
+  category: CurriculumCategory,
+  animalType: AnimalType,
 ): Promise<CurriculumLectureDto[]> => {
   try {
-    const curriculumLecture =
-      await getCurriculumLectureByCategoryRepository(id);
+    const curriculumLecture = await getCurriculumLectureByCategoryRepository(
+      category,
+      animalType,
+    );
 
     return curriculumLecture as CurriculumLectureDto[];
   } catch {

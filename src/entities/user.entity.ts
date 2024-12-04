@@ -11,7 +11,7 @@ interface UserEntityProps {
   phoneNumber: string;
   registrationNumber: string;
   nickname: string;
-  birthday: Date;
+  birthday: Date | null;
   gender: GenderType;
   isNewNews_SMS?: boolean;
   isNotice_SMS?: boolean;
@@ -19,6 +19,8 @@ interface UserEntityProps {
   isNewNews_Email?: boolean;
   isNotice_Email?: boolean;
   isPromotion_Email?: boolean;
+  lastVideoIndexs: number[];
+  lastVideoTimes: number[];
   updatedAt?: Date;
 }
 
@@ -33,7 +35,7 @@ export class UserEntity {
   private phoneNumber: string;
   private registrationNumber: string;
   private nickname: string;
-  private birthday: Date;
+  private birthday: Date | null;
   private gender: GenderType;
   private isNewNews_SMS: boolean;
   private isNotice_SMS: boolean;
@@ -41,6 +43,8 @@ export class UserEntity {
   private isNewNews_Email: boolean;
   private isNotice_Email: boolean;
   private isPromotion_Email: boolean;
+  private lastVideoIndexs: number[];
+  private lastVideoTimes: number[];
   private createdAt: Date;
   private updatedAt: Date;
 
@@ -63,6 +67,8 @@ export class UserEntity {
     isNewNews_Email = true,
     isNotice_Email = true,
     isPromotion_Email = true,
+    lastVideoIndexs,
+    lastVideoTimes,
     updatedAt,
   }: UserEntityProps) {
     this.id = id;
@@ -83,6 +89,8 @@ export class UserEntity {
     this.isNewNews_Email = isNewNews_Email;
     this.isNotice_Email = isNotice_Email;
     this.isPromotion_Email = isPromotion_Email;
+    this.lastVideoIndexs = lastVideoIndexs;
+    this.lastVideoTimes = lastVideoTimes;
     this.createdAt = new Date();
     this.updatedAt = updatedAt ?? new Date();
   }

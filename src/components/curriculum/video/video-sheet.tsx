@@ -17,22 +17,19 @@ import {
 } from "@/components/ui/accordion";
 import { Menu } from "lucide-react";
 import VideoList from "./video-list";
-import { UserCurriculumDto } from "@/dtos/user.curriculum.dto";
 import { CurriculumLectureDto } from "@/dtos/curriculum.lecture.dto";
 
 export default function VideoSheet({
   lectures,
-  userCurriculum,
 }: {
   lectures: CurriculumLectureDto[];
-  userCurriculum: UserCurriculumDto;
 }) {
   return (
     <Sheet>
       <SheetTrigger asChild>
         <Menu stroke="#ffffff" cursor={"pointer"} />
       </SheetTrigger>
-      <SheetContent className="flex flex-col gap-6 border-black bg-black sm:max-w-[540px]">
+      <SheetContent className="flex w-fit flex-col gap-6 border-black bg-black">
         <SheetHeader>
           <SheetTitle className="text-white">강의 목록</SheetTitle>
           <SheetDescription className="text-white">
@@ -48,7 +45,7 @@ export default function VideoSheet({
             <AccordionTrigger className="rounded-xl bg-green-60 px-4 text-lg font-semibold text-white">
               섹션 1. 강의소개
             </AccordionTrigger>
-            <AccordionContent className="px-3 py-6">
+            <AccordionContent className="w-full py-6">
               <div className="flex flex-1 flex-col">
                 {lectures.slice(0, 3).map((lecture) => {
                   return <VideoList key={lecture?.id} lecture={lecture} />;
@@ -60,7 +57,7 @@ export default function VideoSheet({
             <AccordionTrigger className="rounded-xl bg-green-60 px-4 text-lg font-semibold text-white">
               섹션 2. 준비물
             </AccordionTrigger>
-            <AccordionContent className="px-3 py-6">
+            <AccordionContent className="py-6">
               <div className="flex flex-1 flex-col">
                 {lectures.slice(3, 6).map((lecture) => {
                   return <VideoList key={lecture?.id} lecture={lecture} />;
@@ -72,7 +69,7 @@ export default function VideoSheet({
             <AccordionTrigger className="rounded-xl bg-green-60 px-4 text-lg font-semibold text-white">
               섹션 3. 훈련
             </AccordionTrigger>
-            <AccordionContent className="px-3 py-6">
+            <AccordionContent className="py-6">
               <div className="flex flex-1 flex-col">
                 {lectures.slice(6, 9).map((lecture) => {
                   return <VideoList key={lecture?.id} lecture={lecture} />;

@@ -31,14 +31,17 @@ export function generateSixDigitCode() {
   return Math.floor(100000 + Math.random() * 900000);
 }
 
-export function getCookie(name: string) {
-  if (typeof window === "undefined") {
-    return null;
+export function formatTime(seconds: number) {
+  const hrs = Math.floor(seconds / 3600);
+  const mins = Math.floor((seconds % 3600) / 60);
+  const secs = Math.floor(seconds % 60);
+
+  const formattedMins = mins.toString().padStart(2, "0");
+  const formattedSecs = secs.toString().padStart(2, "0");
+  if (hrs === 0 && mins === 0) {
+    return `0:${formattedSecs}`;
+  } else if (hrs === 0) {
+    return `${mins}:${formattedSecs}`;
   }
-
-  const value = `; ${document.cookie}`;
-  const parts = value.split(`; ${name}=`);
-  if (parts.length === 2) return parts?.pop()?.split(";").shift();
-
-  return null;
+  return `${hrs}:${formattedMins}:${formattedSecs}`;
 }

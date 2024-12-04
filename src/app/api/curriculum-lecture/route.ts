@@ -12,7 +12,7 @@ import {
   updateCurriculumLectureService,
   deleteCurriculumLectureService,
 } from "@/services/curriculum.lecture.service";
-import { CurriculumCategory } from "@prisma/client";
+import { AnimalType, CurriculumCategory } from "@prisma/client";
 
 // POST 요청 핸들러
 async function POST(req: NextRequest, res: NextResponse) {
@@ -36,14 +36,16 @@ async function GET(req: NextRequest, res: NextResponse) {
 
   const id = searchParams.get("id");
   const category = searchParams.get("category");
+  const animalType = searchParams.get("animalType");
 
   try {
-    if (category) {
+    if (category && animalType) {
       const curriculumLecture: CurriculumLectureDto[] =
         await getCurriculumLectureByCategoryService(
           CurriculumCategory[
             category as keyof typeof CurriculumCategory
           ] as CurriculumCategory,
+          AnimalType[animalType as keyof typeof AnimalType] as AnimalType,
         );
 
       return NextResponse.json(curriculumLecture);

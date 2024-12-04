@@ -114,19 +114,21 @@ export default function LectureContainer({
         />
       </div>
       <div className="container mx-auto grid w-full grid-cols-4 gap-6 px-5">
-        {lecturesData
-          .slice(0, 20)
-          .map((lecture: GetLectureWithTutorDto, index: number) => {
-            return <LectureCard key={index} lecture={lecture} />;
-          })}
+        {lecturesData &&
+          lecturesData
+            .slice(0, 20)
+            .map((lecture: GetLectureWithTutorDto, index: number) => {
+              return <LectureCard key={index} lecture={lecture} />;
+            })}
       </div>
       {isPromotion && tutors && <LecturePromotion tutors={tutors} />}
       <div className="container mx-auto grid w-full grid-cols-4 gap-6 px-5">
-        {lecturesData
-          .slice(20)
-          .map((lecture: GetLectureWithTutorDto, index: number) => {
-            return <LectureCard key={index} lecture={lecture} />;
-          })}
+        {lecturesData &&
+          lecturesData
+            .slice(20)
+            .map((lecture: GetLectureWithTutorDto, index: number) => {
+              return <LectureCard key={index} lecture={lecture} />;
+            })}
       </div>
     </section>
   );

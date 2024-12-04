@@ -6,8 +6,8 @@ import { Input } from "@/components/ui/input";
 import { useContext, useState } from "react";
 import ListTable from "./list-table";
 import { generateSixDigitCode } from "@/utils/utils";
-import { toast } from "@/components/ui/use-toast";
 import { UserContext } from "@/providers/user-provider";
+import { toast } from "sonner";
 
 export default function InvitaionTab() {
   const user = useContext(UserContext);
@@ -47,13 +47,8 @@ export default function InvitaionTab() {
 
       setIsSending(true);
     } catch {
-      toast({
-        title: "You submitted the following values:",
-        description: (
-          <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-            <code className="text-white">{JSON.stringify(null, null, 2)}</code>
-          </pre>
-        ),
+      toast("not found", {
+        description: "잠시 후 다시 시도해 주세요.",
       });
     }
   };

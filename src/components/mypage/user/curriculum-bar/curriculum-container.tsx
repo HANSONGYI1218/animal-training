@@ -6,6 +6,7 @@ import LectureTab from "./lecture-tab";
 import TrainingLectureTab from "./training-lecture-tab";
 import TrainingCenterTab from "./training-center-tab";
 import CertificateTab from "./certificate-tab";
+import AdoptionProvider from "@/providers/adoption-provider";
 
 export default function CurriculumContainer() {
   const [tab, setTab] = useState("lecture");
@@ -13,10 +14,12 @@ export default function CurriculumContainer() {
   return (
     <main className="flex flex-col gap-10">
       <CurriculumNav tab={tab} setTab={setTab} />
-      {tab === "lecture" && <LectureTab />}
-      {tab === "training-lecture" && <TrainingLectureTab />}
-      {tab === "trainingCenter" && <TrainingCenterTab />}
-      {tab === "certificate" && <CertificateTab />}
+      <AdoptionProvider adoption={}>
+        {tab === "lecture" && <LectureTab />}
+        {tab === "training-lecture" && <TrainingLectureTab />}
+        {tab === "trainingCenter" && <TrainingCenterTab />}
+        {tab === "certificate" && <CertificateTab />}
+      </AdoptionProvider>
     </main>
   );
 }

@@ -31,9 +31,14 @@ const config = {
     extend: {
       backgroundImage: {
         "grass-pattern": "url('/images/curriculum/grass.jpg')",
-        "communication-pattern": "url('/images/curriculum/communication.jpg')",
-        "training-pattern": "url('/images/curriculum/training.jpg')",
-        "beauty-pattern": "url('/images/curriculum/beauty.jpg')",
+        "dog-communication-pattern":
+          "url('/images/curriculum/dog-communication.jpg')",
+        "dog-training-pattern": "url('/images/curriculum/dog-training.jpg')",
+        "dog-beauty-pattern": "url('/images/curriculum/dog-beauty.jpg')",
+        "cat-communication-pattern":
+          "url('/images/curriculum/cat-communication.jpg')",
+        "cat-training-pattern": "url('/images/curriculum/cat-training.jpg')",
+        "cat-beauty-pattern": "url('/images/curriculum/cat-beauty.jpg')",
       },
       colors: {
         "green-100": "#00592D",

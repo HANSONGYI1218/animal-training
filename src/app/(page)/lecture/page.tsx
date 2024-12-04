@@ -12,29 +12,28 @@ export default async function LecturePage({
 }) {
   const { category } = searchParams;
 
-  const responseLectures = await fetch(
-    `${process.env.NEXT_PUBLIC_WEB_URL}/api/lecture?category=${category}`,
-    {
+  const [responseLectures, responseTutors] = await Promise.all([
+    fetch(
+      `${process.env.NEXT_PUBLIC_WEB_URL}/api/lecture?category=${category}`,
+      {
+        method: "GET",
+        cache: "no-store",
+      },
+    ),
+    fetch(`${process.env.NEXT_PUBLIC_WEB_URL}/api/tutor`, {
       method: "GET",
       cache: "no-store",
-    },
-  );
-  if (!responseLectures.ok) {
+    }),
+  ]);
+
+  if (!responseLectures.ok || !responseTutors.ok) {
     return null;
   }
 
-  const responseTutors = await fetch(
-    `${process.env.NEXT_PUBLIC_WEB_URL}/api/tutor`,
-    {
-      method: "GET",
-      cache: "no-store",
-    },
-  );
-  if (!responseTutors.ok) {
-    return null;
-  }
-
-  const getLectures = await responseLectures.json();
+  const [getLectures, getTutors] = await Promise.all([
+    responseLectures.json(),
+    responseTutors.json(),
+  ]);
 
   const filteredLectures = getLectures.filter(
     (lecture: GetLectureWithTutorDto) => {
@@ -45,8 +44,6 @@ export default async function LecturePage({
       }
     },
   );
-
-  const getTutors = await responseTutors.json();
 
   return (
     <main className="flex w-full flex-col gap-12 py-6">

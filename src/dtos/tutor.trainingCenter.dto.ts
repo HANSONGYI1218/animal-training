@@ -1,4 +1,5 @@
 export type TutorTrainingCenterDto = {
+  id: string;
   tutorId: string;
   trainingCenterId: string;
   price: string;
@@ -16,6 +17,7 @@ export type CreateTutorTrainingCenterDto = {
 };
 
 export type UpdateTutorTrainingCenterDto = {
+  id: string;
   tutorId: string;
   trainingCenterId: string;
   price?: string;

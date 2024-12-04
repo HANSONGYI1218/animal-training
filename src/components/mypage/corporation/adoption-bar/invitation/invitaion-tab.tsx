@@ -4,10 +4,12 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useContext, useState } from "react";
-import ListTable from "./list-table";
+import ListTable from "../management/list-table";
 import { generateSixDigitCode } from "@/utils/utils";
-import { toast } from "@/components/ui/use-toast";
 import { CorporationContext } from "@/providers/corporation-provider";
+import { Plus } from "lucide-react";
+import Link from "next/link";
+import { toast } from "sonner";
 
 export default function InvitaionTab() {
   const corporation = useContext(CorporationContext);
@@ -21,18 +23,19 @@ export default function InvitaionTab() {
       const randomCode = generateSixDigitCode();
 
       setRandomMailNumber(randomCode);
-      // await fetch(`${process.env.NEXT_PUBLIC_WEB_URL}/api/contact`, {
-      //   method: "POST",
-      //   body: JSON.stringify({
-      //     randomMailNumber: randomCode,
-      //     to: v,
-      //     subject: "이메일 도착",
-      //     message: "이메일 도착",
-      //   }),
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //   },
-      // });
+      await fetch(`${process.env.NEXT_PUBLIC_WEB_URL}/api/contact`, {
+        method: "POST",
+        body: JSON.stringify({
+          randomMailNumber: randomCode,
+          to: v,
+          subject: "이메일 도착",
+          message: "이메일 도착",
+          isinvitation: true,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
       await fetch(`${process.env.NEXT_PUBLIC_WEB_URL}/api/adoption`, {
         method: "POST",
@@ -47,13 +50,8 @@ export default function InvitaionTab() {
 
       setIsSending(true);
     } catch {
-      toast({
-        title: "You submitted the following values:",
-        description: (
-          <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-            <code className="text-white">{JSON.stringify(null, null, 2)}</code>
-          </pre>
-        ),
+      toast("not found", {
+        description: "잠시 후 다시 시도해 주세요.",
       });
     }
   };
@@ -68,7 +66,7 @@ export default function InvitaionTab() {
           variant={"tag"}
           className={`cursor-pointer ${selectCategory === "invite" && "bg-black text-white"}`}
         >
-          입양자 초대
+          입양서 작성
         </Badge>
         <Badge
           onClick={() => {

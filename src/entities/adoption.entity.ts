@@ -1,72 +1,94 @@
-import { AdoptionStatus, AdoptionStep } from "@prisma/client";
+import {
+  AdoptionStatus,
+  AdoptionStep,
+  AnimalType,
+  CurriculumStep,
+  Prisma,
+} from "@prisma/client";
 
 interface AdoptionEntityProps {
   id?: string;
-  adoption_date: Date | null;
-  abandon_date: Date | null;
   invite_email: string;
   status: AdoptionStatus;
   step: AdoptionStep;
-  abandon_reason: string | null;
-  adopterId?: string | null;
-  breederId?: string | null;
-  breederCorporationId?: string | null;
+  animal_type: AnimalType;
+  curriculumStep: CurriculumStep;
+  adoption_date: Date | null;
+  abandon_date: Date | null;
+  abandon_reason: string;
   educationForm: string[];
   trainingForm: string[];
   adoptionForm: string[];
-  animalId: string | null;
+  attendances: Prisma.JsonArray;
+  adopterId: string;
+  breederId: string;
+  breederCorporationId: string;
+  animalId: string;
+  tutorTrainingCenterId: string;
   updatedAt?: Date;
 }
 
 export class AdoptionEntity {
   private id?: string;
-  private adoption_date: Date | null;
-  private abandon_date: Date | null;
   private invite_email: string;
   private status: AdoptionStatus;
   private step: AdoptionStep;
-  private abandon_reason: string | null;
-  private adopterId?: string | null;
-  private breederId?: string | null;
-  private breederCorporationId?: string | null;
-  private animalId: string | null;
+  private animal_type: AnimalType;
+  private curriculumStep: CurriculumStep;
+  private adoption_date: Date | null;
+  private abandon_date: Date | null;
+  private abandon_reason: string;
   private educationForm: string[];
   private trainingForm: string[];
   private adoptionForm: string[];
+  private attendances: Prisma.JsonArray;
+  private adopterId: string;
+  private breederId: string;
+  private breederCorporationId: string;
+  private animalId: string;
+  private tutorTrainingCenterId: string;
   private createdAt: Date;
   private updatedAt: Date;
 
   constructor({
     id,
-    adoption_date,
-    abandon_date,
     invite_email,
     status,
     step,
+    animal_type,
+    curriculumStep,
+    adoption_date,
+    abandon_date,
     abandon_reason,
+    educationForm,
+    trainingForm,
+    adoptionForm,
+    attendances = [],
     adopterId,
     breederId,
     breederCorporationId,
     animalId,
-    educationForm,
-    trainingForm,
-    adoptionForm,
+    tutorTrainingCenterId,
     updatedAt,
   }: AdoptionEntityProps) {
     this.id = id;
-    this.adoption_date = adoption_date;
-    this.abandon_date = abandon_date;
     this.invite_email = invite_email;
     this.status = status;
     this.step = step;
+    this.animal_type = animal_type;
+    this.curriculumStep = curriculumStep;
+    this.adoption_date = adoption_date;
+    this.abandon_date = abandon_date;
     this.abandon_reason = abandon_reason;
+    this.educationForm = educationForm;
+    this.trainingForm = trainingForm;
+    this.adoptionForm = adoptionForm;
+    this.attendances = attendances;
     this.adopterId = adopterId;
     this.breederId = breederId;
     this.breederCorporationId = breederCorporationId;
     this.animalId = animalId;
-    this.educationForm = educationForm;
-    this.trainingForm = trainingForm;
-    this.adoptionForm = adoptionForm;
+    this.tutorTrainingCenterId = tutorTrainingCenterId;
     this.createdAt = new Date();
     this.updatedAt = updatedAt ?? new Date();
   }
