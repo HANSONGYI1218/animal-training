@@ -20,7 +20,7 @@ export default function MypageSidebar({
     const router = pathSplit[pathSplit.length - 1];
 
     setCurrentBar(router);
-  }, []);
+  }, [path]);
 
   return (
     <aside className="flex h-full w-64 flex-col gap-8">
@@ -70,24 +70,17 @@ export default function MypageSidebar({
             입양 관리
           </Button>
         </Link>
-        <Button
-          variant={"ghost"}
-          onClick={() => {
-            setCurrentBar("order");
-          }}
-          className={`w-full text-base ${currentBar === "order" && "bg-slate-100 font-semibold"}`}
-        >
-          주문 목록
-        </Button>
-        <Button
-          variant={"ghost"}
-          onClick={() => {
-            setCurrentBar("password");
-          }}
-          className={`w-full text-base ${currentBar === "password" && "bg-slate-100 font-semibold"}`}
-        >
-          비밀번호 변경
-        </Button>
+        <Link href={"/mypage/corporation/password"}>
+          <Button
+            variant={"ghost"}
+            onClick={() => {
+              setCurrentBar("password");
+            }}
+            className={`w-full text-base ${currentBar === "password" && "bg-slate-100 font-semibold"}`}
+          >
+            비밀번호 변경
+          </Button>
+        </Link>
         <Link href={"/mypage/corporation/alarm"}>
           <Button
             variant={"ghost"}

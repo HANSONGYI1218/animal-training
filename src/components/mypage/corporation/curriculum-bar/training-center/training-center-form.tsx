@@ -13,12 +13,12 @@ import {
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { useState, useContext } from "react";
-import { toast } from "@/components/ui/use-toast";
 import { ChevronLeft, Loader2, Plus } from "lucide-react";
 import Link from "next/link";
 import { Textarea } from "@/components/ui/textarea";
 import { CorporationContext } from "../../../../../providers/corporation-provider";
 import { TrainingCenterOnlyOneTutorDto } from "@/dtos/training.center.dto";
+import { toast } from "sonner";
 
 const TrainingCenterSchema = z.object({
   name: z.string().min(1, { message: "훈련소 명을 적어주세요." }),
@@ -67,13 +67,8 @@ export default function TrainingCenterForm({
         );
       }
     } catch {
-      toast({
-        title: "You submitted the following values:",
-        description: (
-          <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-            <code className="text-white">{JSON.stringify(null, null, 2)}</code>
-          </pre>
-        ),
+      toast("not found", {
+        description: "잠시 후 다시 시도해 주세요.",
       });
     }
   };
@@ -101,13 +96,8 @@ export default function TrainingCenterForm({
       setIsLoading(false);
       window.location.href = "/mypage/corporation/curriculum";
     } catch {
-      toast({
-        title: "You submitted the following values:",
-        description: (
-          <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-            <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-          </pre>
-        ),
+      toast("not found", {
+        description: "잠시 후 다시 시도해 주세요.",
       });
     }
   }
@@ -229,9 +219,12 @@ export default function TrainingCenterForm({
                       </Button>
                     </div>
                     <div className="flex flex-col gap-2">
-                      {field?.value.map((tag) => {
+                      {field?.value.map((tag: string, index: number) => {
                         return (
-                          <div className="flex items-center gap-1 rounded-lg bg-slate-100 p-2">
+                          <div
+                            key={index}
+                            className="flex items-center gap-1 rounded-lg bg-slate-100 p-2"
+                          >
                             <Plus
                               className="h-4 w-4 rotate-45 cursor-pointer"
                               onClick={() => {
@@ -335,9 +328,12 @@ export default function TrainingCenterForm({
                     </Button>
                   </div>
                   <div className="flex flex-col gap-2">
-                    {field?.value.map((image) => {
+                    {field?.value.map((image: string, index: number) => {
                       return (
-                        <div className="flex items-center gap-1 rounded-lg bg-slate-100 p-2">
+                        <div
+                          key={index}
+                          className="flex items-center gap-1 rounded-lg bg-slate-100 p-2"
+                        >
                           <Plus
                             className="h-4 w-4 rotate-45 cursor-pointer"
                             onClick={() => {

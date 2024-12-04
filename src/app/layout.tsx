@@ -3,10 +3,10 @@ import { Pretendard } from "@/app/font";
 import "./globals.css";
 import TopBar from "@/components/common/top-bar";
 import BottomBar from "@/components/common/bottom-bar";
-import { Toaster } from "@/components/ui/toaster";
+import { Toaster } from "@/components/ui/sonner";
 import Script from "next/script";
 import AuthSession from "@/providers/auth-session";
-import { getSession } from "next-auth/react";
+import { cookies } from "next/headers";
 
 declare global {
   interface Window {
@@ -24,16 +24,15 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const session = await getSession();
+  const userType = cookies().get("userType");
+
   return (
     <html lang="ko">
       <Script src="https://cdn.iamport.kr/v1/iamport.js" />
       <Script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js" />
       <body className={`${Pretendard.className}`}>
-        <TopBar />
-        <AuthSession session={session}>
-          <section className="flex min-h-screen">{children}</section>
-        </AuthSession>
+        <TopBar userType={userType?.value ?? "login"} />
+        <AuthSession children={children} />
         <BottomBar />
         <Toaster />
       </body>

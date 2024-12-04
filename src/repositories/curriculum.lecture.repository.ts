@@ -1,6 +1,6 @@
 import { CurriculumLectureDto, toJSON } from "@/dtos/curriculum.lecture.dto";
 import prisma from "@/utils/db";
-import { CurriculumCategory } from "@prisma/client";
+import { AnimalType, CurriculumCategory } from "@prisma/client";
 
 // 커리큘럼 강의 생성
 export const createCurriculumLectureRepository = async (
@@ -51,11 +51,13 @@ export const getCurriculumLectureByIdRepository = async (
 // 특정 category의 커리큘럼 강의 조회
 export const getCurriculumLectureByCategoryRepository = async (
   category: CurriculumCategory,
+  animalType: AnimalType,
 ): Promise<CurriculumLectureDto[]> => {
   try {
     const curriculumLectures = await prisma.curriculumLecture.findMany({
       where: {
         category: category,
+        animal_type: animalType,
       },
     });
 

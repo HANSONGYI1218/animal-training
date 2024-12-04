@@ -20,7 +20,6 @@ import {
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { useState, useContext } from "react";
-import { toast } from "@/components/ui/use-toast";
 import Image from "next/image";
 import { ChevronLeft, Loader2, Plus } from "lucide-react";
 import { AnimalType, PriceType, Category, Lecture } from "@prisma/client";
@@ -28,6 +27,7 @@ import Link from "next/link";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { CorporationContext } from "../../../../../providers/corporation-provider";
+import { toast } from "sonner";
 
 const LectureSchema = z.object({
   title: z.string().min(1, { message: "제목을 적어주세요." }),
@@ -86,13 +86,8 @@ export default function LectureForm({ lecture }: { lecture?: Lecture }) {
         );
       }
     } catch {
-      toast({
-        title: "You submitted the following values:",
-        description: (
-          <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-            <code className="text-white">{JSON.stringify(null, null, 2)}</code>
-          </pre>
-        ),
+      toast("not found", {
+        description: "잠시 후 다시 시도해 주세요.",
       });
     }
   };
@@ -101,7 +96,7 @@ export default function LectureForm({ lecture }: { lecture?: Lecture }) {
     setIsLoading(true);
     try {
       if (lecture) {
-        await fetch(`/api/lecture`, {
+        await fetch(`${process.env.NEXT_PUBLIC_WEB_URL}/api/lecture`, {
           method: "PUT",
           body: JSON.stringify({
             id: lecture?.id,
@@ -109,7 +104,7 @@ export default function LectureForm({ lecture }: { lecture?: Lecture }) {
           }),
         });
       } else {
-        await fetch(`/api/lecture`, {
+        await fetch(`${process.env.NEXT_PUBLIC_WEB_URL}/api/lecture`, {
           method: "POST",
           body: JSON.stringify({
             ...data,
@@ -119,13 +114,8 @@ export default function LectureForm({ lecture }: { lecture?: Lecture }) {
       setIsLoading(false);
       window.location.href = "/mypage/corporation/curriculum";
     } catch {
-      toast({
-        title: "You submitted the following values:",
-        description: (
-          <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-            <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-          </pre>
-        ),
+      toast("not found", {
+        description: "잠시 후 다시 시도해 주세요.",
       });
     }
   }
@@ -345,6 +335,7 @@ export default function LectureForm({ lecture }: { lecture?: Lecture }) {
                       {field?.value.map((tag) => {
                         return (
                           <Badge
+                            key={tag}
                             variant={"tag"}
                             className="flex justify-between gap-1 px-3 hover:scale-100"
                           >

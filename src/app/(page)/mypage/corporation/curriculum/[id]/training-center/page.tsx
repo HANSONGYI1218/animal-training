@@ -1,7 +1,5 @@
 import TrainingCenterForm from "@/components/mypage/corporation/curriculum-bar/training-center/training-center-form";
-import { GetCurriculumTrainingDto } from "@/dtos/curriculum.training.dto";
 import { TrainingCenterOnlyOneTutorDto } from "@/dtos/training.center.dto";
-import { GetTutorDto } from "@/dtos/tutor.dto";
 
 export default async function TrainingCenterUpdatePage({
   params,

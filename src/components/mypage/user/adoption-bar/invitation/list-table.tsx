@@ -25,9 +25,9 @@ import SearchBox from "@/components/common/search-box";
 import { AdoptionStatus, AdoptionStep } from "@prisma/client";
 import { ExternalLink } from "lucide-react";
 import AgreementCarousel from "./agreement-carousel";
-import { toast } from "@/components/ui/use-toast";
+import { toast } from "sonner";
 
-export default function ListTable() {
+export default function ListTable({ isRecord }: { isRecord?: boolean }) {
   const corporation = useContext(CorporationContext);
   const [allAdoptions, setAllAdoptions] = useState<AdoptionTableDto[]>([]);
   const [adoptions, setAdoptions] = useState<AdoptionTableDto[]>([]);
@@ -52,16 +52,10 @@ export default function ListTable() {
 
       const agreement: AdoptionAgreementDto = await responseAgreement.json();
 
-      console.log("agreement:, ", agreement);
       setAgreement(agreement);
     } catch {
-      toast({
-        title: "You submitted the following values:",
-        description: (
-          <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-            <code className="text-white">{JSON.stringify(null, null, 2)}</code>
-          </pre>
-        ),
+      toast("not found", {
+        description: "잠시 후 다시 시도해 주세요.",
       });
     }
   };
@@ -81,7 +75,7 @@ export default function ListTable() {
             adoptionStepTypeSwap[adoption.step] === adoptionStep;
 
           const matchesSearch =
-            search.length === 0 || adoption.adopter.name.includes(search);
+            search.length === 0 || adoption.invite_email.includes(search);
 
           return matchesStatus && matchesSearch && matchesStep;
         },
@@ -108,7 +102,7 @@ export default function ListTable() {
   useEffect(() => {
     const getData = async () => {
       const responseadoptions = await fetch(
-        `${process.env.NEXT_PUBLIC_WEB_URL}/api/adoption?breederId=${corporation?.id}`,
+        `${process.env.NEXT_PUBLIC_WEB_URL}/api/adoption?breederId=${corporation?.id}&isRecord=${isRecord ? "true" : "false"}`,
         {
           method: "GET",
         },
@@ -162,8 +156,8 @@ export default function ListTable() {
         </div>
         <SearchBox
           useStateF={setSearch}
-          placeholder="입양자 이름 검색"
-          className="w-40"
+          placeholder="이메일 검색"
+          className="w-52"
         />
       </div>
       {adoptions.length > 0 ? (
@@ -186,7 +180,7 @@ export default function ListTable() {
                 <TableCell className="font-medium">{index + 1}</TableCell>
                 <TableCell>{adoption?.adopter?.name ?? ""}</TableCell>
                 <TableCell>{adoption?.adopter?.phoneNumber ?? ""}</TableCell>
-                <TableCell>{adoption?.adopter?.email ?? ""}</TableCell>
+                <TableCell>{adoption?.invite_email ?? ""}</TableCell>
                 <TableCell>
                   <Badge
                     variant={

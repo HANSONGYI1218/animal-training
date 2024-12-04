@@ -32,16 +32,12 @@ export async function POST(req: NextRequest, res: NextResponse) {
 export async function GET(req: NextRequest, res: NextResponse) {
   const { searchParams } = req?.nextUrl;
 
-  const tutorId = searchParams.get("tutorId");
-  const trainingCenterId = searchParams.get("trainingCenterId");
+  const id = searchParams.get("id");
 
   try {
-    if (tutorId && trainingCenterId) {
+    if (id) {
       const TutorTrainingCenter: TutorTrainingCenterDto | null =
-        await getTutorTrainingCenterByIdService(
-          tutorId as string,
-          trainingCenterId as string,
-        );
+        await getTutorTrainingCenterByIdService(id as string);
 
       if (!TutorTrainingCenter)
         return new Response("TutorTrainingCenter not found", { status: 404 });
@@ -73,13 +69,9 @@ export async function DELETE(req: NextRequest, res: NextResponse) {
   try {
     const { searchParams } = req?.nextUrl;
 
-    const tutorId = searchParams.get("tutorId");
-    const trainingCenterId = searchParams.get("trainingCenterId");
+    const id = searchParams.get("id");
 
-    await deleteTutorTrainingCenterService(
-      tutorId as string,
-      trainingCenterId as string,
-    );
+    await deleteTutorTrainingCenterService(id as string);
 
     return new NextResponse("TutorTrainingCenter deleted successfully", {
       status: 200,

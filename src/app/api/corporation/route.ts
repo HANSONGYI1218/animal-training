@@ -37,13 +37,13 @@ async function GET(req: NextRequest, res: NextResponse) {
 
   try {
     if (id) {
-      const Corporation: CorporationDetailDto | null =
+      const corporation: CorporationDetailDto | null =
         await getCorporationByIdService(id as string);
 
-      if (!Corporation)
-        return new Response("Corporation not found", { status: 404 });
+      if (!corporation)
+        return new Response("corporation not found", { status: 404 });
 
-      return NextResponse.json(Corporation);
+      return NextResponse.json(corporation);
     }
     if (email && password) {
       const user: CorporationDto | null = await getCorporationByLoginService(

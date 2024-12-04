@@ -16,7 +16,7 @@ export interface UserProviderProps {
 export default function UserProvider({ user, children }: UserProviderProps) {
   return (
     <UserContext.Provider value={user}>
-      <div className="flex h-full w-full flex-1 flex-col p-10">
+      <div className="flex min-h-screen w-full flex-1 flex-col p-10">
         {children} {/* 자식 컴포넌트를 렌더링 */}
       </div>
     </UserContext.Provider>

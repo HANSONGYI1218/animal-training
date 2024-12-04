@@ -1,24 +1,29 @@
 import prisma from "@/utils/db";
 import {
   GetUserAdoptionRecordDto,
+  GetUserByCurriculumDto,
   GetUserDto,
   UserDto,
+  GetUserSearchDto,
   toJSON,
 } from "@/dtos/user.dto";
+import { AdoptionStep } from "@prisma/client";
 
 // 유저 생성
-const createUserRepository = async (dto: UserDto): Promise<void> => {
+const createUserRepository = async (dto: UserDto): Promise<GetUserDto> => {
   try {
-    await prisma.user.create({
+    const user = await prisma.user.create({
       data: dto,
     });
+
+    return toJSON(user);
   } catch (error: any) {
     return error;
   }
 };
 
-// 특정 ID의 유저 조회
-const getUserByIdRepository = async (
+// 마이페이지에서의 유저 정보 조회
+const getUserByMypageRepository = async (
   id: string,
 ): Promise<GetUserDto | null> => {
   try {
@@ -37,6 +42,60 @@ const getUserByIdRepository = async (
           select: {
             id: true, // 북마크의 ID
             tutor: true,
+          },
+        },
+      },
+    });
+
+    if (!user) {
+      return null;
+    }
+    return toJSON(user);
+  } catch {
+    return null;
+  }
+};
+
+// 유저 정보 이메일을 통해 조회
+const getUserByEmailRepository = async (
+  email: string,
+): Promise<GetUserSearchDto | null> => {
+  try {
+    const user = await prisma.user.findUnique({
+      where: {
+        email: email,
+      },
+    });
+
+    if (!user) {
+      return null;
+    }
+    return toJSON(user);
+  } catch {
+    return null;
+  }
+};
+
+//커리큘럼 페이지에서의 유저 정보 조회
+const getUserByCurriculumRepository = async (
+  id: string,
+): Promise<GetUserByCurriculumDto | null> => {
+  try {
+    const user = await prisma.user.findUnique({
+      where: {
+        id: id,
+      },
+      include: {
+        adopterAdoptions: {
+          where: {
+            step: AdoptionStep.CURRICULUM, // 필터 조건
+          },
+          select: {
+            id: true,
+            status: true, //AdoptionStatus
+            step: true, //AdoptionStep
+            animal_type: true,
+            curriculumStep: true,
           },
         },
       },
@@ -135,8 +194,10 @@ const deleteUserRepository = async (id: string): Promise<void> => {
 export {
   createUserRepository,
   getUserByUserInfoRepository,
+  getUserByEmailRepository,
   getUserByLoginRepository,
-  getUserByIdRepository,
+  getUserByMypageRepository,
+  getUserByCurriculumRepository,
   updateUserRepository,
   deleteUserRepository,
 };

@@ -1,20 +1,24 @@
 import prisma from "@/utils/db";
 import {
   AdoptionAgreementDto,
+  AdoptionDto,
   AdoptionTableDto,
-  CreateAdoptionDto,
   GetAdoptionDto,
+  GetAdoptionWithAnimalDto,
+  GetCurriculumDto,
   toJSON,
-  UpdateAdoptionDto,
 } from "@/dtos/adoption.dto";
 
 // 입양 생성
 export const createAdoptionRepository = async (
-  dto: GetAdoptionDto,
+  dto: AdoptionDto,
 ): Promise<void> => {
   try {
     await prisma.adoption.create({
-      data: dto,
+      data: {
+        ...dto,
+        attendances: [],
+      },
     });
   } catch (error: any) {
     return error;
@@ -24,11 +28,16 @@ export const createAdoptionRepository = async (
 // 분양자의 입양 리스트 가져오기
 export const getAdoptionTableRepository = async (
   breederId: string,
+  isRecord: string,
 ): Promise<AdoptionTableDto[]> => {
   try {
-    const adoption = await prisma.adoption.findMany({
+    const adoptions = await prisma.adoption.findMany({
       where: {
         breederCorporationId: breederId,
+        status:
+          isRecord === "true"
+            ? { in: ["ADOPTION", "ABANDON"] }
+            : "NOT_ADOPTION",
       },
       include: {
         adopter: true,
@@ -36,11 +45,33 @@ export const getAdoptionTableRepository = async (
       orderBy: [{ createdAt: "desc" }],
     });
 
-    if (!adoption) {
+    if (!adoptions) {
       return [];
     }
 
-    return adoption.map(toJSON);
+    return adoptions.map(toJSON);
+  } catch {
+    return [];
+  }
+};
+
+// 입양자의 입양 리스트 가져오기
+export const getAdoptionByAdopterIdRepository = async (
+  adopterId: string,
+): Promise<GetCurriculumDto[]> => {
+  try {
+    const adoptions = await prisma.adoption.findMany({
+      where: {
+        adopterId: adopterId,
+      },
+      orderBy: [{ createdAt: "desc" }],
+    });
+
+    if (!adoptions) {
+      return [];
+    }
+
+    return adoptions.map(toJSON);
   } catch {
     return [];
   }
@@ -86,6 +117,8 @@ export const getAdoptionByIdRepository = async (
         adopter: true,
         breeder: true,
         breederCorporation: true,
+        tutorTrainingCenter: true,
+        animal: true,
       },
     });
 
@@ -93,7 +126,7 @@ export const getAdoptionByIdRepository = async (
       return null;
     }
 
-    return adoption as GetAdoptionDto;
+    return toJSON(adoption);
   } catch {
     return null;
   }
@@ -102,7 +135,7 @@ export const getAdoptionByIdRepository = async (
 // 특정 userId의 입양 조회
 export const getAdoptionByUserIdRepository = async (
   userId: string,
-): Promise<GetAdoptionDto[]> => {
+): Promise<GetAdoptionWithAnimalDto[]> => {
   try {
     const adoptions = await prisma.adoption.findMany({
       where: {
@@ -112,10 +145,11 @@ export const getAdoptionByUserIdRepository = async (
         adopter: true,
         breeder: true,
         breederCorporation: true,
+        animal: true,
       },
     });
 
-    return adoptions as GetAdoptionDto[];
+    return adoptions.map(toJSON);
   } catch {
     return [];
   }
@@ -123,7 +157,7 @@ export const getAdoptionByUserIdRepository = async (
 
 // 입양 업데이트
 export const updateAdoptionRepository = async (
-  dto: UpdateAdoptionDto,
+  dto: AdoptionDto,
 ): Promise<void> => {
   try {
     await prisma.adoption.update({
@@ -132,6 +166,7 @@ export const updateAdoptionRepository = async (
       },
       data: {
         ...dto,
+        attendances: [],
         updatedAt: new Date(),
       },
     });

@@ -37,9 +37,11 @@ export default function TrainingCenterCard({
           <div className="flex gap-3">
             <span className="text-neutral-600">환불정책</span>
             <div className="flex flex-col gap-1">
-              {trainingCenter?.refundPolicys.map((refundPolicy) => {
-                return <span>{refundPolicy}</span>;
-              })}
+              {trainingCenter?.refundPolicys.map(
+                (refundPolicy: string, index: number) => {
+                  return <span key={index}>{refundPolicy}</span>;
+                },
+              )}
             </div>
           </div>
         </div>

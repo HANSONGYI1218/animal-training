@@ -30,3 +30,18 @@ export function generateId(): string {
 export function generateSixDigitCode() {
   return Math.floor(100000 + Math.random() * 900000);
 }
+
+export function formatTime(seconds: number) {
+  const hrs = Math.floor(seconds / 3600);
+  const mins = Math.floor((seconds % 3600) / 60);
+  const secs = Math.floor(seconds % 60);
+
+  const formattedMins = mins.toString().padStart(2, "0");
+  const formattedSecs = secs.toString().padStart(2, "0");
+  if (hrs === 0 && mins === 0) {
+    return `0:${formattedSecs}`;
+  } else if (hrs === 0) {
+    return `${mins}:${formattedSecs}`;
+  }
+  return `${hrs}:${formattedMins}:${formattedSecs}`;
+}

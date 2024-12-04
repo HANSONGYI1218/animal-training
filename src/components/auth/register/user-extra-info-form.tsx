@@ -17,21 +17,24 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
-import { CalendarIcon } from "lucide-react";
+import { CalendarIcon, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
-import { toast } from "@/components/ui/use-toast";
 import { Loader2 } from "lucide-react";
 import { GenderType } from "@prisma/client";
 import { cn } from "@/utils/utils";
 import { format } from "date-fns";
 import { ko } from "date-fns/locale";
+import { toast } from "sonner";
 
 const UserExtraInfSchema = z.object({
   name: z.string().min(1, { message: "이름을 적어주세요." }),
   phoneNumber: z.string().min(1, { message: "전화번호를 적어주세요." }),
   birthday: z.date().default(new Date()),
   gender: z.enum(["MALE", "FEMALE"]).default("MALE"),
+  zipCode: z.string().min(1, { message: "우편번호를 작성해 주세요." }),
+  address: z.string().min(1, { message: "기본주소를 작성해 주세요." }),
+  detailAddress: z.string().min(1, { message: "상세주소를 작성해 주세요." }),
 });
 
 export default function UserExtraInfForm() {
@@ -42,9 +45,24 @@ export default function UserExtraInfForm() {
       phoneNumber: "",
       birthday: undefined,
       gender: GenderType.MALE,
+      zipCode: "",
+      address: "",
+      detailAddress: "",
     },
   });
   const [isLoading, setIsLoading] = useState(false);
+
+  const openAddressPopup = () => {
+    new window.daum.Postcode({
+      oncomplete: (data: any) => {
+        const addr =
+          data.userSelectedType === "R" ? data.roadAddress : data.jibunAddress;
+
+        form.setValue("zipCode", data.zonecode);
+        form.setValue("address", addr);
+      },
+    }).open();
+  };
 
   async function onSubmit(data: z.infer<typeof UserExtraInfSchema>) {
     try {
@@ -62,13 +80,8 @@ export default function UserExtraInfForm() {
 
       setIsLoading(false);
     } catch {
-      toast({
-        title: "You submitted the following values:",
-        description: (
-          <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-            <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-          </pre>
-        ),
+      toast("not found", {
+        description: "잠시 후 다시 시도해 주세요.",
       });
     }
   }
@@ -152,7 +165,7 @@ export default function UserExtraInfForm() {
                     onClick={() => {
                       field.onChange(GenderType.MALE);
                     }}
-                    className={`flex w-full cursor-pointer items-center justify-center rounded-l-xl ${field?.value === GenderType.MALE ? "bg-black font-semibold text-white hover:bg-black" : "hover:bg-slate-100"}`}
+                    className={`flex w-full cursor-pointer items-center justify-center rounded-l-xl ${field?.value === GenderType.MALE ? "bg-black font-semibold text-white hover:bg-black/80" : "hover:bg-slate-100"}`}
                   >
                     남자
                   </div>
@@ -161,7 +174,7 @@ export default function UserExtraInfForm() {
                     onClick={() => {
                       field.onChange(GenderType.FEMALE);
                     }}
-                    className={`flex w-full cursor-pointer items-center justify-center rounded-r-xl ${field?.value === GenderType.FEMALE ? "bg-black font-semibold text-white hover:bg-black" : "hover:bg-slate-100"}`}
+                    className={`flex w-full cursor-pointer items-center justify-center rounded-r-xl ${field?.value === GenderType.FEMALE ? "bg-black font-semibold text-white hover:bg-black/80" : "hover:bg-slate-100"}`}
                   >
                     여자
                   </div>
@@ -171,6 +184,66 @@ export default function UserExtraInfForm() {
             </FormItem>
           )}
         />
+        <div className="flex flex-col gap-2">
+          <span className="font-semibold">주소</span>
+          <div className="flex items-center gap-2">
+            <FormField
+              control={form.control}
+              name="zipCode"
+              render={({ field }) => (
+                <FormItem className="flex-1">
+                  <FormControl>
+                    <Input
+                      disabled
+                      className="disabled:cursor-default disabled:bg-background"
+                      placeholder="우편번호"
+                      value={field.value ?? ""}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <Button
+              type="button"
+              variant={"destructive"}
+              className="flex h-10 gap-2"
+              onClick={() => openAddressPopup()}
+            >
+              <Search className="h-5 w-5" />
+              주소 찾기
+            </Button>
+          </div>
+          <FormField
+            control={form.control}
+            name="address"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <Input
+                    disabled
+                    className="disabled:cursor-default disabled:bg-background"
+                    placeholder="기본주소를 입력해주세요."
+                    value={field.value ?? ""}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="detailAddress"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <Input placeholder="상세주소를 입력해주세요." {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
         <FormField
           control={form.control}
           name="phoneNumber"

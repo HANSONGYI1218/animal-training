@@ -4,65 +4,50 @@ import { ChevronRight, Dot } from "lucide-react";
 import Link from "next/link";
 import { Progress } from "../ui/progress";
 import React from "react";
-import { CurriculumCategory } from "@prisma/client";
 import { CurriculumLectureDto } from "@/dtos/curriculum.lecture.dto";
-import { lectureCategorySwap } from "@/constants/constants.all";
-import { userCurriculumProps } from "./curriculum-contrainer";
+import { AnimalType } from "@prisma/client";
 
-const bgColor = [
-  "bg-communication-pattern",
-  "bg-training-pattern",
-  "bg-beauty-pattern",
+const dogBgColor = [
+  "bg-dog-communication-pattern",
+  "bg-dog-training-pattern",
+  "bg-dog-beauty-pattern",
+];
+
+const catBgColor = [
+  "bg-cat-communication-pattern",
+  "bg-cat-training-pattern",
+  "bg-cat-beauty-pattern",
 ];
 
 export default function CurriculumLectureCard({
-  curriculumLectures,
-  userCurriculum,
+  totalLecturesCount,
+  lectures,
+  groupName,
+  lastVideoIndex,
   index,
 }: {
-  curriculumLectures: CurriculumLectureDto[];
-  userCurriculum: userCurriculumProps;
+  totalLecturesCount: number;
+  lectures: CurriculumLectureDto[];
+  groupName: string;
+  lastVideoIndex: number;
   index: number;
 }) {
   const [progress, setProgress] = React.useState(0);
   const [progressColor, setProgressColor] = React.useState<string>("");
 
   const handleProgress = async () => {
-    if (
-      Object.values(CurriculumCategory).indexOf(
-        userCurriculum?.curriculumCategory,
-      ) ===
-      Object.values(CurriculumCategory).indexOf(curriculumLectures[0]?.category)
-    ) {
-      return setProgress(
-        (userCurriculum?.curriculumIndex / curriculumLectures?.length) * 100,
-      );
-    } else if (
-      Object.values(CurriculumCategory).indexOf(
-        userCurriculum?.curriculumCategory,
-      ) <
-      Object.values(CurriculumCategory).indexOf(curriculumLectures[0]?.category)
-    ) {
+    if (lastVideoIndex >= lectures[lectures.length - 1]?.index) {
+      setProgress(100);
+    } else if (lastVideoIndex < lectures[0]?.index) {
       setProgress(0);
     } else {
-      setProgress(100);
-    }
-  };
-
-  const handleProgressColor = () => {
-    if (progress <= 25) {
-      setProgressColor("red-500");
-    } else if (progress <= 70) {
-      setProgressColor("yellow-500");
-    } else {
-      setProgressColor("green-100");
+      setProgress((lastVideoIndex / totalLecturesCount) * 100);
     }
   };
 
   React.useEffect(() => {
     const handleBoth = async () => {
       await handleProgress(); // handleProgress가 끝난 후
-      handleProgressColor(); // handleProgressColor 실행
     };
 
     handleBoth();
@@ -70,20 +55,23 @@ export default function CurriculumLectureCard({
 
   return (
     <Link
-      href={`/curriculum/lecture/${curriculumLectures[0]?.category.toLowerCase()}`}
+      href={{
+        pathname: `/curriculum/lecture/${lectures[0]?.category.toLowerCase()}`,
+        query: {
+          animalType: lectures[0].animal_type.toLowerCase(),
+        },
+      }}
       className="flex gap-6"
     >
       <div
-        className={`flex h-full w-64 rounded-xl bg-cover p-6 shadow-lg transition-all duration-300 hover:scale-105 ${bgColor[index]}`}
-      ></div>
+        className={`flex h-60 w-64 rounded-xl bg-cover p-6 shadow-lg transition-all duration-300 hover:scale-105 ${lectures[0].animal_type === AnimalType.DOG ? dogBgColor[index] : catBgColor[index]}`}
+      />
       <div className="flex flex-1 flex-col gap-3 p-6">
         <div className="flex items-center justify-between">
           <div className="flex items-center">
             <span className="font-semibold">{`STEP 0${index + 1}`}</span>
             <Dot />
-            <span className="font-semibold">
-              {lectureCategorySwap[curriculumLectures[0]?.category]}
-            </span>
+            <span className="font-semibold">{groupName}</span>
           </div>
           <div className="group relative flex h-8 w-20">
             <div className="relative z-10 flex w-full items-center justify-center gap-1">
@@ -104,7 +92,7 @@ export default function CurriculumLectureCard({
         </div>
         <div className="flex items-center gap-6">
           <span className="text-neutral-600">강의 수</span>
-          <span className="font-semibold">{curriculumLectures?.length}개</span>
+          <span className="font-semibold">{lectures?.length}개</span>
         </div>
         <div className="flex gap-6">
           <span className="text-neutral-600">책갈피</span>
@@ -113,7 +101,7 @@ export default function CurriculumLectureCard({
               ? "수강 완료"
               : progress === 0
                 ? "수강 전"
-                : `${userCurriculum?.curriculumIndex + 1}강`}
+                : `${lastVideoIndex + 1}강`}
           </span>
         </div>
         <div className="flex items-center gap-6">

@@ -19,11 +19,11 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
-import { toast } from "@/components/ui/use-toast";
 import { Loader2, Plus } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { GetTutorWithLecture } from "@/dtos/tutor.dto";
+import { toast } from "sonner";
+import { useState } from "react";
 
 const TutorTrainingCenterSchema = z.object({
   tutorId: z.string().min(1, { message: "훈련사를 선택해주세요." }),
@@ -68,13 +68,8 @@ export default function TutorTrainingForm({
       setIsLoading(false);
       window.location.href = "/mypage/corporation/curriculum";
     } catch {
-      toast({
-        title: "You submitted the following values:",
-        description: (
-          <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-            <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-          </pre>
-        ),
+      toast("not found", {
+        description: "잠시 후 다시 시도해 주세요.",
       });
     }
   }
@@ -141,9 +136,10 @@ export default function TutorTrainingForm({
               return (
                 <FormItem className="flex flex-col space-y-3">
                   <div className="flex gap-2">
-                    {field?.value.map((tag) => {
+                    {field?.value.map((tag: string, index: number) => {
                       return (
                         <Badge
+                          key={index}
                           variant={"tag"}
                           className="flex justify-between gap-1 px-3 hover:scale-100"
                         >

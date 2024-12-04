@@ -2,13 +2,40 @@ import {
   AdoptionStatus,
   AdoptionStep,
   Animal,
+  AnimalType,
   Corporation,
+  CurriculumStep,
+  Prisma,
+  TutorTrainingCenter,
   User,
 } from "@prisma/client";
 
-export type CreateAdoptionDto = {
+export type AdoptionDto = {
+  id?: string;
+  invite_email: string;
   status: AdoptionStatus;
   step: AdoptionStep;
+  animal_type: AnimalType;
+  curriculumStep: CurriculumStep;
+  adoption_date: Date | null;
+  abandon_date: Date | null;
+  abandon_reason: string;
+  educationForm: string[];
+  trainingForm: string[];
+  adoptionForm: string[];
+  attendances: Prisma.JsonArray;
+  adopterId: string;
+  breederId: string;
+  breederCorporationId: string;
+  animalId: string;
+  tutorTrainingCenterId: string;
+  createdAt: Date;
+  updatedAt: Date;
+};
+
+export type CreateAdoptionDto = {
+  invite_email: string;
+  animal_type: AnimalType;
   adopterId: string;
   breederId?: string;
   breederCorporationId?: string;
@@ -16,24 +43,53 @@ export type CreateAdoptionDto = {
 
 export type UpdateAdoptionDto = {
   id: string;
-  adoption_date?: Date;
-  abandon_date?: Date;
   status?: AdoptionStatus;
   step?: AdoptionStep;
+  animal_type?: AnimalType;
+  curriculumStep?: CurriculumStep;
+  adoption_date?: Date;
+  abandon_date?: Date;
   abandon_reason?: string;
+  educationForm?: string[];
+  trainingForm?: string[];
+  adoptionForm?: string[];
+  attendances?: Prisma.JsonArray;
 };
 
 export type GetAdoptionDto = {
-  id: string;
-  adoption_date: Date;
-  abandon_date: Date;
+  id?: string;
+  invite_email: string;
   status: AdoptionStatus;
   step: AdoptionStep;
+  animal_type: AnimalType;
+  curriculumStep: CurriculumStep;
+  adoption_date: Date | null;
+  abandon_date: Date | null;
   abandon_reason: string;
+  educationForm: string[];
+  trainingForm: string[];
+  adoptionForm: string[];
+  attendances: Prisma.JsonArray;
   adopterId: string;
-  breederId?: string;
-  breederCorporationId?: string;
-  animalId: string | null;
+  breederId: string;
+  breederCorporationId: string;
+  animalId: string;
+  tutorTrainingCenterId: string;
+  adopter: User;
+  breeder: User;
+  breederCorporation: Corporation;
+  animal: Animal;
+  tutorTrainingCenter: TutorTrainingCenter;
+  createdAt: Date;
+  updatedAt: Date;
+};
+
+export type GetCurriculumDto = {
+  id?: string;
+  status: AdoptionStatus;
+  step: AdoptionStep;
+  animal_type: AnimalType;
+  curriculumStep: CurriculumStep;
   createdAt: Date;
   updatedAt: Date;
 };
@@ -41,12 +97,13 @@ export type GetAdoptionDto = {
 export type AdoptionTableDto = {
   //입양자 리스트 표에서 사용
   id: string;
+  invite_email: string;
   status: AdoptionStatus;
   step: AdoptionStep;
   adopter: User;
   breeder: User | null;
   breederCorporation: Corporation | null;
-  animalId: string | null;
+  animalId: string;
   createdAt: Date;
   updatedAt: Date;
 };
@@ -66,8 +123,11 @@ export type GetAdoptionWithAnimalDto = {
   status: AdoptionStatus;
   abandon_reason: string;
   adopterId: string;
-  breederId: string | null;
-  breederCorporationId: string | null;
+  breederId: string;
+  breederCorporationId: string;
+  adopter: User;
+  breeder: User;
+  breederCorporation: Corporation;
   animal: Animal;
   createdAt: Date;
   updatedAt: Date;

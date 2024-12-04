@@ -1,8 +1,8 @@
-import NextAuth from "next-auth";
+import NextAuth, { AuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { redirect } from "next/navigation";
+import { cookies } from "next/headers";
 
-const handler = NextAuth({
+export const authOptions: AuthOptions = {
   pages: {
     signIn: "login",
   },
@@ -11,6 +11,21 @@ const handler = NextAuth({
     strategy: "jwt", // JWT 세션 전략 사용
     maxAge: 24 * 60 * 60, // 세션 쿠키
     // updateAge: 24 * 60 * 60, // 매일 세션 갱신
+  },
+  cookies: {
+    sessionToken: {
+      name: "next-auth.session-token",
+      options: {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "lax",
+        path: "/",
+        maxAge: 60 * 60 * 24, // 24시간
+      },
+    },
+  },
+  jwt: {
+    maxAge: 60 * 60 * 24, // 24시간
   },
   providers: [
     // 일반 로그인 로직 및 유효성 검사
@@ -43,6 +58,12 @@ const handler = NextAuth({
 
         if (user) {
           // 유저 정보와 토큰을 NextAuth.js 세션에 저장합니다.
+          cookies().set("userType", `${credentials?.userType}`, {
+            maxAge: 60 * 60 * 24, // 24시간 (초 단위)
+            httpOnly: true, // (선택) 클라이언트 JS에서 접근 불가
+            secure: process.env.NODE_ENV === "production", // (선택) HTTPS에서만 사용
+            path: "/", // (선택) 쿠키의 유효 경로
+          });
           return user;
         } else {
           return null; // 잘못된 자격 증명
@@ -52,15 +73,18 @@ const handler = NextAuth({
   ],
   callbacks: {
     async jwt({ token, user }) {
-      return { ...token, ...user };
-    },
+      if (user) token.sub = user.id;
 
+      return token;
+    },
     async session({ session, token }) {
-      // 세션에 토큰 정보를 추가합니다.
-      session.user = token as any;
+      if (session.user) {
+        session.user.id = token.sub as string;
+      }
       return session;
     },
   },
-});
+};
 
-export { handler as GET, handler as POST };
+export const GET = NextAuth(authOptions);
+export const POST = NextAuth(authOptions);

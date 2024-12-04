@@ -1,5 +1,4 @@
 import TutorForm from "@/components/mypage/corporation/curriculum-bar/lecture/tutor-form";
-import { GetTutorDto } from "@/dtos/tutor.dto";
 
 export default async function TutorUpdatePage({
   params,
@@ -10,33 +9,33 @@ export default async function TutorUpdatePage({
 }) {
   const { id } = params;
   const { trainingCenterId } = searchParams;
-  let tutorTrainingCenter = null;
 
-  const responseTutor = await fetch(
-    `${process.env.NEXT_PUBLIC_WEB_URL}/api/tutor?id=${id}`,
-    {
+  const [tutor, tutorTrainingCenter] = await Promise.all([
+    fetch(`${process.env.NEXT_PUBLIC_WEB_URL}/api/tutor?id=${id}`, {
       method: "GET",
       cache: "no-store",
-    },
-  );
-  if (!responseTutor.ok) {
-    return null;
-  }
+    }).then((response) => {
+      if (!response.ok) {
+        return Promise.reject("Failed to fetch tutor");
+      }
+      return response.json();
+    }),
 
-  const tutor: GetTutorDto = await responseTutor.json();
-
-  if (trainingCenterId !== "none") {
-    const responseTutorTrainingCenter = await fetch(
-      `${process.env.NEXT_PUBLIC_WEB_URL}/api/tutor-trainingCenter?tutorId=${id}&trainingCenterId=${trainingCenterId}`,
-      {
-        method: "GET",
-        cache: "no-store",
-      },
-    );
-    if (responseTutorTrainingCenter.ok) {
-      tutorTrainingCenter = await responseTutorTrainingCenter.json();
-    }
-  }
+    trainingCenterId !== "none"
+      ? fetch(
+          `${process.env.NEXT_PUBLIC_WEB_URL}/api/tutor-trainingCenter?id=${trainingCenterId}`,
+          {
+            method: "GET",
+            cache: "no-store",
+          },
+        ).then((response) => {
+          if (response.ok) {
+            return response.json();
+          }
+          return null; // 실패 시 null 반환
+        })
+      : Promise.resolve(null), // "none"일 경우 null 반환
+  ]);
 
   return <TutorForm tutor={tutor} tutorTrainingCenter={tutorTrainingCenter} />;
 }

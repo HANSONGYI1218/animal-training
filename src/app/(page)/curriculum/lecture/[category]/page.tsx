@@ -10,46 +10,59 @@ import { categorySwap } from "@/constants/constants.all";
 import { Button } from "@/components/ui/button";
 import { GanttChart } from "lucide-react";
 import CurriculumLecturePromotion from "@/components/curriculum/learning/lecture-promotion";
-import LectureSection from "@/components/curriculum/learning/lecture-section";
 import { CurriculumLectureDto } from "@/dtos/curriculum.lecture.dto";
-import { UserCurriculumDto } from "@/dtos/user.curriculum.dto";
+import { currentAccount } from "@/action/user-action";
+import { GetUserByCurriculumDto } from "@/dtos/user.dto";
+import { AnimalType } from "@prisma/client";
+import SectionCard from "@/components/curriculum/learning/lecture-section";
 
 export default async function CurriculumDetailPage({
   params,
+  searchParams,
 }: {
   params: { category: string };
+  searchParams: {
+    animalType: AnimalType;
+  };
 }) {
   const { category } = params;
+  const { animalType } = searchParams;
+  const session = await currentAccount();
 
-  const responseCurriculums = await fetch(
-    `${process.env.NEXT_PUBLIC_WEB_URL}/api/curriculum-lecture?category=${category.toUpperCase()}`,
-    {
-      method: "GET",
-      cache: "no-store",
-    },
-  );
-  if (!responseCurriculums.ok) {
+  const userId = session?.user?.id;
+
+  const [responseCurriculums, responseUser] = await Promise.all([
+    fetch(
+      `${process.env.NEXT_PUBLIC_WEB_URL}/api/curriculum-lecture?category=${category.toUpperCase()}&animalType=${animalType.toUpperCase()}`,
+      {
+        method: "GET",
+        cache: "no-store",
+      },
+    ),
+    fetch(
+      `${process.env.NEXT_PUBLIC_WEB_URL}/api/user?curriculum_userId=${userId}`,
+      {
+        method: "GET",
+        cache: "no-store",
+      },
+    ),
+  ]);
+
+  if (!responseCurriculums.ok || !responseUser.ok) {
     return null;
   }
-  const curriculumLectures: CurriculumLectureDto[] =
-    await responseCurriculums.json();
 
-  const responseUserCurriculum = await fetch(
-    `${process.env.NEXT_PUBLIC_WEB_URL}/api/user-curriculum?userId=${"1"}`,
-    {
-      method: "GET",
-      cache: "no-store",
-    },
-  );
-  if (!responseUserCurriculum.ok) {
-    return null;
-  }
+  const [curriculumLectures, user] = await Promise.all([
+    responseCurriculums.json() as Promise<CurriculumLectureDto[]>,
+    responseUser.json() as Promise<GetUserByCurriculumDto>,
+  ]);
 
-  const userCurriculum: UserCurriculumDto = await responseUserCurriculum.json();
+  // 2. index로 정렬
+  const sortedLectures = curriculumLectures.sort((a, b) => a.index - b.index);
 
   return (
     <main className="mb-24 flex w-full flex-col">
-      <CurriculumBanner curriculumStep={userCurriculum?.curriculumStep} />
+      <CurriculumBanner curriculumStep={"END"} />
       <section className="container mx-auto mt-12 flex max-w-[1150px] flex-col gap-6">
         <Link href={"/curriculum"}>
           <Button variant={"link"} className="flex gap-1 p-0 text-sm">
@@ -73,11 +86,15 @@ export default async function CurriculumDetailPage({
               <AccordionContent className="flex gap-2 py-4">
                 <div className="flex w-2 bg-green-60"></div>
                 <div className="mx-4 flex flex-1 flex-col">
-                  {curriculumLectures
+                  {sortedLectures
                     .slice(0, 1)
                     .map((lecture: CurriculumLectureDto) => {
                       return (
-                        <LectureSection key={lecture?.id} lecture={lecture} />
+                        <SectionCard
+                          key={lecture?.id}
+                          lecture={lecture}
+                          user={user}
+                        />
                       );
                     })}
                 </div>
@@ -90,11 +107,15 @@ export default async function CurriculumDetailPage({
               <AccordionContent className="flex gap-2 py-4">
                 <div className="flex w-2 bg-green-60"></div>
                 <div className="mx-4 flex flex-1 flex-col">
-                  {curriculumLectures
+                  {sortedLectures
                     .slice(1, 3)
                     .map((lecture: CurriculumLectureDto) => {
                       return (
-                        <LectureSection key={lecture?.id} lecture={lecture} />
+                        <SectionCard
+                          key={lecture?.id}
+                          lecture={lecture}
+                          user={user}
+                        />
                       );
                     })}
                 </div>
@@ -107,65 +128,24 @@ export default async function CurriculumDetailPage({
               <AccordionContent className="flex gap-2 py-4">
                 <div className="flex w-2 bg-green-60"></div>
                 <div className="mx-4 flex flex-1 flex-col">
-                  {curriculumLectures
+                  {sortedLectures
                     .slice(3)
                     .map((lecture: CurriculumLectureDto) => {
                       return (
-                        <LectureSection key={lecture?.id} lecture={lecture} />
+                        <SectionCard
+                          key={lecture?.id}
+                          lecture={lecture}
+                          user={user}
+                        />
                       );
                     })}
                 </div>
               </AccordionContent>
             </AccordionItem>
           </Accordion>
-          {/* <Accordion
-            type="single"
-            collapsible
-            className="flex flex-1 flex-col"
-            defaultValue={`item-${currentCurriculum?.currentIndex}`}
-          >
-            {lectures.map((lecture, index: number) => {
-              return (
-                <AccordionItem
-                  key={index}
-                  value={`item-${index + 1}`}
-                  className="flex flex-col gap-4 py-8"
-                >
-                  <AccordionTrigger>
-                    <div className="flex items-center gap-3">
-                      <span>
-                        {index + 1}강 | {lecture?.title}
-                      </span>
-                      <Badge
-                        variant={
-                          currentCurriculum?.currentIndex > index + 1
-                            ? "done"
-                            : "default"
-                        }
-                        className={`${currentCurriculum?.currentIndex <= index && "hidden"}`}
-                      >
-                        {currentCurriculum?.currentIndex > index + 1
-                          ? "학습완료"
-                          : currentCurriculum?.currentIndex === index + 1
-                            ? "학습중"
-                            : null}
-                      </Badge>
-                    </div>
-                  </AccordionTrigger>
-                  <AccordionContent className="flex flex-col gap-4">
-                    {lecture?.content}
-                    <Image
-                      src={lecture?.thumbnailPath}
-                      width={400}
-                      height={200}
-                      alt="thumbnail"
-                    />
-                  </AccordionContent>
-                </AccordionItem>
-              );
-            })}
-          </Accordion> */}
-          <CurriculumLecturePromotion userCurriculum={userCurriculum} />
+          <CurriculumLecturePromotion
+            curriculumIndex={user?.lastVideoIndexs[0]}
+          />
         </div>
       </section>
     </main>
