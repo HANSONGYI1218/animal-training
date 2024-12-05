@@ -14,6 +14,7 @@ import {
   deleteAdoptionRepository,
   getAdoptionAgreementRepository,
   getAdoptionByAdopterIdRepository,
+  getAdoptionByAdoptionIdRepository,
   getAdoptionByIdRepository,
   getAdoptionByUserIdRepository,
   getAdoptionTableRepository,
@@ -45,10 +46,9 @@ export const createAdoptionService = async (
       trainingForm: [],
       adoptionForm: [],
       attendances: [] as Prisma.JsonArray,
-      breederId: dto?.breederId ?? "",
-      breederCorporationId: dto?.breederCorporationId ?? "",
-      animalId: "",
-      tutorTrainingCenterId: "",
+      breederId: dto?.breederId ?? null,
+      breederCorporationId: dto?.breederCorporationId ?? null,
+      tutorTrainingCenterId: null,
       ...dto,
     });
 
@@ -69,6 +69,19 @@ export const getAdoptionTableService = async (
     return adoption;
   } catch {
     return [];
+  }
+};
+
+// 분양폼 id로 정보 조회
+export const getAdoptionByAdoptionId = async (
+  adoptionId: string,
+): Promise<GetAdoptionDto | null> => {
+  try {
+    const adoption = await getAdoptionByAdoptionIdRepository(adoptionId);
+
+    return adoption;
+  } catch {
+    return null;
   }
 };
 
@@ -145,11 +158,12 @@ export const updateAdoptionService = async (
       curriculumStep: dto?.curriculumStep ?? adoption.curriculumStep,
       adoption_date: dto?.adoption_date ?? adoption?.adoption_date ?? null,
       abandon_date: dto?.abandon_date ?? adoption?.abandon_date ?? null,
-      abandon_reason: dto?.abandon_reason ?? adoption.abandon_reason,
-      educationForm: dto?.educationForm ?? adoption.educationForm,
-      trainingForm: dto?.trainingForm ?? adoption.trainingForm,
-      adoptionForm: dto?.adoptionForm ?? adoption.adoptionForm,
-      attendances: dto?.attendances ?? adoption.attendances,
+      abandon_reason: dto?.abandon_reason ?? adoption.abandon_reason ?? null,
+      educationForm: dto?.educationForm ?? adoption.educationForm ?? [],
+      trainingForm: dto?.trainingForm ?? adoption.trainingForm ?? [],
+      adoptionForm: dto?.adoptionForm ?? adoption.adoptionForm ?? [],
+      attendances: dto?.attendances ?? adoption.attendances ?? [],
+      adopterId: dto?.adopterId ?? adoption.adopterId ?? null,
       updatedAt: new Date(),
     });
 

@@ -1,24 +1,30 @@
-import AnimalForm from "@/components/mypage/corporation/adoption-bar/management/animal-form";
-import { GetAnimalDto } from "@/dtos/animal.dto";
+import AdoptionForm from "@/components/mypage/corporation/adoption-bar/management/adoption-form";
+import { GetAdoptionDto } from "@/dtos/adoption.dto";
 
-export default async function AnimalFormEditPage({
+export default async function AdoptionFormEditPage({
   params,
 }: {
   params: { id: string };
 }) {
   const { id } = params;
 
-  const responseAnimal = await fetch(
-    `${process.env.NEXT_PUBLIC_WEB_URL}/api/animal?id=${id}`,
+  const responseAdoption = await fetch(
+    `${process.env.NEXT_PUBLIC_WEB_URL}/api/adoption?adoptionId=${id}`,
     {
       method: "GET",
       cache: "no-store",
     },
   );
-  if (!responseAnimal.ok) {
+  if (!responseAdoption.ok) {
     return null;
   }
-  const animal: GetAnimalDto = await responseAnimal.json();
+  const adoption: GetAdoptionDto = await responseAdoption.json();
 
-  return <AnimalForm animal={animal} />;
+  return (
+    <AdoptionForm
+      id={adoption?.id}
+      adopter={adoption?.adopter}
+      animal={adoption?.animal}
+    />
+  );
 }

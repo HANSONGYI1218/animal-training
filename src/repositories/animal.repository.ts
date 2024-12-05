@@ -26,7 +26,6 @@ export const getAnimalByIdRepository = async (
       include: {
         user: true,
         corporation: true,
-        adoption: true,
       },
     });
 
@@ -52,6 +51,7 @@ export const getAnimalByCorporationIdRepository = async (
       include: {
         user: true,
         corporation: true,
+        adoption: true,
       },
     });
 

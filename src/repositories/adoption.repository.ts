@@ -41,6 +41,7 @@ export const getAdoptionTableRepository = async (
       },
       include: {
         adopter: true,
+        animal: true,
       },
       orderBy: [{ createdAt: "desc" }],
     });
@@ -118,6 +119,33 @@ export const getAdoptionByIdRepository = async (
         breeder: true,
         breederCorporation: true,
         tutorTrainingCenter: true,
+        animal: true,
+      },
+    });
+
+    if (!adoption) {
+      return null;
+    }
+
+    return toJSON(adoption);
+  } catch {
+    return null;
+  }
+};
+
+// 분양폼 id로 정보 조회
+export const getAdoptionByAdoptionIdRepository = async (
+  adoptionId: string,
+): Promise<GetAdoptionDto | null> => {
+  try {
+    const adoption = await prisma.adoption.findUnique({
+      where: {
+        id: adoptionId,
+      },
+      include: {
+        adopter: true,
+        breeder: true,
+        breederCorporation: true,
         animal: true,
       },
     });

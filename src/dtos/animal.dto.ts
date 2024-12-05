@@ -1,10 +1,17 @@
-import { Adoption, Corporation, GenderType, User } from "@prisma/client";
+import {
+  Adoption,
+  AnimalType,
+  Corporation,
+  GenderType,
+  User,
+} from "@prisma/client";
 
 export type AnimalDto = {
   id?: string;
   name: string;
   age: number;
   gender: GenderType;
+  animalType: AnimalType;
   breed: string;
   profile: string;
   additionalImgs: string[];
@@ -21,6 +28,7 @@ export type CreateAnimalDto = {
   name: string;
   age: number;
   gender: GenderType;
+  animalType: AnimalType;
   breed: string;
   profile: string;
   additionalImgs: string[];
@@ -33,6 +41,7 @@ export type UpdateAnimalDto = {
   name?: string;
   age?: number;
   gender?: GenderType;
+  animalType?: AnimalType;
   breed?: string;
   profile?: string;
   additionalImgs?: string[];
@@ -47,6 +56,7 @@ export type GetAnimalDto = {
   name: string;
   age: number;
   gender: GenderType;
+  animalType: AnimalType;
   breed: string;
   profile: string;
   additionalImgs: string[];

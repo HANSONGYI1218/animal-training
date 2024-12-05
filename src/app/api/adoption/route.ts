@@ -4,6 +4,7 @@ import {
   AdoptionAgreementDto,
   AdoptionTableDto,
   CreateAdoptionDto,
+  GetAdoptionDto,
   GetCurriculumDto,
   UpdateAdoptionDto,
 } from "@/dtos/adoption.dto";
@@ -12,6 +13,7 @@ import {
   deleteAdoptionService,
   getAdoptionAgreementService,
   getAdoptionByAdopterIdService,
+  getAdoptionByAdoptionId,
   getAdoptionTableService,
   updateAdoptionService,
 } from "@/services/adoption.service";
@@ -33,11 +35,21 @@ export async function GET(req: NextRequest, res: NextResponse) {
   const { searchParams } = req?.nextUrl;
 
   const id = searchParams.get("id");
+  const adoptionId = searchParams.get("adoptionId");
   const adopterId = searchParams.get("adopterId");
   const breederId = searchParams.get("breederId");
   const isRecord = searchParams.get("isRecord");
 
   try {
+    if (adoptionId) {
+      const adoption: GetAdoptionDto | null = await getAdoptionByAdoptionId(
+        adoptionId as string,
+      );
+
+      if (!adoption) return new Response("Adoption not found", { status: 404 });
+
+      return NextResponse.json(adoption);
+    }
     if (breederId) {
       const breederAdoptions: AdoptionTableDto[] =
         await getAdoptionTableService(breederId as string, isRecord as string);
