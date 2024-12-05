@@ -3,7 +3,6 @@
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
@@ -23,9 +22,10 @@ import { Badge } from "@/components/ui/badge";
 import SelectBox from "@/components/common/select-box";
 import SearchBox from "@/components/common/search-box";
 import { AdoptionStatus, AdoptionStep } from "@prisma/client";
-import { ExternalLink } from "lucide-react";
-import AgreementCarousel from "../invitation/agreement-carousel";
+import { ExternalLink, Loader2 } from "lucide-react";
 import { toast } from "sonner";
+import { format } from "date-fns";
+import AgreementCarousel from "./agreement-carousel";
 
 export default function ListTable({ isRecord }: { isRecord?: boolean }) {
   const corporation = useContext(CorporationContext);
@@ -36,9 +36,12 @@ export default function ListTable({ isRecord }: { isRecord?: boolean }) {
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("최신순");
   const [agreement, setAgreement] = useState<AdoptionAgreementDto | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingtoAgreements, setIsLoadingtoAgreements] = useState(false);
 
   const getAgreementDatas = async (adoptionId: string) => {
     try {
+      setIsLoadingtoAgreements(true);
       const responseAgreement = await fetch(
         `${process.env.NEXT_PUBLIC_WEB_URL}/api/adoption?id=${adoptionId}`,
         {
@@ -53,6 +56,7 @@ export default function ListTable({ isRecord }: { isRecord?: boolean }) {
       const agreement: AdoptionAgreementDto = await responseAgreement.json();
 
       setAgreement(agreement);
+      setIsLoadingtoAgreements(false);
     } catch {
       toast("not found", {
         description: "잠시 후 다시 시도해 주세요.",
@@ -75,7 +79,9 @@ export default function ListTable({ isRecord }: { isRecord?: boolean }) {
             adoptionStepTypeSwap[adoption.step] === adoptionStep;
 
           const matchesSearch =
-            search.length === 0 || adoption.invite_email.includes(search);
+            search.length === 0 ||
+            adoption.adopter?.email.includes(search) ||
+            (adoption?.animal?.name && adoption?.animal?.name.includes(search));
 
           return matchesStatus && matchesSearch && matchesStep;
         },
@@ -101,6 +107,7 @@ export default function ListTable({ isRecord }: { isRecord?: boolean }) {
 
   useEffect(() => {
     const getData = async () => {
+      setIsLoading(true);
       const responseadoptions = await fetch(
         `${process.env.NEXT_PUBLIC_WEB_URL}/api/adoption?breederId=${corporation?.id}&isRecord=${isRecord ? "true" : "false"}`,
         {
@@ -114,6 +121,7 @@ export default function ListTable({ isRecord }: { isRecord?: boolean }) {
 
       const adoptions: AdoptionTableDto[] = await responseadoptions.json();
       setAllAdoptions(adoptions);
+      setIsLoading(false);
     };
 
     getData();
@@ -156,33 +164,50 @@ export default function ListTable({ isRecord }: { isRecord?: boolean }) {
         </div>
         <SearchBox
           useStateF={setSearch}
-          placeholder="이메일 검색"
+          placeholder="이메일, 분양동물 이름 검색"
           className="w-52"
         />
       </div>
-      {adoptions.length > 0 ? (
+      {isLoading ? (
+        <div className="flex min-h-40 w-full flex-col items-center justify-center py-6 text-center">
+          <Loader2 className="animate-spin" />
+        </div>
+      ) : adoptions.length > 0 ? (
         <Table>
-          <TableCaption>A list of your recent invoices.</TableCaption>
-          <TableHeader>
+          <TableHeader className="bg-slate-100">
             <TableRow>
-              <TableHead className="w-14"></TableHead>
-              <TableHead>이름</TableHead>
-              <TableHead>전화번호</TableHead>
-              <TableHead>이메일</TableHead>
-              <TableHead>입양 단계</TableHead>
-              <TableHead>입양 상태</TableHead>
-              <TableHead>자세히</TableHead>
+              <TableHead className="w-10 px-2 text-center"></TableHead>
+              <TableHead className="px-2 text-center">이름</TableHead>
+              <TableHead className="px-2 text-center">전화번호</TableHead>
+              <TableHead className="px-2 text-center">이메일</TableHead>
+              <TableHead className="px-2 text-center">분양동물</TableHead>
+              <TableHead className="px-2 text-center">입양 단계</TableHead>
+              <TableHead className="px-2 text-center">입양 상태</TableHead>
+              <TableHead className="px-2 text-center">입양서 작성일</TableHead>
+              <TableHead className="px-2 text-center">자세히</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {adoptions.map((adoption: AdoptionTableDto, index: number) => (
               <TableRow key={index}>
-                <TableCell className="font-medium">{index + 1}</TableCell>
-                <TableCell>{adoption?.adopter?.name ?? ""}</TableCell>
-                <TableCell>{adoption?.adopter?.phoneNumber ?? ""}</TableCell>
-                <TableCell>{adoption?.invite_email ?? ""}</TableCell>
-                <TableCell>
+                <TableCell className="px-2 py-4 text-center text-xs font-medium">
+                  {index + 1}
+                </TableCell>
+                <TableCell className="px-2 py-4 text-center text-xs">
+                  {adoption?.adopter?.name ?? ""}
+                </TableCell>
+                <TableCell className="px-2 py-4 text-center text-xs">
+                  {adoption?.adopter?.phoneNumber ?? ""}
+                </TableCell>
+                <TableCell className="px-2 py-4 text-center text-xs">
+                  {adoption?.adopter?.email ?? ""}
+                </TableCell>
+                <TableCell className="px-2 py-4 text-center text-xs">
+                  {adoption?.animal?.name ?? ""}
+                </TableCell>
+                <TableCell className="px-2 py-4 text-center">
                   <Badge
+                    className="text-xs"
                     variant={
                       adoptionStepTypeSwap[adoption.step] === "미초대"
                         ? "destructive"
@@ -192,10 +217,15 @@ export default function ListTable({ isRecord }: { isRecord?: boolean }) {
                     {adoptionStepTypeSwap[adoption.step]}
                   </Badge>
                 </TableCell>
-                <TableCell>
-                  <Badge>{adoptionStatusTypeSwap[adoption.status]}</Badge>
+                <TableCell className="px-2 py-4 text-center">
+                  <Badge className="text-xs">
+                    {adoptionStatusTypeSwap[adoption.status]}
+                  </Badge>
                 </TableCell>
-                <TableCell>
+                <TableCell className="px-2 py-4 text-center text-xs">
+                  {format(adoption?.createdAt, "yyyy.MM.dd") ?? ""}
+                </TableCell>
+                <TableCell className="px-2 py-4">
                   <Dialog>
                     <DialogTrigger
                       asChild
@@ -204,13 +234,19 @@ export default function ListTable({ isRecord }: { isRecord?: boolean }) {
                       }}
                       disabled={!agreement}
                     >
-                      <div className="flex cursor-pointer items-center gap-1 text-sm underline">
+                      <div className="flex cursor-pointer items-center justify-center gap-1 text-xs underline">
                         자세히
                         <ExternalLink width={16} height={16} />
                       </div>
                     </DialogTrigger>
-                    <DialogContent className="sm:max-w-[425px]">
-                      <AgreementCarousel agreement={agreement!} />
+                    <DialogContent className="w-full">
+                      {isLoadingtoAgreements ? (
+                        <div className="flex min-h-40 flex-col items-center justify-center">
+                          <Loader2 className="animate-spin" />
+                        </div>
+                      ) : (
+                        <AgreementCarousel agreement={agreement!} />
+                      )}
                     </DialogContent>
                   </Dialog>
                 </TableCell>

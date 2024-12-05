@@ -37,7 +37,7 @@ export default function AnimalCard({
       onMouseLeave={() => {
         setIsHover(false);
       }}
-      className="group flex h-[350px] flex-col items-center overflow-hidden rounded-xl px-1"
+      className="group flex h-[330px] flex-col items-center overflow-hidden rounded-xl px-1"
     >
       <Image
         src="/Test-face.png"
@@ -51,50 +51,51 @@ export default function AnimalCard({
         className="flex w-full flex-col gap-2 rounded-xl bg-white p-4 duration-700"
         style={{
           transform: isHover
-            ? `translateY(-${(height ?? 0) - 120}px)`
+            ? `translateY(-${(height ?? 0) - 100}px)`
             : "translateY(0)",
           boxShadow: isHover ? "0px 4px 10px rgba(0, 0, 0, 0.15)" : "none",
         }}
       >
         <div className="flex flex-col gap-1">
           <div className="flex gap-2">
-            <span className="text-neutral-600">이름:</span>
-            <span className="font-semibold">{animal?.name}</span>
+            <span className="text-sm text-neutral-600">이름:</span>
+            <span className="text-sm font-semibold">{animal?.name}</span>
           </div>
           <div className="flex gap-2">
-            <span className="flex items-center gap-1 text-neutral-600">
+            <span className="flex items-center gap-1 text-sm text-neutral-600">
               나이
-              <Dot className="h-1 w-1 rounded-full bg-black" />
+              <Dot className="h-1 w-1 rounded-full bg-neutral-500" />
               성별:
             </span>
-            <span className="flex items-center gap-1 font-semibold">
+            <span className="flex items-center gap-1 text-sm font-semibold">
               {animal?.age}세 <Dot className="h-1 w-1 rounded-full bg-black" />{" "}
               {genderAmianlTypeSwap[animal?.gender]}
             </span>
           </div>
           <div className="flex gap-2">
-            <span className="text-neutral-600">종류</span>
-            <span className="font-semibold">
+            <span className="text-sm text-neutral-600">종류</span>
+            <span className="text-sm font-semibold">
               {animalTypeSwap[animal?.animalType]}
             </span>
           </div>
           <div className="flex gap-2">
-            <span className="text-neutral-600">품종:</span>
-            <span className="font-semibold">{animal?.breed}</span>
+            <span className="text-sm text-neutral-600">품종:</span>
+            <span className="text-sm font-semibold">{animal?.breed}</span>
           </div>
           <div className="flex gap-2">
-            <span className="text-neutral-600">보호시작일:</span>
-            <span className="font-semibold">
+            <span className="text-sm text-neutral-600">보호시작일:</span>
+            <span className="text-sm font-semibold">
               {format(animal?.intakeDate, "yyyy.MM.dd")}
             </span>
           </div>
           <div className="flex flex-col gap-1">
-            <span className="text-neutral-600">기타사항</span>
+            <span className="text-sm text-neutral-600">기타사항</span>
             <div className="ml-2 flex flex-col gap-1">
               {animal?.remarks?.map((remark: string, index: number) => (
                 <div className="flex items-center gap-2" key={index}>
-                  <Dot className="h-1 w-1 rounded-full bg-black" />
-                  <span className="font-semibold">{remark}</span>
+                  <span className="text-sm font-semibold">
+                    <span className="text-neutral-500">*</span> {remark}
+                  </span>
                 </div>
               ))}
             </div>

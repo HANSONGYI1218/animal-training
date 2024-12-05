@@ -101,7 +101,7 @@ export type AdoptionTableDto = {
   adopter: User;
   breeder: User | null;
   breederCorporation: Corporation | null;
-  animalId: string;
+  animal: Animal;
   createdAt: Date;
   updatedAt: Date;
 };

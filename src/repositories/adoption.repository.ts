@@ -41,6 +41,7 @@ export const getAdoptionTableRepository = async (
       },
       include: {
         adopter: true,
+        animal: true,
       },
       orderBy: [{ createdAt: "desc" }],
     });
