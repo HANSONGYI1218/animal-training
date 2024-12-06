@@ -19,17 +19,18 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { ChevronLeft, Loader2, Plus } from "lucide-react";
 import { OccupationType } from "@prisma/client";
 import Link from "next/link";
 import { Textarea } from "@/components/ui/textarea";
-import { CorporationContext } from "../../../../../providers/corporation-provider";
 import { occupationTypeSwap } from "@/constants/constants.all";
 import { GetTutorDto } from "@/dtos/tutor.dto";
 import { TutorTrainingCenterDto } from "@/dtos/tutor.trainingCenter.dto";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 const TutorSchema = z.object({
   name: z.string().min(1, { message: "이름을 적어주세요." }),
@@ -55,8 +56,8 @@ export default function TutorForm({
   tutor?: GetTutorDto;
   tutorTrainingCenter?: TutorTrainingCenterDto | null;
 }) {
-  const corporation = useContext(CorporationContext);
-
+  const { data: session, status } = useSession();
+  const router = useRouter();
   const formTutor = useForm<z.infer<typeof TutorSchema>>({
     resolver: zodResolver(TutorSchema),
     defaultValues: {
@@ -108,7 +109,7 @@ export default function TutorForm({
       career: formTutor.watch("career"),
       profile_img: formTutor.watch("profile_img"),
       occupation: formTutor.watch("occupation"),
-      ...(tutor ? { id: tutor?.id } : { corporationId: corporation?.id }),
+      ...(tutor ? { id: tutor?.id } : { corporationId: session?.user?.id }),
     };
 
     const tutorTrainingCenterData = tutorTrainingCenter
@@ -137,7 +138,7 @@ export default function TutorForm({
       }
 
       setIsLoading(false);
-      window.location.href = "/mypage/corporation/curriculum";
+      router.push("/mypage/corporation/curriculum");
     } catch (error) {
       toast("not found", {
         description: "잠시 후 다시 시도해 주세요.",
@@ -183,7 +184,7 @@ export default function TutorForm({
                   <FormControl>
                     <Textarea
                       placeholder="강사를 소개를 작성해주세요."
-                      className="resize-none disabled:cursor-default disabled:border-none"
+                      className="min-h-32 resize-none whitespace-pre-line disabled:cursor-default disabled:border-none"
                       {...field}
                     />
                   </FormControl>
@@ -201,8 +202,9 @@ export default function TutorForm({
                 render={({ field }) => (
                   <FormItem>
                     <Input
-                      placeholder="강사 경력을 소개해주세요."
+                      placeholder="강사 경력을 작성해주세요.(20자 이내)"
                       className="disabled:cursor-default disabled:border-none"
+                      maxLength={20}
                       {...field}
                     />
                     <FormMessage />

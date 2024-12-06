@@ -50,28 +50,6 @@ export const getCorporationByIdRepository = async (
       where: {
         id: id,
       },
-      include: {
-        tutors: {
-          include: {
-            lectures: true,
-          },
-        },
-        trainingCenters: {
-          include: {
-            tutorTrainingCenters: {
-              select: {
-                tutor: {
-                  select: {
-                    id: true,
-                    name: true,
-                    profile_img: true,
-                  },
-                },
-              },
-            },
-          },
-        },
-      },
     });
 
     if (!corporation) {

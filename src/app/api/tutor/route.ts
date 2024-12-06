@@ -7,6 +7,7 @@ import {
   updateTutorService,
   deleteTutorService,
   getAllTutorsService,
+  getTutorByCorporationIdService,
 } from "@/services/tutor.service";
 
 // POST 요청 핸들러
@@ -26,6 +27,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
   const { searchParams } = req?.nextUrl;
 
   const id = searchParams.get("id");
+  const corporationId = searchParams.get("corporationId");
 
   try {
     if (id) {
@@ -34,6 +36,15 @@ export async function GET(req: NextRequest, res: NextResponse) {
       if (!tutor) return new Response("Tutor not found", { status: 404 });
 
       return NextResponse.json(tutor);
+    }
+    if (corporationId) {
+      const tutors: GetTutorDto[] = await getTutorByCorporationIdService(
+        corporationId as string,
+      );
+
+      if (!tutors) return new Response("tutors not found", { status: 404 });
+
+      return NextResponse.json(tutors);
     } else {
       const tutors = await getAllTutorsService();
 

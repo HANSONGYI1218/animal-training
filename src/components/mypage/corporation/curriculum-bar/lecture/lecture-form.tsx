@@ -19,15 +19,21 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { useState, useContext } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import { ChevronLeft, Loader2, Plus } from "lucide-react";
-import { AnimalType, PriceType, Category, Lecture } from "@prisma/client";
+import {
+  AnimalType,
+  PriceType,
+  Category,
+  Lecture,
+  Tutor,
+} from "@prisma/client";
 import Link from "next/link";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
-import { CorporationContext } from "../../../../../providers/corporation-provider";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 const LectureSchema = z.object({
   title: z.string().min(1, { message: "제목을 적어주세요." }),
@@ -52,10 +58,15 @@ const LectureSchema = z.object({
   tutorId: z.string().min(1, { message: "강사를 적어주세요." }),
 });
 
-export default function LectureForm({ lecture }: { lecture?: Lecture }) {
-  const corporation = useContext(CorporationContext);
-  const tutors = corporation?.tutors;
-
+export default function LectureForm({
+  lecture,
+  tutors,
+  corporationId,
+}: {
+  lecture?: Lecture;
+  tutors: Tutor[];
+  corporationId: string;
+}) {
   const form = useForm<z.infer<typeof LectureSchema>>({
     resolver: zodResolver(LectureSchema),
     defaultValues: {
@@ -72,6 +83,7 @@ export default function LectureForm({ lecture }: { lecture?: Lecture }) {
   });
   const [isLoading, setIsLoading] = useState(false);
   const [newTag, setNewTag] = useState("");
+  const router = useRouter();
   const [deleteInput, setDeleteInput] = useState("");
 
   const deleteLecture = async () => {
@@ -99,8 +111,9 @@ export default function LectureForm({ lecture }: { lecture?: Lecture }) {
         await fetch(`${process.env.NEXT_PUBLIC_WEB_URL}/api/lecture`, {
           method: "PUT",
           body: JSON.stringify({
-            id: lecture?.id,
             ...data,
+            id: lecture?.id,
+            corporationId: corporationId,
           }),
         });
       } else {
@@ -108,11 +121,13 @@ export default function LectureForm({ lecture }: { lecture?: Lecture }) {
           method: "POST",
           body: JSON.stringify({
             ...data,
+            like: 0,
+            corporationId: corporationId,
           }),
         });
       }
       setIsLoading(false);
-      window.location.href = "/mypage/corporation/curriculum";
+      router.push("/mypage/corporation/curriculum");
     } catch {
       toast("not found", {
         description: "잠시 후 다시 시도해 주세요.",
@@ -477,7 +492,7 @@ export default function LectureForm({ lecture }: { lecture?: Lecture }) {
           </Button>
         </form>
       </Form>
-      <hr className="my-10 w-full" />
+      <hr className={`my-10 w-full ${lecture ? "flex" : "hidden"}`} />
       <div className={`w-full flex-col gap-3 ${lecture ? "flex" : "hidden"}`}>
         <div className="flex flex-col">
           <span className="text-lg font-semibold">강의 삭제</span>

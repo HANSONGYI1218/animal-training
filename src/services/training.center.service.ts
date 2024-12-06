@@ -10,6 +10,7 @@ import {
   createTrainingCenterRepository,
   deleteTrainingCenterRepository,
   getAllTrainingCentersRepository,
+  getTrainingCenterByCorporationIdRepository,
   getTrainingCenterByIdRepository,
   getTrainingCenterByTutorIdRepository,
   updateTrainingCenterRepository,
@@ -59,6 +60,23 @@ export const getTrainingCenterByIdService = async (
     return trainingCenter as GetTrainingCenterDetailDto;
   } catch {
     return null;
+  }
+};
+
+// 특정 corporationID의 강의 조회
+export const getTrainingCenterByCorporationIdService = async (
+  corporationId: string,
+): Promise<GetTrainingCenterDetailDto[]> => {
+  try {
+    const trainingCenters =
+      await getTrainingCenterByCorporationIdRepository(corporationId);
+
+    if (!trainingCenters) {
+      throw new Error("trainingCenters is not found");
+    }
+    return trainingCenters;
+  } catch {
+    return [];
   }
 };
 

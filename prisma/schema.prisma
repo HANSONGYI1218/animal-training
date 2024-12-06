@@ -76,6 +76,7 @@ model Corporation {
   breederAdoptions  Adoption[]                @relation("BreederCorporationAdoptions")
   animals           Animal[]
   trainingCenters   TrainingCenter[]
+  letures           Lecture[]
 }
 
 model Tutor {
@@ -111,10 +112,13 @@ model Lecture {
   createdAt         DateTime        @default(now())
   updatedAt         DateTime        @updatedAt
   tutorId           String
+  corporationId     String
   tutor             Tutor           @relation(fields: [tutorId], references: [id])
+  corporation       Corporation     @relation(fields: [corporationId], references: [id])
   bookmarks         LectureBookmark[]   // One-to-many relationship with Bookmark
 
   @@index([tutorId])
+  @@index([corporationId])
 }
 
 model LectureBookmark {

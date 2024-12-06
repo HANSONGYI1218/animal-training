@@ -49,8 +49,6 @@ export type CorporationDetailDto = {
   email: OccupationType;
   accessStatus: CorporationAccessStatus;
   business_number: string;
-  tutors: GetTutorWithLecture[];
-  trainingCenters: GetTrainingCenterDetailDto[];
   createdAt: Date;
   updatedAt: Date;
 };

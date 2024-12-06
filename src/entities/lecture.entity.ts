@@ -12,6 +12,7 @@ interface LectureEntityProps {
   like: number;
   tags: string[];
   tutorId: string;
+  corporationId: string;
   updatedAt?: Date;
 }
 
@@ -27,6 +28,7 @@ export class LectureEntity {
   private like: number;
   private tags: string[];
   private tutorId: string;
+  private corporationId: string;
   private createdAt: Date;
   private updatedAt: Date;
 
@@ -42,6 +44,7 @@ export class LectureEntity {
     like,
     tags,
     tutorId,
+    corporationId,
     updatedAt,
   }: LectureEntityProps) {
     this.id = id;
@@ -55,6 +58,7 @@ export class LectureEntity {
     this.like = like;
     this.tags = tags;
     this.tutorId = tutorId;
+    this.corporationId = corporationId;
     this.createdAt = new Date();
     this.updatedAt = updatedAt ?? new Date();
   }

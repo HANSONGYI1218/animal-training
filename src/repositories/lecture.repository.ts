@@ -64,6 +64,26 @@ export const getLectureByIdRepository = async (
   }
 };
 
+// 특정 corporationID의 강의 조회
+export const getLectureByCorporationIdRepository = async (
+  corporationId: string,
+): Promise<GetLectureDto[]> => {
+  try {
+    const lectures = await prisma.lecture.findMany({
+      where: {
+        corporationId: corporationId,
+      },
+      include: {
+        tutor: true,
+        bookmarks: { where: { userId: "1" } },
+      },
+    });
+    return lectures.map(toJSON);
+  } catch {
+    return [];
+  }
+};
+
 // 특정 강사의 강의 조회
 export const getLectureByTutorIdRepository = async (
   tutorId: string,

@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import Image from "next/image";
 import {
   Form,
   FormControl,
@@ -18,12 +19,22 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Loader2, Plus } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { GetTutorWithLecture } from "@/dtos/tutor.dto";
 import { toast } from "sonner";
 import { useState } from "react";
+import { Tutor } from "@prisma/client";
 
 const TutorTrainingCenterSchema = z.object({
   tutorId: z.string().min(1, { message: "훈련사를 선택해주세요." }),
@@ -37,9 +48,11 @@ const TutorTrainingCenterSchema = z.object({
 export default function TutorTrainingForm({
   trainingCenterId,
   tutors,
+  setIsAddTrainer,
 }: {
   trainingCenterId: string;
-  tutors: GetTutorWithLecture[] | undefined;
+  tutors: Tutor[] | undefined;
+  setIsAddTrainer: any;
 }) {
   const form = useForm<z.infer<typeof TutorTrainingCenterSchema>>({
     resolver: zodResolver(TutorTrainingCenterSchema),
@@ -66,7 +79,7 @@ export default function TutorTrainingForm({
       );
 
       setIsLoading(false);
-      window.location.href = "/mypage/corporation/curriculum";
+      setIsAddTrainer((prev: boolean) => !prev);
     } catch {
       toast("not found", {
         description: "잠시 후 다시 시도해 주세요.",
@@ -95,8 +108,17 @@ export default function TutorTrainingForm({
                     {tutors &&
                       tutors?.map((tutor) => {
                         return (
-                          <SelectItem value={tutor?.id} key={tutor?.id}>
-                            {tutor?.name}
+                          <SelectItem key={tutor?.id} value={tutor?.id}>
+                            <div className="flex items-center gap-5">
+                              <Image
+                                src={tutor?.profile_img}
+                                width={32}
+                                height={32}
+                                alt="profile"
+                                className="rounded-full"
+                              />
+                              <span className="text-base">{tutor?.name}</span>
+                            </div>
                           </SelectItem>
                         );
                       })}
@@ -187,13 +209,17 @@ export default function TutorTrainingForm({
             }}
           />
         </div>
-        <Button
-          type="submit"
-          variant={"destructive"}
-          className="mt-8 w-24 self-end"
-        >
-          {isLoading ? <Loader2 /> : "완료하기"}
-        </Button>
+        <DialogFooter className="sm:justify-start">
+          <DialogClose asChild>
+            <Button
+              type="submit"
+              variant={"destructive"}
+              className="mt-8 w-24 self-end"
+            >
+              {isLoading ? <Loader2 /> : "완료하기"}
+            </Button>
+          </DialogClose>
+        </DialogFooter>
       </form>
     </Form>
   );
