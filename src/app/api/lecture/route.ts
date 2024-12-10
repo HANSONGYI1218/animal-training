@@ -13,6 +13,7 @@ import {
   deleteLectureService,
   getLectureByTutorIdService,
   getLectureByTagService,
+  getLectureByCorporationIdService,
 } from "@/services/lecture.service";
 import { Category } from "@prisma/client";
 
@@ -34,6 +35,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
 
   const id = searchParams.get("id");
   const tutorId = searchParams.get("tutorId");
+  const corporationId = searchParams.get("corporationId");
   const category = searchParams.get("category");
   const tag = searchParams.get("tag");
 
@@ -55,6 +57,13 @@ export async function GET(req: NextRequest, res: NextResponse) {
       const lecture = await getLectureByTutorIdService(tutorId as string);
 
       return NextResponse.json(lecture);
+    }
+    if (corporationId) {
+      const lectures: GetLectureDto[] = await getLectureByCorporationIdService(
+        corporationId as string,
+      );
+
+      return NextResponse.json(lectures);
     }
 
     if (id) {

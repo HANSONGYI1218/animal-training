@@ -60,7 +60,6 @@ export const adoptionStatusTypeSwap: {
 export const adoptionStepTypeSwap: {
   [key in AdoptionStep | string]: string;
 } = {
-  [AdoptionStep.NOT_INVITATION]: "미초대",
   [AdoptionStep.INVITATION]: "초대",
   [AdoptionStep.CURRICULUM]: "교육",
   [AdoptionStep.FINAL_CONSENTFORM]: "입양동의서",

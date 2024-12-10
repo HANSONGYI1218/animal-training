@@ -85,6 +85,37 @@ export const getTrainingCenterByIdRepository = async (
   }
 };
 
+// 특정 corporationID의 훈련소 조회
+export const getTrainingCenterByCorporationIdRepository = async (
+  corporationId: string,
+): Promise<GetTrainingCenterDetailDto[]> => {
+  try {
+    const trainingCenters = await prisma.trainingCenter.findMany({
+      where: {
+        corporationId: corporationId,
+      },
+      include: {
+        tutorTrainingCenters: {
+          select: {
+            tutor: {
+              select: {
+                id: true,
+                name: true,
+                profile_img: true,
+              },
+            },
+          },
+        },
+        corporation: true,
+      },
+    });
+
+    return trainingCenters.map(toJSON);
+  } catch {
+    return [];
+  }
+};
+
 // 특정 tutorId의 훈련소 조회
 export const getTrainingCenterByTutorIdRepository = async (
   trainingCenterId: string,

@@ -7,7 +7,7 @@ export default function RecordStep({
   children,
 }: {
   className?: string;
-  record_date: Date;
+  record_date: Date | null;
   children: React.ReactNode;
 }) {
   return (
@@ -18,7 +18,9 @@ export default function RecordStep({
         </div>
         <div className="my-2 w-[3px] flex-1 bg-green-5" />
       </div>
-      <span className="text-gray-600">{format(record_date, "yyyy.MM.dd")}</span>
+      <span className="text-gray-600">
+        {record_date ? format(record_date, "yyyy.MM.dd") : "입양전"}
+      </span>
       <div className="w-2/3 flex-col rounded-xl bg-green-5 p-6">{children}</div>
     </div>
   );

@@ -17,7 +17,6 @@ import {
   getUserByCurriculumRepository,
   updateUserRepository,
   getUserByLoginRepository,
-  getUserCertificateRepository,
   getUserByEmailRepository,
 } from "@/repositories/user.repository";
 import { AnimalType, GenderType } from "@prisma/client";
@@ -125,17 +124,14 @@ const getUserByLoginService = async (
 // 특정 userInfo로 유저 조회
 const getUserByUserInfoService = async (
   name: string,
-  registrationNumber: string,
+  email: string,
 ): Promise<GetUserAdoptionRecordDto | null> => {
   try {
-    const user = await getUserByUserInfoRepository(name, registrationNumber);
+    const user = await getUserByUserInfoRepository(name, email);
 
-    if (!user) {
-      return null;
-    }
     return user as GetUserAdoptionRecordDto;
-  } catch {
-    return null;
+  } catch (error: any) {
+    throw error;
   }
 };
 

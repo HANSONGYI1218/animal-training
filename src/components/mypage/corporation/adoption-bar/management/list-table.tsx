@@ -145,7 +145,6 @@ export default function ListTable({ isRecord }: { isRecord?: boolean }) {
           <SelectBox
             lists={[
               "전체",
-              adoptionStepTypeSwap[AdoptionStep.NOT_INVITATION],
               adoptionStepTypeSwap[AdoptionStep.INVITATION],
               adoptionStepTypeSwap[AdoptionStep.CURRICULUM],
               adoptionStepTypeSwap[AdoptionStep.FINAL_CONSENTFORM],

@@ -1,14 +1,6 @@
 "use client";
 
-import { Goal, Home, Monitor } from "lucide-react";
-import { motion } from "framer-motion";
-import { CurriculumStep } from "@prisma/client";
-
-export default function CurriculumBanner({
-  curriculumStep,
-}: {
-  curriculumStep: CurriculumStep;
-}) {
+export default function CurriculumBanner() {
   return (
     <section className="relative flex w-full flex-col overflow-hidden bg-[#F9F9F9] py-12">
       <div className="container relative z-10 mx-auto flex w-full max-w-[1150px]">
@@ -18,81 +10,6 @@ export default function CurriculumBanner({
             <br />
             쏭쓰가 응원할게요🚀
           </span>
-          <div className="flex items-center">
-            <div className="flex flex-col items-center">
-              <motion.div
-                animate={
-                  curriculumStep === "LECTURE" && {
-                    scale: 1.1,
-                  }
-                }
-                transition={{
-                  duration: 0.8,
-                  repeat: Infinity,
-                  repeatType: "mirror",
-                  ease: "easeInOut",
-                }}
-                className={`flex h-10 w-10 items-center justify-center rounded-full ${curriculumStep === "LECTURE" ? "bg-green-100" : "bg-neutral-300"}`}
-              >
-                <Monitor
-                  stroke="#ffffff"
-                  className="h-4 w-4"
-                  strokeWidth={2.5}
-                />
-              </motion.div>
-              <span className="text-sm font-semibold text-neutral-700">
-                강의
-              </span>
-            </div>
-            <hr
-              className={`w-24 -translate-y-3 border-2 ${curriculumStep === "LECTURE" ? "border-green-100" : "border-neutral-300"}`}
-            />
-            <div className="flex flex-col items-center">
-              <motion.div
-                animate={
-                  curriculumStep === "TRAINING" && {
-                    scale: 1.1,
-                  }
-                }
-                transition={{
-                  duration: 0.8,
-                  repeat: Infinity,
-                  repeatType: "mirror",
-                  ease: "easeInOut",
-                }}
-                className={`flex h-10 w-10 items-center justify-center rounded-full ${curriculumStep === "TRAINING" ? "bg-green-100" : "bg-neutral-300"}`}
-              >
-                <Home stroke="#ffffff" className="h-4 w-4" strokeWidth={2.5} />
-              </motion.div>
-              <span className="text-sm font-semibold text-neutral-700">
-                훈련
-              </span>
-            </div>
-            <hr
-              className={`w-24 -translate-y-3 border-2 ${curriculumStep === "TRAINING" ? "border-green-100" : "border-neutral-300"}`}
-            />
-            <div className="flex flex-col items-center">
-              <motion.div
-                animate={
-                  curriculumStep === "END" && {
-                    scale: 1.1,
-                  }
-                }
-                transition={{
-                  duration: 0.8,
-                  repeat: Infinity,
-                  repeatType: "mirror",
-                  ease: "easeInOut",
-                }}
-                className={`flex h-10 w-10 items-center justify-center rounded-full ${curriculumStep === "END" ? "bg-green-100" : "bg-neutral-300"}`}
-              >
-                <Goal stroke="#ffffff" className="h-4 w-4" strokeWidth={2.5} />
-              </motion.div>
-              <span className="text-sm font-semibold text-neutral-700">
-                입양
-              </span>
-            </div>
-          </div>
         </div>
         <div className="flex w-1/2 flex-col items-center rounded-xl bg-grass-pattern bg-cover p-6">
           <div className="flex w-full flex-col items-center gap-4 rounded-xl bg-white p-6">

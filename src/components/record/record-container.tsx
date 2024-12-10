@@ -55,13 +55,15 @@ export default function RecordContainer() {
   return (
     <div className="flex w-full flex-col items-center gap-16">
       <RecordSearchForm setSearchUser={setSearchUser} />
-      <div className="flex w-full flex-col">
+      <div className={`w-full flex-col ${searchUser ? "flex" : "hidden"}`}>
         <div className="flex w-full flex-col gap-3 border-y py-6">
           <span className="flex w-full items-center justify-between">
             개인정보에 주의하세요!
             <ChevronDown cursor={"pointer"} />
           </span>
-          <span>dkdk dkdkd dkdk</span>
+          <span className="text-sm text-neutral-500">
+            *민감한 정보가 포함돼 있으니 개인정보 보호에 주의하세요
+          </span>
         </div>
         <RecordLayout tab={tab} setTab={setTab} user={searchUser}>
           {adoptionDatas &&
@@ -75,25 +77,34 @@ export default function RecordContainer() {
                     : null;
 
                 // 현재와 이전 데이터의 날짜를 가져오는 함수
-                const getDate = (item: GetAdoptionWithAnimalDto) => {
+                const getDate = (item: GetAdoptionWithAnimalDto): any => {
+                  if (!item?.adoption_date) {
+                    return null;
+                  }
+
                   const date =
-                    tab === "adoption" ? item.adoption_date : item.abandon_date;
+                    tab === "adoption"
+                      ? item?.adoption_date
+                      : item?.abandon_date;
                   return typeof date === "string" ? new Date(date) : date;
                 };
 
-                const showYear =
-                  !previousData ||
-                  format(getDate(data)!, "yyyy") !==
-                    format(getDate(previousData)!, "yyyy");
+                const showYear = getDate(data)
+                  ? !previousData ||
+                    format(getDate(data), "yyyy") !==
+                      format(getDate(previousData)!, "yyyy")
+                  : null;
 
                 return (
                   <div className="flex flex-col" key={index}>
                     <span
                       className={`my-5 text-lg font-semibold ${showYear || index === 0 ? "flex" : "hidden"}`}
                     >
-                      {format(getDate(data)!, "yyyy")}
+                      {getDate(data)
+                        ? format(getDate(data)!, "yyyy")
+                        : "입양전"}
                     </span>
-                    <RecordStep record_date={getDate(data)!}>
+                    <RecordStep record_date={getDate(data)}>
                       <RecordContent adoption={data} />
                     </RecordStep>
                   </div>

@@ -15,21 +15,19 @@ export default function TutorCard({
   tutor,
   trainingCenterId,
   isEdit,
-  isTrainingCenterTab,
 }: {
   tutor: TutorProps;
   trainingCenterId?: string;
   isEdit?: boolean;
-  isTrainingCenterTab?: boolean;
 }) {
   return (
-    <div className="group relative flex flex-col items-center gap-2 p-6">
+    <div className="group relative flex flex-col items-center gap-4 p-6">
       <Link
         href={{
           pathname: `curriculum/${tutor?.id}/tutor`,
           query: { trainingCenterId: trainingCenterId ?? "none" },
         }}
-        className={`${isTrainingCenterTab && !isEdit ? "hidden" : "flex"} absolute right-3 top-2 flex h-6 w-6 items-center justify-center rounded-full bg-black hover:scale-110`}
+        className={`${!isEdit ? "hidden" : "flex"} absolute right-3 top-2 flex h-6 w-6 items-center justify-center rounded-full bg-black hover:scale-110`}
       >
         <Pencil stroke="#ffffff" className="h-4 w-4" />
       </Link>
@@ -42,14 +40,14 @@ export default function TutorCard({
       />
       <Link href={`/tutor/${tutor?.id}`}>
         <Button
-          className={`${isTrainingCenterTab && isEdit ? "hidden" : "flex"} absolute bottom-4 left-1/2 z-10 -translate-x-1/2 gap-2 rounded-full opacity-0 group-hover:opacity-100`}
+          className={`${isEdit ? "hidden" : "flex"} absolute bottom-4 left-1/2 z-10 -translate-x-1/2 gap-2 rounded-full opacity-0 group-hover:opacity-100`}
           variant={"destructive"}
         >
           <SquareUser className="h-4 w-4" /> 보러가기
         </Button>
       </Link>
       <span
-        className={`flex ${isTrainingCenterTab && isEdit ? "group-hover:none" : "group-hover:hidden"}`}
+        className={`flex ${isEdit ? "group-hover:opacity-100" : "group-hover:opacity-0"}`}
       >
         {tutor?.name}
       </span>

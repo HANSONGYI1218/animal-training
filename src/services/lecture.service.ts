@@ -11,6 +11,7 @@ import {
   deleteLectureRepository,
   getAllLecturesRepository,
   getLectureByCategoryRepository,
+  getLectureByCorporationIdRepository,
   getLectureByIdRepository,
   getLectureByTagRepository,
   getLectureByTutorIdRepository,
@@ -63,6 +64,19 @@ export const getLectureByIdService = async (
     return lecture as GetLectureDto;
   } catch {
     return null;
+  }
+};
+
+// 특정 corporationID의 강의 조회
+export const getLectureByCorporationIdService = async (
+  corporationId: string,
+): Promise<GetLectureDto[]> => {
+  try {
+    const lectures = await getLectureByCorporationIdRepository(corporationId);
+
+    return lectures;
+  } catch {
+    return [];
   }
 };
 

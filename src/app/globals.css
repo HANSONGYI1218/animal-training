@@ -75,6 +75,21 @@
   display: none;
 }
 
+.scroll_black {
+  scrollbar-gutter: stable;
+}
+.scroll_black::-webkit-scrollbar {
+  width: 3px;
+}
+.scroll_black::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: #000000;
+}
+.scroll_black::-webkit-scrollbar-track {
+  border-radius: 10px;
+  background-color: #cbd5e1;
+}
+
 @layer base {
   * {
     @apply border-border;

@@ -12,13 +12,14 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
-import { useState, useContext } from "react";
-import { ChevronLeft, Loader2, Plus } from "lucide-react";
+import { useState } from "react";
+import { ChevronLeft, Loader2, Plus, Search } from "lucide-react";
 import Link from "next/link";
 import { Textarea } from "@/components/ui/textarea";
-import { CorporationContext } from "../../../../../providers/corporation-provider";
 import { TrainingCenterOnlyOneTutorDto } from "@/dtos/training.center.dto";
 import { toast } from "sonner";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 const TrainingCenterSchema = z.object({
   name: z.string().min(1, { message: "훈련소 명을 적어주세요." }),
@@ -27,7 +28,9 @@ const TrainingCenterSchema = z.object({
   additionalImgs: z
     .array(z.string())
     .min(1, { message: "훈련소 추가 사진을 선택해주세요." }),
-  address: z.string().min(1, { message: "훈련소 주소를 적어주세요." }),
+  zipCode: z.string().min(1, { message: "우편번호를 작성해 주세요." }),
+  address: z.string().min(1, { message: "기본주소를 작성해 주세요." }),
+  detailAddress: z.string().min(1, { message: "상세주소를 작성해 주세요." }),
   refundPolicys: z
     .array(z.string())
     .min(1, { message: "환불정책을 적어주세요." }),
@@ -38,8 +41,7 @@ export default function TrainingCenterForm({
 }: {
   trainingCenter?: TrainingCenterOnlyOneTutorDto;
 }) {
-  const corporation = useContext(CorporationContext);
-
+  const { data: session, status } = useSession();
   const form = useForm<z.infer<typeof TrainingCenterSchema>>({
     resolver: zodResolver(TrainingCenterSchema),
     defaultValues: {
@@ -47,13 +49,28 @@ export default function TrainingCenterForm({
       introduction: trainingCenter?.introduction ?? "",
       profile: trainingCenter?.profile ?? "",
       additionalImgs: trainingCenter?.additionalImgs ?? [],
+      zipCode: trainingCenter?.zipCode ?? "",
       address: trainingCenter?.address ?? "",
+      detailAddress: trainingCenter?.detailAddress ?? "",
       refundPolicys: trainingCenter?.refundPolicys ?? [],
     },
   });
   const [isLoading, setIsLoading] = useState(false);
   const [newTag, setNewTag] = useState("");
   const [deleteInput, setDeleteInput] = useState("");
+  const router = useRouter();
+
+  const openAddressPopup = () => {
+    new window.daum.Postcode({
+      oncomplete: (data: any) => {
+        const addr =
+          data.userSelectedType === "R" ? data.roadAddress : data.jibunAddress;
+
+        form.setValue("zipCode", data.zonecode);
+        form.setValue("address", addr);
+      },
+    }).open();
+  };
 
   const deleteTutor = async () => {
     setIsLoading(true);
@@ -89,12 +106,12 @@ export default function TrainingCenterForm({
           method: "POST",
           body: JSON.stringify({
             ...data,
-            corporationId: corporation?.id,
+            corporationId: session?.user?.id,
           }),
         });
       }
       setIsLoading(false);
-      window.location.href = "/mypage/corporation/curriculum";
+      router.push("/mypage/corporation/curriculum");
     } catch {
       toast("not found", {
         description: "잠시 후 다시 시도해 주세요.",
@@ -144,7 +161,7 @@ export default function TrainingCenterForm({
                   <FormControl>
                     <Textarea
                       placeholder="훈련소를 소개를 작성해주세요."
-                      className="resize-none disabled:cursor-default disabled:border-none"
+                      className="min-h-32 resize-none whitespace-pre-line disabled:cursor-default disabled:border-none"
                       {...field}
                     />
                   </FormControl>
@@ -153,8 +170,36 @@ export default function TrainingCenterForm({
               )}
             />
           </div>
-          <div className="flex flex-col gap-3">
-            <span className="text-lg font-semibold">훈련소 주소</span>
+          <div className="flex flex-col gap-2">
+            <span className="font-semibold">기업 주소</span>
+            <div className="flex items-center gap-2">
+              <FormField
+                control={form.control}
+                name="zipCode"
+                render={({ field }) => (
+                  <FormItem className="flex-1">
+                    <FormControl>
+                      <Input
+                        disabled
+                        className="disabled:cursor-default disabled:bg-background"
+                        placeholder="우편번호"
+                        value={field.value ?? ""}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <Button
+                type="button"
+                variant={"destructive"}
+                className="flex h-10 gap-2"
+                onClick={() => openAddressPopup()}
+              >
+                <Search className="h-5 w-5" />
+                주소 찾기
+              </Button>
+            </div>
             <FormField
               control={form.control}
               name="address"
@@ -162,10 +207,23 @@ export default function TrainingCenterForm({
                 <FormItem>
                   <FormControl>
                     <Input
-                      placeholder="훈련소 주소를 적어주세요."
-                      className="disabled:cursor-default disabled:border-none"
-                      {...field}
+                      disabled
+                      className="disabled:cursor-default disabled:bg-background"
+                      placeholder="기본주소를 입력해주세요."
+                      value={field.value ?? ""}
                     />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="detailAddress"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Input placeholder="상세주소를 입력해주세요." {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -195,7 +253,7 @@ export default function TrainingCenterForm({
                     <div className="flex gap-3">
                       <FormControl>
                         <Input
-                          placeholder="한불정책을 작성해주세요."
+                          placeholder="한불정책을 작성해주세요.(최대 5개)"
                           className="disabled:cursor-default disabled:border-none"
                           value={newTag}
                           onKeyDown={(e) => {
@@ -361,8 +419,8 @@ export default function TrainingCenterForm({
             {isLoading ? <Loader2 /> : "완료하기"}
           </Button>
         </form>
-      </Form>{" "}
-      <hr className="my-10 w-full" />
+      </Form>
+      <hr className={`my-10 w-full ${trainingCenter ? "flex" : "hidden"}`} />
       <div
         className={`w-full flex-col gap-3 ${trainingCenter ? "flex" : "hidden"}`}
       >

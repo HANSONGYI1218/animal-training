@@ -1,13 +1,12 @@
 "use client";
 
-import LectureCard from "./lecture-card";
 import { useEffect, useState } from "react";
 import { Lecture, Tutor } from "@prisma/client";
 import { Button } from "@/components/ui/button";
 import { Loader2, Pencil, Plus } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
-import { GetLectureDto } from "@/dtos/lecture.dto";
+import TutorCard from "./tutor-card";
 import { useSession } from "next-auth/react";
 
 export type BookmarkProps = {
@@ -20,44 +19,27 @@ export type BookmarkTutorProps = {
   tutor: Tutor;
 };
 
-export default function LectureTab() {
+export default function TutorTab() {
   const { data: session, status } = useSession();
-
-  const [isLoading, setIsLoading] = useState(false);
-  const [lectures, setLectures] = useState<GetLectureDto[] | null>(null);
   const [tutors, setTutors] = useState<Tutor[] | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
 
   useEffect(() => {
     const getData = async () => {
       setIsLoading(true);
-      const [lecturesResponse, tutorsResponse] = await Promise.all([
-        fetch(
-          `${process.env.NEXT_PUBLIC_WEB_URL}/api/lecture?corporationId=${session?.user?.id}`,
-          {
-            method: "GET",
-          },
-        ),
-        fetch(
-          `${process.env.NEXT_PUBLIC_WEB_URL}/api/tutor?corporationId=${session?.user?.id}`,
-          {
-            method: "GET",
-          },
-        ),
-      ]);
+      const responseTutors = await fetch(
+        `${process.env.NEXT_PUBLIC_WEB_URL}/api/tutor?corporationId=${session?.user?.id}`,
+        {
+          method: "GET",
+        },
+      );
 
-      // Check if both responses are ok
-      if (!lecturesResponse.ok || !tutorsResponse.ok) {
+      if (!responseTutors.ok) {
         return null;
       }
 
-      // Parse JSON responses
-      const [lectures, tutors] = await Promise.all([
-        lecturesResponse.json(),
-        tutorsResponse.json(),
-      ]);
-
-      setLectures(lectures);
+      const tutors: Tutor[] = await responseTutors.json();
       setTutors(tutors);
       setIsLoading(false);
     };
@@ -68,21 +50,10 @@ export default function LectureTab() {
   return (
     <div className="flex flex-col gap-10">
       <div className="flex items-center justify-end gap-3">
-        <Link
-          href={"/mypage/corporation/curriculum/new/lecture"}
-          onClick={(e) => {
-            if (!tutors || tutors.length === 0) {
-              e.preventDefault(); // 이동 차단
-            }
-          }}
-        >
-          <Button
-            disabled={!tutors || tutors.length === 0}
-            variant="destructive"
-            className="flex h-9 gap-1 px-2"
-          >
+        <Link href={"/mypage/corporation/curriculum/new/tutor"}>
+          <Button variant="destructive" className="flex h-9 gap-1 px-2">
             <Plus className="h-5 w-5" />
-            강의 생성
+            강사 생성
           </Button>
         </Link>
         <Button
@@ -96,23 +67,20 @@ export default function LectureTab() {
           {isEdit ? " 완료" : "편집"}
         </Button>
       </div>
+
       <section className="flex flex-col">
         {isLoading ? (
           <div className="flex min-h-40 w-full flex-col items-center justify-center py-6 text-center">
             <Loader2 className="animate-spin" />
           </div>
-        ) : lectures && lectures?.length > 0 ? (
+        ) : tutors && tutors?.length > 0 ? (
           <>
-            <span className="text-lg font-semibold">기업 강의</span>
+            <span className="text-lg font-semibold">기업 강사</span>
             <div className="flex flex-col gap-6 p-6">
-              <div className="grid w-full grid-cols-2 gap-6">
-                {lectures &&
-                  lectures.map((lecture, index) => (
-                    <LectureCard
-                      key={index}
-                      lecture={lecture}
-                      isEdit={isEdit}
-                    />
+              <div className="grid w-full grid-cols-4 gap-6">
+                {tutors &&
+                  tutors.map((tutor, index) => (
+                    <TutorCard key={index} tutor={tutor} isEdit={isEdit} />
                   ))}
               </div>
             </div>
@@ -125,7 +93,7 @@ export default function LectureTab() {
               width={30}
               alt="face"
             />
-            먼저 강사를 생성해보세요!
+            강사를 생성해보세요!
           </div>
         )}
       </section>

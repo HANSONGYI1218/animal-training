@@ -2,6 +2,7 @@ import {
   createTrainingCenterService,
   deleteTrainingCenterService,
   getAllTrainingCentersService,
+  getTrainingCenterByCorporationIdService,
   getTrainingCenterByIdService,
   getTrainingCenterByTutorIdService,
   updateTrainingCenterService,
@@ -34,6 +35,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
 
   const id = searchParams.get("id");
   const tutorId = searchParams.get("tutorId");
+  const corporationId = searchParams.get("corporationId");
 
   try {
     if (id) {
@@ -57,12 +59,17 @@ export async function GET(req: NextRequest, res: NextResponse) {
 
         return NextResponse.json(trainingCenter);
       }
-    } else {
+    }
+    if (corporationId) {
       const trainingCenters: GetTrainingCenterDetailDto[] =
-        await getAllTrainingCentersService();
+        await getTrainingCenterByCorporationIdService(corporationId as string);
 
       return NextResponse.json(trainingCenters);
     }
+    const trainingCenters: GetTrainingCenterDetailDto[] =
+      await getAllTrainingCentersService();
+
+    return NextResponse.json(trainingCenters);
   } catch (error) {
     return new NextResponse("Failed to create TrainingCenter(s)", {
       status: 500,

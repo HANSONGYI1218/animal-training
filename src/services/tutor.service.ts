@@ -10,6 +10,7 @@ import {
   createTutorRepository,
   deleteTutorRepository,
   getAllTutorsRepository,
+  getTutorByCorporationIdRepository,
   getTutorByIdRepository,
   updateTutorRepository,
 } from "@/repositories/tutor.repository";
@@ -54,6 +55,19 @@ export const getTutorByIdService = async (
     return tutor as GetTutorDto;
   } catch {
     return null;
+  }
+};
+
+// 특정 corporationID의 강사 조회
+export const getTutorByCorporationIdService = async (
+  corporationId: string,
+): Promise<GetTutorDto[]> => {
+  try {
+    const tutors = await getTutorByCorporationIdRepository(corporationId);
+
+    return tutors;
+  } catch {
+    return [];
   }
 };
 

@@ -55,30 +55,37 @@ export default function RecordContent({
           {adoptionStatusTypeSwap[adoption.status]}
         </Badge>
       </div>
-
-      <div className="flex items-center gap-4">
-        <span className="w-20 text-gray-500">입양 날짜</span>
-        <span>
-          {adoption?.adoption_date &&
-            format(adoption.adoption_date, "yyyy.MM.dd")}{" "}
-          {adoption?.abandon_date &&
-            `~ ${format(adoption?.abandon_date, "yyyy.MM.dd")}`}
-        </span>
-      </div>
-      <div
-        className={`flex items-center gap-4 ${adoption?.abandon_reason ? "flex" : "hidden"}`}
-      >
-        <span className="w-20 text-gray-500">파양 사유</span>
-        <span>{adoption?.abandon_reason}</span>
-      </div>
-      <div className="flex items-center gap-4">
-        <span className="w-20 text-gray-500">
-          {adoption.abandon_date ? "파양" : "입양"} 서류
-        </span>
-        <span className="cursor-pointer text-sm underline decoration-gray-600 underline-offset-4">
-          미리보기
-        </span>
-      </div>
+      {adoption.adoption_date ? (
+        <>
+          <div className="flex items-center gap-4">
+            <span className="w-20 text-gray-500">입양 날짜</span>
+            <span>
+              {adoption?.adoption_date &&
+                format(adoption.adoption_date, "yyyy.MM.dd")}{" "}
+              {adoption?.abandon_date &&
+                `~ ${format(adoption?.abandon_date, "yyyy.MM.dd")}`}
+            </span>
+          </div>
+          <div
+            className={`flex items-center gap-4 ${adoption?.abandon_reason ? "flex" : "hidden"}`}
+          >
+            <span className="w-20 text-gray-500">파양 사유</span>
+            <span>{adoption?.abandon_reason}</span>
+          </div>
+          <div className="flex items-center gap-4">
+            <span className="w-20 text-gray-500">
+              {adoption.abandon_date ? "파양" : "입양"} 서류
+            </span>
+            <span className="cursor-pointer text-sm underline decoration-gray-600 underline-offset-4">
+              미리보기
+            </span>
+          </div>
+        </>
+      ) : (
+        <div className="flex min-h-20 w-full items-center justify-center rounded-xl border">
+          입양전입니다.
+        </div>
+      )}
     </div>
   );
 }

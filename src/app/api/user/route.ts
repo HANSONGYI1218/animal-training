@@ -40,16 +40,13 @@ async function GET(req: NextRequest, res: NextResponse) {
   const id = searchParams.get("id");
   const curriculum_userId = searchParams.get("curriculum_userId");
   const name = searchParams.get("name");
-  const registrationNumber = searchParams.get("registrationNumber");
   const email = searchParams.get("email");
   const password = searchParams.get("password");
 
   try {
-    if (name && registrationNumber) {
+    if (name && email) {
       const user: GetUserAdoptionRecordDto | null =
-        await getUserByUserInfoService(name, registrationNumber);
-
-      if (!user) return new Response("user not found", { status: 404 });
+        await getUserByUserInfoService(name, email);
 
       return NextResponse.json(user);
     }
@@ -84,7 +81,7 @@ async function GET(req: NextRequest, res: NextResponse) {
   } catch (error: any) {
     return new NextResponse(
       JSON.stringify({ error: error.message || "An error occurred" }),
-      { status: 500 },
+      { status: error.message === "user is not found" ? 404 : 401 },
     );
   }
 }

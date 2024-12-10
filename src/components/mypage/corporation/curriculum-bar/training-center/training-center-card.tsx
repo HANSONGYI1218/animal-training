@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "../../../../ui/button";
-import { Pencil, SquareUser, ThumbsUp, Triangle } from "lucide-react";
+import { Pencil, SquareUser, Triangle } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { GetTrainingCenterDetailDto } from "@/dtos/training.center.dto";
@@ -15,36 +15,12 @@ export default function TrainingCenterCard({
 }) {
   return (
     <div className="relative flex h-full w-full gap-4 rounded-lg">
-      <img
-        src={trainingCenter?.profile}
-        alt="trainingCenter-thumbnail"
-        className="h-56 w-full rounded-lg object-cover"
-      />
-      <div className="flex w-full flex-col justify-between">
-        <div className="flex flex-col gap-2">
-          <div className="flex gap-3">
-            <span className="text-neutral-600">소개</span>
-            <span className="line-clamp-3 whitespace-pre">
-              {trainingCenter?.introduction}
-            </span>
-          </div>
-          <div className="flex gap-3">
-            <span className="text-neutral-600">주소</span>
-            <span>
-              {trainingCenter?.address} {trainingCenter?.detailAddress}
-            </span>
-          </div>
-          <div className="flex gap-3">
-            <span className="text-neutral-600">환불정책</span>
-            <div className="flex flex-col gap-1">
-              {trainingCenter?.refundPolicys.map(
-                (refundPolicy: string, index: number) => {
-                  return <span key={index}>{refundPolicy}</span>;
-                },
-              )}
-            </div>
-          </div>
-        </div>
+      <div className="flex w-full flex-col justify-between gap-4">
+        <img
+          src={trainingCenter?.profile}
+          alt="trainingCenter-thumbnail"
+          className="h-56 w-full rounded-lg object-cover"
+        />
         <div className="flex w-full items-center justify-between">
           <div className="flex items-center gap-1">
             <SquareUser width={17} height={17} stroke="#000000" />
@@ -103,7 +79,36 @@ export default function TrainingCenterCard({
                 보러가기
               </Button>
             </Link>
-          )}{" "}
+          )}
+        </div>
+      </div>
+      <div className="flex w-full flex-col justify-between gap-4">
+        <div className="flex flex-col gap-2">
+          <div className="flex gap-3">
+            <span className="w-7 text-neutral-600">소개</span>
+            <span className="scroll_black line-clamp-4 flex-1 overflow-y-auto whitespace-pre-line pr-1.5">
+              {trainingCenter?.introduction}
+            </span>
+          </div>
+          <div className="flex gap-3">
+            <span className="w-7 text-neutral-600">주소</span>
+            <div className="line-clamp-3 flex flex-1 flex-col">
+              <span>{trainingCenter?.zipCode}</span>
+              <span>
+                {trainingCenter?.address} {trainingCenter?.detailAddress}
+              </span>
+            </div>
+          </div>
+          <div className="flex flex-col gap-1">
+            <span className="text-neutral-600">환불정책</span>
+            <div className="scroll_black ml-3 flex max-h-14 flex-col gap-1 overflow-y-auto pr-1.5">
+              {trainingCenter?.refundPolicys.map(
+                (refundPolicy: string, index: number) => {
+                  return <span key={index}>* {refundPolicy}</span>;
+                },
+              )}
+            </div>
+          </div>
         </div>
       </div>
     </div>

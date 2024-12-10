@@ -7,7 +7,7 @@ import {
   GetUserSearchDto,
   toJSON,
 } from "@/dtos/user.dto";
-import { AdoptionStep } from "@prisma/client";
+import { Adoption, AdoptionStep } from "@prisma/client";
 
 // 유저 생성
 const createUserRepository = async (dto: UserDto): Promise<GetUserDto> => {
@@ -135,13 +135,13 @@ const getUserByLoginRepository = async (
 // 특정 userInfo로 유저 조회
 const getUserByUserInfoRepository = async (
   name: string,
-  registrationNumber: string,
+  email: string,
 ): Promise<GetUserAdoptionRecordDto | null> => {
   try {
     const user = await prisma.user.findFirst({
       where: {
         name: name,
-        registrationNumber: registrationNumber,
+        email: email,
       },
       include: {
         adopterAdoptions: {
@@ -152,12 +152,15 @@ const getUserByUserInfoRepository = async (
       },
     });
     if (!user) {
-      return null;
+      throw new Error("user is not found");
+    }
+    if (!user.adopterAdoptions) {
+      throw new Error("user's adoption is not found");
     }
 
     return toJSON(user);
-  } catch {
-    return null;
+  } catch (error: any) {
+    throw error;
   }
 };
 

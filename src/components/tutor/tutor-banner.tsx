@@ -29,7 +29,7 @@ export default function TutorBanner({ tutor, count }: TutorBannerProps) {
           <span className="whitespace-pre-line font-[440] leading-6 text-neutral-600">
             {tutor?.career}
           </span>
-          <span className="min-h-28 whitespace-pre-line font-[440] leading-6 text-neutral-600">
+          <span className="mb-4 min-h-28 whitespace-pre-line font-[440] leading-6 text-neutral-600">
             {tutor?.introduction}
           </span>
           <div className="flex items-center gap-6">

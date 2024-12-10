@@ -75,6 +75,39 @@ export const getTutorByIdRepository = async (
   }
 };
 
+// 특정 corporationID의 강사 조회
+export const getTutorByCorporationIdRepository = async (
+  corporationId: string,
+): Promise<GetTutorDto[]> => {
+  try {
+    const tutors = await prisma.tutor.findMany({
+      where: {
+        corporationId: corporationId,
+      },
+      include: {
+        corporation: {
+          select: { id: true, corporation_name: true },
+        },
+        tutorTrainingCenters: {
+          include: {
+            trainingCenter: {
+              select: {
+                name: true,
+                address: true,
+              },
+            },
+          },
+        },
+        bookmarks: { where: { userId: "1" } },
+      },
+    });
+
+    return tutors.map(toGetDtoJSON);
+  } catch {
+    return [];
+  }
+};
+
 // 강사 업데이트
 export const updateTutorRepository = async (
   dto: Partial<TutorDto>,

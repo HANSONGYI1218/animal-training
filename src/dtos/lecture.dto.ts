@@ -18,6 +18,7 @@ export type LectureDto = {
   like: number;
   tags: string[];
   tutorId: string;
+  corporationId: string;
   createddAt: Date;
   updatedAt: Date;
 };
@@ -33,6 +34,7 @@ export type CreateLectureDto = {
   like: number;
   tags: string[];
   tutorId: string;
+  corporationId: string;
 };
 
 export type UpdateLectureDto = {
@@ -65,6 +67,7 @@ export type GetLectureWithTutorDto = {
     name: string;
     occupation: string;
   };
+  corporationId: string;
   bookmarks: LectureBookmark[];
   createdAt: Date;
   updatedAt: Date;
@@ -81,6 +84,7 @@ export type GetLectureDto = {
   videoUrl: string;
   like: number;
   tags: string[];
+  corporationId: string;
   tutor: Tutor;
   bookmarks: LectureBookmark[];
   tutorId: string;
