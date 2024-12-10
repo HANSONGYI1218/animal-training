@@ -16,7 +16,7 @@ export default function RecordBanner() {
       <div className="container mx-auto flex w-full max-w-[1150px]">
         <div className="flex w-full flex-col gap-8 py-12">
           <div className="flex flex-col gap-4">
-            <span className="text-4xl font-bold text-white">쓰스와 함께</span>
+            <span className="text-4xl font-bold text-white">퍼디와 함께</span>
             <div className="relative flex h-11">
               <span className="text-4xl font-bold text-orange-500">
                 책임있는
@@ -31,7 +31,7 @@ export default function RecordBanner() {
             입양자의 입양 기록을 찾아보세요!
           </span>
           <span className="whitespace-pre-line text-sm text-white">
-            입양자의 이름과 주민등록번호가 필요해요.
+            입양자의 이름과 이메일이 필요해요.
           </span>
         </div>
         <div className="relative flex w-full items-center justify-center">

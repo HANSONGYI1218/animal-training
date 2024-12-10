@@ -1,6 +1,6 @@
 "use client";
 
-import { Search } from "lucide-react";
+import { Loader2, Search } from "lucide-react";
 import { Input } from "../ui/input";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -13,23 +13,14 @@ import {
   FormItem,
   FormMessage,
 } from "../ui/form";
-import {
-  InputOTP,
-  InputOTPGroup,
-  InputOTPSeparator,
-  InputOTPSlot,
-} from "@/components/ui/input-otp";
 import { Button } from "../ui/button";
 import { GetUserAdoptionRecordDto } from "@/dtos/user.dto";
 import { toast } from "sonner";
+import { useState } from "react";
 
 const RecordSearchSchema = z.object({
-  name: z.string({
-    required_error: "입양자 이름을 적어주세요.",
-  }),
-  registrationNumber: z.string({
-    required_error: "입양자 주민등록번호를 입력해주세요.",
-  }),
+  name: z.string().min(1, { message: "입양자의 이름을 적어주세요." }),
+  email: z.string().min(1, { message: "입양자의 이메일을 적어주세요." }),
 });
 
 export default function RecordSearchForm({
@@ -41,21 +32,24 @@ export default function RecordSearchForm({
     resolver: zodResolver(RecordSearchSchema),
     defaultValues: {
       name: "",
-      registrationNumber: "",
+      email: "",
     },
   });
+  const [isLoading, setIsLoading] = useState(false);
 
   async function onSubmit(data: z.infer<typeof RecordSearchSchema>) {
+    setIsLoading(true);
     try {
       const responseUser = await fetch(
-        `/api/user?name=${data.name}&registrationNumber=${data.registrationNumber}`,
+        `/api/user?name=${data.name}&email=${data.email}`,
         {
           method: "GET",
           cache: "no-store",
         },
       );
       if (!responseUser.ok) {
-        return null;
+        const errorResponse = await responseUser.json();
+        throw new Error(errorResponse?.error);
       }
 
       const user: GetUserAdoptionRecordDto = await responseUser.json();
@@ -63,10 +57,18 @@ export default function RecordSearchForm({
       if (user) {
         setSearchUser(user);
       }
-    } catch {
-      toast("not found", {
-        description: "잠시 후 다시 시도해 주세요.",
-      });
+    } catch (error: any) {
+      if (error?.message === "user is not found") {
+        toast("입양자를 찾을 수 없습니다.", {
+          description: "입양자의 이름과 이메일을 정확히 적어주세요.",
+        });
+      } else {
+        toast("user adoption is not found", {
+          description: "잠시 후 다시 시도해 주세요.",
+        });
+      }
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -88,54 +90,54 @@ export default function RecordSearchForm({
                 <FormControl>
                   <Input
                     className="h-11 w-full flex-1 rounded-full border px-4 hover:bg-accent"
-                    placeholder="쓰스"
+                    placeholder="입양자의 이름을 입력해주세요."
                     {...field}
                   />
                 </FormControl>
-                <FormMessage />
+                <FormMessage className="px-4" />
               </FormItem>
             )}
           />
         </div>
         <div className="flex flex-col gap-3">
           <span className="ml-2 text-sm font-semibold">
-            STEP 02. 입양자의 주민등록번호를 적어주세요.
+            STEP 02. 입양자의 이메일을 적어주세요.
           </span>
           <div className="flex h-11 gap-3">
             <FormField
               control={form.control}
-              name="registrationNumber"
+              name="email"
               render={({ field }) => (
-                <FormItem className="flex h-full w-full flex-col space-y-0">
-                  <InputOTP {...field} maxLength={13}>
-                    <InputOTPGroup>
-                      <InputOTPSlot index={0} />
-                      <InputOTPSlot index={1} />
-                      <InputOTPSlot index={2} />
-                      <InputOTPSlot index={3} />
-                      <InputOTPSlot index={4} />
-                      <InputOTPSlot index={5} />
-                    </InputOTPGroup>
-                    <InputOTPSeparator />
-                    <InputOTPGroup>
-                      <InputOTPSlot index={6} />
-                      <InputOTPSlot index={7} />
-                      <InputOTPSlot index={8} />
-                      <InputOTPSlot index={9} />
-                      <InputOTPSlot index={10} />
-                      <InputOTPSlot index={11} />
-                      <InputOTPSlot index={12} />
-                    </InputOTPGroup>
-                  </InputOTP>
-                  <FormMessage />
+                <FormItem className="flex h-full w-full flex-col">
+                  <FormControl>
+                    <Input
+                      className="h-11 w-full flex-1 rounded-full border px-4 hover:bg-accent"
+                      placeholder="입양자의 이메일을 입력해주세요."
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage className="px-4" />
                 </FormItem>
               )}
             />
             <Button
               type="submit"
+              disabled={!form.watch("email") || !form.watch("name")}
               className="jusity-center flex h-11 w-11 items-center rounded-full bg-black p-3 hover:scale-105"
             >
-              <Search className="h-7 w-7" stroke="#ffffff" strokeWidth={2.8} />
+              {isLoading ? (
+                <Loader2
+                  className="h-7 w-7 animate-spin"
+                  stroke="#ffffff"
+                  strokeWidth={2.8}
+                />
+              ) : (
+                <Search
+                  className="h-7 w-7"
+                  stroke="#ffffff"
+                  strokeWidth={2.8}
+                />
+              )}
             </Button>
           </div>
         </div>

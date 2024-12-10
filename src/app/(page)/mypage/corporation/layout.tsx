@@ -32,7 +32,7 @@ export default async function MypageCorporationLayout({
 
   return (
     <div className="container mx-auto flex max-w-[1150px] gap-6 py-12">
-      <MypageSidebar corporation={corporation} />
+      <MypageSidebar />
       <CorporationProvider corporation={corporation}>
         {children}
       </CorporationProvider>

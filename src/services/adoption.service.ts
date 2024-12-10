@@ -37,7 +37,7 @@ export const createAdoptionService = async (
 
     const newAdoption = new AdoptionEntity({
       status: AdoptionStatus.NOT_ADOPTION,
-      step: AdoptionStep.NOT_INVITATION,
+      step: AdoptionStep.INVITATION,
       curriculumStep: CurriculumStep.LECTURE,
       adoption_date: null,
       abandon_date: null,

@@ -38,7 +38,6 @@ export enum AdoptionStatus {
 }
 
 export enum AdoptionStep {
-  NOT_INVITATION = "NOT_INVITATION",
   INVITATION = "INVITATION",
   CURRICULUM = "CURRICULUM",
   FINAL_CONSENTFORM = "FINAL_CONSENTFORM",

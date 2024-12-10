@@ -49,7 +49,7 @@ export default function TopBar({ userType }: { userType: string }) {
     >
       <div className="flex border-b py-4">
         <div className="container mx-auto flex items-center justify-between">
-          <Image src="/next.svg" width={70} height={100} alt="main-logo" />
+          <Image src="/main-logo.png" width={100} height={35} alt="main-logo" />
           <div className="flex items-center gap-4">
             <a href="/lecture?category=all">
               <Button
