@@ -30,26 +30,22 @@ export type UserDto = {
   isPromotion_Email: boolean;
   lastVideoIndexs: number[];
   lastVideoTimes: number[];
+  curriculumSteps: CurriculumStep[];
   createdAt: Date;
   updatedAt: Date;
 };
 
 export type CreateUserDto = {
-  email?: string;
-  password?: string;
-  name?: string;
-  phoneNumber?: string;
-  birthday?: Date;
-  gender: GenderType;
-  zipCode?: string;
-  address?: string;
-  detailAddress?: string;
+  email: string;
+  password: string;
 };
 
 export type UpdateUserDto = {
   id: string;
+  name?: string;
   email?: string;
   password?: string;
+  birthday?: Date;
   zipCode?: string;
   address?: string;
   detailAddress?: string;
@@ -63,6 +59,7 @@ export type UpdateUserDto = {
   isPromotion_Email?: boolean;
   lastVideoIndex?: number;
   lastVideoTime?: number;
+  curriculumStep?: CurriculumStep;
 };
 
 export type GetUserDto = {
@@ -94,6 +91,7 @@ export type GetUserDto = {
   isPromotion_Email: boolean;
   lastVideoIndexs: number[];
   lastVideoTimes: number[];
+  curriculumSteps: CurriculumStep[];
   createdAt: Date;
   updatedAt: Date;
 };
@@ -120,6 +118,7 @@ export type GetUserByCurriculumDto = {
   }[];
   lastVideoIndexs: number[];
   lastVideoTimes: number[];
+  curriculumSteps: CurriculumStep[];
   createdAt: Date;
   updatedAt: Date;
 };
@@ -139,6 +138,7 @@ export type GetUserAdoptionRecordDto = {
   adopterAdoptions: Adoption[] | null;
   lastVideoIndexs: string[];
   lastVideoTimes: number[];
+  curriculumSteps: CurriculumStep[];
   createdAt: Date;
   updatedAt: Date;
 };

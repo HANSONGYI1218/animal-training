@@ -42,7 +42,13 @@ const CorporationExtraInfSchema = z.object({
     .length(10, { message: "사업자등록번호는 정확히 10자리여야 합니다." }),
 });
 
-export default function CorporationExtraInfForm() {
+export default function CorporationExtraInfForm({
+  setCurrentIndex,
+  corporation,
+}: {
+  setCurrentIndex: (v: number) => void;
+  corporation: any;
+}) {
   const form = useForm<z.infer<typeof CorporationExtraInfSchema>>({
     resolver: zodResolver(CorporationExtraInfSchema),
     defaultValues: {
@@ -118,13 +124,14 @@ export default function CorporationExtraInfForm() {
       await fetch(`${process.env.NEXT_PUBLIC_WEB_URL}/api/corporation`, {
         method: "PUT",
         body: JSON.stringify({
-          data,
+          ...data,
+          id: corporation?.id,
         }),
         headers: {
           "Content-Type": "application/json",
         },
       });
-
+      setCurrentIndex(2);
       setIsLoading(false);
     } catch {
       setIsLoading(false);

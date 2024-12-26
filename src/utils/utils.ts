@@ -45,3 +45,62 @@ export function formatTime(seconds: number) {
   }
   return `${hrs}:${formattedMins}:${formattedSecs}`;
 }
+
+export const generateRandomNickname = (): string => {
+  const koreanSyllables = [
+    "가",
+    "나",
+    "다",
+    "라",
+    "마",
+    "바",
+    "사",
+    "아",
+    "자",
+    "차",
+    "카",
+    "타",
+    "파",
+    "하",
+    "강",
+    "남",
+    "달",
+    "람",
+    "만",
+    "박",
+    "상",
+    "안",
+    "장",
+    "찬",
+    "칸",
+    "탄",
+    "판",
+    "한",
+    "고",
+    "노",
+    "도",
+    "로",
+    "모",
+    "보",
+    "소",
+    "오",
+    "조",
+    "초",
+    "코",
+    "토",
+    "포",
+    "호",
+  ];
+
+  const numSyllables = Math.floor(Math.random() * 3) + 2; // Randomly 2~4 syllables
+  const selectedSyllables = Array.from(
+    { length: numSyllables },
+    () => koreanSyllables[Math.floor(Math.random() * koreanSyllables.length)],
+  );
+
+  const randomNumbers = Array.from({ length: 3 }, () =>
+    Math.floor(Math.random() * 10),
+  ).join("");
+
+  return selectedSyllables.join("") + randomNumbers;
+};

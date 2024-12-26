@@ -7,7 +7,7 @@ import {
   GetUserSearchDto,
   toJSON,
 } from "@/dtos/user.dto";
-import { Adoption, AdoptionStep } from "@prisma/client";
+import { AdoptionStep } from "@prisma/client";
 
 // 유저 생성
 const createUserRepository = async (dto: UserDto): Promise<GetUserDto> => {
@@ -95,7 +95,6 @@ const getUserByCurriculumRepository = async (
             status: true, //AdoptionStatus
             step: true, //AdoptionStep
             animal_type: true,
-            curriculumStep: true,
           },
         },
       },

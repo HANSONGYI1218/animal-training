@@ -21,10 +21,10 @@ model User {
   zipCode            String          @db.VarChar(255)
   address            String          @db.VarChar(255)
   detailAddress      String          @db.VarChar(255)
-  phoneNumber        String          @unique @db.VarChar(255)
-  registrationNumber String          @unique @db.VarChar(255)
-  nickname           String          @unique @db.VarChar(255)
-  birthday           DateTime
+  phoneNumber        String          @db.VarChar(255)
+  registrationNumber String          @db.VarChar(255)
+  nickname           String          @db.VarChar(255)
+  birthday           DateTime?
   gender             GenderType      @default(MALE)
   isNewNews_SMS      Boolean         @default(true)
   isNotice_SMS       Boolean         @default(true)
@@ -34,7 +34,7 @@ model User {
   isPromotion_Email  Boolean         @default(true)
   lastVideoIndexs    Int[]    //[0] 강아지 강의, [1] 고양이 강의
   lastVideoTimes     Float[]  //[0] 강아지 강의 시청 시간, [1] 고양이 강의 시청 시간
-  curriculumSteps    CurriculumStep[] @default([LECTURE, LECTURE]) //[0] 강아지 커리큘럼 단계, [1] 고양이 커리큘럼 단계
+  curriculumSteps    CurriculumStep[] //[0] 강아지 커리큘럼 단계, [1] 고양이 커리큘럼 단계
   createdAt          DateTime        @default(now())
   updatedAt          DateTime        @updatedAt
   adopterAdoptions   Adoption[]      @relation("AdopterAdoptions")

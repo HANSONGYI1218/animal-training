@@ -33,8 +33,10 @@ const LoginInfoSchema = z
 
 export default function LoginInfoForm({
   setCurrentIndex,
+  setUser,
 }: {
   setCurrentIndex: (v: number) => void;
+  setUser: (v: any) => void;
 }) {
   const form = useForm<z.infer<typeof LoginInfoSchema>>({
     resolver: zodResolver(LoginInfoSchema),
@@ -54,35 +56,54 @@ export default function LoginInfoForm({
 
   const emailSend = async (v: string) => {
     try {
-      const randomCode = generateSixDigitCode();
-
-      setRandomMailNumber(randomCode);
-      await fetch(`${process.env.NEXT_PUBLIC_WEB_URL}/api/contact`, {
-        method: "POST",
-        body: JSON.stringify({
-          randomMailNumber: randomCode,
-          to: v,
-          subject: "이메일 도착",
-          message: "이메일 도착",
-        }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
       setIsSending(true);
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_WEB_URL}/api/${form.watch("userType").toLowerCase()}?email=${v}`,
+        {
+          method: "GET",
+
+          headers: {
+            "Content-Type": "application/json",
+          },
+        },
+      );
+      const responseUser = await response.json();
+      if (responseUser) {
+        toast("이미 존재하는 회원 이메일입니다.", {
+          description: "다른 이메일을 사용해주세요.",
+        });
+      } else {
+        const randomCode = generateSixDigitCode();
+
+        await fetch(`${process.env.NEXT_PUBLIC_WEB_URL}/api/contact`, {
+          method: "POST",
+          body: JSON.stringify({
+            randomMailNumber: randomCode,
+            to: v,
+            subject: "이메일 도착",
+            message: "이메일 도착",
+          }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        setRandomMailNumber(randomCode);
+      }
     } catch {
       toast("not found", {
         description: "잠시 후 다시 시도해 주세요.",
       });
+    } finally {
+      setIsSending(false);
     }
   };
 
   async function onSubmit(data: z.infer<typeof LoginInfoSchema>) {
     try {
       setIsLoading(true);
-      if (data.userType === "USER") {
-        await fetch(`${process.env.NEXT_PUBLIC_WEB_URL}/api/user`, {
+      const responseUser = await fetch(
+        `${process.env.NEXT_PUBLIC_WEB_URL}/api/${data.userType.toLowerCase()}`,
+        {
           method: "POST",
           body: JSON.stringify({
             email: data.email,
@@ -91,21 +112,13 @@ export default function LoginInfoForm({
           headers: {
             "Content-Type": "application/json",
           },
-        });
-      } else {
-        await fetch(`${process.env.NEXT_PUBLIC_WEB_URL}/api/corporation`, {
-          method: "POST",
-          body: JSON.stringify({
-            email: data.email,
-            password: data.password,
-          }),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-      }
+        },
+      );
+
+      const user = await responseUser.json();
 
       setIsLoading(false);
+      setUser(user);
       setCurrentIndex(1);
     } catch {
       toast("not found", {
@@ -162,8 +175,11 @@ export default function LoginInfoForm({
                 <FormControl>
                   <Input
                     placeholder="이메일을 작성해주세요."
-                    className="disabled:cursor-default disabled:border-none"
+                    className="disabled:cursor-default"
                     value={field.value ?? ""}
+                    disabled={
+                      randomMailNumber?.toString() === form.watch("email_check")
+                    }
                     onChange={(e) => {
                       if (isSending) {
                         setIsSending(false);
@@ -177,6 +193,11 @@ export default function LoginInfoForm({
                   disabled={
                     randomMailNumber?.toString() === form.watch("email_check")
                   }
+                  className={`${
+                    randomMailNumber?.toString() ===
+                      form.watch("email_check") &&
+                    "rounded-full bg-green-100 p-3 disabled:opacity-100"
+                  }`}
                   variant={"destructive"}
                   onClick={() => {
                     if (field.value.length > 0) {
@@ -184,56 +205,58 @@ export default function LoginInfoForm({
                     }
                   }}
                 >
-                  인증하기
+                  {isSending ? (
+                    <Loader2 className="w-[55px] animate-spin" />
+                  ) : randomMailNumber?.toString() ===
+                    form.watch("email_check") ? (
+                    <Check
+                      className="h-4 w-4"
+                      stroke="#ffffff"
+                      strokeWidth={2.8}
+                    />
+                  ) : (
+                    "인증하기"
+                  )}
                 </Button>
               </div>
-              {isSending && field.value.length > 0 && (
-                <span className="text-sm text-green-100">
-                  이메일을 전송했습니다.
-                </span>
-              )}
+              {randomMailNumber &&
+                randomMailNumber?.toString() !== form.watch("email_check") && (
+                  <span className="text-sm text-green-100">
+                    이메일을 전송했습니다.
+                  </span>
+                )}
             </FormItem>
           )}
         />
-        {isSending && (
-          <FormField
-            control={form.control}
-            name="email_check"
-            render={({ field }) => (
-              <FormItem>
-                <span className="font-semibold">이메일 확인</span>
-                <div className="flex gap-3">
+        {randomMailNumber &&
+          randomMailNumber?.toString() !== form.watch("email_check") && (
+            <FormField
+              control={form.control}
+              name="email_check"
+              render={({ field }) => (
+                <FormItem>
+                  <span className="font-semibold">이메일 확인</span>
+
                   <FormControl>
                     <Input
-                      disabled={
-                        randomMailNumber?.toString() ===
-                        form.watch("email_check")
-                      }
                       placeholder="이메일 코드를 작성해주세요."
                       className="disabled:cursor-default"
                       {...field}
                     />
                   </FormControl>
-                  <Button
-                    type="button"
-                    variant={"destructive"}
-                    className={
-                      field.value === randomMailNumber?.toString()
-                        ? "h-[40px] w-[40px] cursor-default rounded-full bg-green-100 p-3 hover:bg-green-100"
-                        : ""
-                    }
-                  >
-                    {field.value === randomMailNumber?.toString() ? (
-                      <Check width={20} height={20} />
-                    ) : (
-                      "인증하기"
+
+                  {randomMailNumber &&
+                    randomMailNumber?.toString() !==
+                      form.watch("email_check") &&
+                    field.value.length > 0 && (
+                      <span className="text-sm text-red-500">
+                        인증코드가 맞지 않습니다.
+                      </span>
                     )}
-                  </Button>
-                </div>
-              </FormItem>
-            )}
-          />
-        )}
+                </FormItem>
+              )}
+            />
+          )}
 
         <FormField
           control={form.control}
@@ -245,6 +268,7 @@ export default function LoginInfoForm({
                 <div className="flex items-center gap-3">
                   <Input
                     type={isPasswordShow ? "text" : "password"}
+                    autoComplete="new-password"
                     placeholder="비밀번호를 작성해주세요."
                     className="disabled:cursor-default disabled:border-none"
                     {...field}
@@ -281,6 +305,7 @@ export default function LoginInfoForm({
               <FormControl>
                 <div className="flex items-center gap-3">
                   <Input
+                    autoComplete="new-password"
                     type={isPasswordCheckShow ? "text" : "password"}
                     placeholder="비밀번호를 다시 한 번 작성해주세요."
                     className="disabled:cursor-default disabled:border-none"
@@ -315,7 +340,7 @@ export default function LoginInfoForm({
           variant={"destructive"}
           className="mt-16 w-24 self-end"
         >
-          {isLoading ? <Loader2 /> : "회원가입"}
+          {isLoading ? <Loader2 className="animate-spin" /> : "다음으로"}
         </Button>
       </form>
     </Form>

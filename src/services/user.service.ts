@@ -19,7 +19,7 @@ import {
   getUserByLoginRepository,
   getUserByEmailRepository,
 } from "@/repositories/user.repository";
-import { AnimalType, GenderType } from "@prisma/client";
+import { AnimalType, CurriculumStep, GenderType } from "@prisma/client";
 
 // 유저 생성
 const createUserService = async (dto: CreateUserDto): Promise<GetUserDto> => {
@@ -27,17 +27,16 @@ const createUserService = async (dto: CreateUserDto): Promise<GetUserDto> => {
     // const isExisted = await getUserByIdRepository(dto.id);
     // if(isExisted) return null;
     const newUser = new UserEntity({
-      name: dto?.name ?? "",
-      email: dto?.email ?? "",
-      password: dto?.password ?? "",
-      zipCode: dto?.zipCode ?? "",
-      address: dto?.address ?? "",
-      detailAddress: dto?.detailAddress ?? "",
-      phoneNumber: dto?.phoneNumber ?? "",
+      ...dto,
+      name: "",
+      zipCode: "",
+      address: "",
+      detailAddress: "",
+      phoneNumber: "",
       registrationNumber: "",
       nickname: "",
-      birthday: dto?.birthday ?? null,
-      gender: dto?.gender ?? GenderType.MALE,
+      birthday: null,
+      gender: GenderType.MALE,
       isNewNews_SMS: true,
       isNotice_SMS: true,
       isPromotion_SMS: true,
@@ -46,6 +45,7 @@ const createUserService = async (dto: CreateUserDto): Promise<GetUserDto> => {
       isPromotion_Email: true,
       lastVideoIndexs: [],
       lastVideoTimes: [],
+      curriculumSteps: [],
     });
 
     const user = await createUserRepository(toJSON(newUser));
@@ -149,7 +149,9 @@ const updateUserService = async (
 
     const updateUser = new UserEntity({
       ...user,
+      name: dto?.name ?? user.name,
       email: dto?.email ?? user.email,
+      birthday: dto?.birthday ?? user.birthday,
       password: dto?.password ?? user.password,
       zipCode: dto?.zipCode ?? user.zipCode,
       address: dto?.address ?? user.address,
@@ -170,6 +172,16 @@ const updateUserService = async (
         animalType === AnimalType.DOG
           ? [dto?.lastVideoIndex ?? -2, user?.lastVideoIndexs[1] ?? -2]
           : [user?.lastVideoIndexs[0] ?? -2, dto?.lastVideoIndex ?? -2],
+      curriculumSteps:
+        animalType === AnimalType.DOG
+          ? [
+              dto?.curriculumStep ?? CurriculumStep.LECTURE,
+              user?.curriculumSteps[1] ?? CurriculumStep.LECTURE,
+            ]
+          : [
+              user?.curriculumSteps[0] ?? CurriculumStep.LECTURE,
+              dto?.curriculumStep ?? CurriculumStep.LECTURE,
+            ],
       updatedAt: new Date(),
     });
 
