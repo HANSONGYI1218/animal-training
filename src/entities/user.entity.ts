@@ -1,4 +1,4 @@
-import { GenderType } from "@prisma/client";
+import { CurriculumStep, GenderType } from "@prisma/client";
 
 interface UserEntityProps {
   id?: string;
@@ -21,6 +21,7 @@ interface UserEntityProps {
   isPromotion_Email?: boolean;
   lastVideoIndexs: number[];
   lastVideoTimes: number[];
+  curriculumSteps: CurriculumStep[];
   updatedAt?: Date;
 }
 
@@ -45,6 +46,7 @@ export class UserEntity {
   private isPromotion_Email: boolean;
   private lastVideoIndexs: number[];
   private lastVideoTimes: number[];
+  private curriculumSteps: CurriculumStep[];
   private createdAt: Date;
   private updatedAt: Date;
 
@@ -69,6 +71,7 @@ export class UserEntity {
     isPromotion_Email = true,
     lastVideoIndexs,
     lastVideoTimes,
+    curriculumSteps,
     updatedAt,
   }: UserEntityProps) {
     this.id = id;
@@ -91,6 +94,7 @@ export class UserEntity {
     this.isPromotion_Email = isPromotion_Email;
     this.lastVideoIndexs = lastVideoIndexs;
     this.lastVideoTimes = lastVideoTimes;
+    this.curriculumSteps = curriculumSteps;
     this.createdAt = new Date();
     this.updatedAt = updatedAt ?? new Date();
   }

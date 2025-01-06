@@ -24,7 +24,7 @@ const LoginSchema = z.object({
   password: z.string().min(1, { message: "비밀번호를 적어주세요." }),
 });
 
-export default function LoginForm({ isInvited }: { isInvited?: boolean }) {
+export default function LoginForm() {
   const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
     defaultValues: { userType: "USER", email: "", password: "" },
@@ -47,8 +47,6 @@ export default function LoginForm({ isInvited }: { isInvited?: boolean }) {
 
       if (response?.error === "CredentialsSignin") {
         setIsUserExist(false);
-      } else if (isInvited) {
-        router.replace("/curriculum");
       } else {
         router.replace("/lecture");
       }
@@ -67,7 +65,7 @@ export default function LoginForm({ isInvited }: { isInvited?: boolean }) {
         onSubmit={form.handleSubmit(onSubmit)}
         className="flex w-full flex-col items-center justify-center"
       >
-        <div className="flex w-1/4 flex-col gap-6 rounded-xl border p-6">
+        <div className="flex min-w-[400px] flex-col gap-6 rounded-xl border p-6">
           <span className="mb-6 text-xl font-semibold">로그인</span>
           <FormField
             control={form.control}
@@ -125,6 +123,7 @@ export default function LoginForm({ isInvited }: { isInvited?: boolean }) {
                 <span className="font-semibold">비밀번호</span>
                 <div className="flex items-center gap-3">
                   <Input
+                    autoComplete="new-password"
                     type={isPasswordShow ? "text" : "password"}
                     placeholder="비밀번호를 작성해주세요."
                     className="disabled:cursor-default disabled:border-none"

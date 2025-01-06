@@ -8,6 +8,7 @@ import {
 import {
   createCorporationService,
   deleteCorporationService,
+  getCorporationByEmailService,
   getCorporationByIdService,
   getCorporationByLoginService,
   updateCorporationService,
@@ -18,10 +19,8 @@ async function POST(req: NextRequest, res: NextResponse) {
   try {
     const dto: CreateCorporationDto = await req.json();
 
-    await createCorporationService(dto);
-    return new NextResponse("Corporation created successfully", {
-      status: 200,
-    });
+    const corporation: CorporationDto = await createCorporationService(dto);
+    return NextResponse.json(corporation);
   } catch (error) {
     return new NextResponse("Failed to create Corporation", { status: 500 });
   }
@@ -45,13 +44,17 @@ async function GET(req: NextRequest, res: NextResponse) {
 
       return NextResponse.json(corporation);
     }
-    if (email && password) {
-      const user: CorporationDto | null = await getCorporationByLoginService(
-        email,
-        password,
-      );
+    if (email) {
+      const corporation: CorporationDto | null =
+        await getCorporationByEmailService(email);
 
-      return NextResponse.json(user);
+      return NextResponse.json(corporation);
+    }
+    if (email && password) {
+      const corporation: CorporationDto | null =
+        await getCorporationByLoginService(email, password);
+
+      return NextResponse.json(corporation);
     }
   } catch (error) {
     return new NextResponse("Failed to create Corporation(s)", { status: 500 });

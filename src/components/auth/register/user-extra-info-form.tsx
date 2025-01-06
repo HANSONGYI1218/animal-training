@@ -16,16 +16,16 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { Calendar } from "@/components/ui/calendar";
-import { CalendarIcon, Search } from "lucide-react";
+import { CalendarIcon, Search, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { Loader2 } from "lucide-react";
 import { GenderType } from "@prisma/client";
-import { cn } from "@/utils/utils";
+import { cn, generateId, generateRandomNickname } from "@/utils/utils";
 import { format } from "date-fns";
 import { ko } from "date-fns/locale";
 import { toast } from "sonner";
+import { CalendarDropDown } from "@/components/common/calender-dropdown";
 
 const UserExtraInfSchema = z.object({
   name: z.string().min(1, { message: "이름을 적어주세요." }),
@@ -37,7 +37,13 @@ const UserExtraInfSchema = z.object({
   detailAddress: z.string().min(1, { message: "상세주소를 작성해 주세요." }),
 });
 
-export default function UserExtraInfForm() {
+export default function UserExtraInfForm({
+  setCurrentIndex,
+  user,
+}: {
+  setCurrentIndex: (v: number) => void;
+  user: any;
+}) {
   const form = useForm<z.infer<typeof UserExtraInfSchema>>({
     resolver: zodResolver(UserExtraInfSchema),
     defaultValues: {
@@ -51,6 +57,7 @@ export default function UserExtraInfForm() {
     },
   });
   const [isLoading, setIsLoading] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   const openAddressPopup = () => {
     new window.daum.Postcode({
@@ -67,18 +74,33 @@ export default function UserExtraInfForm() {
   async function onSubmit(data: z.infer<typeof UserExtraInfSchema>) {
     try {
       setIsLoading(true);
+      const fixedDate = new Date(
+        Date.UTC(
+          data?.birthday?.getFullYear(),
+          data?.birthday?.getMonth(),
+          data?.birthday?.getDate(),
+        ),
+      ).toISOString();
 
       await fetch(`${process.env.NEXT_PUBLIC_WEB_URL}/api/user`, {
         method: "PUT",
         body: JSON.stringify({
-          data,
+          ...data,
+          nickname: generateRandomNickname(),
+          birthday: new Date(fixedDate),
+          id: user?.id,
         }),
         headers: {
           "Content-Type": "application/json",
         },
       });
 
+      setCurrentIndex(2);
       setIsLoading(false);
+
+      toast("회원가입을 완료했습니다.", {
+        description: "로그인을 해주세요.",
+      });
     } catch {
       toast("not found", {
         description: "잠시 후 다시 시도해 주세요.",
@@ -101,7 +123,7 @@ export default function UserExtraInfForm() {
               <span className="font-semibold">이름</span>
               <FormControl>
                 <Input
-                  placeholder="이름을 다시 한 번 작성해주세요."
+                  placeholder="이름을 작성해주세요."
                   className="disabled:cursor-default disabled:border-none"
                   {...field}
                 />
@@ -116,7 +138,7 @@ export default function UserExtraInfForm() {
           render={({ field }) => (
             <FormItem className="flex w-full flex-col">
               <span className="font-semibold">생년월일</span>
-              <Popover>
+              <Popover onOpenChange={setIsOpen} open={isOpen}>
                 <PopoverTrigger asChild>
                   <FormControl>
                     <Button
@@ -137,14 +159,29 @@ export default function UserExtraInfForm() {
                     </Button>
                   </FormControl>
                 </PopoverTrigger>
-                <PopoverContent className="w-auto p-0" align="start">
-                  <Calendar
+                <PopoverContent
+                  onPointerDownOutside={(event) => {
+                    event.preventDefault(); // Prevent outside clicks from closing the popover
+                  }}
+                  className="relative w-[350px] p-2"
+                  align="start"
+                >
+                  <X
+                    onClick={() => setIsOpen(!isOpen)}
+                    className="absolute right-2 top-2 h-5 w-5 cursor-pointer"
+                    strokeWidth={1}
+                  />
+                  <CalendarDropDown
                     mode="single"
-                    selected={field.value}
-                    onSelect={field.onChange}
-                    disabled={(date) =>
-                      date > new Date() || date < new Date("1900-01-01")
-                    }
+                    captionLayout="dropdown-buttons"
+                    selected={field?.value}
+                    fromYear={1930}
+                    toYear={new Date().getFullYear()}
+                    onSelect={(v) => {
+                      if (v) {
+                        field.onChange(v);
+                      }
+                    }}
                     initialFocus
                   />
                 </PopoverContent>

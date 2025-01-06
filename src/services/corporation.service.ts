@@ -9,6 +9,7 @@ import { CorporationEntity } from "@/entities/corporation.entity";
 import {
   createCorporationRepository,
   deleteCorporationRepository,
+  getCorporationByEmailRepository,
   getCorporationByIdRepository,
   getCorporationByLoginRepository,
   updateCorporationRepository,
@@ -17,7 +18,7 @@ import {
 // 기업 생성
 export const createCorporationService = async (
   dto: CreateCorporationDto,
-): Promise<void> => {
+): Promise<CorporationDto> => {
   try {
     // const isExisted = await getCorporationByIdService(dto.id);
     // if(isExisted) return null;
@@ -34,7 +35,11 @@ export const createCorporationService = async (
       accessStatus: "STANDARD",
     });
 
-    await createCorporationRepository(toJSON(newCorportaion));
+    const corporation = await createCorporationRepository(
+      toJSON(newCorportaion),
+    );
+
+    return corporation;
   } catch (error: any) {
     return error;
   }
@@ -47,6 +52,22 @@ export const getCorporationByLoginService = async (
 ): Promise<CorporationDto | null> => {
   try {
     const corporation = await getCorporationByLoginRepository(email, password);
+
+    if (!corporation) {
+      return null;
+    }
+    return corporation;
+  } catch {
+    return null;
+  }
+};
+
+// 특정 Email의 기업 로그인 조회
+export const getCorporationByEmailService = async (
+  email: string,
+): Promise<CorporationDto | null> => {
+  try {
+    const corporation = await getCorporationByEmailRepository(email);
 
     if (!corporation) {
       return null;

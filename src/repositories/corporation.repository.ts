@@ -8,11 +8,13 @@ import {
 // 기업 생성
 export const createCorporationRepository = async (
   dto: CorporationDto,
-): Promise<void> => {
+): Promise<CorporationDto> => {
   try {
-    await prisma.corporation.create({
+    const corporation = await prisma.corporation.create({
       data: dto,
     });
+
+    return toJSON(corporation);
   } catch (error: any) {
     return error;
   }
@@ -28,6 +30,27 @@ export const getCorporationByLoginRepository = async (
       where: {
         email: email,
         password: password,
+      },
+    });
+
+    if (!corporation) {
+      return null;
+    }
+
+    return toJSON(corporation);
+  } catch {
+    return null;
+  }
+};
+
+// 특정 Email의 기업 로그인 조회
+export const getCorporationByEmailRepository = async (
+  email: string,
+): Promise<CorporationDto | null> => {
+  try {
+    const corporation = await prisma.corporation.findFirst({
+      where: {
+        email: email,
       },
     });
 
