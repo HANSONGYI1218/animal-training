@@ -36,21 +36,17 @@ export default function TutorCard({
         width={64}
         height={64}
         alt="tutor"
-        className="rounded-full"
+        className="h-[64px] w-[64px] rounded-full"
       />
       <Link href={`/tutor/${tutor?.id}`}>
         <Button
-          className={`${isEdit ? "hidden" : "flex"} absolute bottom-4 left-1/2 z-10 -translate-x-1/2 gap-2 rounded-full opacity-0 group-hover:opacity-100`}
+          className={`${isEdit ? "hidden" : "flex"} absolute left-0 top-0 z-10 h-full w-full gap-2 rounded-xl bg-transparent opacity-0 group-hover:opacity-100`}
           variant={"destructive"}
         >
-          <SquareUser className="h-4 w-4" /> 보러가기
+          <SquareUser className="hover: h-4 w-4" /> 보러가기
         </Button>
       </Link>
-      <span
-        className={`flex ${isEdit ? "group-hover:opacity-100" : "group-hover:opacity-0"}`}
-      >
-        {tutor?.name}
-      </span>
+      <span>{tutor?.name}</span>
     </div>
   );
 }

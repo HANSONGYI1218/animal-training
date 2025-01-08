@@ -6,12 +6,13 @@ import TrainingCenterCard from "./training-center-card";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Loader2, Pencil, Plus } from "lucide-react";
+import { ChevronDown, Loader2, Pencil, Plus } from "lucide-react";
 import TutorCard from "../tutor/tutor-card";
 import TutorTrainingForm from "./tutor-training-form";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { Tutor } from "@prisma/client";
+import { Badge } from "@/components/ui/badge";
 
 export default function TrainingCenterTab() {
   const { data: session, status } = useSession();
@@ -22,6 +23,10 @@ export default function TrainingCenterTab() {
   >(null);
   const [isAddTrainer, setIsAddTrainer] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isOpened, setIsOpened] = useState(false);
+  const [selectTrainingCenter, setSelectTrainingCenter] =
+    useState<GetTrainingCenterDetailDto | null>(null);
+  const [filteredTutors, setFilteredTutors] = useState<Tutor[] | null>(null);
 
   useEffect(() => {
     const getData = async () => {
@@ -52,10 +57,21 @@ export default function TrainingCenterTab() {
       setTutors(tutors);
       setTrainingCenters(trainingCenters);
       setIsLoading(false);
+      setSelectTrainingCenter(trainingCenters[0]);
     };
 
     getData();
   }, [isAddTrainer]);
+
+  useEffect(() => {
+    const filteredDatas: Tutor[] = (tutors || [])?.filter((tutor) => {
+      return !selectTrainingCenter?.tutorTrainingCenters.some(
+        (training) => training.tutor.id === tutor.id,
+      );
+    });
+
+    setFilteredTutors(filteredDatas);
+  }, [selectTrainingCenter]);
 
   return (
     <section className="flex flex-col gap-6">
@@ -85,65 +101,81 @@ export default function TrainingCenterTab() {
               <Loader2 className="animate-spin" />
             </div>
           ) : trainingCenters && trainingCenters?.length > 0 ? (
-            trainingCenters.map((trainingCenter, index) => {
-              const filteredTutors = tutors?.filter((tutor) => {
-                return !trainingCenter?.tutorTrainingCenters.some(
-                  (training) => training.tutor.id === tutor.id,
-                );
-              });
-
-              return (
-                <div
-                  key={index}
-                  className="flex w-full flex-col rounded-xl bg-slate-100 p-6"
-                >
-                  <span className="mb-6 font-[540]">
-                    {trainingCenter?.name}
-                  </span>
-                  <TrainingCenterCard
-                    trainingCenter={trainingCenter}
-                    isEdit={isEdit}
-                  />
-                  <div className="flex w-full flex-col">
-                    <hr className="my-3 w-full" />
-                    <div className="grid w-full grid-cols-4 rounded-xl">
-                      <Dialog>
-                        <DialogTrigger type="button" asChild disabled={!isEdit}>
-                          <div className="group flex min-h-40 w-full cursor-pointer flex-col items-center justify-center gap-3 rounded-xl border py-6 text-center text-sm">
-                            <Plus
-                              className="h-6 w-6 group-hover:scale-110"
-                              strokeWidth={2.1}
-                              stroke="#000000"
-                            />
-                            훈련사를 추가해보세요!
-                          </div>
-                        </DialogTrigger>
-                        <DialogContent className="sm:max-w-[425px]">
-                          <TutorTrainingForm
-                            setIsAddTrainer={setIsAddTrainer}
-                            trainingCenterId={trainingCenter?.id}
-                            tutors={filteredTutors}
-                          />
-                        </DialogContent>
-                      </Dialog>
-
-                      {trainingCenter?.tutorTrainingCenters.map(
-                        (tutorCenter, indx) => {
-                          return (
-                            <TutorCard
-                              key={indx}
-                              trainingCenterId={trainingCenter?.id}
-                              tutor={tutorCenter.tutor}
-                              isEdit={isEdit}
-                            />
-                          );
-                        },
-                      )}
-                    </div>
-                  </div>
+            <>
+              {trainingCenters.map((trainingCenter) => (
+                <div key={trainingCenter.id} className="flex w-full">
+                  <Badge
+                    onClick={() => setSelectTrainingCenter(trainingCenter)}
+                    variant="tag"
+                    className={`w-fit cursor-pointer ${
+                      selectTrainingCenter?.id === trainingCenter.id &&
+                      "bg-black text-white"
+                    }`}
+                  >
+                    {trainingCenter.name}
+                  </Badge>
                 </div>
-              );
-            })
+              ))}
+
+              <TrainingCenterCard
+                trainingCenter={selectTrainingCenter ?? trainingCenters[0]}
+                isEdit={isEdit}
+              />
+
+              <div className="flex w-full flex-col">
+                <hr className="my-3 w-full" />
+                <div className="grid w-full grid-cols-4 gap-4">
+                  <Dialog>
+                    <DialogTrigger type="button" asChild disabled={!isEdit}>
+                      <div className="group flex min-h-40 w-full cursor-pointer flex-col items-center justify-center gap-3 rounded-xl border py-6 text-center text-sm">
+                        <Plus
+                          className="h-6 w-6 group-hover:scale-110"
+                          strokeWidth={2.1}
+                          stroke="#000000"
+                        />
+                        훈련사를 추가해보세요!
+                      </div>
+                    </DialogTrigger>
+                    <DialogContent className="sm:max-w-[425px]">
+                      <TutorTrainingForm
+                        setIsAddTrainer={setIsAddTrainer}
+                        trainingCenterId={
+                          selectTrainingCenter?.id ?? trainingCenters[0]?.id
+                        }
+                        tutors={filteredTutors ?? undefined}
+                      />
+                    </DialogContent>
+                  </Dialog>
+
+                  {selectTrainingCenter?.tutorTrainingCenters
+                    .slice(0, isOpened ? undefined : 7)
+                    .map((tutorCenter) => (
+                      <TutorCard
+                        key={tutorCenter.tutor.id}
+                        trainingCenterId={selectTrainingCenter.id}
+                        tutor={tutorCenter.tutor}
+                        isEdit={isEdit}
+                      />
+                    ))}
+                </div>
+
+                {selectTrainingCenter &&
+                  selectTrainingCenter?.tutorTrainingCenters?.length > 7 && (
+                    <div className="flex flex-col items-center">
+                      <Button
+                        className="h-fit w-fit rounded-full p-2"
+                        variant="destructive"
+                        onClick={() => setIsOpened(!isOpened)}
+                      >
+                        <ChevronDown
+                          strokeWidth={3}
+                          className={`h-7 w-7 duration-150 ${isOpened && "rotate-180"}`}
+                        />
+                      </Button>
+                    </div>
+                  )}
+              </div>
+            </>
           ) : (
             <div className="flex min-h-40 w-full cursor-pointer flex-col items-center justify-center gap-3 rounded-xl border py-6 text-center text-sm">
               <Image
