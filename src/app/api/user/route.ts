@@ -19,7 +19,6 @@ import {
   getUserByUserInfoService,
   updateUserService,
 } from "@/services/user.service";
-import { AnimalType } from "@prisma/client";
 
 // POST 요청 핸들러
 async function POST(req: NextRequest, res: NextResponse) {
@@ -89,10 +88,9 @@ async function GET(req: NextRequest, res: NextResponse) {
 // PUT 요청 핸들러
 async function PUT(req: NextRequest, res: NextResponse) {
   try {
-    const { animalType, ...dto }: { animalType: AnimalType } & UpdateUserDto =
-      await req.json();
+    const dto: UpdateUserDto = await req.json();
 
-    await updateUserService(dto, animalType);
+    await updateUserService(dto);
 
     return new NextResponse("User updated successfully", { status: 200 });
   } catch (error) {

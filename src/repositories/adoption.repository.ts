@@ -17,7 +17,6 @@ export const createAdoptionRepository = async (
     await prisma.adoption.create({
       data: {
         ...dto,
-        attendances: [],
       },
     });
   } catch (error: any) {
@@ -194,8 +193,6 @@ export const updateAdoptionRepository = async (
       },
       data: {
         ...dto,
-        attendances: [],
-        updatedAt: new Date(),
       },
     });
   } catch (error: any) {

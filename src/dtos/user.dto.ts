@@ -28,9 +28,6 @@ export type UserDto = {
   isNewNews_Email: boolean;
   isNotice_Email: boolean;
   isPromotion_Email: boolean;
-  lastVideoIndexs: number[];
-  lastVideoTimes: number[];
-  curriculumSteps: CurriculumStep[];
   createdAt: Date;
   updatedAt: Date;
 };
@@ -57,9 +54,6 @@ export type UpdateUserDto = {
   isNewNews_Email?: boolean;
   isNotice_Email?: boolean;
   isPromotion_Email?: boolean;
-  lastVideoIndex?: number;
-  lastVideoTime?: number;
-  curriculumStep?: CurriculumStep;
 };
 
 export type GetUserDto = {
@@ -89,9 +83,6 @@ export type GetUserDto = {
   isNewNews_Email: boolean;
   isNotice_Email: boolean;
   isPromotion_Email: boolean;
-  lastVideoIndexs: number[];
-  lastVideoTimes: number[];
-  curriculumSteps: CurriculumStep[];
   createdAt: Date;
   updatedAt: Date;
 };
@@ -116,9 +107,6 @@ export type GetUserByCurriculumDto = {
     animal_type: AnimalType;
     curriculumStep: CurriculumStep;
   }[];
-  lastVideoIndexs: number[];
-  lastVideoTimes: number[];
-  curriculumSteps: CurriculumStep[];
   createdAt: Date;
   updatedAt: Date;
 };
@@ -136,9 +124,6 @@ export type GetUserAdoptionRecordDto = {
   birthday: Date;
   gender: GenderType;
   adopterAdoptions: Adoption[] | null;
-  lastVideoIndexs: string[];
-  lastVideoTimes: number[];
-  curriculumSteps: CurriculumStep[];
   createdAt: Date;
   updatedAt: Date;
 };

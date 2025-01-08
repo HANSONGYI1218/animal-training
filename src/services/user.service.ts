@@ -19,7 +19,7 @@ import {
   getUserByLoginRepository,
   getUserByEmailRepository,
 } from "@/repositories/user.repository";
-import { AnimalType, CurriculumStep, GenderType } from "@prisma/client";
+import { AnimalType, GenderType } from "@prisma/client";
 
 // 유저 생성
 const createUserService = async (dto: CreateUserDto): Promise<GetUserDto> => {
@@ -43,9 +43,6 @@ const createUserService = async (dto: CreateUserDto): Promise<GetUserDto> => {
       isNewNews_Email: true,
       isNotice_Email: true,
       isPromotion_Email: true,
-      lastVideoIndexs: [],
-      lastVideoTimes: [],
-      curriculumSteps: [],
     });
 
     const user = await createUserRepository(toJSON(newUser));
@@ -136,10 +133,7 @@ const getUserByUserInfoService = async (
 };
 
 // 유저 업데이트
-const updateUserService = async (
-  dto: UpdateUserDto,
-  animalType: AnimalType,
-): Promise<void> => {
+const updateUserService = async (dto: UpdateUserDto): Promise<void> => {
   try {
     const user = await getUserByMypageRepository(dto.id);
 
@@ -164,25 +158,6 @@ const updateUserService = async (
       isNewNews_Email: dto?.isNewNews_Email ?? user.isNewNews_Email,
       isNotice_Email: dto?.isNotice_Email ?? user.isNotice_Email,
       isPromotion_Email: dto?.isPromotion_Email ?? user.isPromotion_Email,
-      lastVideoTimes:
-        animalType === AnimalType.DOG
-          ? [dto?.lastVideoTime ?? 0, user?.lastVideoTimes[1] ?? 0]
-          : [user?.lastVideoTimes[0] ?? 0, dto?.lastVideoTime ?? 0],
-      lastVideoIndexs:
-        animalType === AnimalType.DOG
-          ? [dto?.lastVideoIndex ?? -2, user?.lastVideoIndexs[1] ?? -2]
-          : [user?.lastVideoIndexs[0] ?? -2, dto?.lastVideoIndex ?? -2],
-      curriculumSteps:
-        animalType === AnimalType.DOG
-          ? [
-              dto?.curriculumStep ?? CurriculumStep.LECTURE,
-              user?.curriculumSteps[1] ?? CurriculumStep.LECTURE,
-            ]
-          : [
-              user?.curriculumSteps[0] ?? CurriculumStep.LECTURE,
-              dto?.curriculumStep ?? CurriculumStep.LECTURE,
-            ],
-      updatedAt: new Date(),
     });
 
     await updateUserRepository(toJSON(updateUser));
