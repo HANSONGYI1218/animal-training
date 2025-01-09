@@ -1,10 +1,11 @@
 "use client";
 
 import { Button } from "../../../../ui/button";
-import { Pencil, SquareUser, Triangle } from "lucide-react";
+import { ChevronDown, Pencil, SquareUser, Triangle } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { GetTrainingCenterDetailDto } from "@/dtos/training.center.dto";
+import { useState } from "react";
 
 export default function TrainingCenterCard({
   trainingCenter,
@@ -13,8 +14,11 @@ export default function TrainingCenterCard({
   trainingCenter: GetTrainingCenterDetailDto;
   isEdit: boolean;
 }) {
+  const [isOpened, setIsOpened] = useState(false);
+
   return (
-    <div className="relative flex h-full w-full gap-4 rounded-lg">
+    <div className="relative flex h-full w-full flex-col gap-4 rounded-lg">
+      <span className="text-lg font-[540]">{trainingCenter?.name}</span>
       <div className="flex w-full flex-col justify-between gap-4">
         <img
           src={trainingCenter?.profile}
@@ -82,16 +86,33 @@ export default function TrainingCenterCard({
           )}
         </div>
       </div>
-      <div className="flex w-full flex-col justify-between gap-4">
-        <div className="flex flex-col gap-2">
+      <div
+        className={`flex w-full flex-col justify-between gap-4 overflow-hidden rounded-xl px-4 py-2 ${isOpened ? "h-ull" : "h-11"}`}
+      >
+        <div className="flex items-center justify-between">
+          <span className="text-lg font-[540]">기본정보</span>
+          <Button
+            className="h-fit w-fit rounded-full p-1"
+            variant={"destructive"}
+            onClick={() => {
+              setIsOpened(!isOpened);
+            }}
+          >
+            <ChevronDown
+              strokeWidth={3}
+              className={`h-5 w-5 duration-150 ${isOpened && "rotate-180"}`}
+            />
+          </Button>
+        </div>
+        <div className="flex flex-col gap-3 px-2">
           <div className="flex gap-3">
-            <span className="w-7 text-neutral-600">소개</span>
-            <span className="scroll_black line-clamp-4 flex-1 overflow-y-auto whitespace-pre-line pr-1.5">
+            <span className="w-12 text-neutral-600">소개</span>
+            <span className="flex-1 whitespace-pre-line">
               {trainingCenter?.introduction}
             </span>
           </div>
           <div className="flex gap-3">
-            <span className="w-7 text-neutral-600">주소</span>
+            <span className="w-12 text-neutral-600">주소</span>
             <div className="line-clamp-3 flex flex-1 flex-col">
               <span>{trainingCenter?.zipCode}</span>
               <span>
@@ -99,9 +120,9 @@ export default function TrainingCenterCard({
               </span>
             </div>
           </div>
-          <div className="flex flex-col gap-1">
+          <div className="flex gap-1">
             <span className="text-neutral-600">환불정책</span>
-            <div className="scroll_black ml-3 flex max-h-14 flex-col gap-1 overflow-y-auto pr-1.5">
+            <div className="flex flex-col gap-1">
               {trainingCenter?.refundPolicys.map(
                 (refundPolicy: string, index: number) => {
                   return <span key={index}>* {refundPolicy}</span>;

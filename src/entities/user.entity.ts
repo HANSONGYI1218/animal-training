@@ -19,9 +19,7 @@ interface UserEntityProps {
   isNewNews_Email?: boolean;
   isNotice_Email?: boolean;
   isPromotion_Email?: boolean;
-  lastVideoIndexs: number[];
-  lastVideoTimes: number[];
-  curriculumSteps: CurriculumStep[];
+  createdAt?: Date;
   updatedAt?: Date;
 }
 
@@ -44,11 +42,8 @@ export class UserEntity {
   private isNewNews_Email: boolean;
   private isNotice_Email: boolean;
   private isPromotion_Email: boolean;
-  private lastVideoIndexs: number[];
-  private lastVideoTimes: number[];
-  private curriculumSteps: CurriculumStep[];
-  private createdAt: Date;
-  private updatedAt: Date;
+  private createdAt?: Date;
+  private updatedAt?: Date;
 
   constructor({
     id,
@@ -69,9 +64,7 @@ export class UserEntity {
     isNewNews_Email = true,
     isNotice_Email = true,
     isPromotion_Email = true,
-    lastVideoIndexs,
-    lastVideoTimes,
-    curriculumSteps,
+    createdAt,
     updatedAt,
   }: UserEntityProps) {
     this.id = id;
@@ -92,10 +85,7 @@ export class UserEntity {
     this.isNewNews_Email = isNewNews_Email;
     this.isNotice_Email = isNotice_Email;
     this.isPromotion_Email = isPromotion_Email;
-    this.lastVideoIndexs = lastVideoIndexs;
-    this.lastVideoTimes = lastVideoTimes;
-    this.curriculumSteps = curriculumSteps;
-    this.createdAt = new Date();
-    this.updatedAt = updatedAt ?? new Date();
+    this.createdAt = createdAt ?? undefined;
+    this.updatedAt = updatedAt ?? undefined;
   }
 }

@@ -3,6 +3,8 @@ import {
   AdoptionStep,
   Animal,
   AnimalType,
+  AnimalSize,
+  AnimalAge,
   Corporation,
   CurriculumStep,
   Prisma,
@@ -15,14 +17,14 @@ export type AdoptionDto = {
   status: AdoptionStatus;
   step: AdoptionStep;
   animal_type: AnimalType;
-  curriculumStep: CurriculumStep;
+  animal_size: AnimalSize;
+  animal_age: AnimalAge;
   adoption_date: Date | null;
   abandon_date: Date | null;
   abandon_reason: string;
   educationForm: string[];
   trainingForm: string[];
   adoptionForm: string[];
-  attendances: Prisma.JsonArray;
   adopterId: string;
   breederId: string;
   breederCorporationId: string;
@@ -33,7 +35,11 @@ export type AdoptionDto = {
 };
 
 export type CreateAdoptionDto = {
+  status: AdoptionStatus;
+  step: AdoptionStep;
   animal_type: AnimalType;
+  animal_size: AnimalSize;
+  animal_age: AnimalAge;
   adopterId: string;
   breederId?: string;
   breederCorporationId?: string;
@@ -44,15 +50,15 @@ export type UpdateAdoptionDto = {
   id: string;
   status?: AdoptionStatus;
   step?: AdoptionStep;
-  animal_type?: AnimalType;
-  curriculumStep?: CurriculumStep;
+  animal_type: AnimalType;
+  animal_size: AnimalSize;
+  animal_age: AnimalAge;
   adoption_date?: Date;
   abandon_date?: Date;
   abandon_reason?: string;
   educationForm?: string[];
   trainingForm?: string[];
   adoptionForm?: string[];
-  attendances?: Prisma.JsonArray;
   adopterId?: string;
 };
 
@@ -61,14 +67,14 @@ export type GetAdoptionDto = {
   status: AdoptionStatus;
   step: AdoptionStep;
   animal_type: AnimalType;
-  curriculumStep: CurriculumStep;
+  animal_size: AnimalSize;
+  animal_age: AnimalAge;
   adoption_date: Date | null;
   abandon_date: Date | null;
   abandon_reason: string;
   educationForm: string[];
   trainingForm: string[];
   adoptionForm: string[];
-  attendances: Prisma.JsonArray;
   adopterId: string;
   breederId: string;
   breederCorporationId: string;
@@ -88,7 +94,8 @@ export type GetCurriculumDto = {
   status: AdoptionStatus;
   step: AdoptionStep;
   animal_type: AnimalType;
-  curriculumStep: CurriculumStep;
+  animal_size: AnimalSize;
+  animal_age: AnimalAge;
   createdAt: Date;
   updatedAt: Date;
 };

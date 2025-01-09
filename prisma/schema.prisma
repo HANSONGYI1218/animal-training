@@ -32,9 +32,6 @@ model User {
   isNewNews_Email    Boolean         @default(true)
   isNotice_Email     Boolean         @default(true)
   isPromotion_Email  Boolean         @default(true)
-  lastVideoIndexs    Int[]    //[0] 강아지 강의, [1] 고양이 강의
-  lastVideoTimes     Float[]  //[0] 강아지 강의 시청 시간, [1] 고양이 강의 시청 시간
-  curriculumSteps    CurriculumStep[] //[0] 강아지 커리큘럼 단계, [1] 고양이 커리큘럼 단계
   createdAt          DateTime        @default(now())
   updatedAt          DateTime        @updatedAt
   adopterAdoptions   Adoption[]      @relation("AdopterAdoptions")
@@ -44,6 +41,7 @@ model User {
   userPayment        UserPayment[]
   lectureBookmarks   LectureBookmark[]   // One-to-many relationship with Bookmark
   tutorBookmarks     TutorBookmark[]
+  userCurriculum     userCurriculum[]
 }
 
 model UserPayment {
@@ -152,6 +150,8 @@ model CurriculumLecture {
   title                   String               @db.VarChar(255)
   content                 String               @db.Text
   animal_type             AnimalType           @default(CAT)
+  animal_size             AnimalSize           @default(NORMAL)
+  animal_age              AnimalAge            @default(NORMAL)
   category                CurriculumCategory   @default(TRAINING)
   thumbnailPath           String               @db.VarChar(255)
   videoUrl                String               @db.VarChar(255)
@@ -164,18 +164,35 @@ model CurriculumLecture {
   @@index([tutorId])
 }
 
+model userCurriculum {
+  id                      String               @id  @default(uuid())
+  animal_type             AnimalType           @default(CAT)
+  animal_size             AnimalSize           @default(NORMAL)
+  animal_age              AnimalAge            @default(NORMAL)
+  category                CurriculumCategory   @default(TRAINING)
+  lastVideoId             String
+  lastVideoTime           Float
+  curriculumSteps         CurriculumStep
+//   attendances             Json[]               @default([])
+  userId                  String
+  user                    User?                @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+}
+
 model Adoption {
   id                    String               @id  @default(uuid())
   status                AdoptionStatus       @default(NOT_ADOPTION)
   step                  AdoptionStep         @default(INVITATION)
-  animal_type           AnimalType           @default(DOG)             
+  animal_type           AnimalType           @default(DOG)
+  animal_size           AnimalSize           @default(NORMAL)
+  animal_age            AnimalAge            @default(NORMAL)      
   adoption_date         DateTime?       
   abandon_date          DateTime?
   abandon_reason        String?              @db.Text
   educationForm         String[] //[0] 분양자, [1] 입양자
   trainingForm          String[] //[0] 분양자, [1] 입양자
   adoptionForm          String[] //[0] 분양자, [1] 입양자
-  attendances           Json[]               @default([])
   createdAt             DateTime             @default(now())
   updatedAt             DateTime             @updatedAt
   adopterId             String?
@@ -302,10 +319,21 @@ enum AnimalType {
   CAT
 }
 
+enum AnimalSize {
+  LARGE 
+  NORMAL
+}
+
+enum AnimalAge {
+  YOUNG 
+  NORMAL
+}
+
 enum CurriculumStep {
   LECTURE 
   LECTURE_END
   TRAINING
+  TRAINING_END
   END
 }
 
@@ -352,9 +380,10 @@ enum AdoptionStatus {
 enum AdoptionStep {
   NOT_INVITATION
   INVITATION
-  CURRICULUM
+  LECTURE
+  TRAINING
   FINAL_CONSENTFORM
-  ADOPTION
+  END
   }
 
 enum RatingStatus {

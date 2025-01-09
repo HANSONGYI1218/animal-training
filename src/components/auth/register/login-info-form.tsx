@@ -54,21 +54,29 @@ export default function LoginInfoForm({
   const [isPasswordShow, setIsPasswordShow] = useState(false);
   const [isPasswordCheckShow, setIsPasswordCheckShow] = useState(false);
 
+  const fetchData = async (endpoint: string, query: string) => {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_WEB_URL}/api/${endpoint}?email=${query}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
+    );
+    return response.json();
+  };
+
   const emailSend = async (v: string) => {
     try {
       setIsSending(true);
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_WEB_URL}/api/${form.watch("userType").toLowerCase()}?email=${v}`,
-        {
-          method: "GET",
 
-          headers: {
-            "Content-Type": "application/json",
-          },
-        },
-      );
-      const responseUser = await response.json();
-      if (responseUser) {
+      const [isUser, isCorporation] = await Promise.all([
+        fetchData("user", v),
+        fetchData("corporation", v),
+      ]);
+
+      if (isUser || isCorporation) {
         toast("이미 존재하는 회원 이메일입니다.", {
           description: "다른 이메일을 사용해주세요.",
         });

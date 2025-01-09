@@ -20,12 +20,6 @@ import {
   getAdoptionTableRepository,
   updateAdoptionRepository,
 } from "@/repositories/adoption.repository";
-import {
-  AdoptionStatus,
-  AdoptionStep,
-  CurriculumStep,
-  Prisma,
-} from "@prisma/client";
 
 // 입양 생성
 export const createAdoptionService = async (
@@ -36,19 +30,6 @@ export const createAdoptionService = async (
     // if(isExisted) return null;
 
     const newAdoption = new AdoptionEntity({
-      status: AdoptionStatus.NOT_ADOPTION,
-      step: AdoptionStep.INVITATION,
-      curriculumStep: CurriculumStep.LECTURE,
-      adoption_date: null,
-      abandon_date: null,
-      abandon_reason: "",
-      educationForm: [],
-      trainingForm: [],
-      adoptionForm: [],
-      attendances: [] as Prisma.JsonArray,
-      breederId: dto?.breederId ?? null,
-      breederCorporationId: dto?.breederCorporationId ?? null,
-      tutorTrainingCenterId: null,
       ...dto,
     });
 
@@ -155,16 +136,16 @@ export const updateAdoptionService = async (
       status: dto?.status ?? adoption.status,
       step: dto?.step ?? adoption.step,
       animal_type: dto?.animal_type ?? adoption.animal_type,
-      curriculumStep: dto?.curriculumStep ?? adoption.curriculumStep,
-      adoption_date: dto?.adoption_date ?? adoption?.adoption_date ?? null,
-      abandon_date: dto?.abandon_date ?? adoption?.abandon_date ?? null,
-      abandon_reason: dto?.abandon_reason ?? adoption.abandon_reason ?? null,
+      animal_size: dto?.animal_size ?? adoption.animal_size,
+      animal_age: dto?.animal_age ?? adoption.animal_age,
+      adoption_date: dto?.adoption_date ?? adoption?.adoption_date ?? undefined,
+      abandon_date: dto?.abandon_date ?? adoption?.abandon_date ?? undefined,
+      abandon_reason:
+        dto?.abandon_reason ?? adoption.abandon_reason ?? undefined,
       educationForm: dto?.educationForm ?? adoption.educationForm ?? [],
       trainingForm: dto?.trainingForm ?? adoption.trainingForm ?? [],
       adoptionForm: dto?.adoptionForm ?? adoption.adoptionForm ?? [],
-      attendances: dto?.attendances ?? adoption.attendances ?? [],
-      adopterId: dto?.adopterId ?? adoption.adopterId ?? null,
-      updatedAt: new Date(),
+      adopterId: dto?.adopterId ?? adoption.adopterId ?? undefined,
     });
 
     await updateAdoptionRepository(toJSON(updateCorporation));
