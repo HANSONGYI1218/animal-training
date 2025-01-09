@@ -59,7 +59,7 @@ export class UserCurriculumLectureEntity {
     this.curriculumSteps = curriculumSteps;
     //  this.attendances=attendances;
     this.userId = userId;
-    this.createdAt = createdAt ?? undefined;
-    this.updatedAt = updatedAt ?? undefined;
+    this.createdAt = createdAt;
+    this.updatedAt = updatedAt;
   }
 }

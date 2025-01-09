@@ -1,5 +1,7 @@
 import {
   Adoption,
+  AnimalAge,
+  AnimalSize,
   AnimalType,
   Corporation,
   GenderType,
@@ -11,7 +13,9 @@ export type AnimalDto = {
   name: string;
   age: number;
   gender: GenderType;
-  animalType: AnimalType;
+  animal_type: AnimalType;
+  animal_size: AnimalSize;
+  animal_age: AnimalAge;
   breed: string;
   profile: string;
   additionalImgs: string[];
@@ -28,7 +32,9 @@ export type CreateAnimalDto = {
   name: string;
   age: number;
   gender: GenderType;
-  animalType: AnimalType;
+  animal_type: AnimalType;
+  animal_size: AnimalSize;
+  animal_age: AnimalAge;
   breed: string;
   profile: string;
   additionalImgs: string[];
@@ -41,7 +47,9 @@ export type UpdateAnimalDto = {
   name?: string;
   age?: number;
   gender?: GenderType;
-  animalType?: AnimalType;
+  animal_type?: AnimalType;
+  animal_size?: AnimalSize;
+  animal_age?: AnimalAge;
   breed?: string;
   profile?: string;
   additionalImgs?: string[];
@@ -56,7 +64,9 @@ export type GetAnimalDto = {
   name: string;
   age: number;
   gender: GenderType;
-  animalType: AnimalType;
+  animal_type: AnimalType;
+  animal_size: AnimalSize;
+  animal_age: AnimalAge;
   breed: string;
   profile: string;
   additionalImgs: string[];

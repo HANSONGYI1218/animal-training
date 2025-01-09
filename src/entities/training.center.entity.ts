@@ -9,6 +9,7 @@ interface TrainingCenterEntityProps {
   detailAddress: string;
   refundPolicys: string[];
   corporationId: string;
+  createdAt?: Date;
   updatedAt?: Date;
 }
 
@@ -23,8 +24,8 @@ export class TrainingCenterEntity {
   private detailAddress: string;
   private refundPolicys: string[];
   private corporationId: string;
-  private createdAt: Date;
-  private updatedAt: Date;
+  private createdAt?: Date;
+  private updatedAt?: Date;
 
   constructor({
     id,
@@ -37,6 +38,7 @@ export class TrainingCenterEntity {
     detailAddress,
     refundPolicys,
     corporationId,
+    createdAt,
     updatedAt,
   }: TrainingCenterEntityProps) {
     this.id = id;
@@ -49,7 +51,7 @@ export class TrainingCenterEntity {
     this.detailAddress = detailAddress;
     this.refundPolicys = refundPolicys;
     this.corporationId = corporationId;
-    this.createdAt = new Date();
-    this.updatedAt = updatedAt ?? new Date();
+    this.createdAt = createdAt;
+    this.updatedAt = updatedAt;
   }
 }

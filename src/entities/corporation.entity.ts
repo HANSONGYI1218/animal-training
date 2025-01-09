@@ -12,6 +12,7 @@ interface CorporationEntityProps {
   email: string;
   business_number: string;
   accessStatus?: CorporationAccessStatus;
+  createdAt?: Date;
   updatedAt?: Date;
 }
 
@@ -27,8 +28,8 @@ export class CorporationEntity {
   private email: string;
   private business_number: string;
   private accessStatus: CorporationAccessStatus;
-  private createdAt: Date;
-  private updatedAt: Date;
+  private createdAt?: Date;
+  private updatedAt?: Date;
 
   constructor({
     id,
@@ -42,6 +43,7 @@ export class CorporationEntity {
     email,
     business_number,
     accessStatus,
+    createdAt,
     updatedAt,
   }: CorporationEntityProps) {
     this.id = id;
@@ -55,7 +57,7 @@ export class CorporationEntity {
     this.email = email;
     this.business_number = business_number;
     this.accessStatus = accessStatus ?? CorporationAccessStatus.STANDARD;
-    this.createdAt = new Date();
-    this.updatedAt = updatedAt ?? new Date();
+    this.createdAt = createdAt;
+    this.updatedAt = updatedAt;
   }
 }

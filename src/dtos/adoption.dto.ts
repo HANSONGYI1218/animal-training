@@ -2,12 +2,7 @@ import {
   AdoptionStatus,
   AdoptionStep,
   Animal,
-  AnimalType,
-  AnimalSize,
-  AnimalAge,
   Corporation,
-  CurriculumStep,
-  Prisma,
   TutorTrainingCenter,
   User,
 } from "@prisma/client";
@@ -16,9 +11,6 @@ export type AdoptionDto = {
   id?: string;
   status: AdoptionStatus;
   step: AdoptionStep;
-  animal_type: AnimalType;
-  animal_size: AnimalSize;
-  animal_age: AnimalAge;
   adoption_date: Date | null;
   abandon_date: Date | null;
   abandon_reason: string;
@@ -37,9 +29,6 @@ export type AdoptionDto = {
 export type CreateAdoptionDto = {
   status: AdoptionStatus;
   step: AdoptionStep;
-  animal_type: AnimalType;
-  animal_size: AnimalSize;
-  animal_age: AnimalAge;
   adopterId: string;
   breederId?: string;
   breederCorporationId?: string;
@@ -50,9 +39,6 @@ export type UpdateAdoptionDto = {
   id: string;
   status?: AdoptionStatus;
   step?: AdoptionStep;
-  animal_type: AnimalType;
-  animal_size: AnimalSize;
-  animal_age: AnimalAge;
   adoption_date?: Date;
   abandon_date?: Date;
   abandon_reason?: string;
@@ -66,9 +52,6 @@ export type GetAdoptionDto = {
   id?: string;
   status: AdoptionStatus;
   step: AdoptionStep;
-  animal_type: AnimalType;
-  animal_size: AnimalSize;
-  animal_age: AnimalAge;
   adoption_date: Date | null;
   abandon_date: Date | null;
   abandon_reason: string;
@@ -93,9 +76,6 @@ export type GetCurriculumDto = {
   id?: string;
   status: AdoptionStatus;
   step: AdoptionStep;
-  animal_type: AnimalType;
-  animal_size: AnimalSize;
-  animal_age: AnimalAge;
   createdAt: Date;
   updatedAt: Date;
 };

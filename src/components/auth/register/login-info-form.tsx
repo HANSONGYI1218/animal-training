@@ -120,6 +120,7 @@ export default function LoginInfoForm({
           headers: {
             "Content-Type": "application/json",
           },
+          credentials: "include",
         },
       );
 

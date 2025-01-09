@@ -6,7 +6,6 @@ import BottomBar from "@/components/common/bottom-bar";
 import { Toaster } from "@/components/ui/sonner";
 import Script from "next/script";
 import AuthSession from "@/providers/auth-session";
-import { cookies } from "next/headers";
 import UrlTracker from "@/components/common/url-storage";
 
 declare global {
@@ -25,16 +24,16 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const userType = cookies().get("userType");
-
   return (
     <html lang="ko">
       <Script src="https://cdn.iamport.kr/v1/iamport.js" />
       <Script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js" />
       <UrlTracker /> {/* 클라이언트 컴포넌트 삽입 */}
       <body className={`${Pretendard.className}`}>
-        <TopBar userType={userType?.value ?? "login"} />
-        <AuthSession>{children}</AuthSession>
+        <AuthSession>
+          <TopBar />
+          {children}
+        </AuthSession>
         <BottomBar />
         <Toaster />
       </body>

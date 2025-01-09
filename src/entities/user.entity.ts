@@ -1,4 +1,4 @@
-import { CurriculumStep, GenderType } from "@prisma/client";
+import { GenderType } from "@prisma/client";
 
 interface UserEntityProps {
   id?: string;
@@ -85,7 +85,7 @@ export class UserEntity {
     this.isNewNews_Email = isNewNews_Email;
     this.isNotice_Email = isNotice_Email;
     this.isPromotion_Email = isPromotion_Email;
-    this.createdAt = createdAt ?? undefined;
-    this.updatedAt = updatedAt ?? undefined;
+    this.createdAt = createdAt;
+    this.updatedAt = updatedAt;
   }
 }

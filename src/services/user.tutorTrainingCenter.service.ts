@@ -79,7 +79,6 @@ export const updateUserTutorTrainingCenterService = async (
 
     const updateUserTutorTrainingCenter = new UserTutorTrainingCenterEntity({
       ...UserTutortrainingCenter,
-      updatedAt: new Date(),
     });
 
     await updateUserTutorTrainingCenterRepository(

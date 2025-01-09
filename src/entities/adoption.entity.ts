@@ -1,20 +1,9 @@
-import {
-  AdoptionStatus,
-  AdoptionStep,
-  AnimalAge,
-  AnimalSize,
-  AnimalType,
-  CurriculumStep,
-  Prisma,
-} from "@prisma/client";
+import { AdoptionStatus, AdoptionStep } from "@prisma/client";
 
 interface AdoptionEntityProps {
   id?: string;
   status: AdoptionStatus;
   step: AdoptionStep;
-  animal_type: AnimalType;
-  animal_size: AnimalSize;
-  animal_age: AnimalAge;
   adoption_date?: Date;
   abandon_date?: Date;
   abandon_reason?: string;
@@ -34,9 +23,6 @@ export class AdoptionEntity {
   private id?: string;
   private status: AdoptionStatus;
   private step: AdoptionStep;
-  private animal_type: AnimalType;
-  private animal_size: AnimalSize;
-  private animal_age: AnimalAge;
   private adoption_date?: Date;
   private abandon_date?: Date;
   private abandon_reason?: string;
@@ -55,9 +41,6 @@ export class AdoptionEntity {
     id,
     status,
     step,
-    animal_type,
-    animal_size,
-    animal_age,
     adoption_date,
     abandon_date,
     abandon_reason,
@@ -75,9 +58,6 @@ export class AdoptionEntity {
     this.id = id;
     this.status = status;
     this.step = step;
-    this.animal_type = animal_type;
-    this.animal_size = animal_size;
-    this.animal_age = animal_age;
     this.adoption_date = adoption_date ?? undefined;
     this.abandon_date = abandon_date ?? undefined;
     this.abandon_reason = abandon_reason ?? undefined;
@@ -89,7 +69,7 @@ export class AdoptionEntity {
     this.breederCorporationId = breederCorporationId ?? undefined;
     this.animalId = animalId;
     this.tutorTrainingCenterId = tutorTrainingCenterId ?? undefined;
-    this.createdAt = createdAt ?? undefined;
-    this.updatedAt = updatedAt ?? undefined;
+    this.createdAt = createdAt;
+    this.updatedAt = updatedAt;
   }
 }

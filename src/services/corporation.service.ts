@@ -116,7 +116,6 @@ export const updateCorporationService = async (
       phoneNumber: dto?.phoneNumber ?? corporation.phoneNumber,
       email: dto?.email ?? corporation.email,
       business_number: dto?.business_number ?? corporation.business_number,
-      updatedAt: new Date(),
     });
 
     await updateCorporationRepository(toJSON(updateCorporation));

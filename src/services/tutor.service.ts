@@ -90,7 +90,6 @@ export const updateTutorService = async (
       profile_img: dto?.profile_img ?? tutor?.profile_img,
       occupation: dto?.occupation ?? tutor?.occupation,
       corporationId: dto?.corporationId ?? tutor?.corporationId,
-      updatedAt: new Date(),
     });
 
     await updateTutorRepository(toJSON(updateTutor));

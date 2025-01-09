@@ -142,7 +142,6 @@ export const updateLectureService = async (
       like: dto?.like ?? lecture.like,
       tags: dto?.tags ?? lecture.tags,
       tutorId: dto?.tutorId ?? lecture.tutorId,
-      updatedAt: new Date(),
     });
 
     await updateLectureRepository(toJSON(updateLecture));

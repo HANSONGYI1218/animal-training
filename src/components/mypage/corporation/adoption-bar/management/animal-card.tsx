@@ -2,15 +2,17 @@
 
 import { Button } from "@/components/ui/button";
 import {
+  animalSizeSwap,
   animalTypeSwap,
   genderAmianlTypeSwap,
 } from "@/constants/constants.all";
 import { GetAnimalDto } from "@/dtos/animal.dto";
+import { formatAnimalAge } from "@/utils/utils";
 import { format } from "date-fns";
 import { Dot } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 
 export default function AnimalCard({
   animal,
@@ -21,13 +23,6 @@ export default function AnimalCard({
 }) {
   const cardRef = useRef<HTMLDivElement>(null);
   const [isHover, setIsHover] = useState(false);
-  const [height, setHeight] = useState<number | null>(null);
-
-  useEffect(() => {
-    if (cardRef.current) {
-      setHeight(cardRef.current.offsetHeight);
-    }
-  }, [isHover]); // isHover가 변할 때마다 높이를 업데이트
 
   return (
     <div
@@ -37,22 +32,20 @@ export default function AnimalCard({
       onMouseLeave={() => {
         setIsHover(false);
       }}
-      className="group flex h-[330px] flex-col items-center overflow-hidden rounded-xl px-1"
+      className="group flex h-[320px] flex-col items-center overflow-hidden rounded-xl px-1"
     >
       <Image
-        src="/Test-face.png"
-        width={200}
-        height={100}
+        src={animal?.profile}
+        width={240}
+        height={185}
         alt="img"
-        className="object-fit h-56 w-full flex-1 rounded-xl"
+        className="max-h-[185px] min-h-[185px] w-full rounded-xl object-cover"
       />
       <div
         ref={cardRef}
         className="flex w-full flex-col gap-2 rounded-xl bg-white p-4 duration-700"
         style={{
-          transform: isHover
-            ? `translateY(-${(height ?? 0) - 100}px)`
-            : "translateY(0)",
+          transform: isHover ? `translateY(-170px)` : "translateY(0)",
           boxShadow: isHover ? "0px 4px 10px rgba(0, 0, 0, 0.15)" : "none",
         }}
       >
@@ -68,14 +61,21 @@ export default function AnimalCard({
               성별:
             </span>
             <span className="flex items-center gap-1 text-sm font-semibold">
-              {animal?.age}세 <Dot className="h-1 w-1 rounded-full bg-black" />{" "}
+              {formatAnimalAge(animal?.age)}생{" "}
+              <Dot className="h-1 w-1 rounded-full bg-black" />{" "}
               {genderAmianlTypeSwap[animal?.gender]}
             </span>
           </div>
           <div className="flex gap-2">
             <span className="text-sm text-neutral-600">종류</span>
             <span className="text-sm font-semibold">
-              {animalTypeSwap[animal?.animalType]}
+              {animalTypeSwap[animal?.animal_type]}
+            </span>
+          </div>
+          <div className="flex gap-2">
+            <span className="text-sm text-neutral-600">크기</span>
+            <span className="text-sm font-semibold">
+              {animalSizeSwap[animal?.animal_size]}
             </span>
           </div>
           <div className="flex gap-2">
@@ -90,7 +90,7 @@ export default function AnimalCard({
           </div>
           <div className="flex flex-col gap-1">
             <span className="text-sm text-neutral-600">기타사항</span>
-            <div className="ml-2 flex flex-col gap-1">
+            <div className="scroll_black ml-2 flex h-[48px] flex-col gap-1 overflow-y-auto">
               {animal?.remarks?.map((remark: string, index: number) => (
                 <div className="flex items-center gap-2" key={index}>
                   <span className="text-sm font-semibold">

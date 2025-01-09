@@ -8,6 +8,8 @@ import {
   AdoptionStatus,
   CurriculumCategory,
   AdoptionStep,
+  AnimalSize,
+  AnimalAge,
 } from "@prisma/client";
 
 export const categorySwap: { [key in Category | string]: string } = {
@@ -24,6 +26,17 @@ export const categorySwap: { [key in Category | string]: string } = {
 export const animalTypeSwap: { [key in AnimalType | string]: string } = {
   [AnimalType.DOG]: "강아지",
   [AnimalType.CAT]: "고양이",
+};
+
+export const animalSizeSwap: { [key in AnimalSize | string]: string } = {
+  [AnimalSize.SMALL]: "소형견",
+  [AnimalSize.NORMAL]: "중형견",
+  [AnimalSize.LARGE]: "대형견",
+};
+
+export const animalAgeSwap: { [key in AnimalAge | string]: string } = {
+  [AnimalAge.YOUNG]: "유아",
+  [AnimalAge.NORMAL]: "성체",
 };
 
 export const priceTypeSwap: { [key in PriceType | string]: string } = {
@@ -61,9 +74,10 @@ export const adoptionStepTypeSwap: {
   [key in AdoptionStep | string]: string;
 } = {
   [AdoptionStep.INVITATION]: "초대",
-  [AdoptionStep.CURRICULUM]: "교육",
+  [AdoptionStep.LECTURE]: "강의교육",
+  [AdoptionStep.TRAINING]: "훈련교육",
   [AdoptionStep.FINAL_CONSENTFORM]: "입양동의서",
-  [AdoptionStep.ADOPTION]: "입양",
+  [AdoptionStep.END]: "입양완료",
 };
 
 export const lectureCategorySwap: {

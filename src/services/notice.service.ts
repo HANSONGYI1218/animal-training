@@ -78,7 +78,6 @@ export const updateNoticeService = async (
       attachments: dto?.attachments ?? notice?.attachments,
       isFixed: dto?.isFixed ?? notice?.isFixed,
       index: dto?.index ?? notice?.index,
-      updatedAt: new Date(),
     });
 
     await updateNoticeRepository(toJSON(updateNotice));

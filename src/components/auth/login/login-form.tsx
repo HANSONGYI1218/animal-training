@@ -32,7 +32,6 @@ export default function LoginForm() {
   const [isLoading, setIsLoading] = useState(false);
   const [isPasswordShow, setIsPasswordShow] = useState(false);
   const [isUserExist, setIsUserExist] = useState(true);
-  const router = useRouter();
 
   async function onSubmit(data: z.infer<typeof LoginSchema>) {
     try {
@@ -42,13 +41,12 @@ export default function LoginForm() {
         userType: data.userType,
         email: data.email,
         password: data.password,
-        redirect: false,
+        redirect: true,
+        callbackUrl: "/lecture",
       });
 
       if (response?.error === "CredentialsSignin") {
         setIsUserExist(false);
-      } else {
-        router.replace("/lecture");
       }
 
       setIsLoading(false);

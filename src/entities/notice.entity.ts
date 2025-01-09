@@ -1,5 +1,3 @@
-import { AnimalType, PriceType, Category, User } from "@prisma/client";
-
 interface NoticeEntityProps {
   id?: string;
   title: string;
@@ -8,6 +6,7 @@ interface NoticeEntityProps {
   attachments: string[];
   isFixed: boolean;
   index: number;
+  createdAt?: Date;
   updatedAt?: Date;
 }
 
@@ -19,8 +18,8 @@ export class NoticeEntity {
   private attachments: string[];
   private isFixed: boolean;
   private index: number;
-  private createdAt: Date;
-  private updatedAt: Date;
+  private createdAt?: Date;
+  private updatedAt?: Date;
 
   constructor({
     id,
@@ -30,6 +29,7 @@ export class NoticeEntity {
     attachments,
     isFixed,
     index,
+    createdAt,
     updatedAt,
   }: NoticeEntityProps) {
     this.id = id ?? "";
@@ -39,7 +39,7 @@ export class NoticeEntity {
     this.attachments = attachments;
     this.isFixed = isFixed;
     this.index = index;
-    this.createdAt = new Date();
-    this.updatedAt = updatedAt ?? new Date();
+    this.createdAt = createdAt;
+    this.updatedAt = updatedAt;
   }
 }

@@ -8,6 +8,7 @@ interface TutorEntityProps {
   profile_img: string;
   occupation: OccupationType;
   corporationId: string;
+  createdAt?: Date;
   updatedAt?: Date;
 }
 
@@ -19,8 +20,8 @@ export class TutorEntity {
   private profile_img: string;
   private occupation: OccupationType;
   private corporationId: string;
-  private createdAt: Date;
-  private updatedAt: Date;
+  private createdAt?: Date;
+  private updatedAt?: Date;
 
   constructor({
     id,
@@ -30,6 +31,7 @@ export class TutorEntity {
     profile_img,
     occupation,
     corporationId,
+    createdAt,
     updatedAt,
   }: TutorEntityProps) {
     this.id = id;
@@ -39,7 +41,7 @@ export class TutorEntity {
     this.profile_img = profile_img;
     this.occupation = occupation;
     this.corporationId = corporationId;
-    this.createdAt = new Date();
-    this.updatedAt = updatedAt ?? new Date();
+    this.createdAt = createdAt;
+    this.updatedAt = updatedAt;
   }
 }

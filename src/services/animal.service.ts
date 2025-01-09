@@ -72,7 +72,9 @@ export const updateAnimalService = async (
       name: dto?.name ?? animal.name,
       age: dto?.age ?? animal.age,
       gender: dto?.gender ?? animal.gender,
-      animalType: dto?.animalType ?? animal?.animalType,
+      animal_type: dto?.animal_type ?? animal.animal_type,
+      animal_size: dto?.animal_size ?? animal.animal_size,
+      animal_age: dto?.animal_age ?? animal.animal_age,
       breed: dto?.breed ?? animal.breed,
       profile: dto?.profile ?? animal?.profile ?? null,
       additionalImgs: dto?.additionalImgs ?? animal?.additionalImgs ?? null,
@@ -80,8 +82,6 @@ export const updateAnimalService = async (
       remarks: dto?.remarks ?? animal?.remarks,
       userId: dto?.userId ?? animal.userId,
       corporationId: dto?.corporationId ?? animal.corporationId,
-
-      updatedAt: new Date(),
     });
 
     await updateAnimalRepository(toJSON(updateCorporation));

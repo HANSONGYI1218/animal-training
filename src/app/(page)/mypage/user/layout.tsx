@@ -11,10 +11,6 @@ export default async function MypageUserLayout({
 }>) {
   const session = await currentAccount();
 
-  if (!session) {
-    redirect("/login");
-  }
-
   const userId = session?.user?.id;
 
   const responseUser = await fetch(

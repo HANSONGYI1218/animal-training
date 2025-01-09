@@ -1,4 +1,4 @@
-import { AnimalType, PriceType, Category, User } from "@prisma/client";
+import { AnimalType, PriceType, Category } from "@prisma/client";
 
 interface LectureEntityProps {
   id?: string;
@@ -13,6 +13,7 @@ interface LectureEntityProps {
   tags: string[];
   tutorId: string;
   corporationId: string;
+  createdAt?: Date;
   updatedAt?: Date;
 }
 
@@ -29,8 +30,8 @@ export class LectureEntity {
   private tags: string[];
   private tutorId: string;
   private corporationId: string;
-  private createdAt: Date;
-  private updatedAt: Date;
+  private createdAt?: Date;
+  private updatedAt?: Date;
 
   constructor({
     id,
@@ -45,6 +46,7 @@ export class LectureEntity {
     tags,
     tutorId,
     corporationId,
+    createdAt,
     updatedAt,
   }: LectureEntityProps) {
     this.id = id;
@@ -59,7 +61,7 @@ export class LectureEntity {
     this.tags = tags;
     this.tutorId = tutorId;
     this.corporationId = corporationId;
-    this.createdAt = new Date();
-    this.updatedAt = updatedAt ?? new Date();
+    this.createdAt = createdAt;
+    this.updatedAt = updatedAt;
   }
 }

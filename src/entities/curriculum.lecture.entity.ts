@@ -11,6 +11,7 @@ interface CurriculumLectureEntityProps {
   videoUrl: string;
   videoTime: string;
   tutorId: string;
+  createdAt?: Date;
   updatedAt?: Date;
 }
 
@@ -25,8 +26,8 @@ export class CurriculumLectureEntity {
   private videoUrl: string;
   private videoTime: string;
   private tutorId: string;
-  private createdAt: Date;
-  private updatedAt: Date;
+  private createdAt?: Date;
+  private updatedAt?: Date;
 
   constructor({
     id,
@@ -39,6 +40,7 @@ export class CurriculumLectureEntity {
     videoUrl,
     videoTime,
     tutorId,
+    createdAt,
     updatedAt,
   }: CurriculumLectureEntityProps) {
     this.id = id ?? "";
@@ -51,7 +53,7 @@ export class CurriculumLectureEntity {
     this.videoUrl = videoUrl;
     this.videoTime = videoTime;
     this.tutorId = tutorId;
-    this.createdAt = new Date();
-    this.updatedAt = updatedAt ?? new Date();
+    this.createdAt = createdAt;
+    this.updatedAt = updatedAt;
   }
 }

@@ -6,12 +6,22 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import LectureCategory from "../lecture/lecture-category";
 import { usePathname } from "next/navigation";
+import { logout } from "@/action/user-action";
+import { signOut, useSession } from "next-auth/react";
 
-export default function TopBar({ userType }: { userType: string }) {
+export default function TopBar() {
   const [scrollY, setScrollY] = useState(0);
   const path = usePathname();
   const [page, setPage] = useState<string>("lecture");
   const [scrollDirection, setScrollDirection] = useState<"up" | "down">("up");
+  const { data: session, status } = useSession();
+  const [userType, setUserType] = useState<string | null>(
+    session?.user?.owner_name ?? null,
+  ); // 세션 상태 관리
+
+  useEffect(() => {
+    setUserType(session?.user?.owner_name ?? null);
+  }, [session]);
 
   const handleScroll = () => {
     const currentScrollY = window.scrollY;
@@ -86,9 +96,9 @@ export default function TopBar({ userType }: { userType: string }) {
             </a>
             <a
               href={
-                userType === "login"
+                userType === null
                   ? "/login"
-                  : `/mypage/${userType.toLowerCase()}/profile`
+                  : `/mypage/${userType?.toLowerCase()}/profile`
               }
             >
               <Button
@@ -123,11 +133,27 @@ export default function TopBar({ userType }: { userType: string }) {
                 공지사항
               </Button>
             </Link>
-            <Link href="/login">
-              <Button variant="login" className="px-2 py-1">
-                로그인
+            {userType ? (
+              <Button
+                onClick={async () => {
+                  await logout();
+                  await signOut({
+                    redirect: true,
+                    callbackUrl: "/lecture",
+                  });
+                }}
+                variant="login"
+                className="px-2 py-1"
+              >
+                로그아웃
               </Button>
-            </Link>
+            ) : (
+              <Link href="/login">
+                <Button variant="login" className="px-2 py-1">
+                  로그인
+                </Button>
+              </Link>
+            )}
           </div>
         </div>
       </div>

@@ -13,13 +13,13 @@ import {
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { useState, useContext } from "react";
-import { ChevronLeft, Loader2, Plus, CalendarIcon } from "lucide-react";
-import { AnimalType, GenderType } from "@prisma/client";
+import { ChevronLeft, Loader2, Plus, CalendarIcon, Delete } from "lucide-react";
+import { AnimalAge, AnimalSize, AnimalType, GenderType } from "@prisma/client";
 import Link from "next/link";
 import { CorporationContext } from "@/providers/corporation-provider";
 import { toast } from "sonner";
 import { GetAnimalDto } from "@/dtos/animal.dto";
-import { cn } from "@/utils/utils";
+import { cn, enterKeyDown } from "@/utils/utils";
 import { format } from "date-fns";
 import { ko } from "date-fns/locale";
 import {
@@ -33,10 +33,22 @@ const AnimalSchema = z.object({
   name: z.string().min(1, { message: "분양동물의 이름을 적어주세요." }),
   age: z
     .string()
-    .regex(/^\d+$/, { message: "숫자만 입력할 수 있습니다." })
-    .min(0, { message: "분양동물의 나이를 적어주세요." }),
+    .refine((value) => !isNaN(parseFloat(value)), {
+      message: "올바른 숫자를 입력하세요.",
+    })
+    .refine(
+      (value) => {
+        const parsedValue = parseFloat(value);
+        return parsedValue >= 0 && parsedValue.toFixed(1) === value;
+      },
+      {
+        message: "소수점 이하 한 자릿수만 입력 가능합니다.",
+      },
+    ),
   gender: z.enum(["MALE", "FEMALE"]).default("MALE"),
-  animalType: z.enum(["DOG", "CAT"]).default("DOG"),
+  animal_type: z.enum(["DOG", "CAT"]).default("DOG"),
+  animal_size: z.enum(["SMALL", "NORMAL", "LARGE"]).default("NORMAL"),
+  animal_age: z.enum(["YOUNG", "NORMAL"]).default("NORMAL"),
   breed: z.string().min(1, { message: "분양동물의 품좀을 적어주세요." }),
   profile: z.string().min(1, { message: "분양동물의 사진을 선택해주세요." }),
   additionalImgs: z.array(z.string()).default([]).optional(),
@@ -55,7 +67,9 @@ export default function AnimalForm({ animal }: { animal?: GetAnimalDto }) {
       name: animal?.name ?? "",
       age: animal?.age.toString() ?? "0",
       gender: animal?.gender ?? GenderType?.MALE,
-      animalType: animal?.animalType ?? AnimalType?.DOG,
+      animal_type: animal?.animal_type ?? AnimalType?.DOG,
+      animal_size: animal?.animal_size ?? AnimalSize?.NORMAL,
+      animal_age: animal?.animal_age ?? AnimalAge?.NORMAL,
       breed: animal?.breed ?? "",
       profile: animal?.profile ?? "",
       additionalImgs: animal?.additionalImgs ?? [],
@@ -84,14 +98,19 @@ export default function AnimalForm({ animal }: { animal?: GetAnimalDto }) {
 
   async function onSubmit(data: z.infer<typeof AnimalSchema>) {
     setIsLoading(true);
+
+    const animal_age_enum =
+      animal?.age && animal.age < 1 ? AnimalAge.YOUNG : AnimalAge.NORMAL;
+
     try {
       if (animal) {
         await fetch(`${process.env.NEXT_PUBLIC_WEB_URL}/api/animal`, {
           method: "PUT",
           body: JSON.stringify({
             ...data,
+            animal_age: animal_age_enum,
             id: animal?.id,
-            age: parseInt(data?.age),
+            age: parseFloat(data?.age),
           }),
         });
       } else {
@@ -99,7 +118,8 @@ export default function AnimalForm({ animal }: { animal?: GetAnimalDto }) {
           method: "POST",
           body: JSON.stringify({
             ...data,
-            age: parseInt(data?.age),
+            animal_age: animal_age_enum,
+            age: parseFloat(data?.age),
             corporationId: corporation?.id,
           }),
         });
@@ -119,6 +139,7 @@ export default function AnimalForm({ animal }: { animal?: GetAnimalDto }) {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
+          onKeyDown={enterKeyDown}
           className="flex flex-col gap-6"
         >
           <Link href={"/mypage/corporation/adoption"}>
@@ -152,7 +173,7 @@ export default function AnimalForm({ animal }: { animal?: GetAnimalDto }) {
                 <span className="font-semibold">나이</span>
                 <FormControl>
                   <Input
-                    placeholder="분양동물의 나이를 작성해주세요."
+                    placeholder="생후 6개월 -> 0.6  1년 3개월-> 1.3  2년 -> 2 단위로 분양동물의 나이를 적어주세요."
                     {...field}
                   />
                 </FormControl>
@@ -193,7 +214,7 @@ export default function AnimalForm({ animal }: { animal?: GetAnimalDto }) {
           />
           <FormField
             control={form.control}
-            name="animalType"
+            name="animal_type"
             render={({ field }) => (
               <FormItem>
                 <span className="font-semibold">종류</span>
@@ -215,6 +236,45 @@ export default function AnimalForm({ animal }: { animal?: GetAnimalDto }) {
                       className={`flex w-full cursor-pointer items-center justify-center rounded-r-xl ${field?.value === AnimalType?.CAT ? "bg-black font-semibold text-white hover:bg-black/80" : "hover:bg-slate-100"}`}
                     >
                       고양이
+                    </div>
+                  </div>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="animal_size"
+            render={({ field }) => (
+              <FormItem>
+                <span className="font-semibold">크기</span>
+                <FormControl>
+                  <div className="flex h-10 rounded-xl border">
+                    <div
+                      onClick={() => {
+                        field.onChange(AnimalSize?.SMALL);
+                      }}
+                      className={`flex w-full cursor-pointer items-center justify-center rounded-l-xl ${field?.value === AnimalSize?.SMALL ? "bg-black font-semibold text-white hover:bg-black/80" : "hover:bg-slate-100"}`}
+                    >
+                      소형견
+                    </div>
+                    <div
+                      onClick={() => {
+                        field.onChange(AnimalSize?.NORMAL);
+                      }}
+                      className={`flex w-full cursor-pointer items-center justify-center ${field?.value === AnimalSize?.NORMAL ? "bg-black font-semibold text-white hover:bg-black/80" : "hover:bg-slate-100"}`}
+                    >
+                      중형견
+                    </div>
+                    <div className="flex h-full w-[1px] border" />
+                    <div
+                      onClick={() => {
+                        field.onChange(AnimalSize?.LARGE);
+                      }}
+                      className={`flex w-full cursor-pointer items-center justify-center rounded-r-xl ${field?.value === AnimalSize?.LARGE ? "bg-black font-semibold text-white hover:bg-black/80" : "hover:bg-slate-100"}`}
+                    >
+                      대형견
                     </div>
                   </div>
                 </FormControl>
@@ -289,6 +349,15 @@ export default function AnimalForm({ animal }: { animal?: GetAnimalDto }) {
                 }
               };
 
+              const handleDeleteRemark = (indexToDelete: number) => {
+                if (field.value) {
+                  const updatedValue = field.value.filter(
+                    (_, index) => index !== indexToDelete,
+                  ); // 해당 인덱스를 제외
+                  field.onChange(updatedValue); // 업데이트된 배열로 변경
+                }
+              };
+
               const [currentInput, setCurrentInput] = useState(""); // 입력 필드 상태
 
               return (
@@ -300,17 +369,28 @@ export default function AnimalForm({ animal }: { animal?: GetAnimalDto }) {
                       value={currentInput} // 입력 필드 값
                       onChange={(e) => setCurrentInput(e.target.value)} // 입력 값 변경 핸들러
                     />
-                    <Button onClick={handleAddRemark} variant={"destructive"}>
+                    <Button
+                      type="button"
+                      onClick={handleAddRemark}
+                      variant={"destructive"}
+                    >
                       추가
                     </Button>
                   </div>
                   {field?.value?.map((remark: string, index: number) => {
                     return (
                       <div
-                        className="flex h-11 items-center rounded-xl border px-3"
+                        className="flex h-11 items-center justify-between rounded-lg border px-3"
                         key={index}
                       >
                         {remark}
+                        <Plus
+                          cursor="pointer"
+                          className="h-4 w-4 rotate-45"
+                          onClick={() => {
+                            handleDeleteRemark(index);
+                          }}
+                        />
                       </div>
                     );
                   })}
@@ -431,7 +511,7 @@ export default function AnimalForm({ animal }: { animal?: GetAnimalDto }) {
           </Button>
         </form>
       </Form>
-      <hr className="my-10 w-full" />
+      <hr className={`my-10 w-full ${animal ? "flex" : "hidden"}`} />
       <div className={`w-full flex-col gap-3 ${animal ? "flex" : "hidden"}`}>
         <div className="flex flex-col">
           <span className="text-lg font-semibold">분양동물 삭제</span>

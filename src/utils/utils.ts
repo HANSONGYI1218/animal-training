@@ -104,3 +104,27 @@ export const generateRandomNickname = (): string => {
 
   return selectedSyllables.join("") + randomNumbers;
 };
+
+export function formatAnimalAge(age: number): string {
+  if (age < 0) {
+    return "0"; // 음수는 유효하지 않은 나이로 처리
+  }
+
+  const years = Math.floor(age); // 정수 부분 (년)
+  const months = Math.floor((age - years) * 12); // 소수점 부분을 내림하여 월로 변환
+
+  if (years === 0 && months > 0) {
+    return `${months}개월`;
+  } else if (months === 0) {
+    return `${years}년`;
+  } else {
+    return `${years}년 ${months}개월`;
+  }
+}
+
+export const enterKeyDown = (event: any) => {
+  // textarea 안에서는 Enter 키를 허용
+  if (event.key === "Enter" && event.target.tagName !== "TEXTAREA") {
+    event.preventDefault(); // Enter 키의 기본 동작을 막음
+  }
+};

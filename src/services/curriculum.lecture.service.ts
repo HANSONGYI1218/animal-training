@@ -101,7 +101,6 @@ export const updateCurriculumLectureService = async (
       videoUrl: dto?.videoUrl ?? curriculumLecture.videoUrl,
       videoTime: dto?.videoTime ?? curriculumLecture.videoTime,
       tutorId: dto?.tutorId ?? curriculumLecture.tutorId,
-      updatedAt: new Date(),
     });
 
     await updateCurriculumLectureRepository(toJSON(updateCurriculumLecture));

@@ -14,7 +14,14 @@ import {
 import { Button } from "@/components/ui/button";
 import { useState, useContext } from "react";
 import { CalendarIcon, ChevronLeft, Loader2, Search } from "lucide-react";
-import { Animal, AnimalType, GenderType, User } from "@prisma/client";
+import {
+  Animal,
+  AnimalAge,
+  AnimalSize,
+  AnimalType,
+  GenderType,
+  User,
+} from "@prisma/client";
 import Link from "next/link";
 import { CorporationContext } from "@/providers/corporation-provider";
 import {
@@ -40,6 +47,8 @@ const AdoptionSchema = z.object({
   address: z.string(),
   detailAddress: z.string(),
   animal_type: z.enum(["DOG", "CAT"]).default("DOG"),
+  animal_size: z.enum(["SMALL", "NORMAL", "LARGE"]).default("NORMAL"),
+  animal_age_enum: z.enum(["YOUNG", "NORMAL"]).default("NORMAL"),
   animal_name: z.string(),
   animal_age: z.number(),
   animal_gender: z.enum(["MALE", "FEMALE"]).default("MALE"),
@@ -72,7 +81,9 @@ export default function AdoptionForm({
       zipCode: adopter?.zipCode ?? "",
       address: adopter?.address ?? "",
       detailAddress: adopter?.detailAddress ?? "",
-      animal_type: animal?.animalType ?? AnimalType.DOG,
+      animal_type: animal?.animal_type ?? AnimalType.DOG,
+      animal_size: animal?.animal_size ?? AnimalSize.NORMAL,
+      animal_age_enum: animal?.animal_age ?? AnimalAge.NORMAL,
       animal_name: animal?.name ?? "",
       animal_age: animal?.age ?? 0,
       animal_gender: animal?.gender ?? GenderType?.MALE,
@@ -142,7 +153,6 @@ export default function AdoptionForm({
         await fetch(`${process.env.NEXT_PUBLIC_WEB_URL}/api/adoption`, {
           method: "POST",
           body: JSON.stringify({
-            animal_type: animal?.animalType,
             adopterId: searchUser?.id,
             breederCorporationId: corporation?.id,
             animalId: animal?.id,
@@ -485,6 +495,36 @@ export default function AdoptionForm({
                 />
                 <FormField
                   control={form.control}
+                  name="animal_size"
+                  render={({ field }) => (
+                    <FormItem>
+                      <span className="font-semibold">크기</span>
+                      <FormControl>
+                        <div className="flex h-10 rounded-xl border">
+                          <div
+                            className={`flex w-full items-center justify-center rounded-l-xl ${field?.value === AnimalSize?.SMALL ? "bg-black font-semibold text-white" : ""}`}
+                          >
+                            소형견
+                          </div>
+                          <div
+                            className={`flex w-full items-center justify-center ${field?.value === AnimalSize?.NORMAL ? "bg-black font-semibold text-white" : ""}`}
+                          >
+                            중형견
+                          </div>
+                          <div className="flex h-full w-[1px] border" />
+                          <div
+                            className={`flex w-full items-center justify-center rounded-r-xl ${field?.value === AnimalSize?.LARGE ? "bg-black font-semibold text-white" : ""}`}
+                          >
+                            대형견
+                          </div>
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
                   name="animal_breed"
                   render={({ field }) => (
                     <FormItem className="flex w-full flex-col">
@@ -513,7 +553,7 @@ export default function AdoptionForm({
           </Button>
         </form>
       </Form>
-      <hr className="my-10 w-full" />
+      <hr className={`my-10 w-full ${id ? "flex" : "hidden"}`} />
       <div className={`w-full flex-col gap-3 ${id ? "flex" : "hidden"}`}>
         <div className="flex flex-col">
           <span className="text-lg font-semibold">입양서 삭제</span>

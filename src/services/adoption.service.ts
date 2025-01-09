@@ -135,9 +135,6 @@ export const updateAdoptionService = async (
       ...adoption,
       status: dto?.status ?? adoption.status,
       step: dto?.step ?? adoption.step,
-      animal_type: dto?.animal_type ?? adoption.animal_type,
-      animal_size: dto?.animal_size ?? adoption.animal_size,
-      animal_age: dto?.animal_age ?? adoption.animal_age,
       adoption_date: dto?.adoption_date ?? adoption?.adoption_date ?? undefined,
       abandon_date: dto?.abandon_date ?? adoption?.abandon_date ?? undefined,
       abandon_reason:

@@ -11,10 +11,6 @@ export default async function MypageCorporationLayout({
 }>) {
   const session = await currentAccount();
 
-  if (!session) {
-    redirect("/login");
-  }
-
   const corporationId = session?.user?.id;
 
   const responseCorporation = await fetch(

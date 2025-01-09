@@ -9,11 +9,13 @@ import AnimalCard from "./animal-card";
 import { GetAnimalDto } from "@/dtos/animal.dto";
 import SelectBox from "@/components/common/select-box";
 import {
+  animalAgeSwap,
+  animalSizeSwap,
   animalTypeSwap,
   genderAmianlTypeSwap,
   SortType,
 } from "@/constants/constants.all";
-import { AnimalType, GenderType } from "@prisma/client";
+import { AnimalAge, AnimalSize, AnimalType, GenderType } from "@prisma/client";
 import SearchBox from "@/components/common/search-box";
 import CheckboxDemo from "@/components/common/check-box";
 
@@ -22,6 +24,8 @@ export default function AnimalContainer() {
   const [animals, setAnimals] = useState<GetAnimalDto[] | null>(null);
   const [allAnimals, setAllAnimals] = useState<GetAnimalDto[] | null>(null);
   const [animalType, setAnimalType] = useState("전체");
+  const [animalSize, setAnimalSize] = useState("전체");
+  const [animalAge, setAnimalAge] = useState("전체");
   const [animalGender, setAnimalGender] = useState("전체");
   const [adoptionStatus, setAdoptionStatus] = useState("전체");
   const [search, setSearch] = useState("");
@@ -49,7 +53,17 @@ export default function AnimalContainer() {
         const matchesAnimalType =
           !animalType ||
           animalType === "전체" ||
-          animalTypeSwap[animal.animalType] === animalType;
+          animalTypeSwap[animal.animal_type] === animalType;
+
+        const matchesAnimalSize =
+          !animalSize ||
+          animalSize === "전체" ||
+          animalSizeSwap[animal.animal_size] === animalSize;
+
+        const matchesAnimalAge =
+          !animalAge ||
+          animalAge === "전체" ||
+          animalAgeSwap[animal.animal_age] === animalAge;
 
         const matchesSearch =
           search.length === 0 ||
@@ -60,6 +74,8 @@ export default function AnimalContainer() {
           matchesAnimalGender &&
           matchesAdoptionStatus &&
           matchesAnimalType &&
+          matchesAnimalSize &&
+          matchesAnimalAge &&
           matchesSearch
         );
       });
@@ -80,7 +96,15 @@ export default function AnimalContainer() {
 
       setAllAnimals(sortedAdoptions);
     }
-  }, [animalGender, animalType, adoptionStatus, sort, search]);
+  }, [
+    animalGender,
+    animalType,
+    animalSize,
+    animalAge,
+    adoptionStatus,
+    sort,
+    search,
+  ]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -176,6 +200,64 @@ export default function AnimalContainer() {
                 key={value} // 각 항목의 고유한 key를 제공
                 value={animalGender}
                 useStateF={setAnimalGender}
+                label={key}
+                id={value}
+              />
+            ))}
+          </div>
+        </div>
+        <div className="flex gap-6">
+          <span className="w-20 font-semibold">사이즈</span>
+          <div className="flex">
+            {[
+              {
+                key: "전체",
+                value: "all",
+              },
+              {
+                key: animalSizeSwap[AnimalSize.SMALL],
+                value: "small",
+              },
+              {
+                key: animalSizeSwap[AnimalSize.NORMAL],
+                value: "normal",
+              },
+              {
+                key: animalSizeSwap[AnimalSize.LARGE],
+                value: "large",
+              },
+            ].map(({ key, value }) => (
+              <CheckboxDemo
+                key={value} // 각 항목의 고유한 key를 제공
+                value={animalSize}
+                useStateF={setAnimalSize}
+                label={key}
+                id={value}
+              />
+            ))}
+          </div>
+        </div>
+        <div className="flex gap-6">
+          <span className="w-20 font-semibold">나이</span>
+          <div className="flex">
+            {[
+              {
+                key: "전체",
+                value: "all",
+              },
+              {
+                key: animalAgeSwap[AnimalAge.YOUNG],
+                value: "young",
+              },
+              {
+                key: animalAgeSwap[AnimalAge.NORMAL],
+                value: "normal",
+              },
+            ].map(({ key, value }) => (
+              <CheckboxDemo
+                key={value} // 각 항목의 고유한 key를 제공
+                value={animalAge}
+                useStateF={setAnimalAge}
                 label={key}
                 id={value}
               />

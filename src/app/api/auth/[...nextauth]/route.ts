@@ -64,6 +64,7 @@ export const authOptions: AuthOptions = {
             secure: process.env.NODE_ENV === "production", // (선택) HTTPS에서만 사용
             path: "/", // (선택) 쿠키의 유효 경로
           });
+
           return user;
         } else {
           return null; // 잘못된 자격 증명
@@ -73,14 +74,19 @@ export const authOptions: AuthOptions = {
   ],
   callbacks: {
     async jwt({ token, user }) {
-      if (user) token.sub = user.id;
+      if (user) {
+        token.sub = user.id;
+        token.picture = user?.owner_name ? "CORPORATION" : "USER";
+      }
 
       return token;
     },
     async session({ session, token }) {
       if (session.user) {
         session.user.id = token.sub as string;
+        session.user.owner_name = token.picture as string;
       }
+
       return session;
     },
   },

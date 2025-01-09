@@ -146,9 +146,10 @@ export default function ListTable({ isRecord }: { isRecord?: boolean }) {
             lists={[
               "전체",
               adoptionStepTypeSwap[AdoptionStep.INVITATION],
-              adoptionStepTypeSwap[AdoptionStep.CURRICULUM],
+              adoptionStepTypeSwap[AdoptionStep.LECTURE],
+              adoptionStepTypeSwap[AdoptionStep.TRAINING],
               adoptionStepTypeSwap[AdoptionStep.FINAL_CONSENTFORM],
-              adoptionStepTypeSwap[AdoptionStep.ADOPTION],
+              adoptionStepTypeSwap[AdoptionStep.END],
             ]}
             useStateF={setAdoptionStep}
             placeholder="전체"

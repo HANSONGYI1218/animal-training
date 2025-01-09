@@ -122,7 +122,6 @@ export const updateTrainingCenterService = async (
       detailAddress: dto?.detailAddress ?? trainingCenter.detailAddress,
       corporationId: trainingCenter?.corportaionId,
       refundPolicys: dto?.refundPolicys ?? trainingCenter?.refundPolicys,
-      updatedAt: new Date(),
     });
 
     await updateTrainingCenterRepository(toJSON(updateTrainingCenter));

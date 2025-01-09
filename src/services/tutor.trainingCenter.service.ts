@@ -79,7 +79,6 @@ export const updateTutorTrainingCenterService = async (
       price: dto?.price ?? TutortrainingCenter.price,
       holidays: dto?.holidays ?? TutortrainingCenter.holidays,
       like: dto?.like ?? TutortrainingCenter?.like,
-      updatedAt: new Date(),
     });
 
     await updateTutorTrainingCenterRepository(

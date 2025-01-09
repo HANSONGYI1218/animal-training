@@ -1,11 +1,13 @@
-import { AnimalType, GenderType } from "@prisma/client";
+import { AnimalAge, AnimalSize, AnimalType, GenderType } from "@prisma/client";
 
 interface AnimalEntityProps {
   id?: string;
   name: string;
   age: number;
   gender: GenderType;
-  animalType: AnimalType;
+  animal_type: AnimalType;
+  animal_size: AnimalSize;
+  animal_age: AnimalAge;
   breed: string;
   profile: string;
   additionalImgs: string[] | null;
@@ -13,6 +15,7 @@ interface AnimalEntityProps {
   remarks?: string[];
   userId?: string;
   corporationId: string;
+  createdAt?: Date;
   updatedAt?: Date;
 }
 
@@ -21,7 +24,9 @@ export class AnimalEntity {
   private name: string;
   private age: number;
   private gender: GenderType;
-  private animalType: AnimalType;
+  private animal_type: AnimalType;
+  private animal_size: AnimalSize;
+  private animal_age: AnimalAge;
   private breed: string;
   private profile: string;
   private additionalImgs: string[] | null;
@@ -29,15 +34,17 @@ export class AnimalEntity {
   private remarks?: string[];
   private userId?: string;
   private corporationId: string;
-  private createdAt: Date;
-  private updatedAt: Date;
+  private createdAt?: Date;
+  private updatedAt?: Date;
 
   constructor({
     id,
     name,
     age,
     gender,
-    animalType,
+    animal_type,
+    animal_size,
+    animal_age,
     breed,
     profile,
     additionalImgs,
@@ -45,13 +52,16 @@ export class AnimalEntity {
     remarks,
     userId,
     corporationId,
+    createdAt,
     updatedAt,
   }: AnimalEntityProps) {
     this.id = id;
     this.name = name;
     this.age = age;
     this.gender = gender;
-    this.animalType = animalType;
+    this.animal_type = animal_type;
+    this.animal_size = animal_size;
+    this.animal_age = animal_age;
     this.breed = breed;
     this.profile = profile;
     this.additionalImgs = additionalImgs;
@@ -59,7 +69,7 @@ export class AnimalEntity {
     this.remarks = remarks;
     this.userId = userId;
     this.corporationId = corporationId;
-    this.createdAt = new Date();
-    this.updatedAt = updatedAt ?? new Date();
+    this.createdAt = createdAt;
+    this.updatedAt = updatedAt;
   }
 }

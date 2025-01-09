@@ -183,10 +183,7 @@ model userCurriculum {
 model Adoption {
   id                    String               @id  @default(uuid())
   status                AdoptionStatus       @default(NOT_ADOPTION)
-  step                  AdoptionStep         @default(INVITATION)
-  animal_type           AnimalType           @default(DOG)
-  animal_size           AnimalSize           @default(NORMAL)
-  animal_age            AnimalAge            @default(NORMAL)      
+  step                  AdoptionStep         @default(INVITATION)  
   adoption_date         DateTime?       
   abandon_date          DateTime?
   abandon_reason        String?              @db.Text
@@ -215,9 +212,11 @@ model Adoption {
 model Animal {
   id                String          @id  @default(uuid())
   name              String?         @db.VarChar(255)
-  age               Int?            @default(0)
+  age               Float?          @default(0)
   gender            GenderType      @default(MALE)
-  animalType        AnimalType      @default(DOG)
+  animal_type       AnimalType      @default(DOG)
+  animal_size       AnimalSize      @default(NORMAL)
+  animal_age        AnimalAge       @default(NORMAL)  
   breed             String          @db.VarChar(255)
   profile           String          @db.VarChar(255)
   additionalImgs    String[]
@@ -320,8 +319,9 @@ enum AnimalType {
 }
 
 enum AnimalSize {
-  LARGE 
+  SMALL
   NORMAL
+  LARGE 
 }
 
 enum AnimalAge {
