@@ -2,62 +2,61 @@ import { currentAccount } from "@/action/user-action";
 import CurriculumBanner from "@/components/curriculum/curriculum-banner";
 import CurriculumContainer from "@/components/curriculum/curriculum-contrainer";
 import { CurriculumLectureDto } from "@/dtos/curriculum.lecture.dto";
-import { GetUserByCurriculumDto } from "@/dtos/user.dto";
-import Image from "next/image";
+import { GetUserCurriculumDto } from "@/dtos/user.curriculum.dto";
+import { AnimalType, AnimalSize, AnimalAge } from "@prisma/client";
 
 export default async function CurriculumPage() {
   const session = await currentAccount();
 
   const userId = session?.user?.id;
 
-  const [responseCurriculums, responseUser] = await Promise.all([
-    fetch(`${process.env.NEXT_PUBLIC_WEB_URL}/api/curriculum-lecture`, {
+  const responseUserCurriculum = await fetch(
+    `${process.env.NEXT_PUBLIC_WEB_URL}/api/user-curriculum?userId=${userId}`,
+    {
       method: "GET",
       cache: "no-store",
-    }),
-    fetch(
-      `${process.env.NEXT_PUBLIC_WEB_URL}/api/user?curriculum_userId=${userId}`,
-      {
-        method: "GET",
-        cache: "no-store",
-      },
-    ),
-  ]);
+    },
+  );
 
-  if (!responseCurriculums.ok || !responseUser.ok) {
+  let userCurriculum = null;
+  if (responseUserCurriculum.ok) {
+    userCurriculum =
+      (await responseUserCurriculum.json()) as GetUserCurriculumDto;
+  }
+
+  const responseCurriculums = await fetch(
+    `${process.env.NEXT_PUBLIC_WEB_URL}/api/curriculum-lecture`,
+    {
+      method: "POST",
+      cache: "no-store",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        animal_type:
+          userCurriculum?.adoption?.animal?.animal_type ?? AnimalType.DOG,
+        animal_size:
+          userCurriculum?.adoption?.animal?.animal_size ?? AnimalSize.NORMAL,
+        animal_age:
+          userCurriculum?.adoption?.animal?.animal_age ?? AnimalAge.NORMAL,
+      }),
+    },
+  );
+
+  if (!responseCurriculums.ok) {
     return null;
   }
 
-  const [curriculumLectures, user] = await Promise.all([
-    responseCurriculums.json() as Promise<CurriculumLectureDto[]>,
-    responseUser.json() as Promise<GetUserByCurriculumDto>,
-  ]);
-
-  const isAccess = user?.adopterAdoptions?.find(
-    (adoption) => adoption?.step === "INVITATION",
-  );
+  const curriculumLectures =
+    (await responseCurriculums.json()) as CurriculumLectureDto[];
 
   return (
     <main className="mb-24 flex min-h-screen w-full flex-col gap-12">
       <CurriculumBanner />
-      {isAccess ? (
-        <CurriculumContainer
-          curriculumLectures={curriculumLectures ?? []}
-          user={user}
-        />
-      ) : (
-        <div className="container mx-auto flex max-w-[1150px] flex-col items-center">
-          <div className="flex min-h-64 w-full cursor-pointer flex-col items-center justify-center gap-3 rounded-xl border py-6 text-center text-sm">
-            <Image
-              src="/icons/general-face.svg"
-              height={30}
-              width={30}
-              alt="face"
-            />
-            분양 동물 입양을 시작해 보세요!
-          </div>
-        </div>
-      )}
+      <CurriculumContainer
+        curriculumLectures={curriculumLectures ?? []}
+        userCurriculum={userCurriculum}
+      />
     </main>
   );
 }

@@ -3,7 +3,6 @@ import {
   AdoptionStatus,
   AdoptionStep,
   AnimalType,
-  CurriculumStep,
   GenderType,
   Lecture,
   Tutor,
@@ -87,30 +86,6 @@ export type GetUserDto = {
   updatedAt: Date;
 };
 
-export type GetUserByCurriculumDto = {
-  id: string;
-  name: string;
-  email: string;
-  password: string;
-  zipCode: string;
-  address: string;
-  detailAddress: string;
-  phoneNumber: string;
-  registrationNumber: string;
-  nickname: string;
-  birthday: Date;
-  gender: GenderType;
-  adopterAdoptions: {
-    id: string;
-    status: AdoptionStatus;
-    step: AdoptionStep;
-    animal_type: AnimalType;
-    curriculumStep: CurriculumStep;
-  }[];
-  createdAt: Date;
-  updatedAt: Date;
-};
-
 export type GetUserAdoptionRecordDto = {
   id: string;
   name: string;
@@ -139,6 +114,7 @@ export type GetUserSearchDto = {
   nickname: string;
   birthday: Date;
   gender: GenderType;
+  adopterAdoptions: Adoption[];
   createdAt: Date;
   updatedAt: Date;
 };

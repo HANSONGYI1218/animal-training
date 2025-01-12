@@ -1,9 +1,12 @@
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export default function CurriculumLecturePromotion({
-  curriculumIndex,
+  lastVideoId,
+  lastVideoIndex,
 }: {
-  curriculumIndex: number;
+  lastVideoId: string;
+  lastVideoIndex: number;
 }) {
   return (
     <div className="sticky top-24 h-fit w-80 rounded-xl border">
@@ -13,14 +16,22 @@ export default function CurriculumLecturePromotion({
       <div className="flex flex-col gap-6 p-6">
         <div className="flex flex-col gap-4">
           <span className="text-xl font-semibold">
-            지금 <span className="text-red-500">{curriculumIndex + 1}강</span>을
-            학습할 차례에요!
+            지금 <span className="text-red-500">{lastVideoIndex + 1}강</span>을
+            학습할
+            <br /> 차례예요!
           </span>
           <span className="text-2xl font-bold">
-            아래를 눌러 이어서 학습해주세요
+            아래를 눌러 이어서 학습해주세요✏️
           </span>
         </div>
-        <Button variant={"destructive"}>학습하러 가기</Button>
+        <Link
+          href={`/curriculum/lecture/${lastVideoId}`}
+          className="flex w-full"
+        >
+          <Button variant={"destructive"} className="w-full">
+            학습하러 가기
+          </Button>
+        </Link>
       </div>
     </div>
   );

@@ -1,6 +1,6 @@
 import prisma from "@/utils/db";
 import {
-  AdoptionAgreementDto,
+  AdoptionAgreementsDto,
   AdoptionDto,
   AdoptionTableDto,
   GetAdoptionDto,
@@ -12,13 +12,15 @@ import {
 // 입양 생성
 export const createAdoptionRepository = async (
   dto: AdoptionDto,
-): Promise<void> => {
+): Promise<string> => {
   try {
-    await prisma.adoption.create({
+    const adotion = await prisma.adoption.create({
       data: {
         ...dto,
       },
     });
+
+    return adotion?.id;
   } catch (error: any) {
     return error;
   }
@@ -80,7 +82,7 @@ export const getAdoptionByAdopterIdRepository = async (
 // 입양 동의서 가져오기
 export const getAdoptionAgreementRepository = async (
   id: string,
-): Promise<AdoptionAgreementDto> => {
+): Promise<AdoptionAgreementsDto> => {
   try {
     const agreement = await prisma.adoption.findUnique({
       where: {
@@ -146,6 +148,7 @@ export const getAdoptionByAdoptionIdRepository = async (
         breeder: true,
         breederCorporation: true,
         animal: true,
+        userCurriculum: true,
       },
     });
 

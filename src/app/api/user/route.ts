@@ -3,7 +3,6 @@ import { NextRequest, NextResponse } from "next/server";
 import {
   CreateUserDto,
   GetUserAdoptionRecordDto,
-  GetUserByCurriculumDto,
   GetUserDto,
   GetUserSearchDto,
   UpdateUserDto,
@@ -12,7 +11,6 @@ import {
 import {
   createUserService,
   deleteUserService,
-  getUserByCurriculumService,
   getUserByEmailService,
   getUserByLoginService,
   getUserByMypageService,
@@ -64,14 +62,6 @@ async function GET(req: NextRequest, res: NextResponse) {
       const user: GetUserDto | null = await getUserByMypageService(
         id as string,
       );
-
-      if (!user) return new Response("user not found", { status: 404 });
-
-      return NextResponse.json(user);
-    }
-    if (curriculum_userId) {
-      const user: GetUserByCurriculumDto | null =
-        await getUserByCurriculumService(curriculum_userId as string);
 
       if (!user) return new Response("user not found", { status: 404 });
 

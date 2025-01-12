@@ -1,6 +1,7 @@
 import {
   CreateCurriculumLectureDto,
   CurriculumLectureDto,
+  SelectCurriculumLectureDto,
   toJSON,
   UpdateCurriculumLectureDto,
 } from "@/dtos/curriculum.lecture.dto";
@@ -8,7 +9,7 @@ import { CurriculumLectureEntity } from "@/entities/curriculum.lecture.entity";
 import {
   createCurriculumLectureRepository,
   deleteCurriculumLectureRepository,
-  getAllCurriculumLecturesRepository,
+  getSelectCurriculumLecturesRepository,
   getCurriculumLectureByIdRepository,
   getCurriculumLectureByCategoryRepository,
   updateCurriculumLectureRepository,
@@ -33,11 +34,11 @@ export const createCurriculumLectureService = async (
 };
 
 // 모든 커리큘럼 강의 조회
-export const getAllCurriculumLecturesService = async (): Promise<
-  CurriculumLectureDto[]
-> => {
+export const getSelectCurriculumLecturesService = async (
+  dto: SelectCurriculumLectureDto,
+): Promise<CurriculumLectureDto[]> => {
   try {
-    const curriculumLectures = await getAllCurriculumLecturesRepository();
+    const curriculumLectures = await getSelectCurriculumLecturesRepository(dto);
 
     return curriculumLectures as CurriculumLectureDto[];
   } catch {

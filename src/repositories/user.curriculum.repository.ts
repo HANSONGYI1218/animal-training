@@ -1,10 +1,14 @@
-import { UserCurriculumLectureDto, toJSON } from "@/dtos/user.curriculum.dto";
+import {
+  GetUserCurriculumDto,
+  UserCurriculumDto,
+  toJSON,
+} from "@/dtos/user.curriculum.dto";
 import prisma from "@/utils/db";
-import { AnimalType, CurriculumCategory } from "@prisma/client";
+import { CurriculumStep } from "@prisma/client";
 
-// 커리큘럼 강의 생성
-export const createUserCurriculumLectureRepository = async (
-  dto: UserCurriculumLectureDto,
+// 사용자_커리큘럼 생성
+export const createUserCurriculumRepository = async (
+  dto: UserCurriculumDto,
 ): Promise<void> => {
   try {
     await prisma.userCurriculum.create({
@@ -15,42 +19,98 @@ export const createUserCurriculumLectureRepository = async (
   }
 };
 
-// 모든 커리큘럼 강의 조회
-export const getAllUserCurriculumLecturesRepository = async (): Promise<
-  UserCurriculumLectureDto[]
+// 모든 사용자_커리큘럼 조회
+export const getAllUserCurriculumsRepository = async (): Promise<
+  UserCurriculumDto[]
 > => {
   try {
-    const UsercurriculumLectures = await prisma.userCurriculum.findMany({});
+    const usercurriculum = await prisma.userCurriculum.findMany({});
 
-    return UsercurriculumLectures.map(toJSON);
+    return usercurriculum.map(toJSON);
   } catch {
     return [];
   }
 };
 
-// 특정 ID의 커리큘럼 강의 조회
-export const getUserCurriculumLectureByIdRepository = async (
+// 특정 ID의 사용자_커리큘럼 조회
+export const getUserCurriculumByIdRepository = async (
   id: string,
-): Promise<UserCurriculumLectureDto | null> => {
+): Promise<UserCurriculumDto | null> => {
   try {
-    const UsercurriculumLecture = await prisma.userCurriculum.findUnique({
+    const usercurriculum = await prisma.userCurriculum.findUnique({
       where: {
         id: id,
       },
     });
 
-    if (!UsercurriculumLecture) {
+    if (!usercurriculum) {
       return null;
     }
-    return toJSON(UsercurriculumLecture);
+    return toJSON(usercurriculum);
   } catch {
     return null;
   }
 };
 
-// 커리큘럼 강의 업데이트
-export const updateUserCurriculumLectureRepository = async (
-  dto: UserCurriculumLectureDto,
+// 특정 userID의 사용자_커리큘럼 조회
+export const getUserCurriculumByUserIdRepository = async (
+  userId: string,
+): Promise<GetUserCurriculumDto | null> => {
+  try {
+    const usercurriculum = await prisma.userCurriculum.findUnique({
+      where: {
+        userId: userId,
+        curriculumStep: {
+          not: CurriculumStep.END,
+        },
+      },
+      include: {
+        user: {
+          select: {
+            name: true,
+            email: true,
+            zipCode: true,
+            address: true,
+            detailAddress: true,
+            phoneNumber: true,
+            birthday: true,
+            gender: true,
+          },
+        },
+        adoption: {
+          select: {
+            status: true, // AdoptionStatus
+            step: true, // AdoptionStep
+            animalId: true,
+            animal: {
+              // animal을 include로 포함
+              select: {
+                id: true,
+                name: true,
+                age: true,
+                gender: true,
+                animal_type: true,
+                animal_size: true,
+                animal_age: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    if (!usercurriculum) {
+      return null;
+    }
+    return toJSON(usercurriculum);
+  } catch {
+    return null;
+  }
+};
+
+// 사용자_커리큘럼 업데이트
+export const updateUserCurriculumRepository = async (
+  dto: UserCurriculumDto,
 ): Promise<void> => {
   try {
     await prisma.userCurriculum.update({
@@ -64,8 +124,8 @@ export const updateUserCurriculumLectureRepository = async (
   }
 };
 
-// 커리큘럼 강의 삭제
-export const deleteUserCurriculumLectureRepository = async (
+// 사용자_커리큘럼 삭제
+export const deleteUserCurriculumRepository = async (
   id: string,
 ): Promise<void> => {
   try {

@@ -25,6 +25,7 @@ export default async function AdoptionFormEditPage({
       id={adoption?.id}
       adopter={adoption?.adopter}
       animal={adoption?.animal}
+      userCurriculum={adoption?.userCurriculum}
     />
   );
 }

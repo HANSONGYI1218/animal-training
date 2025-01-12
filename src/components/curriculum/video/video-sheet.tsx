@@ -18,18 +18,28 @@ import {
 import { Menu } from "lucide-react";
 import VideoList from "./video-list";
 import { CurriculumLectureDto } from "@/dtos/curriculum.lecture.dto";
+import { GetUserCurriculumDto } from "@/dtos/user.curriculum.dto";
+import { lectureCategorySwap } from "@/constants/constants.all";
 
 export default function VideoSheet({
   lectures,
+  userCurriculum,
+  lastVideoIndex,
+  currentLecture,
 }: {
   lectures: CurriculumLectureDto[];
+  userCurriculum: GetUserCurriculumDto;
+  lastVideoIndex: number;
+  currentLecture: CurriculumLectureDto;
 }) {
+  const swapCategory = lectureCategorySwap[lectures[0]?.category];
+
   return (
     <Sheet>
       <SheetTrigger asChild>
         <Menu stroke="#ffffff" cursor={"pointer"} />
       </SheetTrigger>
-      <SheetContent className="flex w-fit flex-col gap-6 border-black bg-black">
+      <SheetContent className="flex min-w-[500px] flex-col gap-6 border-black bg-black">
         <SheetHeader>
           <SheetTitle className="text-white">강의 목록</SheetTitle>
           <SheetDescription className="text-white">
@@ -37,52 +47,29 @@ export default function VideoSheet({
           </SheetDescription>
         </SheetHeader>
         <Accordion
-          type="multiple"
-          defaultValue={["item-1", "item-2", "item-3"]}
+          type="single"
+          defaultValue={`item-${swapCategory}`}
           className="flex flex-1 flex-col gap-6"
         >
-          <AccordionItem value="item-1" className="border-none">
+          <AccordionItem value={`item-${swapCategory}`} className="border-none">
             <AccordionTrigger className="rounded-xl bg-green-60 px-4 text-lg font-semibold text-white">
-              섹션 1. 강의소개
+              섹션 1. {swapCategory}
             </AccordionTrigger>
-            <AccordionContent className="w-full py-6">
-              <div className="flex flex-1 flex-col">
-                {lectures.slice(0, 3).map((lecture) => {
-                  return <VideoList key={lecture?.id} lecture={lecture} />;
-                })}
-              </div>
-            </AccordionContent>
-          </AccordionItem>
-          <AccordionItem value="item-2" className="border-none">
-            <AccordionTrigger className="rounded-xl bg-green-60 px-4 text-lg font-semibold text-white">
-              섹션 2. 준비물
-            </AccordionTrigger>
-            <AccordionContent className="py-6">
-              <div className="flex flex-1 flex-col">
-                {lectures.slice(3, 6).map((lecture) => {
-                  return <VideoList key={lecture?.id} lecture={lecture} />;
-                })}
-              </div>
-            </AccordionContent>
-          </AccordionItem>
-          <AccordionItem value="item-3" className="border-none">
-            <AccordionTrigger className="rounded-xl bg-green-60 px-4 text-lg font-semibold text-white">
-              섹션 3. 훈련
-            </AccordionTrigger>
-            <AccordionContent className="py-6">
-              <div className="flex flex-1 flex-col">
-                {lectures.slice(6, 9).map((lecture) => {
-                  return <VideoList key={lecture?.id} lecture={lecture} />;
-                })}
-              </div>
+            <AccordionContent className="flex w-full flex-col gap-3 py-6">
+              {lectures.map((lecture) => {
+                return (
+                  <VideoList
+                    userCurriculum={userCurriculum}
+                    key={lecture?.id}
+                    lecture={lecture}
+                    currentLecture={currentLecture}
+                    lastVideoIndex={lastVideoIndex}
+                  />
+                );
+              })}
             </AccordionContent>
           </AccordionItem>
         </Accordion>
-        <SheetFooter>
-          <SheetClose asChild>
-            <Button type="submit">Save changes</Button>
-          </SheetClose>
-        </SheetFooter>
       </SheetContent>
     </Sheet>
   );

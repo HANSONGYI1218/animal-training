@@ -1,11 +1,13 @@
 import { AnimalType } from "@/types/tyeps.all";
-import { CurriculumCategory } from "@prisma/client";
+import { AnimalAge, AnimalSize, CurriculumCategory } from "@prisma/client";
 
 export type CreateCurriculumLectureDto = {
   index: number;
   title: string;
   content: string;
   animal_type: AnimalType;
+  animal_sizes: AnimalSize[];
+  animal_ages: AnimalAge[];
   category: CurriculumCategory;
   thumbnailPath: string;
   videoUrl: string;
@@ -19,6 +21,8 @@ export type UpdateCurriculumLectureDto = {
   title?: string;
   content?: string;
   animal_type?: AnimalType;
+  animal_sizes?: AnimalSize[];
+  animal_ages?: AnimalAge[];
   category?: CurriculumCategory;
   thumbnailPath?: string;
   videoUrl?: string;
@@ -32,6 +36,8 @@ export type CurriculumLectureDto = {
   title: string;
   content: string;
   animal_type: AnimalType;
+  animal_sizes: AnimalSize[];
+  animal_ages: AnimalAge[];
   category: CurriculumCategory;
   thumbnailPath: string;
   videoUrl: string;
@@ -39,6 +45,12 @@ export type CurriculumLectureDto = {
   tutorId: string;
   createdAt: Date;
   updatedAt: Date;
+};
+
+export type SelectCurriculumLectureDto = {
+  animal_type: AnimalType;
+  animal_size: AnimalSize;
+  animal_age: AnimalAge;
 };
 
 export function toJSON(user: any) {

@@ -12,7 +12,7 @@ import { signOut, useSession } from "next-auth/react";
 export default function TopBar() {
   const [scrollY, setScrollY] = useState(0);
   const path = usePathname();
-  const [page, setPage] = useState<string>("lecture");
+  const [page, setPage] = useState<string | null>(null);
   const [scrollDirection, setScrollDirection] = useState<"up" | "down">("up");
   const { data: session, status } = useSession();
   const [userType, setUserType] = useState<string | null>(
@@ -22,6 +22,12 @@ export default function TopBar() {
   useEffect(() => {
     setUserType(session?.user?.owner_name ?? null);
   }, [session]);
+
+  useEffect(() => {
+    const router = path.split("/")[1];
+
+    setPage(router);
+  }, []);
 
   const handleScroll = () => {
     const currentScrollY = window.scrollY;
@@ -51,11 +57,7 @@ export default function TopBar() {
             ? "translate-y-0"
             : "-translate-y-20"
           : "translate-y-0"
-      } ${
-        path.startsWith("/curriculum/lecture") &&
-        path.split("/").length === 5 &&
-        "hidden"
-      }`}
+      } ${path.startsWith("/curriculum/lecture") && "hidden"}`}
     >
       <div className="flex border-b py-4">
         <div className="container mx-auto flex items-center justify-between">

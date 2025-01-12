@@ -5,6 +5,7 @@ import {
   Corporation,
   TutorTrainingCenter,
   User,
+  UserCurriculum,
 } from "@prisma/client";
 
 export type AdoptionDto = {
@@ -68,6 +69,7 @@ export type GetAdoptionDto = {
   breederCorporation: Corporation;
   animal: Animal;
   tutorTrainingCenter: TutorTrainingCenter;
+  userCurriculum: UserCurriculum;
   createdAt: Date;
   updatedAt: Date;
 };
@@ -93,7 +95,7 @@ export type AdoptionTableDto = {
   updatedAt: Date;
 };
 
-export type AdoptionAgreementDto = {
+export type AdoptionAgreementsDto = {
   id: string;
   educationForm: string[];
   trainingForm: string[];

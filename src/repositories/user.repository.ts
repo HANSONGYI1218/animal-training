@@ -1,13 +1,12 @@
 import prisma from "@/utils/db";
 import {
   GetUserAdoptionRecordDto,
-  GetUserByCurriculumDto,
   GetUserDto,
   UserDto,
   GetUserSearchDto,
   toJSON,
 } from "@/dtos/user.dto";
-import { AdoptionStep } from "@prisma/client";
+import { AdoptionStatus, AdoptionStep } from "@prisma/client";
 
 // 유저 생성
 const createUserRepository = async (dto: UserDto): Promise<GetUserDto> => {
@@ -65,38 +64,8 @@ const getUserByEmailRepository = async (
       where: {
         email: email,
       },
-    });
-
-    if (!user) {
-      return null;
-    }
-    return toJSON(user);
-  } catch {
-    return null;
-  }
-};
-
-//커리큘럼 페이지에서의 유저 정보 조회
-const getUserByCurriculumRepository = async (
-  id: string,
-): Promise<GetUserByCurriculumDto | null> => {
-  try {
-    const user = await prisma.user.findUnique({
-      where: {
-        id: id,
-      },
       include: {
-        adopterAdoptions: {
-          where: {
-            step: AdoptionStep.CURRICULUM, // 필터 조건
-          },
-          select: {
-            id: true,
-            status: true, //AdoptionStatus
-            step: true, //AdoptionStep
-            animal_type: true,
-          },
-        },
+        adopterAdoptions: true,
       },
     });
 
@@ -199,7 +168,6 @@ export {
   getUserByEmailRepository,
   getUserByLoginRepository,
   getUserByMypageRepository,
-  getUserByCurriculumRepository,
   updateUserRepository,
   deleteUserRepository,
 };

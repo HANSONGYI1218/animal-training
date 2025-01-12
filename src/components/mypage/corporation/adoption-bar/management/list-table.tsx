@@ -11,7 +11,7 @@ import {
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { useContext, useEffect, useState } from "react";
 import { CorporationContext } from "../../../../../providers/corporation-provider";
-import { AdoptionAgreementDto, AdoptionTableDto } from "@/dtos/adoption.dto";
+import { AdoptionAgreementsDto, AdoptionTableDto } from "@/dtos/adoption.dto";
 import Image from "next/image";
 import {
   adoptionStatusTypeSwap,
@@ -35,7 +35,9 @@ export default function ListTable({ isRecord }: { isRecord?: boolean }) {
   const [adoptionStep, setAdoptionStep] = useState("전체");
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("최신순");
-  const [agreement, setAgreement] = useState<AdoptionAgreementDto | null>(null);
+  const [agreements, setAgreements] = useState<AdoptionAgreementsDto | null>(
+    null,
+  );
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingtoAgreements, setIsLoadingtoAgreements] = useState(false);
 
@@ -53,9 +55,9 @@ export default function ListTable({ isRecord }: { isRecord?: boolean }) {
         return null;
       }
 
-      const agreement: AdoptionAgreementDto = await responseAgreement.json();
+      const agreements: AdoptionAgreementsDto = await responseAgreement.json();
 
-      setAgreement(agreement);
+      setAgreements(agreements);
       setIsLoadingtoAgreements(false);
     } catch {
       toast("not found", {
@@ -209,7 +211,7 @@ export default function ListTable({ isRecord }: { isRecord?: boolean }) {
                   <Badge
                     className="text-xs"
                     variant={
-                      adoptionStepTypeSwap[adoption.step] === "미초대"
+                      adoption.step === AdoptionStep.INVITATION
                         ? "destructive"
                         : "default"
                     }
@@ -232,22 +234,25 @@ export default function ListTable({ isRecord }: { isRecord?: boolean }) {
                       onClick={() => {
                         getAgreementDatas(adoption?.id);
                       }}
-                      disabled={!agreement}
                     >
-                      <div className="flex cursor-pointer items-center justify-center gap-1 text-xs underline">
+                      <div
+                        className={`flex items-center justify-center gap-1 text-xs underline ${adoption.step === AdoptionStep.INVITATION ? "cursor-default text-neutral-400" : "cursor-pointer text-black"}`}
+                      >
                         자세히
                         <ExternalLink width={16} height={16} />
                       </div>
                     </DialogTrigger>
-                    <DialogContent className="w-full">
-                      {isLoadingtoAgreements ? (
-                        <div className="flex min-h-40 flex-col items-center justify-center">
-                          <Loader2 className="animate-spin" />
-                        </div>
-                      ) : (
-                        <AgreementCarousel agreement={agreement!} />
-                      )}
-                    </DialogContent>
+                    {adoption.step !== AdoptionStep.INVITATION && (
+                      <DialogContent className="w-full">
+                        {isLoadingtoAgreements ? (
+                          <div className="flex min-h-40 flex-col items-center justify-center">
+                            <Loader2 className="animate-spin" />
+                          </div>
+                        ) : (
+                          <AgreementCarousel agreements={agreements!} />
+                        )}
+                      </DialogContent>
+                    )}
                   </Dialog>
                 </TableCell>
               </TableRow>

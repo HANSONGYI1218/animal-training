@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -12,9 +11,7 @@ export default function BottomBar() {
     <>
       <footer
         className={`h-[168px] border-t-2 max-md:hidden ${
-          path.startsWith("/curriculum/lecture") &&
-          path.split("/").length === 5 &&
-          "hidden"
+          path.startsWith("/curriculum/lecture") && "hidden"
         }`}
       >
         <section className="mx-auto my-auto flex h-full max-w-6xl justify-between px-4 py-5 text-xs">

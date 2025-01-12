@@ -41,7 +41,7 @@ model User {
   userPayment        UserPayment[]
   lectureBookmarks   LectureBookmark[]   // One-to-many relationship with Bookmark
   tutorBookmarks     TutorBookmark[]
-  userCurriculum     userCurriculum[]
+  userCurriculums    UserCurriculum[]
 }
 
 model UserPayment {
@@ -150,8 +150,8 @@ model CurriculumLecture {
   title                   String               @db.VarChar(255)
   content                 String               @db.Text
   animal_type             AnimalType           @default(CAT)
-  animal_size             AnimalSize           @default(NORMAL)
-  animal_age              AnimalAge            @default(NORMAL)
+  animal_sizes            AnimalSize[]        
+  animal_ages             AnimalAge[]         
   category                CurriculumCategory   @default(TRAINING)
   thumbnailPath           String               @db.VarChar(255)
   videoUrl                String               @db.VarChar(255)
@@ -164,20 +164,19 @@ model CurriculumLecture {
   @@index([tutorId])
 }
 
-model userCurriculum {
+model UserCurriculum {
   id                      String               @id  @default(uuid())
-  animal_type             AnimalType           @default(CAT)
-  animal_size             AnimalSize           @default(NORMAL)
-  animal_age              AnimalAge            @default(NORMAL)
-  category                CurriculumCategory   @default(TRAINING)
-  lastVideoId             String
-  lastVideoTime           Float
-  curriculumSteps         CurriculumStep
+  lastVideoId             String?
+  lastVideoTime           String?
+  curriculumStep          CurriculumStep
 //   attendances             Json[]               @default([])
-  userId                  String
+  userId                  String               @unique
   user                    User?                @relation(fields: [userId], references: [id])
+  adoptionId              String               @unique
+  adoption                Adoption?            @relation(fields: [adoptionId], references: [id])
 
   @@index([userId])
+  @@index([adoptionId])
 }
 
 model Adoption {
@@ -202,6 +201,7 @@ model Adoption {
   breederCorporation    Corporation?         @relation("BreederCorporationAdoptions", fields: [breederCorporationId], references: [id])
   animal                Animal?              @relation(fields: [animalId], references: [id])
   tutorTrainingCenter   TutorTrainingCenter? @relation(fields: [tutorTrainingCenterId], references: [id])
+  userCurriculum        UserCurriculum?
 
   @@index([tutorTrainingCenterId])
   @@index([adopterId])

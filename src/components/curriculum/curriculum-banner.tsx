@@ -1,4 +1,5 @@
-"use client";
+import { Laptop, PawPrint, PlaySquare, TrafficCone } from "lucide-react";
+import Image from "next/image";
 
 export default function CurriculumBanner() {
   return (
@@ -10,6 +11,21 @@ export default function CurriculumBanner() {
             <br />
             쏭쓰가 응원할게요🚀
           </span>
+          <div className="flex items-center">
+            <div className="relative flex h-24 w-24 flex-col items-center gap-2 rounded-lg">
+              <div className="relative flex rounded-full bg-green-100 p-3 blur-lg" />
+              <PlaySquare className="absolute top-0 z-10" />
+              <span>강의</span>
+            </div>
+            <div className="flex h-24 w-24 flex-col items-center gap-2 rounded-lg">
+              <TrafficCone />
+              <span>훈련</span>
+            </div>
+            <div className="flex h-24 w-24 flex-col items-center gap-2 rounded-full">
+              <PawPrint />
+              <span>입양</span>
+            </div>
+          </div>
         </div>
         <div className="flex w-1/2 flex-col items-center rounded-xl bg-grass-pattern bg-cover p-6">
           <div className="flex w-full flex-col items-center gap-4 rounded-xl bg-white p-6">

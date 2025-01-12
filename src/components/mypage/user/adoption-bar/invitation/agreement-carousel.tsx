@@ -8,12 +8,12 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import Image from "next/image";
-import { AdoptionAgreementDto } from "@/dtos/adoption.dto";
+import { AdoptionAgreementsDto } from "@/dtos/adoption.dto";
 
 export default function AgreementCarousel({
   agreement,
 }: {
-  agreement: AdoptionAgreementDto;
+  agreement: AdoptionAgreementsDto;
 }) {
   const flatArray = agreement
     ? ["educationForm", "trainingForm", "adoptionForm"].flatMap(

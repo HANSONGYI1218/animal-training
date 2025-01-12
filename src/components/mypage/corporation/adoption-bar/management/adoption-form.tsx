@@ -15,12 +15,15 @@ import { Button } from "@/components/ui/button";
 import { useState, useContext } from "react";
 import { CalendarIcon, ChevronLeft, Loader2, Search } from "lucide-react";
 import {
+  AdoptionStatus,
   Animal,
   AnimalAge,
   AnimalSize,
   AnimalType,
+  CurriculumStep,
   GenderType,
   User,
+  UserCurriculum,
 } from "@prisma/client";
 import Link from "next/link";
 import { CorporationContext } from "@/providers/corporation-provider";
@@ -32,7 +35,7 @@ import {
 import { format } from "date-fns";
 import { Calendar } from "@/components/ui/calendar";
 import { ko } from "date-fns/locale";
-import { cn } from "@/utils/utils";
+import { cn, enterKeyDown } from "@/utils/utils";
 import { toast } from "sonner";
 import { GetUserSearchDto } from "@/dtos/user.dto";
 import { GetAnimalDto } from "@/dtos/animal.dto";
@@ -59,15 +62,18 @@ export default function AdoptionForm({
   id,
   adopter,
   animal,
+  userCurriculum,
 }: {
   id?: string;
   adopter?: User;
   animal?: GetAnimalDto | Animal;
+  userCurriculum?: UserCurriculum;
 }) {
   const corporation = useContext(CorporationContext);
   const [isLoading, setIsLoading] = useState(false);
   const [searchUser, setSearchUser] = useState<GetUserSearchDto | null>(null);
   const [deleteInput, setDeleteInput] = useState("");
+  const [isAdoptionPended, setIsAdoptionPended] = useState(false);
 
   const form = useForm<z.infer<typeof AdoptionSchema>>({
     resolver: zodResolver(AdoptionSchema),
@@ -104,7 +110,7 @@ export default function AdoptionForm({
       }
     } catch {
       toast("not found", {
-        description: "잠시 후 다시 시도해 주세요.",
+        description: "이메일에 맞는 사용자가 없습니다.",
       });
     }
   };
@@ -120,15 +126,25 @@ export default function AdoptionForm({
       );
 
       const getUser: GetUserSearchDto = await responseUser.json();
-      setSearchUser(getUser);
 
-      form.setValue("user_name", getUser?.name);
-      form.setValue("user_birthday", new Date(getUser?.birthday));
-      form.setValue("user_gender", getUser?.gender);
-      form.setValue("user_phoneNumber", getUser?.phoneNumber);
-      form.setValue("zipCode", getUser?.zipCode);
-      form.setValue("address", getUser?.address);
-      form.setValue("detailAddress", getUser?.detailAddress);
+      const isAdoptionPending = getUser.adopterAdoptions.find(
+        (adoption) => adoption.status === AdoptionStatus.NOT_ADOPTION,
+      );
+
+      if (isAdoptionPending) {
+        setIsAdoptionPended(true);
+      } else {
+        setIsAdoptionPended(false);
+        setSearchUser(getUser);
+
+        form.setValue("user_name", getUser?.name);
+        form.setValue("user_birthday", new Date(getUser?.birthday));
+        form.setValue("user_gender", getUser?.gender);
+        form.setValue("user_phoneNumber", getUser?.phoneNumber);
+        form.setValue("zipCode", getUser?.zipCode);
+        form.setValue("address", getUser?.address);
+        form.setValue("detailAddress", getUser?.detailAddress);
+      }
     } catch {
       toast("not found", {
         description: "잠시 후 다시 시도해 주세요.",
@@ -140,6 +156,7 @@ export default function AdoptionForm({
 
   async function onSubmit(data: z.infer<typeof AdoptionSchema>) {
     setIsLoading(true);
+    let adoptionId = id ?? null;
     try {
       if (id) {
         await fetch(`${process.env.NEXT_PUBLIC_WEB_URL}/api/adoption`, {
@@ -149,16 +166,42 @@ export default function AdoptionForm({
             adopterId: searchUser?.id,
           }),
         });
+
+        await fetch(
+          `${process.env.NEXT_PUBLIC_WEB_URL}/api/user-curriculum?id=${userCurriculum?.id}`,
+          {
+            method: "Delete",
+          },
+        );
       } else {
-        await fetch(`${process.env.NEXT_PUBLIC_WEB_URL}/api/adoption`, {
-          method: "POST",
-          body: JSON.stringify({
-            adopterId: searchUser?.id,
-            breederCorporationId: corporation?.id,
-            animalId: animal?.id,
-          }),
-        });
+        const adoptionResponse = await fetch(
+          `${process.env.NEXT_PUBLIC_WEB_URL}/api/adoption`,
+          {
+            method: "POST",
+            body: JSON.stringify({
+              adopterId: searchUser?.id,
+              breederCorporationId: corporation?.id,
+              animalId: animal?.id,
+            }),
+          },
+        );
+
+        if (!adoptionResponse.ok) {
+          throw new Error("Failed to create adoption");
+        }
+
+        adoptionId = await adoptionResponse.json();
       }
+
+      await fetch(`${process.env.NEXT_PUBLIC_WEB_URL}/api/user-curriculum`, {
+        method: "POST",
+        body: JSON.stringify({
+          curriculumStep: CurriculumStep.LECTURE,
+          //   attendances?: Json[],
+          userId: searchUser?.id,
+          adoptionId: adoptionId,
+        }),
+      });
       setIsLoading(false);
 
       window.location.href = "/mypage/corporation/adoption";
@@ -175,6 +218,7 @@ export default function AdoptionForm({
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
+          onKeyDown={enterKeyDown}
           className="flex flex-col gap-12"
         >
           <Link href={"/mypage/corporation/adoption"}>
@@ -183,7 +227,16 @@ export default function AdoptionForm({
               분양동물 목록가기
             </Button>
           </Link>
-          <span className="text-xl font-bold">입양기록 작성</span>
+          <div className="flex flex-col gap-2">
+            <span className="text-xl font-bold">입양서 작성</span>
+            <span className="text-sm text-red-500">
+              * 모든 입양자는 입양 과정 중 한 마리의 반려동물만 입양할 수
+              있습니다.
+              <br />* 한 마리의 반려동물 입양이 끝난 후 다음 반려동물을 입양할
+              수 있습니다.
+              <br />* 모든 입양자는 '개인'으로 기관은 입양할 수 없습니다.
+            </span>
+          </div>
           <div className="flex flex-col gap-5">
             <span className="text-lg font-semibold">STEP 01: 입양자 정보</span>
             <FormField
@@ -224,6 +277,12 @@ export default function AdoptionForm({
                       )}
                     </Button>
                   </div>
+                  {isAdoptionPended && (
+                    <span className="ml-2 text-sm text-red-500">
+                      현재 진행중인 입양 과정이 있는 사용자입니다. 진행중인 입양
+                      과정을 마무리한 후 작성해주세요.
+                    </span>
+                  )}
                 </FormItem>
               )}
             />

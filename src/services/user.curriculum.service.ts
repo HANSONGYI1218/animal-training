@@ -1,117 +1,126 @@
 import {
-  CreateUserCurriculumLectureDto,
-  UserCurriculumLectureDto,
+  CreateUserCurriculumDto,
+  UserCurriculumDto,
   toJSON,
-  UpdateUserCurriculumLectureDto,
+  UpdateUserCurriculumDto,
+  GetUserCurriculumDto,
 } from "@/dtos/user.curriculum.dto";
-import { UserCurriculumLectureEntity } from "@/entities/user.curriculum.entity";
+import { UserCurriculumEntity } from "@/entities/user.curriculum.entity";
 import {
-  createUserCurriculumLectureRepository,
-  deleteUserCurriculumLectureRepository,
-  getAllUserCurriculumLecturesRepository,
-  getUserCurriculumLectureByIdRepository,
-  updateUserCurriculumLectureRepository,
+  createUserCurriculumRepository,
+  deleteUserCurriculumRepository,
+  getAllUserCurriculumsRepository,
+  getUserCurriculumByIdRepository,
+  getUserCurriculumByUserIdRepository,
+  updateUserCurriculumRepository,
 } from "@/repositories/user.curriculum.repository";
-import { AnimalType } from "@prisma/client";
 
-// 커리큘럼 강의 생성
-export const createUserCurriculumLectureService = async (
-  dto: CreateUserCurriculumLectureDto,
+// 사용자_커리큘럼 생성
+export const createUserCurriculumService = async (
+  dto: CreateUserCurriculumDto,
 ): Promise<void> => {
   try {
-    // const isExisted = await getUserCurriculumLectureByIdRepository(dto.id);
+    // const isExisted = await getUserCurriculumByIdRepository(dto.id);
     // if(isExisted) return null;
-    const newUserCurriculumLecture = new UserCurriculumLectureEntity({
+    const newUserCurriculum = new UserCurriculumEntity({
       ...dto,
     });
 
-    await createUserCurriculumLectureRepository(
-      toJSON(newUserCurriculumLecture),
-    );
+    await createUserCurriculumRepository(toJSON(newUserCurriculum));
   } catch (error: any) {
     return error;
-  }
+  } //2e03afde-1868-48a8-bc99-3faf09b2d15e
 };
 
-// 모든 커리큘럼 강의 조회
-export const getAllUserCurriculumLecturesService = async (): Promise<
-  UserCurriculumLectureDto[]
+// 모든 사용자_커리큘럼 조회
+export const getAllUserCurriculumsService = async (): Promise<
+  UserCurriculumDto[]
 > => {
   try {
-    const UsercurriculumLectures =
-      await getAllUserCurriculumLecturesRepository();
+    const usercurriculum = await getAllUserCurriculumsRepository();
 
-    return UsercurriculumLectures as UserCurriculumLectureDto[];
+    return usercurriculum as UserCurriculumDto[];
   } catch {
     return [];
   }
 };
 
-// 특정 ID의 커리큘럼 강의 조회
-export const getUserCurriculumLectureByIdService = async (
+// 특정 ID의 사용자_커리큘럼 조회
+export const getUserCurriculumByIdService = async (
   id: string,
-): Promise<UserCurriculumLectureDto | null> => {
+): Promise<UserCurriculumDto | null> => {
   try {
-    const UsercurriculumLecture =
-      await getUserCurriculumLectureByIdRepository(id);
+    const usercurriculum = await getUserCurriculumByIdRepository(id);
 
-    if (!UsercurriculumLecture) {
+    if (!usercurriculum) {
       return null;
     }
 
-    return UsercurriculumLecture as UserCurriculumLectureDto;
+    return usercurriculum as UserCurriculumDto;
   } catch {
     return null;
   }
 };
 
-// 커리큘럼 강의 업데이트
-export const updateUserCurriculumLectureService = async (
-  dto: UpdateUserCurriculumLectureDto,
+// 특정 userID의 사용자_커리큘럼 조회
+export const getUserCurriculumByUserIdService = async (
+  userId: string,
+): Promise<GetUserCurriculumDto | null> => {
+  try {
+    const usercurriculum = await getUserCurriculumByUserIdRepository(userId);
+
+    if (!usercurriculum) {
+      return null;
+    }
+    return usercurriculum as GetUserCurriculumDto;
+  } catch {
+    return null;
+  }
+};
+
+// 사용자_커리큘럼 업데이트
+export const updateUserCurriculumService = async (
+  dto: UpdateUserCurriculumDto,
 ): Promise<void> => {
   try {
-    const userCurriculumLecture = await getUserCurriculumLectureByIdService(
-      dto.id,
-    );
+    const userCurriculum = await getUserCurriculumByIdService(dto.id);
 
-    if (!userCurriculumLecture) {
+    if (!userCurriculum) {
       throw new Error("lecture not found");
     }
 
-    const updateUserCurriculumLecture = new UserCurriculumLectureEntity({
-      ...userCurriculumLecture,
-      animal_type: userCurriculumLecture?.animal_type,
-      animal_size: userCurriculumLecture?.animal_size,
-      animal_age: userCurriculumLecture?.animal_age,
-      category: userCurriculumLecture?.category,
-      lastVideoId: userCurriculumLecture?.lastVideoId,
-      lastVideoTime: userCurriculumLecture?.lastVideoTime,
-      curriculumSteps: userCurriculumLecture?.curriculumSteps,
-      //   attendances :userCurriculumLecture?.animal_age,
-      userId: userCurriculumLecture?.userId,
+    const updateUserCurriculum = new UserCurriculumEntity({
+      ...userCurriculum,
+      lastVideoId: userCurriculum?.lastVideoId,
+      lastVideoTime: userCurriculum?.lastVideoTime,
+      curriculumStep: userCurriculum?.curriculumStep,
+      //   attendances :userCurriculum?.animal_age,
+      userId: userCurriculum?.userId,
+      adoptionId: userCurriculum?.adoptionId,
     });
 
-    await updateUserCurriculumLectureRepository(
-      toJSON(updateUserCurriculumLecture),
-    );
+    await updateUserCurriculumRepository(toJSON(updateUserCurriculum));
   } catch (error: any) {
     return error;
   }
 };
 
-// 커리큘럼 강의 삭제
-export const deleteUserCurriculumLectureService = async (
+// 사용자_커리큘럼 삭제
+export const deleteUserCurriculumService = async (
   id: string,
 ): Promise<void> => {
   try {
-    const UsercurriculumLecture = await getUserCurriculumLectureByIdService(id);
+    const Usercurriculum = await getUserCurriculumByIdService(id);
 
-    if (!UsercurriculumLecture) {
+    if (!Usercurriculum) {
       throw new Error("lecture not found");
     }
 
-    await deleteUserCurriculumLectureRepository(id);
+    await deleteUserCurriculumRepository(id);
   } catch (error: any) {
     return error;
   }
 };
+function getCurriculumByUserIdRepository(id: string) {
+  throw new Error("Function not implemented.");
+}

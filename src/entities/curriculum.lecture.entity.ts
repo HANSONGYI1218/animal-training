@@ -1,4 +1,9 @@
-import { AnimalType, CurriculumCategory } from "@prisma/client";
+import {
+  AnimalType,
+  AnimalSize,
+  AnimalAge,
+  CurriculumCategory,
+} from "@prisma/client";
 
 interface CurriculumLectureEntityProps {
   id?: string;
@@ -6,6 +11,8 @@ interface CurriculumLectureEntityProps {
   title: string;
   content: string;
   animal_type: AnimalType;
+  animal_sizes: AnimalSize[];
+  animal_ages: AnimalAge[];
   category: CurriculumCategory;
   thumbnailPath: string;
   videoUrl: string;
@@ -21,6 +28,8 @@ export class CurriculumLectureEntity {
   private title: string;
   private content: string;
   private animal_type: AnimalType;
+  private animal_sizes: AnimalSize[];
+  private animal_ages: AnimalAge[];
   private category: CurriculumCategory;
   private thumbnailPath: string;
   private videoUrl: string;
@@ -35,6 +44,8 @@ export class CurriculumLectureEntity {
     title,
     content,
     animal_type,
+    animal_sizes,
+    animal_ages,
     category,
     thumbnailPath,
     videoUrl,
@@ -48,6 +59,8 @@ export class CurriculumLectureEntity {
     this.title = title;
     this.content = content;
     this.animal_type = animal_type;
+    this.animal_sizes = animal_sizes;
+    this.animal_ages = animal_ages;
     this.category = category;
     this.thumbnailPath = thumbnailPath;
     this.videoUrl = videoUrl;

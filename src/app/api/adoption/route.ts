@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
 import {
-  AdoptionAgreementDto,
+  AdoptionAgreementsDto,
   AdoptionTableDto,
   CreateAdoptionDto,
   GetAdoptionDto,
@@ -23,8 +23,8 @@ export async function POST(req: NextRequest, res: NextResponse) {
   try {
     const dto: CreateAdoptionDto = await req.json();
 
-    await createAdoptionService(dto);
-    return new NextResponse("Adoption created successfully", { status: 200 });
+    const adotionId = await createAdoptionService(dto);
+    return NextResponse.json(adotionId);
   } catch (error) {
     return new NextResponse("Failed to create Adoption", { status: 500 });
   }
@@ -69,9 +69,8 @@ export async function GET(req: NextRequest, res: NextResponse) {
       return NextResponse.json(breederAdoptions);
     }
     if (id) {
-      const agreement: AdoptionAgreementDto = await getAdoptionAgreementService(
-        id as string,
-      );
+      const agreement: AdoptionAgreementsDto =
+        await getAdoptionAgreementService(id as string);
 
       if (!agreement)
         return new Response("agreement not found", { status: 404 });

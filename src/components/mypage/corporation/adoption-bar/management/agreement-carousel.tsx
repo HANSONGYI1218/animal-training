@@ -8,16 +8,16 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import Image from "next/image";
-import { AdoptionAgreementDto } from "@/dtos/adoption.dto";
+import { AdoptionAgreementsDto } from "@/dtos/adoption.dto";
 
 export default function AgreementCarousel({
-  agreement,
+  agreements,
 }: {
-  agreement: AdoptionAgreementDto;
+  agreements: AdoptionAgreementsDto;
 }) {
-  const flatArray = agreement
+  const flatArray = agreements
     ? ["educationForm", "trainingForm", "adoptionForm"].flatMap(
-        (key) => agreement[key as keyof typeof agreement] ?? [], // null일 경우 빈 배열로 처리
+        (key) => agreements[key as keyof typeof agreements] ?? [], // null일 경우 빈 배열로 처리
       )
     : []; // agreement가 null이거나 undefined일 경우 빈 배열 반환
   return (

@@ -3,10 +3,11 @@ import {
   CreateCurriculumLectureDto,
   CurriculumLectureDto,
   UpdateCurriculumLectureDto,
+  SelectCurriculumLectureDto,
 } from "@/dtos/curriculum.lecture.dto";
 import {
   createCurriculumLectureService,
-  getAllCurriculumLecturesService,
+  getSelectCurriculumLecturesService,
   getCurriculumLectureByIdService,
   getCurriculumLectureByCategoryService,
   updateCurriculumLectureService,
@@ -14,15 +15,29 @@ import {
 } from "@/services/curriculum.lecture.service";
 import { AnimalType, CurriculumCategory } from "@prisma/client";
 
+// DTO의 속성으로 타입을 구분할 수 있는 함수 정의
+function isSelectCurriculumLectureDto(
+  dto: any,
+): dto is SelectCurriculumLectureDto {
+  return "animal_type" in dto && "animal_size" in dto && "animal_age" in dto;
+}
+
 // POST 요청 핸들러
 async function POST(req: NextRequest, res: NextResponse) {
   try {
-    const dto: CreateCurriculumLectureDto = await req.json();
+    const dto: CreateCurriculumLectureDto | SelectCurriculumLectureDto =
+      await req.json();
 
-    await createCurriculumLectureService(dto);
-    return new NextResponse("CurriculumLecture created successfully", {
-      status: 200,
-    });
+    if (isSelectCurriculumLectureDto(dto)) {
+      const curriculumLectures = await getSelectCurriculumLecturesService(dto);
+
+      return NextResponse.json(curriculumLectures);
+    } else {
+      await createCurriculumLectureService(dto);
+      return new NextResponse("CurriculumLecture created successfully", {
+        status: 200,
+      });
+    }
   } catch (error) {
     return new NextResponse("Failed to create CurriculumLecture", {
       status: 500,
@@ -58,10 +73,6 @@ async function GET(req: NextRequest, res: NextResponse) {
         return new Response("CurriculumLecture not found", { status: 404 });
 
       return NextResponse.json(curriculumLecture);
-    } else {
-      const curriculumLectures = await getAllCurriculumLecturesService();
-
-      return NextResponse.json(curriculumLectures);
     }
   } catch (error) {
     return new NextResponse("Failed to create Lectur(s)", { status: 500 });

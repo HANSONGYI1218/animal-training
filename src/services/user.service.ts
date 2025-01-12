@@ -1,7 +1,6 @@
 import {
   CreateUserDto,
   GetUserAdoptionRecordDto,
-  GetUserByCurriculumDto,
   GetUserDto,
   GetUserSearchDto,
   toJSON,
@@ -14,7 +13,6 @@ import {
   deleteUserRepository,
   getUserByUserInfoRepository,
   getUserByMypageRepository,
-  getUserByCurriculumRepository,
   updateUserRepository,
   getUserByLoginRepository,
   getUserByEmailRepository,
@@ -80,22 +78,6 @@ const getUserByMypageService = async (
       return null;
     }
     return user as GetUserDto;
-  } catch {
-    return null;
-  }
-};
-
-//커리큘럼 페이지에서의 유저 정보 조회
-const getUserByCurriculumService = async (
-  id: string,
-): Promise<GetUserByCurriculumDto | null> => {
-  try {
-    const user = await getUserByCurriculumRepository(id);
-
-    if (!user) {
-      return null;
-    }
-    return user as GetUserByCurriculumDto;
   } catch {
     return null;
   }
@@ -187,7 +169,6 @@ export {
   getUserByEmailService,
   getUserByLoginService,
   getUserByUserInfoService,
-  getUserByCurriculumService,
   updateUserService,
   deleteUserService,
 };

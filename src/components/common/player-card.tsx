@@ -15,20 +15,18 @@ import {
 import { Slider } from "@/components/ui/slider";
 import { formatTime } from "@/utils/utils";
 import { FullScreen, useFullScreenHandle } from "react-full-screen";
-import { AnimalType } from "@prisma/client";
+import { AnimalType, CurriculumStep } from "@prisma/client";
 
 export default function PlayableCard({
   url,
-  userId,
+  userCurriculumId,
   lastPlayedTime,
   lastVideoIndex,
-  animalType,
 }: {
   url: string;
-  userId: string;
-  lastPlayedTime: number;
+  userCurriculumId: string;
+  lastPlayedTime: string;
   lastVideoIndex: number;
-  animalType: AnimalType;
 }) {
   const playerRef = useRef<ReactPlayer | null>(null);
   const [totalDuration, setTotalDuration] = useState(0);
@@ -59,11 +57,11 @@ export default function PlayableCard({
           ? 0
           : totalDuration;
 
-      await fetch(`${process.env.NEXT_PUBLIC_WEB_URL}/api/user`, {
+      await fetch(`${process.env.NEXT_PUBLIC_WEB_URL}/api/user-curriculum`, {
         method: "PUT",
         body: JSON.stringify({
-          animalType: animalType,
-          id: userId,
+          id: userCurriculumId,
+          CurriculumStep: CurriculumStep?.LECTURE,
           lastVideoTime: putLastVideoTime,
           lastVideoIndex: putLastVideoIndex,
         }),

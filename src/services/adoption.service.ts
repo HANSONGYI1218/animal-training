@@ -1,5 +1,5 @@
 import {
-  AdoptionAgreementDto,
+  AdoptionAgreementsDto,
   AdoptionTableDto,
   CreateAdoptionDto,
   GetAdoptionDto,
@@ -24,7 +24,7 @@ import {
 // 입양 생성
 export const createAdoptionService = async (
   dto: CreateAdoptionDto,
-): Promise<void> => {
+): Promise<string> => {
   try {
     // const isExisted = await getAdoptionByIdService(dto.id);
     // if(isExisted) return null;
@@ -33,7 +33,9 @@ export const createAdoptionService = async (
       ...dto,
     });
 
-    await createAdoptionRepository(toJSON(newAdoption));
+    const adotionId = await createAdoptionRepository(toJSON(newAdoption));
+
+    return adotionId;
   } catch (error: any) {
     return error;
   }
@@ -82,7 +84,7 @@ export const getAdoptionByAdopterIdService = async (
 // 입양 동의서 가져오기
 export const getAdoptionAgreementService = async (
   breederId: string,
-): Promise<AdoptionAgreementDto> => {
+): Promise<AdoptionAgreementsDto> => {
   try {
     const adoption = await getAdoptionAgreementRepository(breederId);
 

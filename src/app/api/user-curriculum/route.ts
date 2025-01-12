@@ -1,30 +1,30 @@
 import { NextRequest, NextResponse } from "next/server";
 import {
-  CreateCurriculumLectureDto,
-  CurriculumLectureDto,
-  UpdateCurriculumLectureDto,
-} from "@/dtos/curriculum.lecture.dto";
+  CreateUserCurriculumDto,
+  UserCurriculumDto,
+  GetUserCurriculumDto,
+  UpdateUserCurriculumDto,
+} from "@/dtos/user.curriculum.dto";
 import {
-  createCurriculumLectureService,
-  getAllCurriculumLecturesService,
-  getCurriculumLectureByIdService,
-  getCurriculumLectureByCategoryService,
-  updateCurriculumLectureService,
-  deleteCurriculumLectureService,
-} from "@/services/curriculum.lecture.service";
-import { AnimalType, CurriculumCategory } from "@prisma/client";
+  createUserCurriculumService,
+  getAllUserCurriculumsService,
+  getUserCurriculumByIdService,
+  updateUserCurriculumService,
+  deleteUserCurriculumService,
+  getUserCurriculumByUserIdService,
+} from "@/services/user.curriculum.service";
 
 // POST 요청 핸들러
 async function POST(req: NextRequest, res: NextResponse) {
   try {
-    const dto: CreateCurriculumLectureDto = await req.json();
+    const dto: CreateUserCurriculumDto = await req.json();
 
-    await createCurriculumLectureService(dto);
-    return new NextResponse("CurriculumLecture created successfully", {
+    await createUserCurriculumService(dto);
+    return new NextResponse("Curriculum created successfully", {
       status: 200,
     });
   } catch (error) {
-    return new NextResponse("Failed to create CurriculumLecture", {
+    return new NextResponse("Failed to create Curriculum", {
       status: 500,
     });
   }
@@ -35,33 +35,29 @@ async function GET(req: NextRequest, res: NextResponse) {
   const { searchParams } = req?.nextUrl;
 
   const id = searchParams.get("id");
-  const category = searchParams.get("category");
-  const animalType = searchParams.get("animalType");
+  const userId = searchParams.get("userId");
 
   try {
-    if (category && animalType) {
-      const curriculumLecture: CurriculumLectureDto[] =
-        await getCurriculumLectureByCategoryService(
-          CurriculumCategory[
-            category as keyof typeof CurriculumCategory
-          ] as CurriculumCategory,
-          AnimalType[animalType as keyof typeof AnimalType] as AnimalType,
-        );
+    if (userId) {
+      const user: GetUserCurriculumDto | null =
+        await getUserCurriculumByUserIdService(userId);
 
-      return NextResponse.json(curriculumLecture);
+      if (!user) return new Response("user not found", { status: 404 });
+
+      return NextResponse.json(user);
     }
     if (id) {
-      const curriculumLecture: CurriculumLectureDto | null =
-        await getCurriculumLectureByIdService(id as string);
+      const curriculum: UserCurriculumDto | null =
+        await getUserCurriculumByIdService(id);
 
-      if (!curriculumLecture)
-        return new Response("CurriculumLecture not found", { status: 404 });
+      if (!curriculum)
+        return new Response("Curriculum not found", { status: 404 });
 
-      return NextResponse.json(curriculumLecture);
+      return NextResponse.json(curriculum);
     } else {
-      const curriculumLectures = await getAllCurriculumLecturesService();
+      const curriculums = await getAllUserCurriculumsService();
 
-      return NextResponse.json(curriculumLectures);
+      return NextResponse.json(curriculums);
     }
   } catch (error) {
     return new NextResponse("Failed to create Lectur(s)", { status: 500 });
@@ -71,14 +67,14 @@ async function GET(req: NextRequest, res: NextResponse) {
 // PUT 요청 핸들러
 async function PUT(req: NextRequest, res: NextResponse) {
   try {
-    const dto: UpdateCurriculumLectureDto = await req.json();
+    const dto: UpdateUserCurriculumDto = await req.json();
 
-    await updateCurriculumLectureService(dto);
-    return new NextResponse("CurriculumLecture updated successfully", {
+    await updateUserCurriculumService(dto);
+    return new NextResponse("Curriculum updated successfully", {
       status: 200,
     });
   } catch (error) {
-    return new NextResponse("Failed to update CurriculumLecture", {
+    return new NextResponse("Failed to update Curriculum", {
       status: 500,
     });
   }
@@ -90,13 +86,13 @@ async function DELETE(req: NextRequest, res: NextResponse) {
     const { searchParams } = req.nextUrl;
 
     const id = searchParams.get("id");
-    await deleteCurriculumLectureService(id as string);
+    await deleteUserCurriculumService(id as string);
 
-    return new NextResponse("CurriculumLecture deleted successfully", {
+    return new NextResponse("Curriculum deleted successfully", {
       status: 200,
     });
   } catch (error) {
-    return new NextResponse("Failed to delete CurriculumLecture", {
+    return new NextResponse("Failed to delete Curriculum", {
       status: 500,
     });
   }

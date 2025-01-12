@@ -3,23 +3,26 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import VideoSheet from "./video-sheet";
 import { CurriculumLectureDto } from "@/dtos/curriculum.lecture.dto";
+import { GetUserCurriculumDto } from "@/dtos/user.curriculum.dto";
+import { lectureCategorySwap } from "@/constants/constants.all";
 
 export default function VideoHeader({
-  lecture,
   lectures,
+  userCurriculum,
+  lastVideoIndex,
+  currentLecture,
 }: {
-  lecture: CurriculumLectureDto;
   lectures: CurriculumLectureDto[];
+  userCurriculum: GetUserCurriculumDto;
+  lastVideoIndex: number;
+  currentLecture: CurriculumLectureDto;
 }) {
   return (
-    <header className="sticky top-0 z-30 flex w-full items-center justify-between bg-neutral-800 p-4">
+    <header className="sticky top-0 z-30 flex w-full items-center justify-between bg-neutral-800 py-4 pl-4 pr-8">
       <div className="flex items-center gap-6">
         <Link
           href={{
-            pathname: `/curriculum/lecture/${lectures[0]?.category.toLowerCase()}`,
-            query: {
-              animalType: lectures[0].animal_type.toLowerCase(),
-            },
+            pathname: `/curriculum`,
           }}
         >
           <Button className="flex gap-1 bg-neutral-800 text-sm text-white hover:bg-black hover:text-white">
@@ -27,9 +30,17 @@ export default function VideoHeader({
             뒤로가기
           </Button>
         </Link>
-        <span className="font-semibold text-white">{lecture?.title}</span>
+        <span className="font-semibold text-white">
+          섹션 1. {lectureCategorySwap[lectures[0]?.category]} _{" "}
+          {currentLecture?.title}
+        </span>
       </div>
-      <VideoSheet lectures={lectures} />
+      <VideoSheet
+        lectures={lectures}
+        userCurriculum={userCurriculum}
+        lastVideoIndex={lastVideoIndex}
+        currentLecture={currentLecture}
+      />
     </header>
   );
 }

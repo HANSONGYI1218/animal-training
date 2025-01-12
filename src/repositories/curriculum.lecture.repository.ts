@@ -1,4 +1,8 @@
-import { CurriculumLectureDto, toJSON } from "@/dtos/curriculum.lecture.dto";
+import {
+  CurriculumLectureDto,
+  SelectCurriculumLectureDto,
+  toJSON,
+} from "@/dtos/curriculum.lecture.dto";
 import prisma from "@/utils/db";
 import { AnimalType, CurriculumCategory } from "@prisma/client";
 
@@ -16,11 +20,24 @@ export const createCurriculumLectureRepository = async (
 };
 
 // 모든 커리큘럼 강의 조회
-export const getAllCurriculumLecturesRepository = async (): Promise<
-  CurriculumLectureDto[]
-> => {
+export const getSelectCurriculumLecturesRepository = async (
+  dto: SelectCurriculumLectureDto,
+): Promise<CurriculumLectureDto[]> => {
   try {
-    const curriculumLectures = await prisma.curriculumLecture.findMany({});
+    const curriculumLectures = await prisma.curriculumLecture.findMany({
+      where: {
+        animal_type: dto?.animal_type, // 정확히 일치하는 값
+        animal_ages: {
+          has: dto?.animal_age, // 배열에 포함된 값인지 확인
+        },
+        animal_sizes: {
+          has: dto?.animal_size, // 배열에 포함된 값인지 확인
+        },
+      },
+      orderBy: {
+        index: "asc", // 오름차순 정렬
+      },
+    });
 
     return curriculumLectures.map(toJSON);
   } catch {

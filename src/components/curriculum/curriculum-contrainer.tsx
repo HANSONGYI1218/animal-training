@@ -5,34 +5,26 @@ import CurriculumNav from "./curriculum-nav";
 import TraningFiltering from "./training-center-filtering";
 import TraningCenterPromotion from "./training-center-promotion";
 import { CurriculumLectureDto } from "@/dtos/curriculum.lecture.dto";
-import CurriculumLectureCard from "./curriculum-lecture-card";
-import { Badge } from "../ui/badge";
-import { GetUserByCurriculumDto } from "@/dtos/user.dto";
-import { AnimalType } from "@/types/tyeps.all";
+import { GetUserCurriculumDto } from "@/dtos/user.curriculum.dto";
+import Image from "next/image";
+import LectureList from "./lecture-list";
+import CurriculumLecturePromotion from "./learning/lecture-promotion";
+import LectureChart from "./lecture-chart";
 
 export default function CurriculumContainer({
   curriculumLectures,
-  user,
+  userCurriculum,
 }: {
   curriculumLectures: CurriculumLectureDto[];
-  user: GetUserByCurriculumDto;
+  userCurriculum: GetUserCurriculumDto | null;
 }) {
   const [tab, setTab] = useState("lecture");
   const [selectIndex, setSelectIndex] = useState<number>(0);
 
-  // 1. Dog와 Cat으로 분리
-  const catLecturesArray = curriculumLectures.filter(
-    (lecture) => lecture.animal_type === AnimalType.CAT,
-  );
-  const dogLecturesArray = curriculumLectures.filter(
-    (lecture) => lecture.animal_type === AnimalType.DOG,
+  const lastVideoIndex = curriculumLectures.findIndex(
+    (lecture) => lecture.id === userCurriculum?.lastVideoId,
   );
 
-  // 2. index로 정렬
-  const sortedCatLectures = catLecturesArray.sort((a, b) => a.index - b.index);
-  const sortedDogLectures = dogLecturesArray.sort((a, b) => a.index - b.index);
-
-  // 3. category로 그룹화
   const groupByCategory = (lectures: CurriculumLectureDto[]) => {
     return lectures.reduce((groups: any, lecture: CurriculumLectureDto) => {
       const { category } = lecture;
@@ -46,51 +38,51 @@ export default function CurriculumContainer({
     }, {});
   };
 
-  const catLectures = groupByCategory(sortedCatLectures);
-  const dogLectures = groupByCategory(sortedDogLectures);
+  const groupLectures = groupByCategory(curriculumLectures);
 
   return (
-    <div className="container mx-auto flex max-w-[1150px] flex-col gap-12">
+    <div className="container mx-auto flex w-full max-w-[1150px] flex-col gap-12">
       <CurriculumNav tab={tab} setTab={setTab} />
 
-      {tab === "lecture" ? (
-        <>
-          <div className="flex gap-6">
-            {user?.lastVideoIndexs?.map(
-              (index, i) =>
-                index !== -2 && (
-                  <Badge
-                    key={i}
-                    onClick={() => setSelectIndex(i)}
-                    variant={"tag"}
-                    className={`cursor-pointer ${selectIndex === i && "bg-black text-white"}`}
-                  >
-                    {i === 0 ? "강아지" : "고양이"}
-                  </Badge>
-                ),
-            )}
-          </div>
-          <div className="flex flex-col gap-6">
-            {Object.entries(selectIndex === 0 ? dogLectures : catLectures).map(
-              ([key, values], index) => {
-                return (
-                  <CurriculumLectureCard
-                    key={key}
-                    totalLecturesCount={selectIndex === 0 ? 12 : 9}
-                    groupName={key}
-                    lectures={values as CurriculumLectureDto[]}
-                    index={index}
-                    lastVideoIndex={user?.lastVideoIndexs[selectIndex]}
-                  />
-                );
-              },
-            )}
-          </div>
-        </>
-      ) : (
+      {userCurriculum ? (
         <div className="relative flex w-full gap-6">
-          <TraningFiltering />
-          <TraningCenterPromotion />
+          {tab === "lecture" ? (
+            <>
+              <div className="relative flex w-full flex-col gap-12">
+                <LectureChart
+                  lectures={curriculumLectures}
+                  lastVideoIndex={lastVideoIndex}
+                  curriculumStatus={userCurriculum?.curriculumStep}
+                />
+                <LectureList
+                  groupLectures={groupLectures}
+                  lastVideoIndex={lastVideoIndex}
+                  lastVideoTime={userCurriculum?.lastVideoTime}
+                />
+              </div>
+              <CurriculumLecturePromotion
+                lastVideoId={userCurriculum?.lastVideoId}
+                lastVideoIndex={lastVideoIndex}
+              />
+            </>
+          ) : (
+            <>
+              <TraningFiltering />
+              <TraningCenterPromotion />
+            </>
+          )}
+        </div>
+      ) : (
+        <div className="flex min-h-64 w-full cursor-pointer flex-col items-center justify-center gap-3 rounded-xl border py-6 text-center text-sm">
+          <Image
+            src="/icons/general-face.svg"
+            height={30}
+            width={30}
+            alt="face"
+          />
+          진행중인 커리큘럼 없어요!
+          <br />
+          반려동물을 입양해보세요!
         </div>
       )}
     </div>

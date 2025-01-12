@@ -12,7 +12,7 @@ import {
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { useContext, useEffect, useState } from "react";
 import { CorporationContext } from "../../../../../providers/corporation-provider";
-import { AdoptionAgreementDto, AdoptionTableDto } from "@/dtos/adoption.dto";
+import { AdoptionAgreementsDto, AdoptionTableDto } from "@/dtos/adoption.dto";
 import Image from "next/image";
 import {
   adoptionStatusTypeSwap,
@@ -35,7 +35,9 @@ export default function ListTable({ isRecord }: { isRecord?: boolean }) {
   const [adoptionStep, setAdoptionStep] = useState("전체");
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("최신순");
-  const [agreement, setAgreement] = useState<AdoptionAgreementDto | null>(null);
+  const [agreement, setAgreement] = useState<AdoptionAgreementsDto | null>(
+    null,
+  );
 
   const getAgreementDatas = async (adoptionId: string) => {
     try {
@@ -50,7 +52,7 @@ export default function ListTable({ isRecord }: { isRecord?: boolean }) {
         return null;
       }
 
-      const agreement: AdoptionAgreementDto = await responseAgreement.json();
+      const agreement: AdoptionAgreementsDto = await responseAgreement.json();
 
       setAgreement(agreement);
     } catch {
