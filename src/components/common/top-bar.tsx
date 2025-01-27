@@ -97,11 +97,8 @@ export default function TopBar() {
               </Button>
             </a>
             <a
-              href={
-                userType === null
-                  ? "/login"
-                  : `/mypage/${userType?.toLowerCase()}/profile`
-              }
+              href={`/mypage/${userType?.toLowerCase()}/profile`}
+              className={`${userType === null ? "hidden" : "flex"}`}
             >
               <Button
                 onClick={() => {
