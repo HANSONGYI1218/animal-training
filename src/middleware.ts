@@ -1,15 +1,7 @@
 // middleware.ts
 import { NextResponse, type NextRequest } from "next/server";
 
-const AUTH_PAGES = [
-  "/",
-  "/lecture",
-  "/curriculum",
-  "/login",
-  "/id",
-  "password",
-  "register",
-];
+const AUTH_PAGES = ["/", "/lecture", "/login", "/id", "/password", "/register"];
 
 export default function middleware(request: NextRequest) {
   const { nextUrl, cookies } = request;
