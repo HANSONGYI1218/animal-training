@@ -1,4 +1,4 @@
-import { Corporation, Review } from "@prisma/client";
+import { AnimalType, Corporation, Review } from "@prisma/client";
 
 export type TrainingCenterDto = {
   id: string;
@@ -6,6 +6,7 @@ export type TrainingCenterDto = {
   introduction: string;
   profile: string;
   additionalImgs: string[];
+  phoneNumber: string;
   zipCode: string;
   address: string;
   detailAddress: string;
@@ -20,6 +21,7 @@ export type CreateTrainingCenterDto = {
   introduction: string;
   profile: string;
   additionalImgs: string[];
+  phoneNumber: string;
   zipCode: string;
   address: string;
   detailAddress: string;
@@ -33,6 +35,7 @@ export type UpdateTrainingCenterDto = {
   introduction?: string;
   profile?: string;
   additionalImgs?: string[];
+  phoneNumber?: string;
   zipCode?: string;
   address?: string;
   detailAddress?: string;
@@ -45,38 +48,12 @@ export type GetTrainingCenterDto = {
   introduction: string;
   profile: string;
   additionalImgs: string[];
+  phoneNumber: string;
   zipCode: string;
   address: string;
   detailAddress: string;
   refundPolicys: string[];
   corporationId: string;
-  createdAt: Date;
-  updatedAt: Date;
-};
-
-export type TrainingCenterOnlyOneTutorDto = {
-  id: string;
-  name: string;
-  introduction: string;
-  profile: string;
-  additionalImgs: string[];
-  zipCode: string;
-  address: string;
-  detailAddress: string;
-  refundPolicys: string[];
-  tutorTrainingCenter: {
-    price: string;
-    reviews: Review[];
-    holidays: string[];
-    like: number;
-    tutor: {
-      id: string;
-      name: string;
-      career: string;
-      introduction: string;
-    };
-  };
-  corporation: Corporation;
   createdAt: Date;
   updatedAt: Date;
 };
@@ -87,19 +64,27 @@ export type GetTrainingCenterDetailDto = {
   introduction: string;
   profile: string;
   additionalImgs: string[];
+  phoneNumber: string;
   zipCode: string;
   address: string;
   detailAddress: string;
   refundPolicys: string[];
   tutorTrainingCenters: {
+    id: string;
+    price: string;
+    holidays: string[];
+    like: number;
+    reviews: Review[];
+    animal_types: AnimalType[];
     tutor: {
       id: string;
       name: string;
       career?: string;
       profile_img?: string;
+      introduction?: string;
     };
   }[];
-  corportaionId: string;
+  corporationId: string;
   corporation: Corporation;
   createdAt: Date;
   updatedAt: Date;
@@ -107,26 +92,4 @@ export type GetTrainingCenterDetailDto = {
 
 export function toJSON(trainingCenter: any) {
   return JSON.parse(JSON.stringify(trainingCenter));
-}
-
-export function toGetDtoJSON(trainingCenter: any) {
-  return {
-    ...trainingCenter,
-    tutorTrainingCenter:
-      trainingCenter.tutorTrainingCenters.length > 0
-        ? {
-            price: trainingCenter.tutorTrainingCenters[0].price,
-            holidays: trainingCenter.tutorTrainingCenters[0].holidays,
-            like: trainingCenter.tutorTrainingCenters[0].like,
-            reviews: trainingCenter.tutorTrainingCenters[0].reviews,
-            tutor: {
-              id: trainingCenter.tutorTrainingCenters[0].tutor.id,
-              name: trainingCenter.tutorTrainingCenters[0].tutor.name,
-              career: trainingCenter.tutorTrainingCenters[0].tutor.career,
-              introduction:
-                trainingCenter.tutorTrainingCenters[0].tutor.introduction,
-            },
-          }
-        : null,
-  };
 }

@@ -91,12 +91,14 @@ export const updateUserCurriculumService = async (
 
     const updateUserCurriculum = new UserCurriculumEntity({
       ...userCurriculum,
-      lastVideoId: userCurriculum?.lastVideoId,
-      lastVideoTime: userCurriculum?.lastVideoTime,
-      curriculumStep: userCurriculum?.curriculumStep,
+      lastVideoId: dto?.lastVideoId ?? userCurriculum?.lastVideoId,
+      lastVideoTime: dto?.lastVideoTime ?? userCurriculum?.lastVideoTime,
+      curriculumStep: dto?.curriculumStep ?? userCurriculum?.curriculumStep,
       //   attendances :userCurriculum?.animal_age,
-      userId: userCurriculum?.userId,
-      adoptionId: userCurriculum?.adoptionId,
+      userId: dto?.userId ?? userCurriculum?.userId,
+      adoptionId: dto?.adoptionId ?? userCurriculum?.adoptionId,
+      tutorTrainingCenterId:
+        dto?.tutorTrainingCenterId ?? userCurriculum?.tutorTrainingCenterId,
     });
 
     await updateUserCurriculumRepository(toJSON(updateUserCurriculum));
@@ -121,6 +123,3 @@ export const deleteUserCurriculumService = async (
     return error;
   }
 };
-function getCurriculumByUserIdRepository(id: string) {
-  throw new Error("Function not implemented.");
-}

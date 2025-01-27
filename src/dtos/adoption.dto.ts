@@ -15,9 +15,11 @@ export type AdoptionDto = {
   adoption_date: Date | null;
   abandon_date: Date | null;
   abandon_reason: string;
-  educationForm: string[];
-  trainingForm: string[];
-  adoptionForm: string[];
+  applymentFormUrl: string;
+  learningAgreementUrl: string;
+  trainingAgreementUrl: string;
+  adopter_adoptionFormUrl: string;
+  breeder_adoptionFormUrl: string;
   adopterId: string;
   breederId: string;
   breederCorporationId: string;
@@ -43,9 +45,11 @@ export type UpdateAdoptionDto = {
   adoption_date?: Date;
   abandon_date?: Date;
   abandon_reason?: string;
-  educationForm?: string[];
-  trainingForm?: string[];
-  adoptionForm?: string[];
+  applymentFormUrl?: string;
+  learningAgreementUrl?: string;
+  trainingAgreementUrl?: string;
+  adopter_adoptionFormUrl?: string;
+  breeder_adoptionFormUrl?: string;
   adopterId?: string;
 };
 
@@ -56,9 +60,11 @@ export type GetAdoptionDto = {
   adoption_date: Date | null;
   abandon_date: Date | null;
   abandon_reason: string;
-  educationForm: string[];
-  trainingForm: string[];
-  adoptionForm: string[];
+  applymentFormUrl: string;
+  learningAgreementUrl: string;
+  trainingAgreementUrl: string;
+  adopter_adoptionFormUrl: string;
+  breeder_adoptionFormUrl: string;
   adopterId: string;
   breederId: string;
   breederCorporationId: string;
@@ -97,9 +103,11 @@ export type AdoptionTableDto = {
 
 export type AdoptionAgreementsDto = {
   id: string;
-  educationForm: string[];
-  trainingForm: string[];
-  adoptionForm: string[];
+  applymentFormUrl: string;
+  learningAgreementUrl: string;
+  trainingAgreementUrl: string;
+  adopter_adoptionFormUrl: string;
+  breeder_adoptionFormUrl: string;
 };
 
 export type GetAdoptionWithAnimalDto = {

@@ -82,6 +82,10 @@ export const getUserCurriculumByUserIdRepository = async (
             status: true, // AdoptionStatus
             step: true, // AdoptionStep
             animalId: true,
+            learningAgreementUrl: true,
+            trainingAgreementUrl: true,
+            adopter_adoptionFormUrl: true,
+            breeder_adoptionFormUrl: true,
             animal: {
               // animal을 include로 포함
               select: {

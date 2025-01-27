@@ -2,28 +2,42 @@
 
 import { useState } from "react";
 import CurriculumNav from "./curriculum-nav";
-import TraningFiltering from "./training-center-filtering";
-import TraningCenterPromotion from "./training-center-promotion";
+import TraningFiltering from "./training/center-filtering";
+import TraningCenterPromotion from "./training/center-promotion";
 import { CurriculumLectureDto } from "@/dtos/curriculum.lecture.dto";
 import { GetUserCurriculumDto } from "@/dtos/user.curriculum.dto";
 import Image from "next/image";
-import LectureList from "./lecture-list";
+import LectureList from "./learning/lecture-list";
 import CurriculumLecturePromotion from "./learning/lecture-promotion";
-import LectureChart from "./lecture-chart";
+import LectureChart from "./learning/lecture-chart";
+import { Button } from "../ui/button";
+import Link from "next/link";
+import { Plus } from "lucide-react";
 
 export default function CurriculumContainer({
+  userType,
+  userRole,
   curriculumLectures,
   userCurriculum,
 }: {
+  userType: string | undefined;
+  userRole: string | undefined;
   curriculumLectures: CurriculumLectureDto[];
   userCurriculum: GetUserCurriculumDto | null;
 }) {
   const [tab, setTab] = useState("lecture");
   const [selectIndex, setSelectIndex] = useState<number>(0);
 
-  const lastVideoIndex = curriculumLectures.findIndex(
-    (lecture) => lecture.id === userCurriculum?.lastVideoId,
-  );
+  let lastVideoIndex: any = curriculumLectures?.length;
+  if (userCurriculum?.curriculumStep === "LECTURE") {
+    lastVideoIndex = curriculumLectures.findIndex(
+      (lecture) => lecture.id === userCurriculum?.lastVideoId,
+    );
+
+    if (lastVideoIndex === -1) {
+      lastVideoIndex = 0;
+    }
+  }
 
   const groupByCategory = (lectures: CurriculumLectureDto[]) => {
     return lectures.reduce((groups: any, lecture: CurriculumLectureDto) => {
@@ -43,6 +57,14 @@ export default function CurriculumContainer({
   return (
     <div className="container mx-auto flex w-full max-w-[1150px] flex-col gap-12">
       <CurriculumNav tab={tab} setTab={setTab} />
+      {userType === "CORPORATION" && userRole === "OWNER" && (
+        <Link href="/curriculum/lecture/new" className="self-end">
+          <Button variant="destructive" className="flex h-9 gap-1 px-2">
+            <Plus className="h-5 w-5" />
+            강의 추가하기
+          </Button>
+        </Link>
+      )}
 
       {userCurriculum ? (
         <div className="relative flex w-full gap-6">
@@ -57,12 +79,18 @@ export default function CurriculumContainer({
                 <LectureList
                   groupLectures={groupLectures}
                   lastVideoIndex={lastVideoIndex}
+                  learningAgreementUrl={
+                    userCurriculum?.adoption?.learningAgreementUrl
+                  }
+                  adoptionId={userCurriculum?.adoptionId}
                   lastVideoTime={userCurriculum?.lastVideoTime}
                 />
               </div>
               <CurriculumLecturePromotion
                 lastVideoId={userCurriculum?.lastVideoId}
+                curriculumStatus={userCurriculum?.curriculumStep}
                 lastVideoIndex={lastVideoIndex}
+                setTab={setTab}
               />
             </>
           ) : (

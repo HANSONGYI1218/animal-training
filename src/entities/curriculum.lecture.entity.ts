@@ -23,7 +23,7 @@ interface CurriculumLectureEntityProps {
 }
 
 export class CurriculumLectureEntity {
-  private id: string;
+  private id?: string;
   private index: number;
   private title: string;
   private content: string;
@@ -54,7 +54,7 @@ export class CurriculumLectureEntity {
     createdAt,
     updatedAt,
   }: CurriculumLectureEntityProps) {
-    this.id = id ?? "";
+    this.id = id;
     this.index = index;
     this.title = title;
     this.content = content;

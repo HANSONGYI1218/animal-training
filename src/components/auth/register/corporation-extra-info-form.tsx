@@ -36,7 +36,15 @@ const CorporationExtraInfSchema = z.object({
   zipCode: z.string().min(1, { message: "우편번호를 작성해 주세요." }),
   address: z.string().min(1, { message: "기본주소를 작성해 주세요." }),
   detailAddress: z.string().min(1, { message: "상세주소를 작성해 주세요." }),
-  phoneNumber: z.string().min(1, { message: "핸드폰 번호를 적어주세요." }),
+  phoneNumber: z
+    .string()
+    .min(1, { message: "전화번호를 작성해 주세요." })
+    .refine(
+      (val) => /^[0-9-]*$/.test(val) && (val.match(/-/g) || []).length === 2,
+      {
+        message: "전화번호는 형식을 지켜서 작성해 주세요.",
+      },
+    ),
   business_number: z
     .string()
     .length(10, { message: "사업자등록번호는 정확히 10자리여야 합니다." }),
@@ -309,7 +317,7 @@ export default function CorporationExtraInfForm({
               <FormControl>
                 <div className="flex gap-3">
                   <Input
-                    placeholder="전화번호를 다시 한 번 작성해주세요."
+                    placeholder="'-'를 포함해서 전화번호를 작성해 주세요."
                     className="disabled:cursor-default disabled:border-none"
                     {...field}
                   />

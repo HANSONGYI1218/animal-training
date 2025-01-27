@@ -8,6 +8,7 @@ interface UserCurriculumEntityProps {
   //   attendances?: Json[];
   userId: string;
   adoptionId: string;
+  tutorTrainingCenterId?: string;
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -20,6 +21,7 @@ export class UserCurriculumEntity {
   //   attendances?: Json[];
   private userId: string;
   private adoptionId: string;
+  private tutorTrainingCenterId?: string;
   private createdAt?: Date;
   private updatedAt?: Date;
 
@@ -31,6 +33,7 @@ export class UserCurriculumEntity {
     //   attendances,
     userId,
     adoptionId,
+    tutorTrainingCenterId,
     createdAt,
     updatedAt,
   }: UserCurriculumEntityProps) {
@@ -41,6 +44,7 @@ export class UserCurriculumEntity {
     //  this.attendances=attendances;
     this.userId = userId;
     this.adoptionId = adoptionId;
+    this.tutorTrainingCenterId = tutorTrainingCenterId;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
   }

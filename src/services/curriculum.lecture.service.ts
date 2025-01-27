@@ -97,6 +97,8 @@ export const updateCurriculumLectureService = async (
       title: dto?.title ?? curriculumLecture.title,
       content: dto?.content ?? curriculumLecture.content,
       animal_type: dto?.animal_type ?? curriculumLecture.animal_type,
+      animal_sizes: dto?.animal_sizes ?? curriculumLecture.animal_sizes,
+      animal_ages: dto?.animal_ages ?? curriculumLecture.animal_ages,
       category: dto?.category ?? curriculumLecture.category,
       thumbnailPath: dto?.thumbnailPath ?? curriculumLecture.thumbnailPath,
       videoUrl: dto?.videoUrl ?? curriculumLecture.videoUrl,

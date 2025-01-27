@@ -10,7 +10,6 @@ import {
 import {
   CreateTrainingCenterDto,
   GetTrainingCenterDetailDto,
-  TrainingCenterOnlyOneTutorDto,
   UpdateTrainingCenterDto,
 } from "@/dtos/training.center.dto";
 import { NextRequest, NextResponse } from "next/server";
@@ -40,7 +39,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
   try {
     if (id) {
       if (tutorId) {
-        const trainingCenter: TrainingCenterOnlyOneTutorDto | null =
+        const trainingCenter: GetTrainingCenterDetailDto | null =
           await getTrainingCenterByTutorIdService(
             id as string,
             tutorId as string,

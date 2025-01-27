@@ -27,6 +27,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { MCAPageNavigate } from "@/action/navigate";
 import { Calendar } from "@/components/ui/calendar";
 
 const AnimalSchema = z.object({
@@ -125,7 +126,7 @@ export default function AnimalForm({ animal }: { animal?: GetAnimalDto }) {
         });
       }
       setIsLoading(false);
-      window.location.href = "/mypage/corporation/adoption";
+      await MCAPageNavigate();
     } catch (error: any) {
       const errorMessage = error?.message || "Failed to create Lecture";
       toast(errorMessage, {

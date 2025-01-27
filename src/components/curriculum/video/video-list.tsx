@@ -2,9 +2,14 @@
 
 import { CurriculumLectureDto } from "@/dtos/curriculum.lecture.dto";
 import { GetUserCurriculumDto } from "@/dtos/user.curriculum.dto";
-import { CirclePlay, ScreenShare } from "lucide-react";
+import {
+  BadgeCheck,
+  CirclePlay,
+  LaptopMinimalIcon,
+  ScreenShare,
+} from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
+
 import { toast } from "sonner";
 
 export default function VideoList({
@@ -39,17 +44,22 @@ export default function VideoList({
           });
         }
       }}
-      className={`group flex w-full items-center justify-between gap-6 rounded-xl p-3 text-base ${isCurrentLecture ? "bg-green-50" : "bg-transparent text-gray-600"}`}
+      className={`group flex w-full items-center justify-between gap-6 px-3 py-4 ${isCurrentLecture ? "scale(1.03) border-b" : ""}`}
     >
       <div className="relative flex h-full flex-1 items-center gap-2">
-        <CirclePlay
-          width={20}
-          height={20}
-          stroke={isCurrentLecture ? "#000000" : "rgb(203 213 225)"}
-          strokeWidth={isCurrentLecture ? 2.4 : 1.4}
-        />
+        {userCurriculum && lastVideoIndex > lecture?.index ? (
+          <BadgeCheck stroke="rgb(5 150 105)" fill="rgb(239 246 255)" />
+        ) : (
+          <CirclePlay
+            width={20}
+            height={20}
+            stroke={"rgb(203 213 225)"}
+            strokeWidth={isCurrentLecture ? 2.4 : 1.4}
+          />
+        )}
+
         <span
-          className={`w-fit flex-1 ${isCurrentLecture ? "font-semibold text-black" : "text-slate-300"} `}
+          className={`w-fit flex-1 text-base text-slate-300 ${isCurrentLecture ? "font-semibold" : ""} `}
         >
           {lecture?.title}
         </span>
@@ -57,10 +67,14 @@ export default function VideoList({
         <div className="absolute left-0 top-0 hidden h-full w-full group-hover:flex group-hover:blur-sm" />
       </div>
       <div className="flex min-w-[48px] items-center justify-center gap-1">
-        <ScreenShare
-          stroke={isCurrentLecture ? "#000000" : "#ffffff"}
-          className={`h-5 w-5 ${isCurrentLecture ? "flex" : "hidden group-hover:flex"}`}
-        />
+        {isCurrentLecture ? (
+          <LaptopMinimalIcon stroke={"#ffffff"} className="h-5 w-5" />
+        ) : (
+          <ScreenShare
+            stroke={"#ffffff"}
+            className="hidden h-5 w-5 group-hover:flex"
+          />
+        )}
 
         <span
           className={`flex group-hover:hidden ${isCurrentLecture ? "hidden" : "text-slate-300"}`}

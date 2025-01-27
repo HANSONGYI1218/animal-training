@@ -16,10 +16,10 @@ import { useState } from "react";
 import { ChevronLeft, Loader2, Plus, Search } from "lucide-react";
 import Link from "next/link";
 import { Textarea } from "@/components/ui/textarea";
-import { TrainingCenterOnlyOneTutorDto } from "@/dtos/training.center.dto";
+import { GetTrainingCenterDetailDto } from "@/dtos/training.center.dto";
 import { toast } from "sonner";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { MCCPageNavigate } from "@/action/navigate";
 
 const TrainingCenterSchema = z.object({
   name: z.string().min(1, { message: "훈련소 명을 적어주세요." }),
@@ -28,6 +28,15 @@ const TrainingCenterSchema = z.object({
   additionalImgs: z
     .array(z.string())
     .min(1, { message: "훈련소 추가 사진을 선택해주세요." }),
+  phoneNumber: z
+    .string()
+    .min(1, { message: "전화번호를 작성해 주세요." })
+    .refine(
+      (val) => /^[0-9-]*$/.test(val) && (val.match(/-/g) || []).length === 2,
+      {
+        message: "전화번호 형식을 지켜주세요.",
+      },
+    ),
   zipCode: z.string().min(1, { message: "우편번호를 작성해 주세요." }),
   address: z.string().min(1, { message: "기본주소를 작성해 주세요." }),
   detailAddress: z.string().min(1, { message: "상세주소를 작성해 주세요." }),
@@ -39,7 +48,7 @@ const TrainingCenterSchema = z.object({
 export default function TrainingCenterForm({
   trainingCenter,
 }: {
-  trainingCenter?: TrainingCenterOnlyOneTutorDto;
+  trainingCenter?: GetTrainingCenterDetailDto;
 }) {
   const { data: session, status } = useSession();
   const form = useForm<z.infer<typeof TrainingCenterSchema>>({
@@ -49,6 +58,7 @@ export default function TrainingCenterForm({
       introduction: trainingCenter?.introduction ?? "",
       profile: trainingCenter?.profile ?? "",
       additionalImgs: trainingCenter?.additionalImgs ?? [],
+      phoneNumber: trainingCenter?.phoneNumber ?? "",
       zipCode: trainingCenter?.zipCode ?? "",
       address: trainingCenter?.address ?? "",
       detailAddress: trainingCenter?.detailAddress ?? "",
@@ -58,7 +68,6 @@ export default function TrainingCenterForm({
   const [isLoading, setIsLoading] = useState(false);
   const [newTag, setNewTag] = useState("");
   const [deleteInput, setDeleteInput] = useState("");
-  const router = useRouter();
 
   const openAddressPopup = () => {
     new window.daum.Postcode({
@@ -111,7 +120,7 @@ export default function TrainingCenterForm({
         });
       }
       setIsLoading(false);
-      router.push("/mypage/corporation/curriculum");
+      await MCCPageNavigate();
     } catch {
       toast("not found", {
         description: "잠시 후 다시 시도해 주세요.",
@@ -133,7 +142,7 @@ export default function TrainingCenterForm({
             </Button>
           </Link>
           <div className="flex flex-col gap-3">
-            <span className="text-lg font-semibold">훈련소 명</span>
+            <span className="text-lg font-semibold">훈련소 이름</span>
             <FormField
               control={form.control}
               name="name"
@@ -141,7 +150,7 @@ export default function TrainingCenterForm({
                 <FormItem>
                   <FormControl>
                     <Input
-                      placeholder="훈련소 명을 적어주세요."
+                      placeholder="훈련소 이름을 적어주세요."
                       className="disabled:cursor-default disabled:border-none"
                       {...field}
                     />
@@ -170,8 +179,27 @@ export default function TrainingCenterForm({
               )}
             />
           </div>
+          <div className="flex flex-col gap-3">
+            <span className="text-lg font-semibold">훈련소 전화번호</span>
+            <FormField
+              control={form.control}
+              name="phoneNumber"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Input
+                      placeholder="훈련소 전화번호를 적어주세요."
+                      className="disabled:cursor-default disabled:border-none"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
           <div className="flex flex-col gap-2">
-            <span className="font-semibold">기업 주소</span>
+            <span className="font-semibold">훈련소 주소</span>
             <div className="flex items-center gap-2">
               <FormField
                 control={form.control}

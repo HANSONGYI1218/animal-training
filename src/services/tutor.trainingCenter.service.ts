@@ -66,19 +66,20 @@ export const updateTutorTrainingCenterService = async (
   dto: UpdateTutorTrainingCenterDto,
 ): Promise<void> => {
   try {
-    const TutortrainingCenter = await getTutorTrainingCenterByIdRepository(
+    const tutortrainingCenter = await getTutorTrainingCenterByIdRepository(
       dto?.id,
     );
 
-    if (!TutortrainingCenter) {
+    if (!tutortrainingCenter) {
       throw new Error("TutortrainingCenter is not found");
     }
 
     const updateTutorTrainingCenter = new TutorTrainingCenterEntity({
-      ...TutortrainingCenter,
-      price: dto?.price ?? TutortrainingCenter.price,
-      holidays: dto?.holidays ?? TutortrainingCenter.holidays,
-      like: dto?.like ?? TutortrainingCenter?.like,
+      ...tutortrainingCenter,
+      price: dto?.price ?? tutortrainingCenter.price,
+      holidays: dto?.holidays ?? tutortrainingCenter.holidays,
+      animal_types: dto?.animal_types ?? tutortrainingCenter.animal_types,
+      like: dto?.like ?? tutortrainingCenter?.like,
     });
 
     await updateTutorTrainingCenterRepository(

@@ -11,7 +11,9 @@ export default function BottomBar() {
     <>
       <footer
         className={`h-[168px] border-t-2 max-md:hidden ${
-          path.startsWith("/curriculum/lecture") && "hidden"
+          path.startsWith("/curriculum/lecture") &&
+          !path.includes("new") &&
+          "hidden"
         }`}
       >
         <section className="mx-auto my-auto flex h-full max-w-6xl justify-between px-4 py-5 text-xs">

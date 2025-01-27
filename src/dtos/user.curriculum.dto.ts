@@ -14,6 +14,7 @@ export type UserCurriculumDto = {
   //   attendances?: Json[];
   userId: string;
   adoptionId: string;
+  tutorTrainingCenterId: string;
   createdAt: Date;
   updatedAt: Date;
 };
@@ -33,6 +34,7 @@ export type UpdateUserCurriculumDto = {
   //   attendances?: Json[];
   userId?: string;
   adoptionId?: string;
+  tutorTrainingCenterId?: string;
 };
 
 export type GetUserCurriculumDto = {
@@ -56,6 +58,10 @@ export type GetUserCurriculumDto = {
   adoption: {
     status: string;
     step: string;
+    learningAgreementUrl: string;
+    trainingAgreementUrl: string;
+    adopter_adoptionFormUrl: string;
+    breeder_adoptionFormUrl: string;
     animal: {
       id: string;
       name: string;
@@ -66,6 +72,7 @@ export type GetUserCurriculumDto = {
       animal_age: AnimalAge;
     };
   };
+  tutorTrainingCenterId: string;
   createdAt: Date;
   updatedAt: Date;
 };

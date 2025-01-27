@@ -34,6 +34,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { MCCPageNavigate } from "@/action/navigate";
 
 const LectureSchema = z.object({
   title: z.string().min(1, { message: "제목을 적어주세요." }),
@@ -64,8 +65,8 @@ export default function LectureForm({
   corporationId,
 }: {
   lecture?: Lecture;
-  tutors: Tutor[];
-  corporationId: string;
+  tutors?: Tutor[];
+  corporationId?: string;
 }) {
   const form = useForm<z.infer<typeof LectureSchema>>({
     resolver: zodResolver(LectureSchema),
@@ -83,7 +84,6 @@ export default function LectureForm({
   });
   const [isLoading, setIsLoading] = useState(false);
   const [newTag, setNewTag] = useState("");
-  const router = useRouter();
   const [deleteInput, setDeleteInput] = useState("");
 
   const deleteLecture = async () => {
@@ -127,7 +127,7 @@ export default function LectureForm({
         });
       }
       setIsLoading(false);
-      router.push("/mypage/corporation/curriculum");
+      await MCCPageNavigate();
     } catch {
       toast("not found", {
         description: "잠시 후 다시 시도해 주세요.",

@@ -174,9 +174,12 @@ model UserCurriculum {
   user                    User?                @relation(fields: [userId], references: [id])
   adoptionId              String               @unique
   adoption                Adoption?            @relation(fields: [adoptionId], references: [id])
+  tutorTrainingCenterId   String?
+  tutorTrainingCenter     TutorTrainingCenter?  @relation(fields: [tutorTrainingCenterId], references: [id])
 
   @@index([userId])
   @@index([adoptionId])
+  @@index([tutorTrainingCenterId])
 }
 
 model Adoption {
@@ -186,9 +189,11 @@ model Adoption {
   adoption_date         DateTime?       
   abandon_date          DateTime?
   abandon_reason        String?              @db.Text
-  educationForm         String[] //[0] 분양자, [1] 입양자
-  trainingForm          String[] //[0] 분양자, [1] 입양자
-  adoptionForm          String[] //[0] 분양자, [1] 입양자
+  applymentFormUrl      String? // 분양서(입양서 신청)
+  learningAgreementUrl  String? // 입양자 학습 동의서
+  trainingAgreementUrl  String? // 입양자 훈련 동의서
+  adopter_adoptionFormUrl      String? //입양자
+  breeder_adoptionFormUrl      String? // 분양자
   createdAt             DateTime             @default(now())
   updatedAt             DateTime             @updatedAt
   adopterId             String?
@@ -244,6 +249,7 @@ model TrainingCenter {
   zipCode            String          @db.VarChar(255)
   address            String          @db.VarChar(255)
   detailAddress      String          @db.VarChar(255)
+  phoneNumber        String?
   refundPolicys      String[]
   createdAt          DateTime        @default(now())
   updatedAt          DateTime        @updatedAt
@@ -260,6 +266,7 @@ model TutorTrainingCenter {
   trainingCenterId   String
   price              String?         @db.VarChar(255)
   holidays           String[]
+  animal_types       AnimalType[]
   like               Int             @default(0)
   createdAt          DateTime        @default(now())
   updatedAt          DateTime        @updatedAt
@@ -267,6 +274,7 @@ model TutorTrainingCenter {
   tutor              Tutor           @relation(fields: [tutorId], references: [id])
   trainingCenter     TrainingCenter  @relation(fields: [trainingCenterId], references: [id])
   adoption           Adoption[]
+  userCurriculums    UserCurriculum[]
 
   @@index([tutorId])
   @@index([trainingCenterId])
@@ -279,7 +287,7 @@ model CurriculumTraining {
   content                 String               @db.Text
   animal_type             AnimalType           @default(CAT)
   category                CurriculumCategory   @default(TRAINING)
-  trainingTime            Int                  @default(0)
+  trainingTime            String?               
   createdAt               DateTime             @default(now())
   updatedAt               DateTime             @updatedAt
 }
@@ -332,6 +340,7 @@ enum AnimalAge {
 enum CurriculumStep {
   LECTURE 
   LECTURE_END
+  TRAINING_APPLICATION
   TRAINING
   TRAINING_END
   END
@@ -406,6 +415,7 @@ enum MembershipType {
 }
 
 enum CorporationAccessStatus {
-  OPERATION //입양, 분양 ,강사 등록, 강의 등록
-  STANDARD //입양, 분양까지
+  OWNER // 모든 권한 다 부여
+  OPERATION //분양 ,강사 등록, 강의 등록
+  STANDARD //분양만
 }

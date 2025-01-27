@@ -11,8 +11,8 @@ import React from "react";
 import { CurriculumLectureDto } from "@/dtos/curriculum.lecture.dto";
 import { ChartConfig, ChartContainer } from "@/components/ui/chart";
 import Image from "next/image";
-import { Button } from "../ui/button";
 import { CurriculumStep } from "@prisma/client";
+import { Button } from "@/components/ui/button";
 
 export default function LectureChart({
   lectures,

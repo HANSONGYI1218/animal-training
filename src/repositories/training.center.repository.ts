@@ -1,9 +1,7 @@
 import {
   GetTrainingCenterDetailDto,
-  toGetDtoJSON,
   toJSON,
   TrainingCenterDto,
-  TrainingCenterOnlyOneTutorDto,
 } from "@/dtos/training.center.dto";
 import prisma from "@/utils/db";
 
@@ -29,11 +27,19 @@ export const getAllTrainingCentersRepository = async (): Promise<
       include: {
         tutorTrainingCenters: {
           select: {
+            id: true,
+            price: true,
+            holidays: true,
+            like: true,
+            reviews: true,
+            animal_types: true,
             tutor: {
               select: {
                 id: true,
                 name: true,
                 career: true,
+                profile_img: true,
+                introduction: true,
               },
             },
           },
@@ -63,11 +69,19 @@ export const getTrainingCenterByIdRepository = async (
       include: {
         tutorTrainingCenters: {
           select: {
+            id: true,
+            price: true,
+            holidays: true,
+            like: true,
+            reviews: true,
+            animal_types: true,
             tutor: {
               select: {
                 id: true,
                 name: true,
+                career: true,
                 profile_img: true,
+                introduction: true,
               },
             },
           },
@@ -97,11 +111,19 @@ export const getTrainingCenterByCorporationIdRepository = async (
       include: {
         tutorTrainingCenters: {
           select: {
+            id: true,
+            price: true,
+            holidays: true,
+            like: true,
+            reviews: true,
+            animal_types: true,
             tutor: {
               select: {
                 id: true,
                 name: true,
+                career: true,
                 profile_img: true,
+                introduction: true,
               },
             },
           },
@@ -120,7 +142,7 @@ export const getTrainingCenterByCorporationIdRepository = async (
 export const getTrainingCenterByTutorIdRepository = async (
   trainingCenterId: string,
   tutorId: string,
-): Promise<TrainingCenterOnlyOneTutorDto | null> => {
+): Promise<GetTrainingCenterDetailDto | null> => {
   try {
     const trainingCenter = await prisma.trainingCenter.findUnique({
       where: {
@@ -132,15 +154,18 @@ export const getTrainingCenterByTutorIdRepository = async (
             tutorId: tutorId,
           },
           select: {
+            id: true,
             price: true,
             holidays: true,
             like: true,
             reviews: true,
+            animal_types: true,
             tutor: {
               select: {
                 id: true,
                 name: true,
                 career: true,
+                profile_img: true,
                 introduction: true,
               },
             },
@@ -154,7 +179,7 @@ export const getTrainingCenterByTutorIdRepository = async (
     if (!trainingCenter) {
       return null;
     }
-    return toGetDtoJSON(trainingCenter);
+    return toJSON(trainingCenter);
   } catch {
     return null;
   }

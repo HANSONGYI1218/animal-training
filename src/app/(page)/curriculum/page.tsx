@@ -4,10 +4,12 @@ import CurriculumContainer from "@/components/curriculum/curriculum-contrainer";
 import { CurriculumLectureDto } from "@/dtos/curriculum.lecture.dto";
 import { GetUserCurriculumDto } from "@/dtos/user.curriculum.dto";
 import { AnimalType, AnimalSize, AnimalAge } from "@prisma/client";
+import { cookies } from "next/headers";
 
 export default async function CurriculumPage() {
   const session = await currentAccount();
-
+  const userType = cookies().get("userType")?.value;
+  const userRole = cookies().get("role")?.value;
   const userId = session?.user?.id;
 
   const responseUserCurriculum = await fetch(
@@ -52,8 +54,10 @@ export default async function CurriculumPage() {
 
   return (
     <main className="mb-24 flex min-h-screen w-full flex-col gap-12">
-      <CurriculumBanner />
+      <CurriculumBanner currentStep={userCurriculum?.curriculumStep ?? null} />
       <CurriculumContainer
+        userType={userType}
+        userRole={userRole}
         curriculumLectures={curriculumLectures ?? []}
         userCurriculum={userCurriculum}
       />

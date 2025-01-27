@@ -15,7 +15,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { Menu } from "lucide-react";
+import { CirclePlay, Menu } from "lucide-react";
 import VideoList from "./video-list";
 import { CurriculumLectureDto } from "@/dtos/curriculum.lecture.dto";
 import { GetUserCurriculumDto } from "@/dtos/user.curriculum.dto";
@@ -55,7 +55,7 @@ export default function VideoSheet({
             <AccordionTrigger className="rounded-xl bg-green-60 px-4 text-lg font-semibold text-white">
               섹션 1. {swapCategory}
             </AccordionTrigger>
-            <AccordionContent className="flex w-full flex-col gap-3 py-6">
+            <AccordionContent className="flex w-full flex-col gap-2 py-6">
               {lectures.map((lecture) => {
                 return (
                   <VideoList

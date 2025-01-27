@@ -90,9 +90,10 @@ export const getAdoptionAgreementRepository = async (
       },
       select: {
         id: true,
-        educationForm: true,
-        trainingForm: true,
-        adoptionForm: true,
+        learningAgreementUrl: true,
+        trainingAgreementUrl: true,
+        adopter_adoptionFormUrl: true,
+        breeder_adoptionFormUrl: true,
       },
     });
 

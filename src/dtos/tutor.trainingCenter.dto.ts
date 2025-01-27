@@ -1,9 +1,12 @@
+import { AnimalType } from "@prisma/client";
+
 export type TutorTrainingCenterDto = {
   id: string;
   tutorId: string;
   trainingCenterId: string;
   price: string;
   holidays: string[];
+  animal_types: AnimalType[];
   like: number;
   createdAt: Date;
   updatedAt: Date;
@@ -14,6 +17,7 @@ export type CreateTutorTrainingCenterDto = {
   trainingCenterId: string;
   price: string;
   holidays: string[];
+  animal_types: AnimalType[];
 };
 
 export type UpdateTutorTrainingCenterDto = {
@@ -22,6 +26,7 @@ export type UpdateTutorTrainingCenterDto = {
   trainingCenterId: string;
   price?: string;
   holidays?: string[];
+  animal_types?: AnimalType[];
   like?: number;
 };
 

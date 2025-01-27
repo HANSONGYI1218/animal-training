@@ -13,12 +13,12 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import React from "react";
-import { TrainingCenterOnlyOneTutorDto } from "@/dtos/training.center.dto";
+import { GetTrainingCenterDetailDto } from "@/dtos/training.center.dto";
 
 export default function CenterDetailBanner({
   center,
 }: {
-  center: TrainingCenterOnlyOneTutorDto;
+  center: GetTrainingCenterDetailDto;
 }) {
   const plugin: any = React.useRef(
     Autoplay({ delay: 4000, stopOnInteraction: false }),
@@ -44,25 +44,27 @@ export default function CenterDetailBanner({
   return (
     <section className="relative flex w-full flex-col overflow-hidden bg-[#EDEDE9]/5 py-12">
       <div className="container relative z-10 mx-auto flex w-full max-w-[1150px]">
-        <div className="flex w-full flex-col gap-4">
-          <span className="text-3xl font-bold">{center?.name}</span>
-          <span className="mt-5 h-20 whitespace-pre-line font-[440] leading-6 text-neutral-600">
-            {center?.introduction}
-          </span>
-          <span className="whitespace-pre-line font-[440] leading-6 text-neutral-600">
-            {center?.address} {center?.detailAddress}
-          </span>
+        <div className="flex w-full flex-col justify-between">
+          <div className="flex w-full flex-col gap-4">
+            <span className="text-3xl font-bold">{center?.name}</span>
+            <span className="mt-5 h-20 whitespace-pre-line font-[440] leading-6 text-neutral-600">
+              {center?.introduction}
+            </span>
+            <span className="whitespace-pre-line font-[440] leading-6 text-neutral-600">
+              {center?.address} {center?.detailAddress}
+            </span>
+          </div>
           <div className="flex items-center gap-6">
             <div className="flex items-center gap-1">
               <SquareUser width={17} height={17} stroke="rgb(82 82 82)" />
               <span className="text-[0.93rem] text-neutral-600">
-                {center?.tutorTrainingCenter?.tutor?.name}
+                {center?.tutorTrainingCenters[0]?.tutor?.name}
               </span>
             </div>
             <div className="flex items-center gap-1">
               <ThumbsUp width={16} height={16} stroke="rgb(82 82 82)" />
               <span className="text-[0.93rem] text-neutral-600">
-                {center?.tutorTrainingCenter?.like}개
+                {center?.tutorTrainingCenters[0]?.like}개
               </span>
             </div>
             <div className="flex items-center gap-1">
@@ -71,7 +73,7 @@ export default function CenterDetailBanner({
                 stroke="rgb(115 115 115)"
               />
               <span className="text-neutral-500">
-                {center?.tutorTrainingCenter?.reviews?.length}개
+                {center?.tutorTrainingCenters[0]?.reviews?.length}개
               </span>
             </div>
           </div>

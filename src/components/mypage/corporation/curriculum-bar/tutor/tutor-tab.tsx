@@ -51,7 +51,11 @@ export default function TutorTab() {
     <div className="flex flex-col gap-10">
       <div className="flex items-center justify-end gap-3">
         <Link href={"/mypage/corporation/curriculum/new/tutor"}>
-          <Button variant="destructive" className="flex h-9 gap-1 px-2">
+          <Button
+            disabled={!tutors || tutors.length === 0}
+            variant="destructive"
+            className="flex h-9 gap-1 px-2"
+          >
             <Plus className="h-5 w-5" />
             강사 생성
           </Button>

@@ -6,16 +6,17 @@ import {
   ThumbsUp,
 } from "lucide-react";
 import Image from "next/image";
-import { Button } from "../ui/button";
+import { Button } from "../../ui/button";
 import Link from "next/link";
+import { TrainingCenterWithTutor } from "./center-filtering";
 
 export default function TrainingCenterCard({
   trainingCenter,
 }: {
-  trainingCenter: any;
+  trainingCenter: TrainingCenterWithTutor;
 }) {
   return (
-    <div className="flex gap-3 border-b px-6 py-12">
+    <div className="flex w-full gap-3 border-b px-6 py-12">
       <div className="flex flex-1 flex-col">
         <span className="flex items-center gap-3 text-xl font-semibold">
           {trainingCenter?.name}
@@ -33,13 +34,13 @@ export default function TrainingCenterCard({
           <div className="flex gap-3">
             <span className="w-20 text-neutral-500">소개</span>
             <span className="whitespace-pre-line">
-              {trainingCenter?.introduction}
+              {trainingCenter?.tutor?.introduction}
             </span>
           </div>
           <div className="flex gap-3">
             <span className="w-20 text-neutral-500">위치</span>
-            <span>{trainingCenter?.address}</span> +{" "}
-            <span>{trainingCenter?.detailAdress}</span>
+            <span>{trainingCenter?.address}</span>{" "}
+            <span>{trainingCenter?.detailAddress}</span>
           </div>
           <div className="flex gap-3">
             <span className="w-20 text-neutral-500">가격</span>
@@ -52,14 +53,14 @@ export default function TrainingCenterCard({
             </div>
             <div className="flex items-center gap-1">
               <ThumbsUp className="h-4 w-4" />
-              <span>{trainingCenter?.like}개</span>
+              <span>{trainingCenter?.like ?? 0}개</span>
             </div>
           </div>
         </div>
       </div>
       <div className="flex w-40 flex-col items-center justify-between">
         <Image
-          src="/Test-face.png"
+          src={trainingCenter?.tutor?.profile_img ?? ""}
           width={150}
           height={150}
           alt="profile"

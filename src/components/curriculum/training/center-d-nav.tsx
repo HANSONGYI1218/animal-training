@@ -39,7 +39,7 @@ export default function CenterNav({
         variant={"default"}
         className={`w-24 rounded-none border-b-2 border-white bg-transparent py-6 hover:border-gray-300 ${tab === "price" && "border-green-100 text-green-100 hover:border-green-100"}`}
       >
-        가격
+        환불정책
       </Button>
 
       <Button

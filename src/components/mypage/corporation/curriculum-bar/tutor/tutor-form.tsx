@@ -394,7 +394,7 @@ export default function TutorForm({
           </Button>
         </form>
       </Form>
-      <hr className="my-10 w-full" />
+      <hr className={`my-10 w-full ${tutor ? "flex" : "hidden"}`} />
       <div className={`w-full flex-col gap-3 ${tutor ? "flex" : "hidden"}`}>
         <div className="flex flex-col">
           <span className="text-lg font-semibold">강사 제외</span>

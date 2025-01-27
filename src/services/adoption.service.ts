@@ -128,7 +128,9 @@ export const updateAdoptionService = async (
   dto: UpdateAdoptionDto,
 ): Promise<void> => {
   try {
-    const adoption = await getAdoptionByIdRepository(dto.id);
+    const adoption: GetAdoptionDto | null = await getAdoptionByIdRepository(
+      dto.id,
+    );
 
     if (!adoption) {
       throw new Error("adoption is not found");
@@ -139,12 +141,16 @@ export const updateAdoptionService = async (
       step: dto?.step ?? adoption.step,
       adoption_date: dto?.adoption_date ?? adoption?.adoption_date ?? undefined,
       abandon_date: dto?.abandon_date ?? adoption?.abandon_date ?? undefined,
-      abandon_reason:
-        dto?.abandon_reason ?? adoption.abandon_reason ?? undefined,
-      educationForm: dto?.educationForm ?? adoption.educationForm ?? [],
-      trainingForm: dto?.trainingForm ?? adoption.trainingForm ?? [],
-      adoptionForm: dto?.adoptionForm ?? adoption.adoptionForm ?? [],
-      adopterId: dto?.adopterId ?? adoption.adopterId ?? undefined,
+      abandon_reason: dto?.abandon_reason ?? adoption.abandon_reason,
+      learningAgreementUrl:
+        dto?.learningAgreementUrl ?? adoption.learningAgreementUrl,
+      trainingAgreementUrl:
+        dto?.trainingAgreementUrl ?? adoption.trainingAgreementUrl,
+      adopter_adoptionFormUrl:
+        dto?.adopter_adoptionFormUrl ?? adoption.adopter_adoptionFormUrl,
+      breeder_adoptionFormUrl:
+        dto?.breeder_adoptionFormUrl ?? adoption.breeder_adoptionFormUrl,
+      adopterId: dto?.adopterId ?? adoption.adopterId,
     });
 
     await updateAdoptionRepository(toJSON(updateCorporation));

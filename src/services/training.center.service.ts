@@ -2,7 +2,6 @@ import {
   CreateTrainingCenterDto,
   GetTrainingCenterDetailDto,
   toJSON,
-  TrainingCenterOnlyOneTutorDto,
   UpdateTrainingCenterDto,
 } from "@/dtos/training.center.dto";
 import { TrainingCenterEntity } from "@/entities/training.center.entity";
@@ -84,7 +83,7 @@ export const getTrainingCenterByCorporationIdService = async (
 export const getTrainingCenterByTutorIdService = async (
   trainingCenterId: string,
   tutorId: string,
-): Promise<TrainingCenterOnlyOneTutorDto | null> => {
+): Promise<GetTrainingCenterDetailDto | null> => {
   try {
     const trainingCenter = await getTrainingCenterByTutorIdRepository(
       trainingCenterId,
@@ -117,10 +116,10 @@ export const updateTrainingCenterService = async (
       introduction: dto?.introduction ?? trainingCenter.introduction,
       profile: dto?.profile ?? trainingCenter?.profile,
       additionalImgs: dto?.additionalImgs ?? trainingCenter?.additionalImgs,
+      phoneNumber: dto?.phoneNumber ?? trainingCenter?.phoneNumber,
       zipCode: dto?.zipCode ?? trainingCenter.zipCode,
       address: dto?.address ?? trainingCenter.address,
       detailAddress: dto?.detailAddress ?? trainingCenter.detailAddress,
-      corporationId: trainingCenter?.corportaionId,
       refundPolicys: dto?.refundPolicys ?? trainingCenter?.refundPolicys,
     });
 

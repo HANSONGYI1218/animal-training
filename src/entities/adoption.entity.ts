@@ -7,9 +7,11 @@ interface AdoptionEntityProps {
   adoption_date?: Date;
   abandon_date?: Date;
   abandon_reason?: string;
-  educationForm?: string[];
-  trainingForm?: string[];
-  adoptionForm?: string[];
+  applymentFormUrl?: string;
+  learningAgreementUrl?: string;
+  trainingAgreementUrl?: string;
+  adopter_adoptionFormUrl?: string;
+  breeder_adoptionFormUrl?: string;
   adopterId: string;
   breederId?: string;
   breederCorporationId?: string;
@@ -26,9 +28,11 @@ export class AdoptionEntity {
   private adoption_date?: Date;
   private abandon_date?: Date;
   private abandon_reason?: string;
-  private educationForm?: string[];
-  private trainingForm?: string[];
-  private adoptionForm?: string[];
+  private applymentFormUrl?: string;
+  private learningAgreementUrl?: string;
+  private trainingAgreementUrl?: string;
+  private adopter_adoptionFormUrl?: string;
+  private breeder_adoptionFormUrl?: string;
   private adopterId: string;
   private breederId?: string;
   private breederCorporationId?: string;
@@ -44,9 +48,11 @@ export class AdoptionEntity {
     adoption_date,
     abandon_date,
     abandon_reason,
-    educationForm,
-    trainingForm,
-    adoptionForm,
+    applymentFormUrl,
+    learningAgreementUrl,
+    trainingAgreementUrl,
+    adopter_adoptionFormUrl,
+    breeder_adoptionFormUrl,
     adopterId,
     breederId,
     breederCorporationId,
@@ -58,17 +64,19 @@ export class AdoptionEntity {
     this.id = id;
     this.status = status;
     this.step = step;
-    this.adoption_date = adoption_date ?? undefined;
-    this.abandon_date = abandon_date ?? undefined;
-    this.abandon_reason = abandon_reason ?? undefined;
-    this.educationForm = educationForm ?? undefined;
-    this.trainingForm = trainingForm ?? undefined;
-    this.adoptionForm = adoptionForm ?? undefined;
+    this.adoption_date = adoption_date;
+    this.abandon_date = abandon_date;
+    this.abandon_reason = abandon_reason;
+    this.applymentFormUrl = applymentFormUrl;
+    this.learningAgreementUrl = learningAgreementUrl;
+    this.trainingAgreementUrl = trainingAgreementUrl;
+    this.adopter_adoptionFormUrl = adopter_adoptionFormUrl;
+    this.breeder_adoptionFormUrl = breeder_adoptionFormUrl;
     this.adopterId = adopterId;
-    this.breederId = breederId ?? undefined;
-    this.breederCorporationId = breederCorporationId ?? undefined;
+    this.breederId = breederId;
+    this.breederCorporationId = breederCorporationId;
     this.animalId = animalId;
-    this.tutorTrainingCenterId = tutorTrainingCenterId ?? undefined;
+    this.tutorTrainingCenterId = tutorTrainingCenterId;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
   }

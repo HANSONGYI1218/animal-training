@@ -39,6 +39,7 @@ import { cn, enterKeyDown } from "@/utils/utils";
 import { toast } from "sonner";
 import { GetUserSearchDto } from "@/dtos/user.dto";
 import { GetAnimalDto } from "@/dtos/animal.dto";
+import { MCAPageNavigate } from "@/action/navigate";
 
 const AdoptionSchema = z.object({
   user_email: z.string(),
@@ -203,8 +204,7 @@ export default function AdoptionForm({
         }),
       });
       setIsLoading(false);
-
-      window.location.href = "/mypage/corporation/adoption";
+      await MCAPageNavigate();
     } catch (error: any) {
       const errorMessage = error?.message || "Failed to create Lecture";
       toast(errorMessage, {

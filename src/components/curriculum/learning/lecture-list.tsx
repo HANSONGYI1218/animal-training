@@ -18,15 +18,16 @@ type GroupedLectures = {
 export default function LectureList({
   groupLectures,
   lastVideoIndex,
+  learningAgreementUrl,
+  adoptionId,
   lastVideoTime,
 }: {
   groupLectures: GroupedLectures[];
   lastVideoIndex: number;
+  learningAgreementUrl: string;
+  adoptionId: string;
   lastVideoTime: string;
 }) {
-  const [progress, setProgress] = React.useState(0);
-  const [progressColor, setProgressColor] = React.useState<string>("");
-
   const totalVideoTime = (lectureList: any) => {
     // 모든 강의의 시간 합산 (초 단위로 계산)
     const totalSeconds = lectureList.reduce((sum: number, lecture: any) => {
@@ -61,7 +62,7 @@ export default function LectureList({
         {Object.entries(groupLectures).map(([category, lectureList], index) => {
           const totalLearningTime = totalVideoTime(lectureList);
           return (
-            <AccordionItem value={`item-${category}`}>
+            <AccordionItem value={`item-${category}`} key={index}>
               <AccordionTrigger className="flex items-center gap-4">
                 <div className="flex flex-1 items-center justify-between">
                   <span className="text-lg font-semibold">
@@ -78,7 +79,9 @@ export default function LectureList({
                       <SectionCard
                         key={lecture?.id}
                         lecture={lecture}
+                        learningAgreementUrl={learningAgreementUrl}
                         lastVideoIndex={lastVideoIndex}
+                        adoptionId={adoptionId}
                         lastVideoTime={lastVideoTime}
                       />
                     );

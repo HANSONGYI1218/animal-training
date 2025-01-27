@@ -1,7 +1,6 @@
 import { currentAccount } from "@/action/user-action";
-import PlayableCard from "@/components/common/player-card";
+import CurriculumLecutrePalyer from "@/components/curriculum/video/curriculum-lecture-player";
 import VideoHeader from "@/components/curriculum/video/video-header";
-import VideoSheet from "@/components/curriculum/video/video-sheet";
 import { CurriculumLectureDto } from "@/dtos/curriculum.lecture.dto";
 import { GetUserCurriculumDto } from "@/dtos/user.curriculum.dto";
 import { AnimalAge, AnimalSize, AnimalType } from "@prisma/client";
@@ -60,10 +59,16 @@ export default async function LectureVideoPage({
     (lecture) => lecture?.id === id,
   );
 
-  const lastVideoIndex = curriculumLectures.findIndex(
-    (lecture) => lecture.id === userCurriculum?.lastVideoId,
-  );
+  let lastVideoIndex: any = curriculumLectures?.length;
+  if (userCurriculum?.curriculumStep === "LECTURE") {
+    lastVideoIndex = curriculumLectures.findIndex(
+      (lecture) => lecture.id === userCurriculum?.lastVideoId,
+    );
 
+    if (lastVideoIndex === -1) {
+      lastVideoIndex = 0;
+    }
+  }
   const filteredLectureByCategory = curriculumLectures.filter(
     (lecture) => lecture.category === currentLecture?.category,
   );
@@ -79,11 +84,10 @@ export default async function LectureVideoPage({
             currentLecture={currentLecture}
           />
 
-          <PlayableCard
-            url={currentLecture?.videoUrl}
-            userCurriculumId={userCurriculum?.id}
-            lastPlayedTime={userCurriculum?.lastVideoTime}
-            lastVideoIndex={lastVideoIndex}
+          <CurriculumLecutrePalyer
+            currentLecture={currentLecture}
+            userCurriculum={userCurriculum}
+            nextVideoId={curriculumLectures[lastVideoIndex + 1]?.id}
           />
         </>
       ) : (

@@ -1,81 +1,94 @@
 import {
   CreateCurriculumTrainingDto,
+  CurriculumTrainingDto,
   GetCurriculumTrainingDto,
+  toJSON,
 } from "@/dtos/curriculum.training.dto";
 import prisma from "@/utils/db";
+import { AnimalType } from "@prisma/client";
 
 // 커리큘럼 훈련 생성
 export const createCurriculumTrainingRepository = async (
   dto: CreateCurriculumTrainingDto,
-): Promise<CreateCurriculumTrainingDto | null> => {
+): Promise<void> => {
   try {
     const curriculumTraining = await prisma.curriculumTraining.create({
-      data: {
-        index: dto.index,
-        title: dto.title,
-        content: dto.content,
-        animal_type: dto.animal_type,
-        category: dto.category,
-        trainingTime: dto.trainingTime,
-      },
+      data: dto,
     });
-
-    return curriculumTraining as CreateCurriculumTrainingDto;
-  } catch {
-    return null;
+  } catch (error: any) {
+    return error;
   }
 };
 
 // 모든 커리큘럼 훈련 조회
-export const getAllCurriculumTrainingsRepository = async (): Promise<
-  GetCurriculumTrainingDto[]
-> => {
+export const getAllCurriculumTrainingsRepository = async (
+  animal_type: AnimalType,
+): Promise<GetCurriculumTrainingDto[]> => {
   try {
     const curriculumTrainings = await prisma.curriculumTraining.findMany({
+      where: {
+        animal_type: animal_type,
+      },
       orderBy: [
         { index: "asc" }, // 그 안에서 index 값 기준 정렬
       ],
     });
 
-    return curriculumTrainings as GetCurriculumTrainingDto[];
+    return curriculumTrainings.map(toJSON);
   } catch {
     return [];
   }
 };
 
-// 커리큘럼 훈련 업데이트
-export const updateCurriculumTrainingRepository = async (
+// 특정 ID의 커리큘럼 훈련 조회
+export const getCurriculumTrainingByIdRepository = async (
   id: string,
-  dto: Partial<CreateCurriculumTrainingDto>,
-): Promise<CreateCurriculumTrainingDto | null> => {
+): Promise<CurriculumTrainingDto | null> => {
   try {
-    const updatedCurriculumTraining = await prisma.curriculumTraining.update({
+    const curriculumTraining = await prisma.curriculumTraining.findUnique({
       where: {
         id: id,
       },
-      data: {
-        ...dto,
-        updatedAt: new Date(),
-      },
     });
-    return updatedCurriculumTraining as CreateCurriculumTrainingDto;
+
+    if (!curriculumTraining) {
+      return null;
+    }
+    return toJSON(curriculumTraining);
   } catch {
     return null;
+  }
+};
+
+// 커리큘럼 훈련 업데이트
+export const updateCurriculumTrainingRepository = async (
+  dto: CurriculumTrainingDto,
+): Promise<void> => {
+  try {
+    const updatedCurriculumTraining = await prisma.curriculumTraining.update({
+      where: {
+        id: dto?.id,
+      },
+      data: {
+        ...dto,
+      },
+    });
+  } catch (error: any) {
+    return error;
   }
 };
 
 // 커리큘럼 훈련 삭제
 export const deleteCurriculumTrainingRepository = async (
   id: string,
-): Promise<CreateCurriculumTrainingDto | null> => {
+): Promise<void> => {
   try {
-    const deletedCurriculumTraining = await prisma.curriculumTraining.delete({
+    await prisma.curriculumTraining.delete({
       where: {
         id: id,
       },
     });
-    return deletedCurriculumTraining as CreateCurriculumTrainingDto;
-  } catch {
-    return null;
+  } catch (error: any) {
+    return error;
   }
 };

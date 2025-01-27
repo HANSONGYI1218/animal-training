@@ -4,6 +4,7 @@ interface TrainingCenterEntityProps {
   introduction: string;
   profile: string;
   additionalImgs: string[];
+  phoneNumber: string;
   zipCode: string;
   address: string;
   detailAddress: string;
@@ -19,6 +20,7 @@ export class TrainingCenterEntity {
   private introduction: string;
   private profile: string;
   private additionalImgs: string[];
+  private phoneNumber: string;
   private zipCode: string;
   private address: string;
   private detailAddress: string;
@@ -33,6 +35,7 @@ export class TrainingCenterEntity {
     introduction,
     profile,
     additionalImgs,
+    phoneNumber,
     zipCode,
     address,
     detailAddress,
@@ -46,6 +49,7 @@ export class TrainingCenterEntity {
     this.introduction = introduction;
     this.profile = profile;
     this.additionalImgs = additionalImgs;
+    this.phoneNumber = phoneNumber;
     this.zipCode = zipCode;
     this.address = address;
     this.detailAddress = detailAddress;

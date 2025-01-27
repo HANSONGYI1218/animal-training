@@ -46,6 +46,26 @@ export function formatTime(seconds: number) {
   return `${hrs}:${formattedMins}:${formattedSecs}`;
 }
 
+export function parseTime(timeString: string): number {
+  const timeParts = timeString.split(":");
+
+  let totalSeconds = 0;
+
+  // 시간, 분, 초를 파싱하여 초로 변환
+  if (timeParts.length === 3) {
+    const [hrs, mins, secs] = timeParts.map(Number);
+    totalSeconds = hrs * 3600 + mins * 60 + secs;
+  } else if (timeParts.length === 2) {
+    const [mins, secs] = timeParts.map(Number);
+    totalSeconds = mins * 60 + secs;
+  } else if (timeParts.length === 1) {
+    const [secs] = timeParts.map(Number);
+    totalSeconds = secs;
+  }
+
+  return totalSeconds;
+}
+
 export const generateRandomNickname = (): string => {
   const koreanSyllables = [
     "가",
@@ -128,3 +148,21 @@ export const enterKeyDown = (event: any) => {
     event.preventDefault(); // Enter 키의 기본 동작을 막음
   }
 };
+
+export async function getVideoDuration(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const video = document.createElement("video");
+    video.preload = "metadata";
+    video.src = URL.createObjectURL(file);
+
+    video.onloadedmetadata = () => {
+      URL.revokeObjectURL(video.src);
+      const formattedDuration = formatTime(video.duration); // 시:분:초 변환
+      resolve(formattedDuration);
+    };
+
+    video.onerror = () => {
+      reject(new Error("영상 정보를 불러올 수 없습니다."));
+    };
+  });
+}

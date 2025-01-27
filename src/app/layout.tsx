@@ -14,6 +14,12 @@ declare global {
   }
 }
 
+declare global {
+  interface Window {
+    kakao: any;
+  }
+}
+
 export const metadata: Metadata = {
   title: "animal-training",
   description: "동물 훈련 의무 시스템",
@@ -26,9 +32,15 @@ export default async function RootLayout({
 }>) {
   return (
     <html lang="ko">
-      <Script src="https://cdn.iamport.kr/v1/iamport.js" />
-      <Script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js" />
-      <UrlTracker /> {/* 클라이언트 컴포넌트 삽입 */}
+      <head>
+        <Script src="https://cdn.iamport.kr/v1/iamport.js" />
+        <Script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js" />
+        <Script
+          strategy="beforeInteractive"
+          src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_MAP_KEY}&autoload=false&libraries=services,clusterer,drawing`}
+        />
+        <UrlTracker /> {/* 클라이언트 컴포넌트 삽입 */}
+      </head>
       <body className={`${Pretendard.className}`}>
         <AuthSession>
           <TopBar />

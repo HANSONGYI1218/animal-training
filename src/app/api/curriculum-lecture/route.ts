@@ -85,6 +85,7 @@ async function PUT(req: NextRequest, res: NextResponse) {
     const dto: UpdateCurriculumLectureDto = await req.json();
 
     await updateCurriculumLectureService(dto);
+
     return new NextResponse("CurriculumLecture updated successfully", {
       status: 200,
     });

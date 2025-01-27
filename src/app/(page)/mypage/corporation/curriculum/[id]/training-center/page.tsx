@@ -1,5 +1,5 @@
 import TrainingCenterForm from "@/components/mypage/corporation/curriculum-bar/training-center/training-center-form";
-import { TrainingCenterOnlyOneTutorDto } from "@/dtos/training.center.dto";
+import { GetTrainingCenterDetailDto } from "@/dtos/training.center.dto";
 
 export default async function TrainingCenterUpdatePage({
   params,
@@ -22,7 +22,7 @@ export default async function TrainingCenterUpdatePage({
     return null;
   }
 
-  const trainingCenter: TrainingCenterOnlyOneTutorDto =
+  const trainingCenter: GetTrainingCenterDetailDto =
     await responseTrainingCenter.json();
 
   return <TrainingCenterForm trainingCenter={trainingCenter} />;

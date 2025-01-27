@@ -64,7 +64,14 @@ export const authOptions: AuthOptions = {
             secure: process.env.NODE_ENV === "production", // (선택) HTTPS에서만 사용
             path: "/", // (선택) 쿠키의 유효 경로
           });
-
+          if (credentials?.userType === "CORPORATION") {
+            cookies().set("role", `${user?.accessStatus}`, {
+              maxAge: 60 * 60 * 24, // 24시간 (초 단위)
+              httpOnly: true, // (선택) 클라이언트 JS에서 접근 불가
+              secure: process.env.NODE_ENV === "production", // (선택) HTTPS에서만 사용
+              path: "/", // (선택) 쿠키의 유효 경로
+            });
+          }
           return user;
         } else {
           return null; // 잘못된 자격 증명

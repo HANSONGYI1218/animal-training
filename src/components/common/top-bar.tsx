@@ -57,7 +57,7 @@ export default function TopBar() {
             ? "translate-y-0"
             : "-translate-y-20"
           : "translate-y-0"
-      } ${path.startsWith("/curriculum/lecture") && "hidden"}`}
+      } ${path.startsWith("/curriculum/lecture") && !path.includes("new") && "hidden"}`}
     >
       <div className="flex border-b py-4">
         <div className="container mx-auto flex items-center justify-between">

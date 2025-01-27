@@ -13,6 +13,7 @@ import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { Tutor } from "@prisma/client";
 import { Badge } from "@/components/ui/badge";
+import AdopterListTable from "./adopter-list-table";
 
 export default function TrainingCenterTab() {
   const { data: session, status } = useSession();
@@ -27,6 +28,7 @@ export default function TrainingCenterTab() {
   const [selectTrainingCenter, setSelectTrainingCenter] =
     useState<GetTrainingCenterDetailDto | null>(null);
   const [filteredTutors, setFilteredTutors] = useState<Tutor[] | null>(null);
+  const [isDialogOpened, setIsDialogOpended] = useState(false);
 
   useEffect(() => {
     const getData = async () => {
@@ -77,7 +79,11 @@ export default function TrainingCenterTab() {
     <section className="flex flex-col gap-6">
       <div className="flex items-center justify-end gap-3">
         <Link href="/mypage/corporation/curriculum/new/training-center">
-          <Button variant="destructive" className="flex h-9 gap-1 px-2">
+          <Button
+            disabled={!tutors || tutors.length === 0}
+            variant="destructive"
+            className="flex h-9 gap-1 px-2"
+          >
             <Plus className="h-5 w-5" />
             훈련소 생성
           </Button>
@@ -116,16 +122,19 @@ export default function TrainingCenterTab() {
                   </Badge>
                 </div>
               ))}
-
+              {/* 훈련소 정보 섹션 */}
               <TrainingCenterCard
                 trainingCenter={selectTrainingCenter ?? trainingCenters[0]}
                 isEdit={isEdit}
               />
-
+              {/* 훈련사 추가 섹션 */}
               <div className="flex w-full flex-col">
                 <hr className="my-3 w-full" />
                 <div className="grid w-full grid-cols-4 gap-4">
-                  <Dialog>
+                  <Dialog
+                    open={isDialogOpened}
+                    onOpenChange={setIsDialogOpended}
+                  >
                     <DialogTrigger type="button" asChild disabled={!isEdit}>
                       <div className="group flex min-h-40 w-full cursor-pointer flex-col items-center justify-center gap-3 rounded-xl border py-6 text-center text-sm">
                         <Plus
@@ -143,6 +152,7 @@ export default function TrainingCenterTab() {
                           selectTrainingCenter?.id ?? trainingCenters[0]?.id
                         }
                         tutors={filteredTutors ?? undefined}
+                        setIsDialogOpended={setIsDialogOpended}
                       />
                     </DialogContent>
                   </Dialog>
@@ -175,6 +185,8 @@ export default function TrainingCenterTab() {
                     </div>
                   )}
               </div>
+              {/* 훈련소 입양자 리스트 섹션 */}
+              <AdopterListTable />
             </>
           ) : (
             <div className="flex min-h-40 w-full cursor-pointer flex-col items-center justify-center gap-3 rounded-xl border py-6 text-center text-sm">
