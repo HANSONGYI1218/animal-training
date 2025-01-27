@@ -38,7 +38,7 @@ const ProfileSettingSchema = z.object({
   business_number: z.string({
     required_error: "사업자 번호를 적어주세요.",
   }),
-  accessStatus: z.enum(["OPERATION", "STANDARD"]).default("STANDARD"),
+  accessStatus: z.enum(["OWNER", "OPERATION", "STANDARD"]).default("STANDARD"),
 });
 
 export default function ProfileSettingForm() {

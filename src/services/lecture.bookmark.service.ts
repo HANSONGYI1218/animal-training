@@ -11,19 +11,14 @@ import {
 // 북마크 생성
 export const createLectureBookmarkService = async (
   dto: CreateLectureBookmarkDto,
-): Promise<CreateLectureBookmarkDto | null> => {
+): Promise<void> => {
   try {
     // const isExisted = await getLectureBookmarkByIdService(dto.id);
     // if(isExisted) return null;
 
-    const lectureBookmark = await createLectureBookmarkRepository(dto);
-
-    if (!lectureBookmark) {
-      return null;
-    }
-    return lectureBookmark as CreateLectureBookmarkDto;
-  } catch {
-    return null;
+    await createLectureBookmarkRepository(dto);
+  } catch (error: any) {
+    return error;
   }
 };
 
@@ -46,18 +41,16 @@ export const getLectureBookmarkByIdService = async (
 // 북마크 삭제
 export const deleteLectureBookmarkService = async (
   id: string,
-): Promise<CreateLectureBookmarkDto | null> => {
+): Promise<void> => {
   try {
     const lectureBookmark = getLectureBookmarkByIdRepository(id);
 
     if (!lectureBookmark) {
-      return null;
+      throw new Error("lectureBookmark not found");
     }
 
-    const deletedLectureBookmark = await deleteLectureBookmarkRepository(id);
-
-    return deletedLectureBookmark as CreateLectureBookmarkDto;
-  } catch {
-    return null;
+    await deleteLectureBookmarkRepository(id);
+  } catch (error: any) {
+    return error;
   }
 };

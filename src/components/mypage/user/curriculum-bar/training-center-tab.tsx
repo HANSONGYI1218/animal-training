@@ -9,11 +9,11 @@ import {
   useContext,
 } from "react";
 import { UserContext } from "@/providers/user-provider";
-import { UserTutorTrainingCenterByUserIdDto } from "@/dtos/user.tutorTrainingCenter.dto";
 import { Badge } from "@/components/ui/badge";
 import UserTrainingCenter from "./user-training-center";
 import { AttendanceRecord } from "@/types/tyeps.all";
 import Image from "next/image";
+import { UserCurriculumWithTutorTrainingCenterDto } from "@/dtos/user.curriculum.dto";
 
 export type PickerType = "date" | "month" | "year" | "";
 
@@ -27,33 +27,27 @@ export interface DatePickerProps {
 
 export default function TraningCenterTab() {
   const user = useContext(UserContext);
-  const [tutorTraningCenters, setTutorTraningCenters] = useState<any[]>([]);
-  const [userCurriculum, setUserCurriculum] = useState<any>(null);
+  const [userCurriculum, setUserCurriculum] =
+    useState<UserCurriculumWithTutorTrainingCenterDto | null>(null);
   const [selectIndex, setSelectIndex] = useState<number | null>(null);
 
   useEffect(() => {
     const fetchCurriculum = async () => {
-      const responseUserTutorTrainingCenters = await fetch(
-        `${process.env.NEXT_PUBLIC_WEB_URL}/api/user-tutorTrainingCenter?userId=${user?.id}`,
+      const responseUserTutorTrainingCenter = await fetch(
+        `${process.env.NEXT_PUBLIC_WEB_URL}/api/user-curriculum?userId=${user?.id}&isTutorTrainingCenter=true`,
         {
           method: "GET",
           cache: "no-store",
         },
       );
 
-      if (!responseUserTutorTrainingCenters.ok) {
+      if (!responseUserTutorTrainingCenter.ok) {
         return null;
       }
 
-      const userTutorTrainingCenters: UserTutorTrainingCenterByUserIdDto[] =
-        await responseUserTutorTrainingCenters.json();
-      setUserCurriculum(userCurriculum);
-      setTutorTraningCenters(
-        userTutorTrainingCenters.map(
-          (userTutorTrainingCenter) =>
-            userTutorTrainingCenter?.tutorTrainingCenter,
-        ),
-      );
+      const userTutorTrainingCenter: UserCurriculumWithTutorTrainingCenterDto =
+        await responseUserTutorTrainingCenter.json();
+      setUserCurriculum(userTutorTrainingCenter);
     };
 
     fetchCurriculum();
@@ -63,36 +57,8 @@ export default function TraningCenterTab() {
     <section className="flex flex-col gap-12">
       <div className="flex flex-col">
         <span className="text-lg font-semibold">선택한 훈련소</span>
-        {tutorTraningCenters &&
-        tutorTraningCenters?.length > 0 &&
-        userCurriculum ? (
-          <>
-            <div className="flex gap-6">
-              {tutorTraningCenters.map((tutorTraningCenter, index) => {
-                return (
-                  <Badge
-                    key={index}
-                    onClick={() => {
-                      setSelectIndex(index);
-                    }}
-                    variant={"tag"}
-                    className={`cursor-pointer ${selectIndex === index && "bg-black text-white"}`}
-                  >
-                    {tutorTraningCenter?.trainingCenter?.name}
-                  </Badge>
-                );
-              })}
-            </div>
-            {selectIndex && (
-              <UserTrainingCenter
-                trainingCenter={
-                  tutorTraningCenters[selectIndex]?.trainingCenter
-                }
-                tutor={tutorTraningCenters[selectIndex]?.tutor}
-                attendances={userCurriculum?.attendances ?? []}
-              />
-            )}
-          </>
+        {userCurriculum ? (
+          <UserTrainingCenter userCurriculum={userCurriculum} />
         ) : (
           <div className="flex flex-col items-center justify-center border-b p-6">
             <Image

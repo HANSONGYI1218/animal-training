@@ -26,14 +26,6 @@
     "react/react-in-jsx-scope": "off",
     "no-var": "error",
     "quotes": [2, "double"],
-    "react/no-unescaped-entities": 0,
-    "react/jsx-filename-extension": [1, { "extensions": [".ts", ".tsx"] }]
-  },
-  "settings": {
-    "import/resolver": {
-      "node": {
-        "extensions": [".js", ".jsx", ".ts", ".tsx"]
-      }
-    }
+    "react/no-unescaped-entities": 0
   }
 }

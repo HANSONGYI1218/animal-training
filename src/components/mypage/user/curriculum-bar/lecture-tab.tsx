@@ -1,7 +1,7 @@
 "use client";
 
 import LectureCard from "./lecture-card";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { Lecture, Tutor } from "@prisma/client";
 import { Badge } from "../../../ui/badge";
 import { UserContext } from "../../../../providers/user-provider";

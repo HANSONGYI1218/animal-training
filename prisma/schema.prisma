@@ -169,7 +169,7 @@ model UserCurriculum {
   lastVideoId             String?
   lastVideoTime           String?
   curriculumStep          CurriculumStep
-//   attendances             Json[]               @default([])
+  attendances             Json[]               @default([])
   userId                  String               @unique
   user                    User?                @relation(fields: [userId], references: [id])
   adoptionId              String               @unique
@@ -419,3 +419,4 @@ enum CorporationAccessStatus {
   OPERATION //분양 ,강사 등록, 강의 등록
   STANDARD //분양만
 }
+

@@ -1,32 +1,4 @@
-// /app/api/contact.route.ts
-export async function POST(req: Request) {
-  const body = await req.json(); // body = ReadableStream
-
-  // Nodemailer 이메일 전송 로직
-  return body?.isinvitation
-    ? sendInvitationEmail(body)
-    : sendCertificateMail(body)
-        .then(
-          () =>
-            new Response(
-              JSON.stringify({ message: "메일을 성공적으로 보냈음" }),
-              {
-                status: 200,
-              },
-            ),
-        )
-        .catch((error) => {
-          console.error(error);
-
-          return new Response(
-            JSON.stringify({ message: "메일 전송에 실패함" }),
-            {
-              status: 500,
-            },
-          );
-        });
-}
-
+import { NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 
 type EmailData = {
@@ -47,6 +19,33 @@ const transporter = nodemailer.createTransport({
     pass: process.env.NEXT_PUBLIC_AUTH_PASS,
   },
 });
+
+// /app/api/contact.route.ts
+export async function POST(req: Request) {
+  const body = await req.json(); // body = ReadableStream
+
+  // 이메일 전송 처리
+  try {
+    if (body?.isinvitation) {
+      await sendInvitationEmail(body);
+    } else {
+      await sendCertificateMail(body);
+    }
+
+    // 성공적으로 메일 전송 후 응답
+    return NextResponse.json(
+      { message: "메일을 성공적으로 보냈음" },
+      { status: 200 },
+    );
+  } catch (error) {
+    console.error(error);
+
+    return NextResponse.json(
+      { message: "메일 전송에 실패함" },
+      { status: 500 },
+    );
+  }
+}
 
 async function sendCertificateMail(data: EmailData) {
   const certificateMail = {

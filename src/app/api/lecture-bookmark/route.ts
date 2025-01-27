@@ -57,12 +57,7 @@ export async function DELETE(req: NextRequest, res: NextResponse) {
 
     const id = searchParams.get("id");
 
-    const deletedLectureBookmark = await deleteLectureBookmarkService(
-      id as string,
-    );
-
-    if (!deletedLectureBookmark)
-      return new Response("LectureBookmark not found", { status: 404 });
+    await deleteLectureBookmarkService(id as string);
 
     return new NextResponse("LectureBookmark deleted successfully", {
       status: 200,

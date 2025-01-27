@@ -90,14 +90,3 @@ export type GetTutorWithLecture = {
 export function toJSON(tutor: any) {
   return JSON.parse(JSON.stringify(tutor));
 }
-
-export function toGetDtoJSON(tutor: any) {
-  return {
-    ...tutor,
-    corporation: {
-      id: tutor.id,
-      corporation_name: tutor.id,
-    },
-    tutorTrainingCenter: tutor?.tutorTrainingCenters[0] ?? null,
-  };
-}

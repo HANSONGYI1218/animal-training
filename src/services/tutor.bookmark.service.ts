@@ -11,19 +11,14 @@ import {
 // 북마크 생성
 export const createTutorBookmarkService = async (
   dto: CreateTutorBookmarkDto,
-): Promise<CreateTutorBookmarkDto | null> => {
+): Promise<void> => {
   try {
     // const isExisted = await getTutorBookmarkByIdService(dto.id);
     // if(isExisted) return null;
 
-    const tutorBookmark = await createTutorBookmarkRepository(dto);
-
-    if (!tutorBookmark) {
-      return null;
-    }
-    return tutorBookmark as CreateTutorBookmarkDto;
-  } catch {
-    return null;
+    await createTutorBookmarkRepository(dto);
+  } catch (error: any) {
+    return error;
   }
 };
 
@@ -44,20 +39,16 @@ export const getTutorBookmarkByIdService = async (
 };
 
 // 북마크 삭제
-export const deleteTutorBookmarkService = async (
-  id: string,
-): Promise<CreateTutorBookmarkDto | null> => {
+export const deleteTutorBookmarkService = async (id: string): Promise<void> => {
   try {
     const tutorBookmark = getTutorBookmarkByIdRepository(id);
 
     if (!tutorBookmark) {
-      return null;
+      throw new Error("tutorBookmark not found");
     }
 
-    const deletedTutorBookmark = await deleteTutorBookmarkRepository(id);
-
-    return deletedTutorBookmark as CreateTutorBookmarkDto;
-  } catch {
-    return null;
+    await deleteTutorBookmarkRepository(id);
+  } catch (error: any) {
+    return error;
   }
 };

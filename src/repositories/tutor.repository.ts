@@ -2,7 +2,6 @@ import prisma from "@/utils/db";
 import {
   GetAllTutorDto,
   GetTutorDto,
-  toGetDtoJSON,
   toJSON,
   TutorDto,
 } from "@/dtos/tutor.dto";
@@ -69,7 +68,7 @@ export const getTutorByIdRepository = async (
       return null;
     }
 
-    return toGetDtoJSON(tutor);
+    return toJSON(tutor);
   } catch {
     return null;
   }
@@ -102,7 +101,7 @@ export const getTutorByCorporationIdRepository = async (
       },
     });
 
-    return tutors.map(toGetDtoJSON);
+    return tutors.map(toJSON);
   } catch {
     return [];
   }

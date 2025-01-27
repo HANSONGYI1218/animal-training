@@ -1,6 +1,5 @@
 "use client";
 
-import YoutubePlayableCard from "../common/player-card";
 import { Button } from "../ui/button";
 import { ChevronRight, ZoomIn } from "lucide-react";
 import {
@@ -45,9 +44,7 @@ export default function LectureContent({
 
   return (
     <section className="container relative mx-auto mt-12 flex w-full max-w-[1150px] justify-between">
-      <div className="flex w-2/3">
-        <YoutubePlayableCard videoId={"Ave10taSLpc"} start={0} duration={5} />
-      </div>
+      <div className="flex w-2/3">영상자리</div>
       <div className="sticky top-0 h-fit w-72 rounded-xl border">
         {priceTypeSwap[lecture?.price_type] === "유료" ? (
           <>

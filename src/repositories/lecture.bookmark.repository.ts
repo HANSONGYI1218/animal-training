@@ -7,17 +7,15 @@ import {
 // 북마크 생성
 export const createLectureBookmarkRepository = async (
   dto: CreateLectureBookmarkDto,
-): Promise<CreateLectureBookmarkDto | null> => {
+): Promise<void> => {
   try {
-    const lectureBookmark = await prisma.lectureBookmark.create({
+    await prisma.lectureBookmark.create({
       data: {
         ...dto,
       },
     });
-
-    return lectureBookmark as CreateLectureBookmarkDto;
-  } catch {
-    return null;
+  } catch (error: any) {
+    return error;
   }
 };
 
@@ -45,16 +43,14 @@ export const getLectureBookmarkByIdRepository = async (
 // 북마크 삭제
 export const deleteLectureBookmarkRepository = async (
   id: string,
-): Promise<CreateLectureBookmarkDto | null> => {
+): Promise<void> => {
   try {
-    const deletedLectureBook = await prisma.lectureBookmark.delete({
+    await prisma.lectureBookmark.delete({
       where: {
         id: id,
       },
     });
-
-    return deletedLectureBook as CreateLectureBookmarkDto;
-  } catch {
-    return null;
+  } catch (error: any) {
+    return error;
   }
 };

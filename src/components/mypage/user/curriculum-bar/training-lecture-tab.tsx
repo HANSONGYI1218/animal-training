@@ -9,16 +9,31 @@ import { Button } from "../../../ui/button";
 import { CurriculumCategory } from "@prisma/client";
 import { CurriculumLectureDto } from "@/dtos/curriculum.lecture.dto";
 import { UserContext } from "@/providers/user-provider";
+import { GetUserCurriculumDto } from "@/dtos/user.curriculum.dto";
 
 export default function TraningLectureTab() {
   const user = useContext(UserContext);
   const [lecture, setLecture] = useState<CurriculumLectureDto | null>(null);
-  let isNotLearning = false;
+  const [userCurriculum, setUserCurriculum] = useState<any>(null);
 
   useEffect(() => {
     const getLecture = async () => {
+      const responseUserCurriculum = await fetch(
+        `${process.env.NEXT_PUBLIC_WEB_URL}/api/user-curriculum?userId=${user?.id}`,
+        {
+          method: "GET",
+          cache: "no-store",
+        },
+      );
+
+      let userCurriculum = null;
+      if (responseUserCurriculum.ok) {
+        userCurriculum =
+          (await responseUserCurriculum.json()) as GetUserCurriculumDto;
+      }
+
       const responseLectureCurriculum = await fetch(
-        `${process.env.NEXT_PUBLIC_WEB_URL}/api/curriculum-lecture?id=${user?.lastVideoIds[0]}`,
+        `${process.env.NEXT_PUBLIC_WEB_URL}/api/curriculum-lecture?id=${userCurriculum?.lastVideoId}`,
         {
           method: "GET",
           cache: "no-store",

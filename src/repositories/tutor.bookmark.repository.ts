@@ -7,18 +7,16 @@ import {
 // 북마크 생성
 export const createTutorBookmarkRepository = async (
   dto: CreateTutorBookmarkDto,
-): Promise<CreateTutorBookmarkDto | null> => {
+): Promise<void> => {
   try {
-    const tutorBookmark = await prisma.tutorBookmark.create({
+    await prisma.tutorBookmark.create({
       data: {
         userId: dto.userId,
         tutorId: dto.tutorId,
       },
     });
-
-    return tutorBookmark as CreateTutorBookmarkDto;
-  } catch {
-    return null;
+  } catch (error: any) {
+    return error;
   }
 };
 
@@ -46,16 +44,14 @@ export const getTutorBookmarkByIdRepository = async (
 // 북마크 삭제
 export const deleteTutorBookmarkRepository = async (
   id: string,
-): Promise<CreateTutorBookmarkDto | null> => {
+): Promise<void> => {
   try {
-    const deletedTutorBook = await prisma.tutorBookmark.delete({
+    await prisma.tutorBookmark.delete({
       where: {
         id: id,
       },
     });
-
-    return deletedTutorBook as CreateTutorBookmarkDto;
-  } catch {
-    return null;
+  } catch (error: any) {
+    return error;
   }
 };

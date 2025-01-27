@@ -108,7 +108,7 @@ export default function AdopterListTable() {
     const getData = async () => {
       setIsLoading(true);
       const responseadoptions = await fetch(
-        `${process.env.NEXT_PUBLIC_WEB_URL}/api/adoption?breederId=${corporation?.id}&isRecord=${isRecord ? "true" : "false"}`,
+        `${process.env.NEXT_PUBLIC_WEB_URL}/api/adoption?breederId=${corporation?.id}&isRecord=true`,
         {
           method: "GET",
         },

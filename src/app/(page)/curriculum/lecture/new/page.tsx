@@ -6,6 +6,7 @@ export default async function CurriculumLectureNewPage() {
     `${process.env.NEXT_PUBLIC_WEB_URL}/api/tutor`,
     {
       method: "GET",
+      cache: "no-store",
     },
   );
 

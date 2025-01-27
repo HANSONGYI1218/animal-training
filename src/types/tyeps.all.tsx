@@ -194,8 +194,10 @@ export type UserCurriculum = {
 export interface AttendanceRecord {
   training_date: Date;
   attendance_status: AttendanceStatus;
-  start_time: string;
-  end_time: string;
+  class_start_time: string;
+  class_end_time: string;
+  actual_start_time: string;
+  actual_end_time: string;
   absent_reason: string | null;
 }
 

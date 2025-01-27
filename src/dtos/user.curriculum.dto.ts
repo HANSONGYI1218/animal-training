@@ -4,14 +4,16 @@ import {
   AnimalAge,
   CurriculumStep,
   GenderType,
+  OccupationType,
 } from "@prisma/client";
+import { InputJsonValue } from "@prisma/client/runtime/library";
 
 export type UserCurriculumDto = {
   id: string;
   lastVideoId: string;
   lastVideoTime: string;
   curriculumStep: CurriculumStep;
-  //   attendances?: Json[];
+  attendances: InputJsonValue[];
   userId: string;
   adoptionId: string;
   tutorTrainingCenterId: string;
@@ -21,7 +23,6 @@ export type UserCurriculumDto = {
 
 export type CreateUserCurriculumDto = {
   curriculumStep: CurriculumStep;
-  //   attendances?: Json[];
   userId: string;
   adoptionId: string;
 };
@@ -31,7 +32,7 @@ export type UpdateUserCurriculumDto = {
   lastVideoId?: string;
   lastVideoTime?: string;
   curriculumStep?: CurriculumStep;
-  //   attendances?: Json[];
+  attendances?: InputJsonValue[];
   userId?: string;
   adoptionId?: string;
   tutorTrainingCenterId?: string;
@@ -42,7 +43,7 @@ export type GetUserCurriculumDto = {
   lastVideoId: string;
   lastVideoTime: string;
   curriculumStep: CurriculumStep;
-  //   attendances?: Json[];
+  attendances: InputJsonValue[];
   userId: string;
   user: {
     name: string;
@@ -73,6 +74,44 @@ export type GetUserCurriculumDto = {
     };
   };
   tutorTrainingCenterId: string;
+  createdAt: Date;
+  updatedAt: Date;
+};
+
+export type UserCurriculumWithTutorTrainingCenterDto = {
+  id: string;
+  lastVideoId: string;
+  lastVideoTime: string;
+  curriculumStep: CurriculumStep;
+  attendances: InputJsonValue[];
+  userId: string;
+  adoptionId: string;
+  tutorTrainingCenter: {
+    id: string;
+    tutor: {
+      id: string;
+      name: string;
+      introduction: string;
+      career: string;
+      profile_img: string;
+      occupation: OccupationType;
+    };
+    trainingCenter: {
+      id: string;
+      name: string;
+      introduction: string;
+      profile: string;
+      zipCode: string;
+      address: string;
+      detailAddress: string;
+      phoneNumber: string;
+      refundPolicys: string;
+    };
+    price: string;
+    holidays: string[];
+    animal_types: AnimalType[];
+    like: number;
+  };
   createdAt: Date;
   updatedAt: Date;
 };

@@ -1,11 +1,12 @@
 import { CurriculumStep } from "@prisma/client";
+import { InputJsonValue } from "@prisma/client/runtime/library";
 
 interface UserCurriculumEntityProps {
   id?: string;
   lastVideoId?: string;
   lastVideoTime?: string;
   curriculumStep: CurriculumStep;
-  //   attendances?: Json[];
+  attendances?: InputJsonValue[];
   userId: string;
   adoptionId: string;
   tutorTrainingCenterId?: string;
@@ -18,7 +19,7 @@ export class UserCurriculumEntity {
   private lastVideoId?: string;
   private lastVideoTime?: string;
   private curriculumStep: CurriculumStep;
-  //   attendances?: Json[];
+  private attendances?: InputJsonValue[];
   private userId: string;
   private adoptionId: string;
   private tutorTrainingCenterId?: string;
@@ -30,7 +31,7 @@ export class UserCurriculumEntity {
     lastVideoId,
     lastVideoTime,
     curriculumStep,
-    //   attendances,
+    attendances,
     userId,
     adoptionId,
     tutorTrainingCenterId,
@@ -41,7 +42,7 @@ export class UserCurriculumEntity {
     this.lastVideoId = lastVideoId;
     this.lastVideoTime = lastVideoTime;
     this.curriculumStep = curriculumStep;
-    //  this.attendances=attendances;
+    this.attendances = attendances ?? [];
     this.userId = userId;
     this.adoptionId = adoptionId;
     this.tutorTrainingCenterId = tutorTrainingCenterId;

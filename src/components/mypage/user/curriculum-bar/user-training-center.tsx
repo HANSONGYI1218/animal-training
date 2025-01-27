@@ -1,7 +1,6 @@
 "use client";
 
 import { attandanceStatusSwap } from "@/constants/constants.all";
-import { TrainingCenter, Tutor } from "@prisma/client";
 import { Building2, ChevronRight, Dot, SquareUser } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -10,27 +9,27 @@ import { ko } from "date-fns/locale";
 import { CalendarContext } from "./training-center-tab";
 import CustomCalendar from "../custom-calendar/custom-calendar";
 import { AttendanceRecord } from "@/types/tyeps.all";
+import { UserCurriculumWithTutorTrainingCenterDto } from "@/dtos/user.curriculum.dto";
 
 export default function UserTrainingCenter({
-  trainingCenter,
-  tutor,
-  attendances,
+  userCurriculum,
 }: {
-  trainingCenter: TrainingCenter;
-  tutor: Tutor;
-  attendances: AttendanceRecord[];
+  userCurriculum: UserCurriculumWithTutorTrainingCenterDto;
 }) {
+  const attendances =
+    userCurriculum?.attendances as unknown as AttendanceRecord[];
+
   const scheduledAttendance = () => {
     return (
-      attendances?.find(
-        (attendance: AttendanceRecord) => attendance.training_date > new Date(),
+      attendances.find(
+        (attendance) => attendance?.training_date > new Date(),
       ) ?? undefined
     );
   };
 
   const attendanceCounts = (index: number) => {
     if (index === 0) {
-      return attendances?.filter(
+      return attendances.filter(
         (attendance: AttendanceRecord) =>
           attendance.attendance_status === "ATTENDANCE",
       ).length;
@@ -57,22 +56,29 @@ export default function UserTrainingCenter({
       <div>
         <div className="flex gap-6 p-6">
           <Image
-            src={trainingCenter?.profile}
+            src={userCurriculum?.tutorTrainingCenter?.trainingCenter?.profile}
             width={300}
             height={200}
             alt="profile"
             className="rounded-xl"
           />
           <div className="flex flex-1 flex-col justify-between">
-            <span className="font-semibold">{trainingCenter?.name}</span>
+            <span className="font-semibold">
+              {userCurriculum?.tutorTrainingCenter?.trainingCenter?.name}
+            </span>
             <span className="text-neutral-600">
-              {trainingCenter?.introduction}
+              {
+                userCurriculum?.tutorTrainingCenter?.trainingCenter
+                  ?.introduction
+              }
             </span>
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-6">
                 <div className="flex items-center gap-2">
                   <SquareUser width={16} height={16} stroke="#000000" />
-                  <span className="text-[0.93rem]">{tutor?.name}</span>
+                  <span className="text-[0.93rem]">
+                    {userCurriculum?.tutorTrainingCenter?.tutor?.name}
+                  </span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Building2 width={16} height={16} stroke="#000000" />
@@ -80,7 +86,7 @@ export default function UserTrainingCenter({
                 </div>
               </div>
               <Link
-                href={`/curriculum/traning/${trainingCenter?.id}`}
+                href={`/curriculum/traning/${userCurriculum?.tutorTrainingCenter?.trainingCenter?.id}`}
                 className="group relative flex h-8 w-20 self-end"
               >
                 <div className="relative z-10 flex w-full items-center justify-center gap-1">
@@ -115,7 +121,7 @@ export default function UserTrainingCenter({
               );
             },
           )}
-          <span>총: {attendances?.length}</span>
+          <span>총: {userCurriculum?.attendances?.length}</span>
         </div>
         <div className="flex justify-end gap-4">
           <div className="flex items-center gap-1">

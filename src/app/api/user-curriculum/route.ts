@@ -4,6 +4,7 @@ import {
   UserCurriculumDto,
   GetUserCurriculumDto,
   UpdateUserCurriculumDto,
+  UserCurriculumWithTutorTrainingCenterDto,
 } from "@/dtos/user.curriculum.dto";
 import {
   createUserCurriculumService,
@@ -12,6 +13,7 @@ import {
   updateUserCurriculumService,
   deleteUserCurriculumService,
   getUserCurriculumByUserIdService,
+  getUserCurriculumWithTutorTrainingCenterService,
 } from "@/services/user.curriculum.service";
 
 // POST 요청 핸들러
@@ -20,11 +22,11 @@ async function POST(req: NextRequest, res: NextResponse) {
     const dto: CreateUserCurriculumDto = await req.json();
 
     await createUserCurriculumService(dto);
-    return new NextResponse("Curriculum created successfully", {
+    return new NextResponse("usercurriculum created successfully", {
       status: 200,
     });
   } catch (error) {
-    return new NextResponse("Failed to create Curriculum", {
+    return new NextResponse("Failed to create usercurriculum", {
       status: 500,
     });
   }
@@ -36,31 +38,44 @@ async function GET(req: NextRequest, res: NextResponse) {
 
   const id = searchParams.get("id");
   const userId = searchParams.get("userId");
+  const isTutorTrainingCenter = searchParams.get("isTutorTrainingCenter");
 
   try {
     if (userId) {
-      const user: GetUserCurriculumDto | null =
+      if (isTutorTrainingCenter) {
+        const usercurriculum: UserCurriculumWithTutorTrainingCenterDto | null =
+          await getUserCurriculumWithTutorTrainingCenterService(userId);
+
+        if (!usercurriculum)
+          return new Response("usercurriculum not found", { status: 404 });
+
+        return NextResponse.json(usercurriculum);
+      }
+      const usercurriculum: GetUserCurriculumDto | null =
         await getUserCurriculumByUserIdService(userId);
 
-      if (!user) return new Response("user not found", { status: 404 });
+      if (!usercurriculum)
+        return new Response("usercurriculum not found", { status: 404 });
 
-      return NextResponse.json(user);
+      return NextResponse.json(usercurriculum);
     }
     if (id) {
-      const curriculum: UserCurriculumDto | null =
+      const usercurriculum: UserCurriculumDto | null =
         await getUserCurriculumByIdService(id);
 
-      if (!curriculum)
-        return new Response("Curriculum not found", { status: 404 });
+      if (!usercurriculum)
+        return new Response("usercurriculum not found", { status: 404 });
 
-      return NextResponse.json(curriculum);
+      return NextResponse.json(usercurriculum);
     } else {
-      const curriculums = await getAllUserCurriculumsService();
+      const usercurriculums = await getAllUserCurriculumsService();
 
-      return NextResponse.json(curriculums);
+      return NextResponse.json(usercurriculums);
     }
   } catch (error) {
-    return new NextResponse("Failed to create Lectur(s)", { status: 500 });
+    return new NextResponse("Failed to get usercurriculum(s)", {
+      status: 500,
+    });
   }
 }
 
@@ -70,11 +85,11 @@ async function PUT(req: NextRequest, res: NextResponse) {
     const dto: UpdateUserCurriculumDto = await req.json();
 
     await updateUserCurriculumService(dto);
-    return new NextResponse("Curriculum updated successfully", {
+    return new NextResponse("usercurriculum updated successfully", {
       status: 200,
     });
   } catch (error) {
-    return new NextResponse("Failed to update Curriculum", {
+    return new NextResponse("Failed to update usercurriculum", {
       status: 500,
     });
   }
@@ -88,11 +103,11 @@ async function DELETE(req: NextRequest, res: NextResponse) {
     const id = searchParams.get("id");
     await deleteUserCurriculumService(id as string);
 
-    return new NextResponse("Curriculum deleted successfully", {
+    return new NextResponse("usercurriculum deleted successfully", {
       status: 200,
     });
   } catch (error) {
-    return new NextResponse("Failed to delete Curriculum", {
+    return new NextResponse("Failed to delete usercurriculum", {
       status: 500,
     });
   }

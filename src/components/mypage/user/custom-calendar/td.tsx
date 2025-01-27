@@ -110,10 +110,10 @@ const Td = ({ weekDate, currentMonth }: TdProps) => {
                 {attendance && attendance.attendance_status !== "ABSENT" && (
                   <div className="flex flex-col">
                     <span className="text-sm">
-                      {`훈련 시작: ${attendance?.start_time}`}
+                      {`훈련 시작: ${attendance?.class_start_time}`}
                     </span>
                     <span className="text-sm">
-                      {`훈련 종료: ${attendance?.end_time}`}
+                      {`훈련 종료: ${attendance?.class_end_time}`}
                     </span>
                   </div>
                 )}

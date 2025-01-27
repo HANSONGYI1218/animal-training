@@ -77,7 +77,7 @@ export default function ListTable({ isRecord }: { isRecord?: boolean }) {
             adoptionStepTypeSwap[adoption.step] === adoptionStep;
 
           const matchesSearch =
-            search.length === 0 || adoption.invite_email.includes(search);
+            search.length === 0 || adoption.adopter?.email.includes(search);
 
           return matchesStatus && matchesSearch && matchesStep;
         },
@@ -140,9 +140,10 @@ export default function ListTable({ isRecord }: { isRecord?: boolean }) {
             lists={[
               "전체",
               adoptionStepTypeSwap[AdoptionStep.INVITATION],
-              adoptionStepTypeSwap[AdoptionStep.CURRICULUM],
+              adoptionStepTypeSwap[AdoptionStep.LECTURE],
+              adoptionStepTypeSwap[AdoptionStep.TRAINING],
               adoptionStepTypeSwap[AdoptionStep.FINAL_CONSENTFORM],
-              adoptionStepTypeSwap[AdoptionStep.ADOPTION],
+              adoptionStepTypeSwap[AdoptionStep.END],
             ]}
             useStateF={setAdoptionStep}
             placeholder="전체"
@@ -181,7 +182,7 @@ export default function ListTable({ isRecord }: { isRecord?: boolean }) {
                 <TableCell className="font-medium">{index + 1}</TableCell>
                 <TableCell>{adoption?.adopter?.name ?? ""}</TableCell>
                 <TableCell>{adoption?.adopter?.phoneNumber ?? ""}</TableCell>
-                <TableCell>{adoption?.invite_email ?? ""}</TableCell>
+                <TableCell>{adoption?.adopter?.email ?? ""}</TableCell>
                 <TableCell>
                   <Badge
                     variant={

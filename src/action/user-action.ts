@@ -1,6 +1,6 @@
 "use server";
 
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/authOptions";
 import { getServerSession } from "next-auth/next";
 import { cookies } from "next/headers";
 

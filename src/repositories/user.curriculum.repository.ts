@@ -1,6 +1,7 @@
 import {
   GetUserCurriculumDto,
   UserCurriculumDto,
+  UserCurriculumWithTutorTrainingCenterDto,
   toJSON,
 } from "@/dtos/user.curriculum.dto";
 import prisma from "@/utils/db";
@@ -98,6 +99,63 @@ export const getUserCurriculumByUserIdRepository = async (
                 animal_age: true,
               },
             },
+          },
+        },
+      },
+    });
+
+    if (!usercurriculum) {
+      return null;
+    }
+    return toJSON(usercurriculum);
+  } catch {
+    return null;
+  }
+};
+
+// 특정 ID의 사용자_튜터트레이닝센터 조회
+export const getUserCurriculumWithTutorTrainingCenterRepository = async (
+  userId: string,
+): Promise<UserCurriculumWithTutorTrainingCenterDto | null> => {
+  try {
+    const usercurriculum = await prisma.userCurriculum.findUnique({
+      where: {
+        userId: userId,
+        curriculumStep: {
+          not: CurriculumStep.END,
+        },
+      },
+      include: {
+        tutorTrainingCenter: {
+          select: {
+            id: true, // AdoptionStatus
+            tutor: {
+              select: {
+                id: true,
+                name: true,
+                introduction: true,
+                career: true,
+                profile_img: true,
+                occupation: true,
+              },
+            }, // AdoptionStep
+            trainingCenter: {
+              select: {
+                id: true,
+                name: true,
+                introduction: true,
+                profile: true,
+                zipCode: true,
+                address: true,
+                detailAddress: true,
+                phoneNumber: true,
+                refundPolicys: true,
+              },
+            },
+            price: true,
+            holidays: true,
+            animal_types: true,
+            like: true,
           },
         },
       },

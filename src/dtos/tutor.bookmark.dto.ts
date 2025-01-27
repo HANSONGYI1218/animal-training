@@ -1,17 +1,12 @@
-import { IsNotEmptyString } from "@/validate-decoration/validate-deco";
+export type CreateTutorBookmarkDto = {
+  userId: string;
+  tutorId: string;
+};
 
-export class CreateTutorBookmarkDto {
-  @IsNotEmptyString()
-  userId!: string;
-
-  @IsNotEmptyString()
-  tutorId!: string;
-}
-
-export class GetTutorBookmarkDto {
-  id!: string;
-  userId!: string;
-  tutorId!: string;
-  createdAt!: Date;
-  updatedAt!: Date;
-}
+export type GetTutorBookmarkDto = {
+  id: string;
+  userId: string;
+  tutorId: string;
+  createdAt: Date;
+  updatedAt: Date;
+};
