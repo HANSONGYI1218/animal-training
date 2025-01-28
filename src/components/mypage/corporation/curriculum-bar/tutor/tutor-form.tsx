@@ -19,7 +19,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { ChevronLeft, Loader2, Plus } from "lucide-react";
 import { OccupationType } from "@prisma/client";
 import Link from "next/link";
@@ -65,7 +65,7 @@ export default function TutorForm({
       introduction: tutor?.introduction ?? "",
       career: tutor?.career ?? "",
       profile_img: tutor?.profile_img ?? "",
-      occupation: tutor?.occupation ?? "TRAINER",
+      occupation: tutor?.occupation ?? OccupationType.TRAINER,
     },
   });
 
@@ -81,6 +81,7 @@ export default function TutorForm({
 
   const [isLoading, setIsLoading] = useState(false);
   const [deleteInput, setDeleteInput] = useState("");
+  const inputFileRef = useRef<HTMLInputElement>(null);
 
   const deleteTutor = async () => {
     setIsLoading(true);
@@ -107,7 +108,7 @@ export default function TutorForm({
       name: formTutor.watch("name"),
       introduction: formTutor.watch("introduction"),
       career: formTutor.watch("career"),
-      profile_img: formTutor.watch("profile_img"),
+      profile_img: tutor?.profile_img ?? "",
       occupation: formTutor.watch("occupation"),
       ...(tutor ? { id: tutor?.id } : { corporationId: session?.user?.id }),
     };
@@ -122,12 +123,73 @@ export default function TutorForm({
 
     try {
       const tutorUrl = `${process.env.NEXT_PUBLIC_WEB_URL}/api/tutor`;
-      await fetch(tutorUrl, {
+      const responseTutor = await fetch(tutorUrl, {
         method: tutor ? "PUT" : "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(tutorData),
       });
 
+      if (!responseTutor.ok) {
+        throw new Error(
+          `Failed to fetch tutor data. Status: ${responseTutor.status}`,
+        );
+      }
+      let tutorId = tutor?.id;
+      if (
+        responseTutor.headers.get("Content-Type")?.includes("application/json")
+      ) {
+        // 응답이 JSON일 경우만 파싱
+        tutorId = await responseTutor.json();
+      }
+      if (
+        inputFileRef?.current?.files &&
+        inputFileRef?.current?.files[0]?.name
+      ) {
+        const file = inputFileRef?.current?.files[0];
+        const formData = new FormData();
+
+        formData.append("file", file as Blob);
+        formData.append("path", `tutor/${tutorId}`);
+
+        let responsePublicUrl;
+
+        if (tutor) {
+          formData.append("prevFile", tutor?.profile_img);
+
+          responsePublicUrl = await fetch(
+            `${process.env.NEXT_PUBLIC_WEB_URL}/api/blob`,
+            {
+              method: "PUT",
+              body: formData,
+            },
+          );
+        } else {
+          responsePublicUrl = await fetch(
+            `${process.env.NEXT_PUBLIC_WEB_URL}/api/blob`,
+            {
+              method: "POST",
+              body: formData,
+            },
+          );
+        }
+
+        if (!responsePublicUrl.ok) {
+          throw new Error("url is not found");
+        }
+
+        const publicUrl = await responsePublicUrl.json();
+
+        const updatedTutorData = {
+          id: tutorId,
+          profile_img: publicUrl,
+        };
+
+        await fetch(tutorUrl, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(updatedTutorData),
+        });
+      }
       if (tutorTrainingCenterData) {
         const tutorTrainingCenterUrl = `${process.env.NEXT_PUBLIC_WEB_URL}/api/tutor-trainingCenter`;
         await fetch(tutorTrainingCenterUrl, {
@@ -137,12 +199,13 @@ export default function TutorForm({
         });
       }
 
-      setIsLoading(false);
       router.push("/mypage/corporation/curriculum");
     } catch (error) {
       toast("not found", {
         description: "잠시 후 다시 시도해 주세요.",
       });
+    } finally {
+      setIsLoading(false);
     }
   }
   return (
@@ -253,7 +316,7 @@ export default function TutorForm({
               name="profile_img"
               render={({ field }) => (
                 <FormItem>
-                  <div className="flex items-center gap-2">
+                  <div className="mb-4 flex items-center gap-2">
                     <Input
                       disabled
                       placeholder="강사 프로필을 선택해주세요."
@@ -270,6 +333,7 @@ export default function TutorForm({
                       </label>
                       <input
                         type="file"
+                        ref={inputFileRef}
                         id="profile"
                         accept="image/*"
                         onChange={(e) => {
@@ -283,6 +347,11 @@ export default function TutorForm({
                       />
                     </Button>
                   </div>
+                  <img
+                    src={field?.value}
+                    alt="preview"
+                    className={`max-h-[300px] w-1/2 ${!tutor?.profile_img && !field?.value && "hidden"}`}
+                  />
                   <FormMessage />
                 </FormItem>
               )}

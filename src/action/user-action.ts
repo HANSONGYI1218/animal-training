@@ -6,6 +6,7 @@ import { cookies } from "next/headers";
 
 export async function logout() {
   cookies().delete("userType");
+  cookies().delete("role");
 }
 
 export async function currentAccount() {

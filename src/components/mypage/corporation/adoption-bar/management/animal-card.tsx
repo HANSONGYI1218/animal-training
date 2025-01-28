@@ -35,7 +35,10 @@ export default function AnimalCard({
       className="group flex h-[320px] flex-col items-center overflow-hidden rounded-xl px-1"
     >
       <Image
-        src={animal?.profile}
+        src={
+          animal?.profile_images?.find((url) => url.includes("0_thumbnail_")) ||
+          ""
+        }
         width={240}
         height={185}
         alt="img"

@@ -18,7 +18,7 @@ import {
 // 훈련소 생성
 export const createTrainingCenterService = async (
   dto: CreateTrainingCenterDto,
-): Promise<void> => {
+): Promise<string> => {
   try {
     // const isExisted = await getTrainingCenterByIdService(dto.id);
     // if(isExisted) return null;
@@ -27,7 +27,11 @@ export const createTrainingCenterService = async (
       ...dto,
     });
 
-    await createTrainingCenterRepository(toJSON(newTrainingCenter));
+    const trainingCenterId = await createTrainingCenterRepository(
+      toJSON(newTrainingCenter),
+    );
+
+    return trainingCenterId;
   } catch (error: any) {
     return error;
   }
@@ -114,8 +118,7 @@ export const updateTrainingCenterService = async (
       ...trainingCenter,
       name: dto?.name ?? trainingCenter.name,
       introduction: dto?.introduction ?? trainingCenter.introduction,
-      profile: dto?.profile ?? trainingCenter?.profile,
-      additionalImgs: dto?.additionalImgs ?? trainingCenter?.additionalImgs,
+      profile_images: dto?.profile_images ?? trainingCenter?.profile_images,
       phoneNumber: dto?.phoneNumber ?? trainingCenter?.phoneNumber,
       zipCode: dto?.zipCode ?? trainingCenter.zipCode,
       address: dto?.address ?? trainingCenter.address,

@@ -16,6 +16,7 @@ import {
 import LecturePromotion from "./lecture-promotion";
 import { GetLectureWithTutorDto } from "@/dtos/lecture.dto";
 import { GetTutorDto } from "@/dtos/tutor.dto";
+import Image from "next/image";
 
 interface LectureContainerProps {
   lectures: GetLectureWithTutorDto[];
@@ -87,7 +88,7 @@ export default function LectureContainer({
               animalTypeSwap[AnimalType.CAT],
             ]}
             useStateF={setAnimalType}
-            placeholder="분류"
+            placeholder="전체"
             className="w-24"
           />
           <SelectBox
@@ -97,7 +98,7 @@ export default function LectureContainer({
               priceTypeSwap[PriceType.PAID],
             ]}
             useStateF={setPriceState}
-            placeholder="가격"
+            placeholder="전체"
             className="w-24"
           />
           <SelectBox
@@ -113,23 +114,35 @@ export default function LectureContainer({
           className="w-96"
         />
       </div>
-      <div className="container mx-auto grid w-full grid-cols-4 gap-6 px-5">
-        {lecturesData &&
-          lecturesData
-            .slice(0, 20)
-            .map((lecture: GetLectureWithTutorDto, index: number) => {
-              return <LectureCard key={index} lecture={lecture} />;
-            })}
-      </div>
-      {isPromotion && tutors && <LecturePromotion tutors={tutors} />}
-      <div className="container mx-auto grid w-full grid-cols-4 gap-6 px-5">
-        {lecturesData &&
-          lecturesData
-            .slice(20)
-            .map((lecture: GetLectureWithTutorDto, index: number) => {
-              return <LectureCard key={index} lecture={lecture} />;
-            })}
-      </div>
+      {lecturesData && lecturesData.length > 0 ? (
+        <>
+          <div className="container mx-auto grid w-full grid-cols-4 gap-6 px-5">
+            {lecturesData
+              .slice(0, 20)
+              .map((lecture: GetLectureWithTutorDto, index: number) => {
+                return <LectureCard key={index} lecture={lecture} />;
+              })}
+          </div>
+          {isPromotion && tutors && <LecturePromotion tutors={tutors} />}
+          <div className="container mx-auto grid w-full grid-cols-4 gap-6 px-5">
+            {lecturesData
+              .slice(20)
+              .map((lecture: GetLectureWithTutorDto, index: number) => {
+                return <LectureCard key={index} lecture={lecture} />;
+              })}
+          </div>
+        </>
+      ) : (
+        <div className="flex min-h-64 w-full flex-col items-center justify-center gap-3 rounded-xl border py-6 text-center text-sm">
+          <Image
+            src="/icons/general-face.svg"
+            height={30}
+            width={30}
+            alt="face"
+          />
+          강사님의 강의가 아직 없어요!
+        </div>
+      )}
     </section>
   );
 }

@@ -2,8 +2,7 @@ interface TrainingCenterEntityProps {
   id?: string;
   name: string;
   introduction: string;
-  profile: string;
-  additionalImgs: string[];
+  profile_images: string[];
   phoneNumber: string;
   zipCode: string;
   address: string;
@@ -18,8 +17,7 @@ export class TrainingCenterEntity {
   private id?: string;
   private name: string;
   private introduction: string;
-  private profile: string;
-  private additionalImgs: string[];
+  private profile_images: string[];
   private phoneNumber: string;
   private zipCode: string;
   private address: string;
@@ -33,8 +31,7 @@ export class TrainingCenterEntity {
     id,
     name,
     introduction,
-    profile,
-    additionalImgs,
+    profile_images,
     phoneNumber,
     zipCode,
     address,
@@ -47,8 +44,7 @@ export class TrainingCenterEntity {
     this.id = id;
     this.name = name;
     this.introduction = introduction;
-    this.profile = profile;
-    this.additionalImgs = additionalImgs;
+    this.profile_images = profile_images;
     this.phoneNumber = phoneNumber;
     this.zipCode = zipCode;
     this.address = address;

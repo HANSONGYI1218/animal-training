@@ -18,7 +18,7 @@ export default function CurriculumNav({
       >
         강사
       </Button>
-      <Button
+      {/* <Button
         onClick={() => {
           setTab("lecture");
         }}
@@ -26,7 +26,7 @@ export default function CurriculumNav({
         className={`w-24 rounded-none border-b-2 border-white bg-transparent py-6 hover:border-gray-300 ${tab === "lecture" && "border-green-100 text-green-100 hover:border-green-100"}`}
       >
         강의
-      </Button>
+      </Button> */}
       <Button
         onClick={() => {
           setTab("training-center");

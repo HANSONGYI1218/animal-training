@@ -85,7 +85,7 @@ export default function CenterDetailBanner({
             className="relative w-full max-w-[400px]"
           >
             <CarouselContent>
-              {center?.additionalImgs.map((image, index) => (
+              {center?.profile_images.slice(1).map((image, index) => (
                 <CarouselItem key={index}>
                   <Image
                     src={image}

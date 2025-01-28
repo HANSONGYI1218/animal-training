@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Storage } from "@google-cloud/storage";
+import { v4 as uuidv4 } from "uuid";
 
 const storage = new Storage({
   projectId: process.env.GCS_PROJECT_ID,
@@ -9,29 +10,42 @@ const storage = new Storage({
   },
 });
 
-export async function POST(request: Request): Promise<NextResponse> {
-  const form = await request?.formData();
-  const file = form.get("file") as File;
-  const path = form.get("path") as string;
+const uploadFile = async (file: File, path: string) => {
+  const randomUUID = uuidv4();
 
   if (!file.name) {
-    return new NextResponse("Failed to create Animal", { status: 500 });
+    throw new Error("Failed to create Animal: Missing file name");
   }
 
-  try {
-    const buffer = await file.arrayBuffer();
+  const buffer = await file.arrayBuffer();
 
-    await storage
-      .bucket(process.env.GCS_BUCKET_NAME ?? "")
-      .file(`${getFileType(file.type)}/${path.toLowerCase()}/${file.name}`)
-      .save(Buffer.from(buffer));
-    return new NextResponse(JSON.stringify({ success: true }));
+  await storage
+    .bucket(process.env.GCS_BUCKET_NAME ?? "")
+    .file(
+      `${getFileType(file.type)}/${path.toLowerCase()}/${randomUUID}_${file.name}`,
+    )
+    .save(Buffer.from(buffer));
+
+  const fileUrl = `https://storage.googleapis.com/${process.env.GCS_BUCKET_NAME}/${getFileType(file.type)}/${path.toLowerCase()}/${randomUUID}_${file.name}`;
+  return fileUrl;
+};
+
+// 호출 예제 (Next.js API Route)
+export async function POST(req: Request) {
+  try {
+    const formData = await req.formData();
+    const file = formData.get("file") as File; // 한 개의 파일만 가져오기
+    const path = formData.get("path") as string;
+
+    if (!file) {
+      return new NextResponse("No file provided", { status: 400 });
+    }
+
+    const uploadedUrl = await uploadFile(file, path);
+
+    return NextResponse.json(uploadedUrl);
   } catch (error) {
-    console.error("파일 다운로드 실패:", error);
-    return NextResponse.json(
-      { error: "파일 다운로드 중 오류가 발생했습니다." },
-      { status: 500 },
-    );
+    return new NextResponse("File upload failed", { status: 500 });
   }
 }
 
@@ -78,11 +92,60 @@ export async function GET(req: NextRequest) {
       },
     );
   } catch (error) {
-    console.error("파일 다운로드 실패:", error);
     return NextResponse.json(
       { error: "파일 다운로드 중 오류가 발생했습니다." },
       { status: 500 },
     );
+  }
+}
+
+export async function PUT(request: Request): Promise<NextResponse> {
+  const form = await request?.formData();
+  const file = form.get("file") as File; // 하나의 파일 가져오기
+  const path = form.get("path") as string;
+  const prevFile = form.get("prevFile") as string; // 이전 파일 하나만
+
+  if (!file) {
+    return new NextResponse("No file provided", { status: 400 });
+  }
+
+  try {
+    const bucket = storage.bucket(process.env.GCS_BUCKET_NAME ?? "");
+
+    // 이전 파일 삭제
+    if (prevFile) {
+      const fileName = decodeURIComponent(prevFile.split("/").pop() || "");
+      await bucket
+        .file(`${getFileType(file.type)}/${path.toLowerCase()}/${fileName}`)
+        .delete();
+    }
+
+    const uploadedUrl = await uploadFile(file, path);
+
+    return NextResponse.json(uploadedUrl); // 업로드된 URL 반환
+  } catch (error) {
+    return NextResponse.json(
+      { error: "파일 다운로드 중 오류가 발생했습니다." },
+      { status: 500 },
+    );
+  }
+}
+
+export async function DELETE(req: NextRequest) {
+  const dto = await req.json();
+  const bucket = storage.bucket(process.env.GCS_BUCKET_NAME ?? "");
+
+  try {
+    if (dto?.prevFile) {
+      const fileName = decodeURIComponent(dto?.prevFile.split("/").pop() || "");
+
+      await bucket
+        .file(`${dto?.type}/${dto?.path.toLowerCase()}/${fileName}`)
+        .delete();
+    }
+    return new NextResponse("성공", { status: 200 });
+  } catch {
+    return new NextResponse("No file provided", { status: 400 });
   }
 }
 

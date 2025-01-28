@@ -22,19 +22,13 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import Image from "next/image";
 import { ChevronLeft, Loader2, Plus } from "lucide-react";
-import {
-  AnimalType,
-  PriceType,
-  Category,
-  Lecture,
-  Tutor,
-} from "@prisma/client";
+import { AnimalType, PriceType, Category, Lecture } from "@prisma/client";
 import Link from "next/link";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
 import { MCCPageNavigate } from "@/action/navigate";
+import { GetAllTutorDto } from "@/dtos/tutor.dto";
 
 const LectureSchema = z.object({
   title: z.string().min(1, { message: "제목을 적어주세요." }),
@@ -65,7 +59,7 @@ export default function LectureForm({
   corporationId,
 }: {
   lecture?: Lecture;
-  tutors?: Tutor[];
+  tutors?: GetAllTutorDto[];
   corporationId?: string;
 }) {
   const form = useForm<z.infer<typeof LectureSchema>>({

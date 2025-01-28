@@ -144,7 +144,7 @@ export const getUserCurriculumWithTutorTrainingCenterRepository = async (
                 id: true,
                 name: true,
                 introduction: true,
-                profile: true,
+                profile_images: true,
                 zipCode: true,
                 address: true,
                 detailAddress: true,

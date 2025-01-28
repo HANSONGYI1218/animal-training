@@ -21,7 +21,6 @@ export default async function PasswordLayout({
       },
     );
     const token = response?.data?.dataBody?.access_token;
-    console.log("token:", token);
   } catch {}
 
   return (

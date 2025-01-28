@@ -1,13 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Lecture, Tutor } from "@prisma/client";
+import { Lecture } from "@prisma/client";
 import { Button } from "@/components/ui/button";
 import { Loader2, Pencil, Plus } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import TutorCard from "./tutor-card";
 import { useSession } from "next-auth/react";
+import { GetAllTutorDto } from "@/dtos/tutor.dto";
 
 export type BookmarkProps = {
   id: string;
@@ -16,12 +17,12 @@ export type BookmarkProps = {
 
 export type BookmarkTutorProps = {
   id: string;
-  tutor: Tutor;
+  tutor: GetAllTutorDto;
 };
 
 export default function TutorTab() {
   const { data: session, status } = useSession();
-  const [tutors, setTutors] = useState<Tutor[] | null>(null);
+  const [tutors, setTutors] = useState<GetAllTutorDto[] | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
 
@@ -39,13 +40,13 @@ export default function TutorTab() {
         return null;
       }
 
-      const tutors: Tutor[] = await responseTutors.json();
+      const tutors: GetAllTutorDto[] = await responseTutors.json();
       setTutors(tutors);
       setIsLoading(false);
     };
 
     getData();
-  }, []);
+  }, [session?.user?.id]);
 
   return (
     <div className="flex flex-col gap-10">

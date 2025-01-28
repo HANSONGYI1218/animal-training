@@ -21,7 +21,9 @@ export default function TrainingCenterCard({
       <span className="text-lg font-[540]">{trainingCenter?.name}</span>
       <div className="flex w-full flex-col justify-between gap-4">
         <img
-          src={trainingCenter?.profile}
+          src={trainingCenter?.profile_images.find((url) =>
+            url.includes("0_thumbnail_"),
+          )}
           alt="trainingCenter-thumbnail"
           className="h-56 w-full rounded-lg object-cover"
         />

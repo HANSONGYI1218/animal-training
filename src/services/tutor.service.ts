@@ -3,6 +3,7 @@ import {
   GetAllTutorDto,
   GetTutorDto,
   toJSON,
+  TutorDto,
   UpdateTutorDto,
 } from "@/dtos/tutor.dto";
 import { TutorEntity } from "@/entities/tutor.entity";
@@ -18,13 +19,15 @@ import {
 // 강사 생성
 export const createTutorService = async (
   dto: CreateTutorDto,
-): Promise<void> => {
+): Promise<string> => {
   try {
     const newTutor = new TutorEntity({
       ...dto,
     });
 
-    await createTutorRepository(toJSON(newTutor));
+    const tutorId = await createTutorRepository(toJSON(newTutor));
+
+    return tutorId;
   } catch (error: any) {
     return error;
   }
@@ -61,7 +64,7 @@ export const getTutorByIdService = async (
 // 특정 corporationID의 강사 조회
 export const getTutorByCorporationIdService = async (
   corporationId: string,
-): Promise<GetTutorDto[]> => {
+): Promise<GetAllTutorDto[]> => {
   try {
     const tutors = await getTutorByCorporationIdRepository(corporationId);
 

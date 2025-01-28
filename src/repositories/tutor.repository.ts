@@ -7,11 +7,13 @@ import {
 } from "@/dtos/tutor.dto";
 
 // 강사 생성
-export const createTutorRepository = async (dto: TutorDto): Promise<void> => {
+export const createTutorRepository = async (dto: TutorDto): Promise<string> => {
   try {
-    await prisma.tutor.create({
+    const tutor = await prisma.tutor.create({
       data: dto,
     });
+
+    return tutor?.id;
   } catch (error: any) {
     return error;
   }
@@ -51,11 +53,17 @@ export const getTutorByIdRepository = async (
           select: { id: true, corporation_name: true },
         },
         tutorTrainingCenters: {
-          include: {
+          select: {
+            id: true,
             trainingCenter: {
               select: {
                 name: true,
+                introduction: true,
+                profile_images: true,
+                zipCode: true,
                 address: true,
+                detailAddress: true,
+                phoneNumber: true,
               },
             },
           },
@@ -77,27 +85,11 @@ export const getTutorByIdRepository = async (
 // 특정 corporationID의 강사 조회
 export const getTutorByCorporationIdRepository = async (
   corporationId: string,
-): Promise<GetTutorDto[]> => {
+): Promise<GetAllTutorDto[]> => {
   try {
     const tutors = await prisma.tutor.findMany({
       where: {
         corporationId: corporationId,
-      },
-      include: {
-        corporation: {
-          select: { id: true, corporation_name: true },
-        },
-        tutorTrainingCenters: {
-          include: {
-            trainingCenter: {
-              select: {
-                name: true,
-                address: true,
-              },
-            },
-          },
-        },
-        bookmarks: { where: { userId: "1" } },
       },
     });
 

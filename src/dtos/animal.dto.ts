@@ -17,8 +17,7 @@ export type AnimalDto = {
   animal_size: AnimalSize;
   animal_age: AnimalAge;
   breed: string;
-  profile: string;
-  additionalImgs: string[];
+  profile_images: string[];
   intakeDate: Date;
   remarks: string[];
   userId: string;
@@ -36,8 +35,7 @@ export type CreateAnimalDto = {
   animal_size: AnimalSize;
   animal_age: AnimalAge;
   breed: string;
-  profile: string;
-  additionalImgs: string[];
+  profile_images: string[];
   intakeDate: Date;
   remarks?: string[];
 };
@@ -51,8 +49,7 @@ export type UpdateAnimalDto = {
   animal_size?: AnimalSize;
   animal_age?: AnimalAge;
   breed?: string;
-  profile?: string;
-  additionalImgs?: string[];
+  profile_images?: string[];
   intakeDate?: Date;
   remarks?: string[];
   userId?: string;
@@ -68,8 +65,7 @@ export type GetAnimalDto = {
   animal_size: AnimalSize;
   animal_age: AnimalAge;
   breed: string;
-  profile: string;
-  additionalImgs: string[];
+  profile_images: string[];
   intakeDate: Date;
   remarks: string[];
   userId: string;

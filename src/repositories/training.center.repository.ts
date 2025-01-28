@@ -8,11 +8,13 @@ import prisma from "@/utils/db";
 // 훈련소 생성
 export const createTrainingCenterRepository = async (
   dto: TrainingCenterDto,
-): Promise<void> => {
+): Promise<string> => {
   try {
-    await prisma.trainingCenter.create({
+    const trainingCenter = await prisma.trainingCenter.create({
       data: dto,
     });
+
+    return trainingCenter?.id;
   } catch (error: any) {
     return error;
   }

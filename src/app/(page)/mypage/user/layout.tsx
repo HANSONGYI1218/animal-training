@@ -2,7 +2,6 @@ import MypageSidebar from "@/components/mypage/user/mypage-sidebar";
 import UserProvider from "@/providers/user-provider";
 import { GetUserDto } from "@/dtos/user.dto";
 import { currentAccount } from "@/action/user-action";
-import { redirect } from "next/navigation";
 
 export default async function MypageUserLayout({
   children,
@@ -28,7 +27,7 @@ export default async function MypageUserLayout({
 
   return (
     <div className="container mx-auto flex max-w-[1150px] gap-6 py-12">
-      <MypageSidebar user={user} />
+      <MypageSidebar />
       <UserProvider user={user}>{children}</UserProvider>
     </div>
   );

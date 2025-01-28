@@ -2,12 +2,10 @@
 
 import { useEffect, useState } from "react";
 import { Button } from "../../ui/button";
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { GetUserDto } from "@/dtos/user.dto";
 
-export default function MypageSidebar({ user }: { user: GetUserDto }) {
+export default function MypageSidebar() {
   const [currentBar, setCurrentBar] = useState("");
   const path = usePathname();
 
@@ -20,16 +18,6 @@ export default function MypageSidebar({ user }: { user: GetUserDto }) {
 
   return (
     <aside className="flex h-full w-64 flex-col gap-8">
-      <div className="flex flex-col gap-4">
-        <Image
-          src="/images/record/profile.png"
-          width={72}
-          height={72}
-          alt="profile"
-        />
-        <span className="text-xl font-semibold">{user?.name}</span>
-      </div>
-      <hr className="w-full" />
       <div className="flex flex-col gap-3">
         <Link href="/mypage/user/profile">
           <Button

@@ -4,8 +4,7 @@ export type TrainingCenterDto = {
   id: string;
   name: string;
   introduction: string;
-  profile: string;
-  additionalImgs: string[];
+  profile_images: string[];
   phoneNumber: string;
   zipCode: string;
   address: string;
@@ -19,8 +18,7 @@ export type TrainingCenterDto = {
 export type CreateTrainingCenterDto = {
   name: string;
   introduction: string;
-  profile: string;
-  additionalImgs: string[];
+  profile_images: string[];
   phoneNumber: string;
   zipCode: string;
   address: string;
@@ -33,8 +31,7 @@ export type UpdateTrainingCenterDto = {
   id: string;
   name?: string;
   introduction?: string;
-  profile?: string;
-  additionalImgs?: string[];
+  profile_images?: string[];
   phoneNumber?: string;
   zipCode?: string;
   address?: string;
@@ -46,8 +43,7 @@ export type GetTrainingCenterDto = {
   id: string;
   name: string;
   introduction: string;
-  profile: string;
-  additionalImgs: string[];
+  profile_images: string[];
   phoneNumber: string;
   zipCode: string;
   address: string;
@@ -62,8 +58,7 @@ export type GetTrainingCenterDetailDto = {
   id: string;
   name: string;
   introduction: string;
-  profile: string;
-  additionalImgs: string[];
+  profile_images: string[];
   phoneNumber: string;
   zipCode: string;
   address: string;

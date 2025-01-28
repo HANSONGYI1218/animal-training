@@ -5,7 +5,11 @@ import { Button } from "../../ui/button";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-export default function MypageSidebar() {
+export default function MypageSidebar({
+  corporationRole,
+}: {
+  corporationRole: string;
+}) {
   const [currentBar, setCurrentBar] = useState("");
   const path = usePathname();
 
@@ -18,7 +22,6 @@ export default function MypageSidebar() {
 
   return (
     <aside className="flex h-full w-64 flex-col gap-3 py-10">
-      <hr className="w-full" />
       <Link href="/mypage/corporation/profile">
         <Button
           variant={"ghost"}
@@ -30,7 +33,10 @@ export default function MypageSidebar() {
           프로필 설정
         </Button>
       </Link>
-      <Link href="/mypage/corporation/curriculum">
+      <Link
+        href="/mypage/corporation/curriculum"
+        className={`${corporationRole === "STANDARD" ? "hidden" : "flex"}`}
+      >
         <Button
           variant={"ghost"}
           onClick={() => {

@@ -55,10 +55,20 @@ export const learningAgreementPdfCreation = async (adoptionId: string) => {
     // link.download = "agreement.pdf"; // 다운로드 이름 설정
     // link.click();
 
-    await fetch(`${process.env.NEXT_PUBLIC_WEB_URL}/api/blob`, {
-      method: "POST",
-      body: formData,
-    });
+    const responsePublicUrl = await fetch(
+      `${process.env.NEXT_PUBLIC_WEB_URL}/api/blob`,
+      {
+        method: "POST",
+        body: formData,
+      },
+    );
+
+    if (!responsePublicUrl.ok) {
+      throw new Error("url is not found");
+    }
+
+    const publicUrl = await responsePublicUrl.json();
+
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_WEB_URL}/api/adoption`,
       {
@@ -66,7 +76,7 @@ export const learningAgreementPdfCreation = async (adoptionId: string) => {
         body: JSON.stringify({
           id: adoptionId,
           step: AdoptionStep.LECTURE,
-          learningAgreementUrl: `${adoptionId}.pdf`,
+          learningAgreementUrl: publicUrl,
         }),
       },
     );

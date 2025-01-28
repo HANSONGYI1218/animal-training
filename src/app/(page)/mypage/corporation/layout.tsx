@@ -2,7 +2,7 @@ import CorporationProvider from "@/providers/corporation-provider";
 import MypageSidebar from "@/components/mypage/corporation/mypage-sidebar";
 import { CorporationDetailDto } from "@/dtos/corporation.dto";
 import { currentAccount } from "@/action/user-action";
-import { redirect } from "next/navigation";
+import { cookies } from "next/headers";
 
 export default async function MypageCorporationLayout({
   children,
@@ -12,6 +12,7 @@ export default async function MypageCorporationLayout({
   const session = await currentAccount();
 
   const corporationId = session?.user?.id;
+  const corporationRole = cookies().get("role")?.value ?? "";
 
   const responseCorporation = await fetch(
     `${process.env.NEXT_PUBLIC_WEB_URL}/api/corporation?id=${corporationId}`,
@@ -28,7 +29,7 @@ export default async function MypageCorporationLayout({
 
   return (
     <div className="container mx-auto flex max-w-[1150px] gap-6 py-12">
-      <MypageSidebar />
+      <MypageSidebar corporationRole={corporationRole} />
       <CorporationProvider corporation={corporation}>
         {children}
       </CorporationProvider>

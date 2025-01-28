@@ -9,6 +9,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { GetLectureDto } from "@/dtos/lecture.dto";
 import { useSession } from "next-auth/react";
+import { GetAllTutorDto } from "@/dtos/tutor.dto";
 
 export type BookmarkProps = {
   id: string;
@@ -25,7 +26,7 @@ export default function LectureTab() {
 
   const [isLoading, setIsLoading] = useState(false);
   const [lectures, setLectures] = useState<GetLectureDto[] | null>(null);
-  const [tutors, setTutors] = useState<Tutor[] | null>(null);
+  const [tutors, setTutors] = useState<GetAllTutorDto[] | null>(null);
   const [isEdit, setIsEdit] = useState(false);
 
   useEffect(() => {
@@ -63,7 +64,7 @@ export default function LectureTab() {
     };
 
     getData();
-  }, []);
+  }, [session?.user?.id]);
 
   return (
     <div className="flex flex-col gap-10">

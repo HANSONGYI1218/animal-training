@@ -12,7 +12,6 @@ interface TutorBannerProps {
 }
 
 export default function TutorBanner({ tutor, count }: TutorBannerProps) {
-  console.log("tutor:", tutor);
   return (
     <section className="relative flex w-full flex-col overflow-hidden bg-[#EDEDE9]/20">
       <div className="container relative z-10 mx-auto flex w-full max-w-[1150px]">
@@ -22,9 +21,17 @@ export default function TutorBanner({ tutor, count }: TutorBannerProps) {
             <Badge className="opacity-100">
               {occupationTypeSwap[tutor?.occupation]}
             </Badge>
-            <Badge className="opacity-100" variant={"secondary"}>
-              {tutor?.tutorTrainingCenter?.trainingCenter?.name}
-            </Badge>
+            {tutor?.tutorTrainingCenters.map((tutorTrainingCenter, index) => {
+              return (
+                <Badge
+                  key={index}
+                  className="opacity-100"
+                  variant={"secondary"}
+                >
+                  {tutorTrainingCenter?.trainingCenter?.name}
+                </Badge>
+              );
+            })}
           </div>
           <span className="whitespace-pre-line font-[440] leading-6 text-neutral-600">
             {tutor?.career}
@@ -37,12 +44,6 @@ export default function TutorBanner({ tutor, count }: TutorBannerProps) {
               <Grip width={16} height={16} stroke="rgb(82 82 82)" />
               <span className="text-[0.93rem] text-neutral-600">
                 영상 {count}개
-              </span>
-            </div>
-            <div className="flex items-center gap-1">
-              <Building2 width={16} height={16} stroke="rgb(82 82 82)" />
-              <span className="text-[0.93rem] text-neutral-600">
-                {tutor?.corporation?.corporation_name}
               </span>
             </div>
           </div>

@@ -166,3 +166,19 @@ export async function getVideoDuration(file: File): Promise<string> {
     };
   });
 }
+
+// 업로드된 파일 이름으로 정렬
+export const sortUrlsByFilenameOrder = (urls: string[]) => {
+  return urls.sort((a, b) => {
+    // 파일 이름 추출
+    const filenameA = new URL(a).pathname.split("/").pop() || "";
+    const filenameB = new URL(b).pathname.split("/").pop() || "";
+
+    // 파일 이름에서 숫자 추출 (예: "0_thumbnail_file.jpg"에서 0 추출)
+    const orderA = parseInt(filenameA.split("_")[1], 10) || 0;
+    const orderB = parseInt(filenameB.split("_")[1], 10) || 0;
+
+    // 숫자를 기준으로 정렬
+    return orderA - orderB;
+  });
+};

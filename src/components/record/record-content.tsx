@@ -26,7 +26,11 @@ export default function RecordContent({
     <div className="flex flex-col gap-4">
       <div className="flex h-10 items-center gap-4">
         <Image
-          src={adoption?.animal?.profile ?? "/images/record/profile.png"}
+          src={
+            adoption?.animal?.profile_images.find((url) =>
+              url.includes("0_thumbnail_"),
+            ) ?? "/images/record/profile.png"
+          }
           width={40}
           height={40}
           alt="dog"

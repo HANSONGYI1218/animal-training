@@ -2,13 +2,17 @@ import prisma from "@/utils/db";
 import { AnimalDto, GetAnimalDto, toJSON } from "@/dtos/animal.dto";
 
 // 분양동물 생성
-export const createAnimalRepository = async (dto: AnimalDto): Promise<void> => {
+export const createAnimalRepository = async (
+  dto: AnimalDto,
+): Promise<string> => {
   try {
-    await prisma.animal.create({
+    const animal = await prisma.animal.create({
       data: {
         ...dto,
       },
     });
+
+    return animal?.id;
   } catch (error: any) {
     return error;
   }

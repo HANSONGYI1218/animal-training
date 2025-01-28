@@ -1,4 +1,4 @@
-import { OccupationType } from "@/types/tyeps.all";
+import { OccupationType } from "@prisma/client";
 
 interface TutorEntityProps {
   id?: string;

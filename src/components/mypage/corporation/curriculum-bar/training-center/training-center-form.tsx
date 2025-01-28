@@ -20,14 +20,14 @@ import { GetTrainingCenterDetailDto } from "@/dtos/training.center.dto";
 import { toast } from "sonner";
 import { useSession } from "next-auth/react";
 import { MCCPageNavigate } from "@/action/navigate";
+import { sortUrlsByFilenameOrder } from "@/utils/utils";
 
 const TrainingCenterSchema = z.object({
   name: z.string().min(1, { message: "훈련소 명을 적어주세요." }),
   introduction: z.string().min(1, { message: "훈련소 소개를 적어주세요." }),
-  profile: z.string().min(1, { message: "훈련소 프로필을 선택해주세요." }),
-  additionalImgs: z
-    .array(z.string())
-    .min(1, { message: "훈련소 추가 사진을 선택해주세요." }),
+  profile_images: z.array(z.string()).refine((value) => value[0] !== "", {
+    message: "프로필 이미지를 선택해 주세요.",
+  }),
   phoneNumber: z
     .string()
     .min(1, { message: "전화번호를 작성해 주세요." })
@@ -56,8 +56,9 @@ export default function TrainingCenterForm({
     defaultValues: {
       name: trainingCenter?.name ?? "",
       introduction: trainingCenter?.introduction ?? "",
-      profile: trainingCenter?.profile ?? "",
-      additionalImgs: trainingCenter?.additionalImgs ?? [],
+      profile_images: trainingCenter?.profile_images
+        ? sortUrlsByFilenameOrder(trainingCenter?.profile_images)
+        : [],
       phoneNumber: trainingCenter?.phoneNumber ?? "",
       zipCode: trainingCenter?.zipCode ?? "",
       address: trainingCenter?.address ?? "",
@@ -68,6 +69,8 @@ export default function TrainingCenterForm({
   const [isLoading, setIsLoading] = useState(false);
   const [newTag, setNewTag] = useState("");
   const [deleteInput, setDeleteInput] = useState("");
+  const [additionalFiles, setAdditionalFiles] = useState<File[]>([]);
+  const [deletelFiles, setDeletelFiles] = useState<string[]>([]);
 
   const openAddressPopup = () => {
     new window.daum.Postcode({
@@ -101,30 +104,121 @@ export default function TrainingCenterForm({
 
   async function onSubmit(data: z.infer<typeof TrainingCenterSchema>) {
     setIsLoading(true);
+
+    let trainingCenterId = trainingCenter?.id;
+    let publicUrls: string[] = trainingCenter?.profile_images ?? [];
     try {
-      if (trainingCenter) {
-        await fetch(`/api/training-center`, {
-          method: "PUT",
-          body: JSON.stringify({
-            id: trainingCenter?.id,
-            ...data,
-          }),
-        });
-      } else {
-        await fetch(`/api/training-center`, {
-          method: "POST",
-          body: JSON.stringify({
-            ...data,
-            corporationId: session?.user?.id,
-          }),
-        });
+      if (!trainingCenter) {
+        //POST 요청, trainingCenterId 생성
+        const responseTrainingCenter = await fetch(
+          `${process.env.NEXT_PUBLIC_WEB_URL}/api/training-center`,
+          {
+            method: "POST",
+            body: JSON.stringify({
+              ...data,
+              corporationId: session?.user?.id,
+            }),
+          },
+        );
+
+        if (!responseTrainingCenter.ok) {
+          throw new Error(
+            `Failed to fetch trainingCenter data. Status: ${responseTrainingCenter.status}`,
+          );
+        }
+
+        trainingCenterId = await responseTrainingCenter.json();
       }
-      setIsLoading(false);
+
+      await Promise.all(
+        Array.from(additionalFiles).map(async (file, index) => {
+          if (!file) {
+            return;
+          }
+
+          let responsePublicUrl;
+          const formData = new FormData();
+          formData.append("file", file as Blob); // 추가 이미지 파일 추가
+          formData.append("path", `training-center/${trainingCenterId}`);
+
+          if (index === 0 && trainingCenter) {
+            const url =
+              trainingCenter?.profile_images.find((url) =>
+                url.includes("0_thumbnail_"),
+              ) ?? "";
+
+            formData.append("prevFile", url);
+            responsePublicUrl = await fetch(
+              `${process.env.NEXT_PUBLIC_WEB_URL}/api/blob`,
+              {
+                method: "PUT",
+                body: formData,
+              },
+            );
+
+            publicUrls = publicUrls.filter((item) => item !== url);
+          } else {
+            responsePublicUrl = await fetch(
+              `${process.env.NEXT_PUBLIC_WEB_URL}/api/blob`,
+              {
+                method: "POST",
+                body: formData,
+              },
+            );
+          }
+
+          if (!responsePublicUrl.ok) {
+            throw new Error("url is not found");
+          }
+
+          const publicUrl = await responsePublicUrl.json();
+          publicUrls.push(publicUrl);
+        }),
+      );
+
+      if (trainingCenter) {
+        await Promise.all(
+          Array.from(deletelFiles).map(async (url, index) => {
+            if (!url) {
+              return;
+            }
+
+            await fetch(`${process.env.NEXT_PUBLIC_WEB_URL}/api/blob`, {
+              method: "DELETE",
+              body: JSON.stringify({
+                prevFile: url,
+                type: "image",
+                path: `training-center/${trainingCenter?.id}`,
+              }),
+              headers: {
+                "Content-Type": "application/json",
+              },
+            });
+
+            publicUrls = publicUrls.filter((item) => item !== url);
+          }),
+        );
+      }
+
+      const requestData = {
+        ...(trainingCenter
+          ? { id: trainingCenter.id, ...data }
+          : { id: trainingCenterId }),
+        profile_images: publicUrls,
+      };
+
+      await fetch(`${process.env.NEXT_PUBLIC_WEB_URL}/api/training-center`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(requestData),
+      });
       await MCCPageNavigate();
     } catch {
       toast("not found", {
         description: "잠시 후 다시 시도해 주세요.",
       });
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -309,8 +403,9 @@ export default function TrainingCenterForm({
                         return (
                           <div
                             key={index}
-                            className="flex items-center gap-1 rounded-lg bg-slate-100 p-2"
+                            className="flex items-center gap-2 rounded-lg bg-slate-100 px-5 py-3"
                           >
+                            <span className="flex-1">{tag}</span>
                             <Plus
                               className="h-4 w-4 rotate-45 cursor-pointer"
                               onClick={() => {
@@ -320,7 +415,6 @@ export default function TrainingCenterForm({
                                 field?.onChange(deleteTag);
                               }}
                             />
-                            {tag}
                           </div>
                         );
                       })}
@@ -336,7 +430,7 @@ export default function TrainingCenterForm({
             <span className="text-lg font-semibold">훈련소 썸네일</span>
             <FormField
               control={form.control}
-              name="profile"
+              name="profile_images"
               render={({ field }) => (
                 <FormItem>
                   <div className="flex items-center gap-2">
@@ -344,7 +438,7 @@ export default function TrainingCenterForm({
                       disabled
                       placeholder="훈련소 썸네일을 선택해주세요."
                       className="disabled:cursor-default"
-                      value={field?.value ?? ""}
+                      value={field?.value[0] ?? ""}
                     />
                     <Button
                       type="button"
@@ -361,24 +455,51 @@ export default function TrainingCenterForm({
                         onChange={(e) => {
                           const file = e.target.files?.[0];
                           if (file) {
-                            const videoPath = URL.createObjectURL(file);
-                            field.onChange(videoPath); // Set the video path to field.value
+                            const renamedFile = new File(
+                              [file],
+                              `0_thumbnail_${file.name}`,
+                              { type: file.type },
+                            );
+
+                            const videoPath = URL.createObjectURL(renamedFile);
+
+                            setAdditionalFiles((prevFiles) => [
+                              renamedFile,
+                              ...prevFiles.slice(1),
+                            ]);
+
+                            const updatedFiles = [
+                              videoPath, // 첫 번째 인덱스를 videoPath로 설정
+                              ...(field?.value?.slice(1) ?? []), // 나머지 파일들은 그대로 추가
+                            ];
+
+                            field.onChange(updatedFiles); // 배열을 바로 전달
                           }
                         }}
                         className="hidden"
                       />
                     </Button>
                   </div>
+                  <img
+                    src={field?.value[0]}
+                    alt="preview"
+                    className={`max-h-[300px] w-1/2 ${!trainingCenter?.profile_images[0] && !field?.value[0] && "hidden"}`}
+                  />
                   <FormMessage />
                 </FormItem>
               )}
             />
           </div>
           <div className="flex w-full flex-col gap-3">
-            <span className="text-lg font-semibold">훈련소 추가 사진</span>
+            <span className="flex items-center gap-1.5 text-lg font-semibold">
+              훈련소 추가 사진
+              <span className="text-xs font-normal text-red-500">
+                *최대 3개까지 업로드 가능합니다
+              </span>
+            </span>
             <FormField
               control={form.control}
-              name="additionalImgs"
+              name="profile_images"
               render={({ field }) => (
                 <FormItem>
                   <div className="flex items-center gap-2">
@@ -386,27 +507,49 @@ export default function TrainingCenterForm({
                       disabled
                       placeholder="훈련소 영상을 선택해주세요."
                       className="disabled:cursor-default"
-                      value={field?.value ?? ""}
+                      value={field?.value.slice(1).pop() ?? ""}
                     />
                     <Button
                       type="button"
                       className="flex w-fit"
                       variant={"destructive"}
                     >
-                      <label htmlFor="video" className="cursor-pointer">
+                      <label htmlFor="addImages" className="cursor-pointer">
                         업로드
                       </label>
                       <input
                         type="file"
-                        id="video"
+                        id="addImages"
+                        multiple
+                        disabled={field.value.length === 4}
                         onChange={(e) => {
-                          const file = e.target.files?.[0];
-                          if (file) {
-                            const videoPath = URL.createObjectURL(file);
-                            field.onChange([
-                              ...(field?.value ?? []),
-                              videoPath,
+                          const files = e.target.files;
+                          if (files) {
+                            // 선택된 파일들을 Array로 변환하고 URL을 생성
+                            const videoPaths = Array.from(files).map((file) =>
+                              URL.createObjectURL(file),
+                            );
+
+                            const renamedFiles = Array.from(files).map(
+                              (file) =>
+                                new File([file], `1_addImages_${file.name}`, {
+                                  type: file.type,
+                                }),
+                            );
+
+                            // field.value와 videoPaths를 합친 배열을 직접 전달
+                            const updatedFiles = [
+                              ...(field?.value ?? undefined),
+                              ...videoPaths,
+                            ];
+
+                            setAdditionalFiles((prevFiles: any) => [
+                              ...(prevFiles ? [prevFiles[0]] : [null]), // 기존 파일들을 그대로 넣음
+                              ...prevFiles.slice(1),
+                              ...renamedFiles, // 새로운 파일들을 추가
                             ]);
+
+                            field.onChange(updatedFiles); // 배열을 바로 전달
                           }
                         }}
                         className="hidden"
@@ -414,25 +557,68 @@ export default function TrainingCenterForm({
                     </Button>
                   </div>
                   <div className="flex flex-col gap-2">
-                    {field?.value.map((image: string, index: number) => {
-                      return (
-                        <div
-                          key={index}
-                          className="flex items-center gap-1 rounded-lg bg-slate-100 p-2"
-                        >
-                          <Plus
-                            className="h-4 w-4 rotate-45 cursor-pointer"
-                            onClick={() => {
-                              const deleteImage = field?.value?.filter(
-                                (v) => v !== image,
-                              );
-                              field?.onChange(deleteImage);
-                            }}
+                    {field?.value
+                      .slice(1)
+                      .map((image: string, deleteIndex: number) => {
+                        return (
+                          <div
+                            key={deleteIndex}
+                            className="flex items-center gap-2 rounded-lg bg-slate-100 px-5 py-3"
+                          >
+                            <span className="flex-1">{image}</span>
+                            <Plus
+                              className="h-4 w-4 rotate-45 cursor-pointer"
+                              onClick={() => {
+                                const deleteImage = field?.value?.filter(
+                                  (v) => v !== image,
+                                );
+
+                                if (
+                                  trainingCenter?.profile_images.includes(image)
+                                ) {
+                                  setDeletelFiles((prevFiles) => {
+                                    return [
+                                      ...prevFiles,
+                                      trainingCenter?.profile_images[
+                                        deleteIndex + 1
+                                      ],
+                                    ];
+                                  });
+                                } else {
+                                  setAdditionalFiles((prevFiles) => {
+                                    const updatedFiles = [
+                                      prevFiles?.[0] ?? null, // 첫 번째 요소 그대로 유지
+                                      ...(prevFiles
+                                        ?.slice(1)
+                                        .filter(
+                                          (_, index) => index !== deleteIndex,
+                                        ) ?? []),
+                                    ];
+
+                                    return updatedFiles; // 수정된 배열을 반환
+                                  });
+                                }
+
+                                field?.onChange(deleteImage);
+                              }}
+                            />
+                          </div>
+                        );
+                      })}
+                  </div>
+                  <div className="grid grid-cols-3 gap-2">
+                    {field?.value
+                      .slice(1)
+                      .map((image: string, index: number) => {
+                        return (
+                          <img
+                            key={index}
+                            src={image}
+                            alt="preview"
+                            className={`max-h-[300px] w-full`}
                           />
-                          {image}
-                        </div>
-                      );
-                    })}
+                        );
+                      })}
                   </div>
                   <FormMessage />
                 </FormItem>

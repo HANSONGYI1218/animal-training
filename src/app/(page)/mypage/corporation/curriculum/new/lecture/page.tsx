@@ -1,6 +1,6 @@
 import { currentAccount } from "@/action/user-action";
 import LectureForm from "@/components/mypage/corporation/curriculum-bar/lecture/lecture-form";
-import { Tutor } from "@prisma/client";
+import { GetAllTutorDto } from "@/dtos/tutor.dto";
 
 export default async function LectureNewPage() {
   const session = await currentAccount();
@@ -15,7 +15,7 @@ export default async function LectureNewPage() {
     return null;
   }
 
-  const tutors: Tutor[] = await responseTutors.json();
+  const tutors: GetAllTutorDto[] = await responseTutors.json();
   return (
     <LectureForm tutors={tutors} corporationId={session?.user?.id ?? ""} />
   );

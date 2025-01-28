@@ -59,12 +59,21 @@ export const trainingAgreementPdfCreation = async (
     // link.download = "agreement.pdf"; // 다운로드 이름 설정
     // link.click();
 
-    // 1️⃣ 병렬 요청 준비
-    const blobRequest = fetch(`${process.env.NEXT_PUBLIC_WEB_URL}/api/blob`, {
-      method: "POST",
-      body: formData,
-    });
+    const responsePublicUrl = await fetch(
+      `${process.env.NEXT_PUBLIC_WEB_URL}/api/blob`,
+      {
+        method: "POST",
+        body: formData,
+      },
+    );
 
+    if (!responsePublicUrl.ok) {
+      throw new Error("url is not found");
+    }
+
+    const publicUrl = await responsePublicUrl.json();
+
+    // 1️⃣ 병렬 요청 준비
     const adoptionRequest = fetch(
       `${process.env.NEXT_PUBLIC_WEB_URL}/api/adoption`,
       {
@@ -72,7 +81,7 @@ export const trainingAgreementPdfCreation = async (
         body: JSON.stringify({
           id: adoptionId,
           step: AdoptionStep.TRAINING,
-          trainingAgreementUrl: `${adoptionId}.pdf`,
+          trainingAgreementUrl: publicUrl,
         }),
         headers: { "Content-Type": "application/json" },
       },
@@ -93,7 +102,6 @@ export const trainingAgreementPdfCreation = async (
 
     // 2️⃣ 모든 요청이 완료될 때까지 대기
     const responses = await Promise.all([
-      blobRequest,
       adoptionRequest,
       userCurriculumRequest,
     ]);

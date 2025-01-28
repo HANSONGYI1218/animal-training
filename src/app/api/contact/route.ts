@@ -38,8 +38,6 @@ export async function POST(req: Request) {
       { status: 200 },
     );
   } catch (error) {
-    console.error(error);
-
     return NextResponse.json(
       { message: "메일 전송에 실패함" },
       { status: 500 },

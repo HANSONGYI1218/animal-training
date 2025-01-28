@@ -14,6 +14,7 @@ import Image from "next/image";
 import { Tutor } from "@prisma/client";
 import { Badge } from "@/components/ui/badge";
 import AdopterListTable from "./adopter-list-table";
+import { GetAllTutorDto } from "@/dtos/tutor.dto";
 
 export default function TrainingCenterTab() {
   const { data: session, status } = useSession();
@@ -27,7 +28,9 @@ export default function TrainingCenterTab() {
   const [isOpened, setIsOpened] = useState(false);
   const [selectTrainingCenter, setSelectTrainingCenter] =
     useState<GetTrainingCenterDetailDto | null>(null);
-  const [filteredTutors, setFilteredTutors] = useState<Tutor[] | null>(null);
+  const [filteredTutors, setFilteredTutors] = useState<GetAllTutorDto[] | null>(
+    null,
+  );
   const [isDialogOpened, setIsDialogOpended] = useState(false);
 
   useEffect(() => {
@@ -63,10 +66,10 @@ export default function TrainingCenterTab() {
     };
 
     getData();
-  }, [isAddTrainer]);
+  }, [isAddTrainer, session?.user?.id]);
 
   useEffect(() => {
-    const filteredDatas: Tutor[] = (tutors || [])?.filter((tutor) => {
+    const filteredDatas: GetAllTutorDto[] = (tutors || [])?.filter((tutor) => {
       return !selectTrainingCenter?.tutorTrainingCenters.some(
         (training) => training.tutor.id === tutor.id,
       );
@@ -108,9 +111,10 @@ export default function TrainingCenterTab() {
             </div>
           ) : trainingCenters && trainingCenters?.length > 0 ? (
             <>
-              {trainingCenters.map((trainingCenter) => (
-                <div key={trainingCenter.id} className="flex w-full">
+              <div className="flex w-full gap-3">
+                {trainingCenters.map((trainingCenter) => (
                   <Badge
+                    key={trainingCenter.id}
                     onClick={() => setSelectTrainingCenter(trainingCenter)}
                     variant="tag"
                     className={`w-fit cursor-pointer ${
@@ -120,8 +124,8 @@ export default function TrainingCenterTab() {
                   >
                     {trainingCenter.name}
                   </Badge>
-                </div>
-              ))}
+                ))}
+              </div>
               {/* 훈련소 정보 섹션 */}
               <TrainingCenterCard
                 trainingCenter={selectTrainingCenter ?? trainingCenters[0]}

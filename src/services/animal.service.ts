@@ -16,7 +16,7 @@ import {
 // 분양동물 생성
 export const createAnimalService = async (
   dto: CreateAnimalDto,
-): Promise<void> => {
+): Promise<string> => {
   try {
     // const isExisted = await getAnimalByIdService(dto.id);
     // if(isExisted) return null;
@@ -25,7 +25,9 @@ export const createAnimalService = async (
       ...dto,
     });
 
-    await createAnimalRepository(toJSON(newAnimal));
+    const animalId = await createAnimalRepository(toJSON(newAnimal));
+
+    return animalId;
   } catch (error: any) {
     return error;
   }
@@ -76,8 +78,7 @@ export const updateAnimalService = async (
       animal_size: dto?.animal_size ?? animal.animal_size,
       animal_age: dto?.animal_age ?? animal.animal_age,
       breed: dto?.breed ?? animal.breed,
-      profile: dto?.profile ?? animal?.profile ?? null,
-      additionalImgs: dto?.additionalImgs ?? animal?.additionalImgs ?? null,
+      profile_images: dto?.profile_images ?? animal?.profile_images ?? null,
       intakeDate: dto?.intakeDate ?? animal?.intakeDate,
       remarks: dto?.remarks ?? animal?.remarks,
       userId: dto?.userId ?? animal.userId,

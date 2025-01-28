@@ -19,10 +19,9 @@ export async function POST(req: NextRequest, res: NextResponse) {
   try {
     const dto: CreateTrainingCenterDto = await req.json();
 
-    await createTrainingCenterService(dto);
-    return new NextResponse("TrainingCenter created successfully", {
-      status: 200,
-    });
+    const trainingCenterId = await createTrainingCenterService(dto);
+
+    return NextResponse.json(trainingCenterId);
   } catch (error) {
     return new NextResponse("Failed to create TrainingCenter", { status: 500 });
   }

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import { CreateTutorDto, GetTutorDto } from "@/dtos/tutor.dto";
+import { CreateTutorDto, GetAllTutorDto, GetTutorDto } from "@/dtos/tutor.dto";
 import {
   createTutorService,
   getTutorByIdService,
@@ -15,8 +15,8 @@ export async function POST(req: NextRequest, res: NextResponse) {
   try {
     const dto: CreateTutorDto = await req.json();
 
-    await createTutorService(dto);
-    return new NextResponse("Tutor created successfully", { status: 200 });
+    const tutorId = await createTutorService(dto);
+    return NextResponse.json(tutorId);
   } catch (error) {
     return new NextResponse("Failed to create Tutor", { status: 500 });
   }
@@ -38,7 +38,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
       return NextResponse.json(tutor);
     }
     if (corporationId) {
-      const tutors: GetTutorDto[] = await getTutorByCorporationIdService(
+      const tutors: GetAllTutorDto[] = await getTutorByCorporationIdService(
         corporationId as string,
       );
 

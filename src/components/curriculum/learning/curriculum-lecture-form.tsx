@@ -97,41 +97,16 @@ export default function CurriculumLectureForm({
     setIsLoading(true);
 
     try {
-      if (!inputFileRef.current?.files) {
-        throw new Error("No file selected");
-      }
+      const file = inputFileRef?.current?.files
+        ? inputFileRef?.current?.files[0]
+        : undefined;
 
-      const file = inputFileRef?.current?.files[0];
-      const formData = new FormData();
-      formData.append("file", file as Blob);
-      formData.append("path", `curriculum/${data?.animal_type.toLowerCase()}`);
+      let responsePublicUrl;
+      let curriculumLectureId = curriculumLecture?.id;
+      let publicUrl = curriculumLecture?.videoUrl;
 
-      if (curriculumLecture) {
-        await fetch(
-          `${process.env.NEXT_PUBLIC_WEB_URL}/api/curriculum-lecture`,
-          {
-            method: "PUT",
-            body: JSON.stringify({
-              ...data,
-              index: parseInt(data?.index),
-              thumbnailPath: "dgdg",
-              animal_sizes: [AnimalSize?.NORMAL],
-              animal_ages: [AnimalAge?.NORMAL],
-              videoTime: await getVideoDuration(file),
-              id: curriculumLecture?.id,
-            }),
-          },
-        );
-
-        await fetch(
-          `${process.env.NEXT_PUBLIC_WEB_URL}/api/blob?filename=${file.name}`,
-          {
-            method: "PUT",
-            body: formData,
-          },
-        );
-      } else {
-        await fetch(
+      if (!curriculumLecture) {
+        const responseCurriculumLecture = await fetch(
           `${process.env.NEXT_PUBLIC_WEB_URL}/api/curriculum-lecture`,
           {
             method: "POST",
@@ -141,23 +116,81 @@ export default function CurriculumLectureForm({
               thumbnailPath: "dgdg",
               animal_sizes: [AnimalSize?.NORMAL],
               animal_ages: [AnimalAge?.NORMAL],
-              videoTime: await getVideoDuration(file),
+              videoTime: await getVideoDuration(file!),
             }),
           },
         );
 
-        await fetch(`${process.env.NEXT_PUBLIC_WEB_URL}/api/blob`, {
-          method: "POST",
-          body: formData,
-        });
-      }
+        if (!responseCurriculumLecture.ok) {
+          throw new Error("url is not found");
+        }
 
-      setIsLoading(false);
+        curriculumLectureId = await responseCurriculumLecture.json();
+      }
+      if (file?.name) {
+        const formData = new FormData();
+        formData.append("file", file as Blob);
+        formData.append(
+          "path",
+          `curriculum/${data?.animal_type.toLowerCase()}`,
+        );
+
+        if (curriculumLecture) {
+          formData.append("prevFile", curriculumLecture?.videoUrl);
+
+          responsePublicUrl = await fetch(
+            `${process.env.NEXT_PUBLIC_WEB_URL}/api/blob`,
+            {
+              method: "PUT",
+              body: formData,
+            },
+          );
+        } else {
+          responsePublicUrl = await fetch(
+            `${process.env.NEXT_PUBLIC_WEB_URL}/api/blob`,
+            {
+              method: "POST",
+              body: formData,
+            },
+          );
+        }
+
+        if (!responsePublicUrl.ok) {
+          throw new Error("url is not found");
+        }
+
+        publicUrl = await responsePublicUrl.json();
+      }
+      const requestData = {
+        ...(curriculumLecture
+          ? {
+              ...data,
+              index: parseInt(data?.index),
+              thumbnailPath: "dgdg",
+              animal_sizes: [AnimalSize?.NORMAL],
+              animal_ages: [AnimalAge?.NORMAL],
+              videoTime: file
+                ? await getVideoDuration(file)
+                : curriculumLecture?.videoTime,
+              id: curriculumLecture?.id,
+            }
+          : { id: curriculumLectureId }),
+        videoUrl: publicUrl,
+      };
+
+      await fetch(`${process.env.NEXT_PUBLIC_WEB_URL}/api/curriculum-lecture`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(requestData),
+      });
+
       await curriculumPageNavigate();
     } catch {
       toast("not found", {
         description: "잠시 후 다시 시도해 주세요.",
       });
+    } finally {
+      setIsLoading(false);
     }
   }
 

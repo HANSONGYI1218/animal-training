@@ -19,7 +19,7 @@ import Link from "next/link";
 import { CorporationContext } from "@/providers/corporation-provider";
 import { toast } from "sonner";
 import { GetAnimalDto } from "@/dtos/animal.dto";
-import { cn, enterKeyDown } from "@/utils/utils";
+import { cn, enterKeyDown, sortUrlsByFilenameOrder } from "@/utils/utils";
 import { format } from "date-fns";
 import { ko } from "date-fns/locale";
 import {
@@ -40,7 +40,10 @@ const AnimalSchema = z.object({
     .refine(
       (value) => {
         const parsedValue = parseFloat(value);
-        return parsedValue >= 0 && parsedValue.toFixed(1) === value;
+        return (
+          parsedValue >= 0 &&
+          (parsedValue % 1 === 0 || parsedValue.toFixed(1) === value)
+        );
       },
       {
         message: "소수점 이하 한 자릿수만 입력 가능합니다.",
@@ -51,8 +54,9 @@ const AnimalSchema = z.object({
   animal_size: z.enum(["SMALL", "NORMAL", "LARGE"]).default("NORMAL"),
   animal_age: z.enum(["YOUNG", "NORMAL"]).default("NORMAL"),
   breed: z.string().min(1, { message: "분양동물의 품좀을 적어주세요." }),
-  profile: z.string().min(1, { message: "분양동물의 사진을 선택해주세요." }),
-  additionalImgs: z.array(z.string()).default([]).optional(),
+  profile_images: z.array(z.string()).refine((value) => value[0] !== "", {
+    message: "분양동물 이미지를 선택해 주세요.",
+  }),
   intakeDate: z.date({ required_error: "분양동물의 나이를 적어주세요." }),
   remarks: z.array(z.string()).default([]).optional(),
 });
@@ -61,6 +65,8 @@ export default function AnimalForm({ animal }: { animal?: GetAnimalDto }) {
   const corporation = useContext(CorporationContext);
   const [isLoading, setIsLoading] = useState(false);
   const [deleteInput, setDeleteInput] = useState("");
+  const [additionalFiles, setAdditionalFiles] = useState<File[]>([]);
+  const [deletelFiles, setDeletelFiles] = useState<string[]>([]);
 
   const form = useForm<z.infer<typeof AnimalSchema>>({
     resolver: zodResolver(AnimalSchema),
@@ -72,8 +78,9 @@ export default function AnimalForm({ animal }: { animal?: GetAnimalDto }) {
       animal_size: animal?.animal_size ?? AnimalSize?.NORMAL,
       animal_age: animal?.animal_age ?? AnimalAge?.NORMAL,
       breed: animal?.breed ?? "",
-      profile: animal?.profile ?? "",
-      additionalImgs: animal?.additionalImgs ?? [],
+      profile_images: animal?.profile_images
+        ? sortUrlsByFilenameOrder(animal?.profile_images)
+        : [],
       intakeDate: animal?.intakeDate ? new Date(animal?.intakeDate) : undefined,
       remarks: animal?.remarks ?? [],
     },
@@ -103,35 +110,128 @@ export default function AnimalForm({ animal }: { animal?: GetAnimalDto }) {
     const animal_age_enum =
       animal?.age && animal.age < 1 ? AnimalAge.YOUNG : AnimalAge.NORMAL;
 
+    let animalId = animal?.id;
+    let publicUrls: string[] = animal?.profile_images ?? [];
+
     try {
-      if (animal) {
-        await fetch(`${process.env.NEXT_PUBLIC_WEB_URL}/api/animal`, {
-          method: "PUT",
-          body: JSON.stringify({
-            ...data,
-            animal_age: animal_age_enum,
-            id: animal?.id,
-            age: parseFloat(data?.age),
-          }),
-        });
-      } else {
-        await fetch(`${process.env.NEXT_PUBLIC_WEB_URL}/api/animal`, {
-          method: "POST",
-          body: JSON.stringify({
-            ...data,
-            animal_age: animal_age_enum,
-            age: parseFloat(data?.age),
-            corporationId: corporation?.id,
-          }),
-        });
+      if (!animal) {
+        const responseAnimal = await fetch(
+          `${process.env.NEXT_PUBLIC_WEB_URL}/api/animal`,
+          {
+            method: "POST",
+            body: JSON.stringify({
+              ...data,
+              animal_age: animal_age_enum,
+              age: parseFloat(data?.age),
+              corporationId: corporation?.id,
+            }),
+          },
+        );
+
+        if (!responseAnimal.ok) {
+          throw new Error(
+            `Failed to fetch animal data. Status: ${responseAnimal.status}`,
+          );
+        }
+
+        animalId = await responseAnimal.json();
       }
-      setIsLoading(false);
+
+      await Promise.all(
+        Array.from(additionalFiles).map(async (file, index) => {
+          if (!file) {
+            return;
+          }
+
+          let responsePublicUrl;
+          const formData = new FormData();
+          formData.append("file", file as Blob); // 추가 이미지 파일 추가
+          formData.append("path", `animal/${animalId}`);
+
+          if (index === 0 && animal) {
+            const url =
+              animal?.profile_images.find((url) =>
+                url.includes("0_thumbnail_"),
+              ) ?? "";
+
+            formData.append("prevFile", url);
+            responsePublicUrl = await fetch(
+              `${process.env.NEXT_PUBLIC_WEB_URL}/api/blob`,
+              {
+                method: "PUT",
+                body: formData,
+              },
+            );
+
+            publicUrls = publicUrls.filter((item) => item !== url);
+          } else {
+            responsePublicUrl = await fetch(
+              `${process.env.NEXT_PUBLIC_WEB_URL}/api/blob`,
+              {
+                method: "POST",
+                body: formData,
+              },
+            );
+          }
+
+          if (!responsePublicUrl.ok) {
+            throw new Error("url is not found");
+          }
+
+          const publicUrl = await responsePublicUrl.json();
+          publicUrls.push(publicUrl);
+        }),
+      );
+
+      if (animal) {
+        await Promise.all(
+          Array.from(deletelFiles).map(async (url, index) => {
+            if (!url) {
+              return;
+            }
+
+            await fetch(`${process.env.NEXT_PUBLIC_WEB_URL}/api/blob`, {
+              method: "DELETE",
+              body: JSON.stringify({
+                prevFile: url,
+                type: "image",
+                path: `animal/${animalId}`,
+              }),
+              headers: {
+                "Content-Type": "application/json",
+              },
+            });
+
+            publicUrls = publicUrls.filter((item) => item !== url);
+          }),
+        );
+      }
+
+      const requestData = {
+        ...(animal
+          ? {
+              ...data,
+              animal_age: animal_age_enum,
+              id: animal?.id,
+              age: parseFloat(data?.age),
+            }
+          : { id: animalId }),
+        profile_images: publicUrls,
+      };
+
+      await fetch(`${process.env.NEXT_PUBLIC_WEB_URL}/api/animal`, {
+        method: "PUT",
+        body: JSON.stringify(requestData),
+      });
+
       await MCAPageNavigate();
     } catch (error: any) {
       const errorMessage = error?.message || "Failed to create Lecture";
       toast(errorMessage, {
         description: "잠시 후 다시 시도해 주세요.",
       });
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -381,7 +481,7 @@ export default function AnimalForm({ animal }: { animal?: GetAnimalDto }) {
                   {field?.value?.map((remark: string, index: number) => {
                     return (
                       <div
-                        className="flex h-11 items-center justify-between rounded-lg border px-3"
+                        className="flex h-11 items-center justify-between rounded-lg border bg-slate-100 px-5 py-3"
                         key={index}
                       >
                         {remark}
@@ -402,7 +502,7 @@ export default function AnimalForm({ animal }: { animal?: GetAnimalDto }) {
           />
           <FormField
             control={form.control}
-            name="profile"
+            name="profile_images"
             render={({ field }) => (
               <FormItem>
                 <span className="font-semibold">프로필</span>
@@ -411,7 +511,7 @@ export default function AnimalForm({ animal }: { animal?: GetAnimalDto }) {
                     disabled
                     placeholder="분양동물의 프로필을 선택해주세요."
                     className="disabled:cursor-default"
-                    value={field?.value ?? ""}
+                    value={field?.value[0] ?? ""}
                   />
                   <Button
                     type="button"
@@ -428,30 +528,57 @@ export default function AnimalForm({ animal }: { animal?: GetAnimalDto }) {
                       onChange={(e) => {
                         const file = e.target.files?.[0];
                         if (file) {
-                          const videoPath = URL.createObjectURL(file);
-                          field.onChange(videoPath); // Set the video path to field.value
+                          const renamedFile = new File(
+                            [file],
+                            `0_thumbnail_${file.name}`,
+                            { type: file.type },
+                          );
+
+                          const videoPath = URL.createObjectURL(renamedFile);
+
+                          setAdditionalFiles((prevFiles) => [
+                            renamedFile,
+                            ...prevFiles.slice(1),
+                          ]);
+
+                          const updatedFiles = [
+                            videoPath, // 첫 번째 인덱스를 videoPath로 설정
+                            ...(field?.value?.slice(1) ?? []), // 나머지 파일들은 그대로 추가
+                          ];
+
+                          field.onChange(updatedFiles); // 배열을 바로 전달
                         }
                       }}
                       className="hidden"
                     />
                   </Button>
                 </div>
+                <img
+                  src={field?.value[0]}
+                  alt="preview"
+                  className={`max-h-[300px] w-1/2 ${!animal?.profile_images[0] && !field?.value[0] && "hidden"}`}
+                />
                 <FormMessage />
               </FormItem>
             )}
           />
           <FormField
             control={form.control}
-            name="additionalImgs"
+            name="profile_images"
             render={({ field }) => (
               <FormItem>
-                <span className="font-semibold">추가 이미지</span>
+                <span className="flex items-center gap-1.5 font-semibold">
+                  추가 이미지
+                  <span className="text-xs font-normal text-red-500">
+                    *최대 3개까지 업로드 가능합니다
+                  </span>
+                </span>
                 <div className="flex items-center gap-2">
                   <Input
                     disabled
                     placeholder="분양동물의 추가 이미지를 선택해주세요."
                     className="disabled:cursor-default"
-                    value={field?.value ?? ""}
+                    value={field?.value.slice(1).pop() ?? ""}
                   />
                   <Button
                     type="button"
@@ -465,40 +592,95 @@ export default function AnimalForm({ animal }: { animal?: GetAnimalDto }) {
                       type="file"
                       id="additionalImgs"
                       accept="image/*"
+                      multiple
                       onChange={(e) => {
-                        const file = e.target.files?.[0];
-                        if (file) {
-                          const videoPath = URL.createObjectURL(file);
-                          const updatedValue = Array.isArray(field.value)
-                            ? [...field.value, videoPath]
-                            : [videoPath];
+                        const files = e.target.files;
+                        if (files) {
+                          // 선택된 파일들을 Array로 변환하고 URL을 생성
+                          const videoPaths = Array.from(files).map((file) =>
+                            URL.createObjectURL(file),
+                          );
 
-                          field.onChange(updatedValue);
+                          const renamedFiles = Array.from(files).map(
+                            (file) =>
+                              new File([file], `1_addImages_${file.name}`, {
+                                type: file.type,
+                              }),
+                          );
+
+                          // field.value와 videoPaths를 합친 배열을 직접 전달
+                          const updatedFiles = [
+                            ...(field?.value ?? undefined),
+                            ...videoPaths,
+                          ];
+
+                          setAdditionalFiles((prevFiles: any) => [
+                            ...(prevFiles ? [prevFiles[0]] : [null]), // 기존 파일들을 그대로 넣음
+                            ...prevFiles.slice(1),
+                            ...renamedFiles, // 새로운 파일들을 추가
+                          ]);
+
+                          field.onChange(updatedFiles); // 배열을 바로 전달
                         }
                       }}
                       className="hidden"
                     />
                   </Button>
                 </div>
-                {field?.value?.map((v, index) => {
+                {field?.value?.slice(1).map((image, deleteIndex) => {
                   return (
                     <div
-                      key={index}
-                      className="flex h-10 items-center gap-2 rounded-lg border px-3"
+                      key={deleteIndex}
+                      className="flex items-center gap-2 rounded-lg border bg-slate-100 px-5 py-3"
                     >
+                      <span className="flex-1">{image}</span>
                       <Plus
                         className="h-4 w-4 rotate-45 cursor-pointer"
                         onClick={() => {
-                          const updatedValue = field?.value?.filter(
-                            (item) => item !== v,
+                          const deleteImage = field?.value?.filter(
+                            (v) => v !== image,
                           );
-                          field.onChange(updatedValue);
+
+                          if (animal?.profile_images.includes(image)) {
+                            setDeletelFiles((prevFiles) => {
+                              return [
+                                ...prevFiles,
+                                animal?.profile_images[deleteIndex + 1],
+                              ];
+                            });
+                          } else {
+                            setAdditionalFiles((prevFiles) => {
+                              const updatedFiles = [
+                                prevFiles?.[0] ?? null, // 첫 번째 요소 그대로 유지
+                                ...(prevFiles
+                                  ?.slice(1)
+                                  .filter(
+                                    (_, index) => index !== deleteIndex,
+                                  ) ?? []),
+                              ];
+
+                              return updatedFiles; // 수정된 배열을 반환
+                            });
+                          }
+
+                          field?.onChange(deleteImage);
                         }}
                       />
-                      {v}
                     </div>
                   );
                 })}
+                <div className="grid grid-cols-3 gap-2">
+                  {field?.value.slice(1).map((image: string, index: number) => {
+                    return (
+                      <img
+                        key={index}
+                        src={image}
+                        alt="preview"
+                        className={`max-h-[300px] w-full`}
+                      />
+                    );
+                  })}
+                </div>
                 <FormMessage />
               </FormItem>
             )}

@@ -9,8 +9,7 @@ interface AnimalEntityProps {
   animal_size: AnimalSize;
   animal_age: AnimalAge;
   breed: string;
-  profile: string;
-  additionalImgs: string[] | null;
+  profile_images: string[];
   intakeDate: Date;
   remarks?: string[];
   userId?: string;
@@ -28,8 +27,7 @@ export class AnimalEntity {
   private animal_size: AnimalSize;
   private animal_age: AnimalAge;
   private breed: string;
-  private profile: string;
-  private additionalImgs: string[] | null;
+  private profile_images: string[];
   private intakeDate: Date;
   private remarks?: string[];
   private userId?: string;
@@ -46,8 +44,7 @@ export class AnimalEntity {
     animal_size,
     animal_age,
     breed,
-    profile,
-    additionalImgs,
+    profile_images,
     intakeDate,
     remarks,
     userId,
@@ -63,8 +60,7 @@ export class AnimalEntity {
     this.animal_size = animal_size;
     this.animal_age = animal_age;
     this.breed = breed;
-    this.profile = profile;
-    this.additionalImgs = additionalImgs;
+    this.profile_images = profile_images;
     this.intakeDate = intakeDate;
     this.remarks = remarks;
     this.userId = userId;

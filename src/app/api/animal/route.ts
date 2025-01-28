@@ -18,8 +18,8 @@ export async function POST(req: NextRequest, res: NextResponse) {
   try {
     const dto: CreateAnimalDto = await req.json();
 
-    await createAnimalService(dto);
-    return new NextResponse("Animal created successfully", { status: 200 });
+    const animalId = await createAnimalService(dto);
+    return NextResponse.json(animalId);
   } catch (error) {
     return new NextResponse("Failed to create Animal", { status: 500 });
   }

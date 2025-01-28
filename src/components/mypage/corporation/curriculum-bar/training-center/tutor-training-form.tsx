@@ -24,8 +24,9 @@ import { Loader2, Plus } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import { useState } from "react";
-import { AnimalType, Tutor } from "@prisma/client";
+import { AnimalType } from "@prisma/client";
 import { animalTypeSwap } from "@/constants/constants.all";
+import { GetAllTutorDto } from "@/dtos/tutor.dto";
 
 const TutorTrainingCenterSchema = z.object({
   tutorId: z.string().min(1, { message: "훈련사를 선택해주세요." }),
@@ -44,7 +45,7 @@ export default function TutorTrainingForm({
   setIsDialogOpended,
 }: {
   trainingCenterId: string;
-  tutors: Tutor[] | undefined;
+  tutors: GetAllTutorDto[] | undefined;
   setIsAddTrainer: any;
   setIsDialogOpended: any;
 }) {

@@ -223,8 +223,7 @@ model Animal {
   animal_size       AnimalSize      @default(NORMAL)
   animal_age        AnimalAge       @default(NORMAL)  
   breed             String          @db.VarChar(255)
-  profile           String          @db.VarChar(255)
-  additionalImgs    String[]
+  profile_images    String[]
   intakeDate        DateTime?
   remarks           String[]
   animalCode        String?
@@ -244,8 +243,7 @@ model TrainingCenter {
   id                 String          @id  @default(uuid())
   name               String          @db.VarChar(255)
   introduction       String          @db.Text
-  profile            String          @db.VarChar(255)
-  additionalImgs     String[]       
+  profile_images     String[]        
   zipCode            String          @db.VarChar(255)
   address            String          @db.VarChar(255)
   detailAddress      String          @db.VarChar(255)
